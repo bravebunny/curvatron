@@ -8,6 +8,7 @@ var Player = function(id, x, y, key) {
 	this.key = key;
 	this.groupTrail = game.add.group();
 	this.killTrail = false;
+	this.ready = false;
 };
 
 Player.prototype = {
@@ -23,9 +24,6 @@ Player.prototype = {
 		groupPlayers.add(this.player);
 
 		game.physics.enable(this.player, Phaser.Physics.ARCADE);
-
-		game.time.events.add(Phaser.Timer.SECOND * 3, function(){this.killTrail = true;}, this);
-
 		this.groupTrail.enableBody = true;
     //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
 	},
@@ -36,9 +34,10 @@ Player.prototype = {
 		this.player.body.angularVelocity = this.direction*200;
 		game.physics.arcade.velocityFromAngle(this.player.angle, 300, this.player.body.velocity);
 
-
-		var trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
-		trailPiece.body.immovable = true;
+		if (this.ready) {
+			var trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
+			trailPiece.body.immovable = true;
+		}
 		
 		if(this.killTrail){
 			var obj = this.groupTrail.getFirstAlive();
@@ -57,10 +56,14 @@ Player.prototype = {
 
 	keyPressed: function() {
 		this.direction *= -1;
+
+		if (!this.ready) {
+			game.time.events.add(Phaser.Timer.SECOND * 3, function(){this.killTrail = true;}, this);
+			this.ready = true;
+		}
 	},
 
 	kill: function(player, trail) {
-
 		player.kill();
 	},
 
