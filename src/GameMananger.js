@@ -1,13 +1,10 @@
-var GameMananger = function(g) {
+var gameMananger = function(game) {}
 
-	game = g;
-	groupPlayers = game.add.group();
-};
-
-GameMananger.prototype = {
+gameMananger.prototype = {
 
 	preload: function() {
-		
+		console.log("ASga")
+		groupPlayers = this.game.add.group();
 
 		player1 = new Player(1, 100, 380, Phaser.Keyboard.A, groupPlayers);
 		player1.preload();
@@ -17,6 +14,7 @@ GameMananger.prototype = {
 	},
 
 	create: function() {
+		console.log("Create")
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 		game.physics.arcade.gravity.y = 0;
 

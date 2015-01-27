@@ -4,6 +4,9 @@
     <meta charset="iso-8859-1" />
     <title>CurvaTorn</title>
     <script type="text/javascript" src="js/phaser.js"></script>
+    <script type="text/javascript" src="src/Boot.js"></script>
+    <script type="text/javascript" src="src/Preload.js"></script>
+    <script type="text/javascript" src="src/GameTitle.js"></script>
     <script type="text/javascript" src="src/GameMananger.js"></script>
     <script type="text/javascript" src="src/Player.js"></script>
     <style type="text/css">
@@ -19,35 +22,14 @@
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(1366, 768, Phaser.Auto, 'phaser-game', {preload: preload, create: create, update: update, render:render });
-//10 64 cubes by 12 64 cubes
-
-function preload() {
-    game.renderer.roundPixels = false;
-
-    game.stage.smoothed = true;
-    
-    gameMananger = new GameMananger(game);
-    gameMananger.preload();
-}
-
-function create() {
-    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    this.game.scale.pageAlignHorizontally = true;
-    this.game.scale.refresh();
-
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    game.physics.arcade.gravity.y = 1000;
-    gameMananger.create();
-}
-
-function update() {
-    gameMananger.update();
-}
-
-function render() {
-   gameMananger.render();
-}
+(function() {
+    var game = new Phaser.Game(1366, 768, Phaser.Auto, "phaser-game");
+    game.state.add("Boot",boot);
+    game.state.add("Preload",preload);
+    game.state.add("GameTitle",gameTitle);
+    game.state.add("GameMananger",gameMananger);
+    game.state.start("Boot");
+})();
 
 </script>
 
