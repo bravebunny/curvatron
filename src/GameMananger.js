@@ -2,9 +2,13 @@ var gameMananger = function(game) {
 	this.crown = null;
 	this.players = [];
 	this.crowned = -1;
+	this.numberOfPlayers = 0; 
 }
 	
 gameMananger.prototype = {
+	init: function(numberPlayers){
+		this.numberOfPlayers = numberPlayers;
+	},
 
 	preload: function() {
 		this.game.load.image('power', 'assets/power.png');
@@ -22,12 +26,12 @@ gameMananger.prototype = {
 		groupPowers = this.game.add.group();
 		groupTrails = [];
 
-
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.game.physics.arcade.gravity.y = 0;
 
-		this.players[0].create();
-		this.players[1].create();
+		for(var i=0; i <= this.numberOfPlayers; i++){
+			this.players[i].create();
+		}
 
 		this.crown = this.game.add.sprite(683, 10, 'crown');
 		this.crown.anchor.setTo(0.5,0.8);
@@ -38,8 +42,9 @@ gameMananger.prototype = {
 	},
 
 	update: function() {
-		this.players[0].update();
-		this.players[1].update();
+		for(var i=0; i <= this.numberOfPlayers; i++){
+			this.players[i].update();
+		}
 
 		for (var i = 0; i < this.players.length; i++) {
 			for (var j = 0; j < this.players.length; j++) {
