@@ -24,9 +24,9 @@ var game = new Phaser.Game(1366, 768, Phaser.Auto, 'phaser-game', {preload: prel
 //10 64 cubes by 12 64 cubes
 
 function preload() {
-    game.renderer.roundPixels = true;
+    game.renderer.roundPixels = false;
 
-    game.stage.smoothed = false;
+    game.stage.smoothed = true;
     
     gameMananger = new GameMananger(game);
     gameMananger.preload();

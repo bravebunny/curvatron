@@ -1,25 +1,21 @@
-var Trail = function(x, y, death) {
+var Trail = function(id) {
 	this.trail = null;
-	this.x = x;
-	this.y = y;
-	this.death = death;
+	this.death = null;
+	this.id = id;
 };
 
 Trail.prototype = {
 
-	preload: function() {
-		game.load.image('trail', 'assets/trail.png');
-	},
+	create: function(x, y, death) {
 
-	create: function() {
-		this.trail = game.add.sprite(this.x, this.y, 'trail');
+		this.death = death;
+		this.trail = game.add.sprite(x, y, 'trail');
 		this.trail.anchor.setTo(.5,.5);
+		game.time.events.add(Phaser.Timer.SECOND * death, this.kill);
 	},
 
-	update: function() {
-		if (death < game.time.totalElapsedSeconds()) {
-			this.trail.kill();
-		}
+	kill: function() {
+		this.trail.kill();
 	},
 
 	render: function(){
