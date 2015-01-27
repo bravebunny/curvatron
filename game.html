@@ -1,0 +1,54 @@
+<!doctype html> 
+<html lang="pt-pt"> 
+<head> 
+    <meta charset="iso-8859-1" />
+    <title>CurvaTorn</title>
+    <script type="text/javascript" src="js/phaser.js"></script>
+    <script type="text/javascript" src="src/GameMananger.js"></script>
+    <style type="text/css">
+        body {
+            background-color: #363636;
+            margin: 0px 0px 0px 0px; /* the extra 1px allows the iOS inner/outer check to work */
+        }
+    </style>
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(640, 768, Phaser.Auto, 'phaser-game', {preload: preload, create: create, update: update, render:render });
+//10 64 cubes by 12 64 cubes
+
+function preload() {
+    game.renderer.roundPixels = true;
+
+    game.stage.smoothed = false;
+    
+    gameMananger = new GameMananger(game);
+    gameMananger.preload();
+}
+
+function create() {
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.game.scale.pageAlignHorizontally = true;
+    this.game.scale.refresh();
+
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.arcade.gravity.y = 1000;
+    gameMananger.create();
+}
+
+function update() {
+    gameMananger.update();
+}
+
+function render() {
+   gameMananger.render();
+}
+
+</script>
+
+</body>
+</html>
