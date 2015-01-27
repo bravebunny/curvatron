@@ -37,6 +37,7 @@ Player.prototype = {
 		if (this.ready) {
 			var trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
 			trailPiece.body.immovable = true;
+			trailPiece.anchor.setTo(.5,.5);
 		}
 		
 		if(this.killTrail){
