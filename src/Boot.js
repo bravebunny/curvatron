@@ -2,7 +2,7 @@ var boot = function(game){};
   
 boot.prototype = {
 	preload: function(){
-        //this.game.load.image("loading","assets/loading.png");
+        this.game.load.image("loading","assets/Load.png");
         this.game.renderer.roundPixels = false;
 
 	    this.game.stage.smoothed = true;

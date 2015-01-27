@@ -2,18 +2,15 @@ var preload = function(game){}
 
 preload.prototype = {
 	preload: function(){ 
-        /*var loadingBar = this.add.sprite(160,240,"loading");
+        var loadingBar = this.add.sprite(this.game.world.centerX,240,"loading");
         loadingBar.anchor.setTo(0.5,0.5);
-        this.load.setPreloadSprite(loadingBar);*/
+        this.load.setPreloadSprite(loadingBar);
 
-		/*this.game.load.spritesheet("numbers","assets/numbers.png",100,100);
+        //Load das cenas todas do menu
 		this.game.load.image("gametitle","assets/gametitle.png");
 		this.game.load.image("play","assets/play.png");
-		this.game.load.image("higher","assets/higher.png");
-		this.game.load.image("lower","assets/lower.png");
-		this.game.load.image("gameover","assets/gameover.png");*/
-
-		//Load das cenas todas do menu
+		this.game.load.image("auxBar","assets/auxBar.png");
+		this.game.load.image("arrow","assets/arrows.png");
 	},
   	create: function(){
 		this.game.state.start("GameTitle");
