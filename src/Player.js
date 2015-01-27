@@ -15,25 +15,26 @@ var Player = function(id, x, y, key, game) {
 
 Player.prototype = {
 
-	preload: function() {
-		console.log(this.game)
-		this.groupTrail = this.game.add.group();
-		this.game.load.image('player' + this.id, 'assets/player' + this.id + '.png');
-		this.game.load.image('trail' + this.id, 'assets/trail' + this.id + '.png');
-	},
-
 	create: function() {
+		this.groupTrail = this.game.add.group();
 		this.player = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.player.anchor.setTo(.5,.5);
 		groupPlayers.add(this.player);
+		groupTrails.push(this.groupTrail);
 
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
 		this.groupTrail.enableBody = true;
     //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
+
 	},
 
 	update: function() {
-		this.game.physics.arcade.collide(groupPlayers, this.groupTrail, this.kill, null, this);
+		this.game.physics.arcade.collide(this.player, groupTrails, this.kill, null, this);
+		this.game.physics.arcade.collide(this.player, groupPowers, this.collect, null, this);
+
+		if (!this.player.inCamera) {
+			this.kill();
+		}
 
 		this.player.body.angularVelocity = this.direction*200;
 		this.game.physics.arcade.velocityFromAngle(this.player.angle, 300, this.player.body.velocity);
@@ -45,15 +46,15 @@ Player.prototype = {
 		}
 		
 		if(this.dead){
+			console.log("oi")
 			this.killTrail = true;
 			this.ready = false;
 			//getAt() returns -1 if the object doesn't exist
 			var obj = this.groupTrail.getAt(this.groupTrail.length - 1);
 			if (obj != -1)
 	    {
-	    	console.log(obj)
-	        obj.kill();
-	        obj.parent.removeChild(obj);
+        obj.kill();
+        obj.parent.removeChild(obj);
 	    }
 		}
 
@@ -63,11 +64,10 @@ Player.prototype = {
 			var obj = this.groupTrail.getFirstAlive();
 	    if (obj)
 	    {
-	        obj.kill();
-	        obj.parent.removeChild(obj);
+        obj.kill();
+        obj.parent.removeChild(obj);
 	    }
 		}
-
 
 		//game.input.onDown.add(this.click, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
@@ -84,9 +84,15 @@ Player.prototype = {
 		}
 	},
 
-	kill: function(player, trail) {
-		player.kill();
+	kill: function() {
+		this.player.kill();
 		this.dead = true;
+	},
+
+	collect: function(player, power) {
+		power.kill();
+		this.killTrail = false;
+		this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){this.killTrail = true;}, this);
 	},
 
 	render: function(){
