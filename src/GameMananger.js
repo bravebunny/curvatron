@@ -53,10 +53,8 @@ gameMananger.prototype = {
 				this.crown.x = this.players[this.crowned].player.x;
 				this.crown.y = this.players[this.crowned].player.y;
 				//this.crown.rotation = this.players[this.crowned].player.rotation;
-				console.log(1)
 			} else {
 				this.game.physics.arcade.moveToObject(this.crown, this.players[this.crowned].player, 800);
-				console.log(2)
 			}
 		}
 
