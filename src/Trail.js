@@ -1,16 +1,12 @@
-var Player = function() {
-	this.player = null;
-};
+var Trail = function() {};
 
-Player.prototype = {
+Trail.prototype = {
 
 	preload: function() {
 		game.load.image('player', 'assets/player.png');
 	},
 
 	create: function() {
-		this.player = game.add.sprite(500, 500, 'player');
-		this.player.anchor.setTo(.5,.5);
 	},
 
 	update: function() {
