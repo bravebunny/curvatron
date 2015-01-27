@@ -15,12 +15,15 @@ GameMananger.prototype = {
 	},
 
 	create: function() {
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		game.physics.arcade.gravity.y = 0;
+
 		player.create();
 		trail.create();
 	},
 
 	update: function() {
-
+		player.update();
 	},
 
 	render: function(){
