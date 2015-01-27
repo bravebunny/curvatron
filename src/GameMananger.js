@@ -38,7 +38,7 @@ gameMananger.prototype = {
 
 		for(var i=0; i <= this.numberOfPlayers; i++){
 			this.players[i].create();
-			this.players[i].player.rotation = ((360/(this.numberOfPlayers+1))*i);
+			this.players[i].player.rotation = ((2*Math.PI/(this.numberOfPlayers+1))*i);
 		}
 
 		this.crown = this.game.add.sprite(683, 10, 'crown');
