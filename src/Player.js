@@ -16,13 +16,14 @@ var Player = function(id, x, y, key, game) {
 Player.prototype = {
 
 	preload: function() {
+		console.log(this.game)
 		this.groupTrail = this.game.add.group();
 		this.game.load.image('player' + this.id, 'assets/player' + this.id + '.png');
 		this.game.load.image('trail' + this.id, 'assets/trail' + this.id + '.png');
 	},
 
 	create: function() {
-		this.player = game.add.sprite(this.x, this.y, 'player' + this.id);
+		this.player = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.player.anchor.setTo(.5,.5);
 		groupPlayers.add(this.player);
 
