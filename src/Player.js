@@ -9,6 +9,7 @@ var Player = function(id, x, y, key) {
 	this.groupTrail = game.add.group();
 	this.killTrail = false;
 	this.ready = false;
+	this.dead = false;
 };
 
 Player.prototype = {
@@ -40,14 +41,30 @@ Player.prototype = {
 			trailPiece.anchor.setTo(.5,.5);
 		}
 		
-		if(this.killTrail){
-			var obj = this.groupTrail.getFirstAlive();
-		    if (obj)
-		    {
-		        obj.kill();
-		        obj.parent.removeChild(obj);
-		    }
+		if(this.dead){
+			this.killTrail = true;
+			this.ready = false;
+			//getAt() returns -1 if the object doesn't exist
+			var obj = this.groupTrail.getAt(this.groupTrail.length - 1);
+			if (obj != -1)
+	    {
+	    	console.log(obj)
+	        obj.kill();
+	        obj.parent.removeChild(obj);
+	    }
 		}
+
+
+		if(this.killTrail){
+			//getFirstAlive() returns null if the object doesn't exist
+			var obj = this.groupTrail.getFirstAlive();
+	    if (obj)
+	    {
+	        obj.kill();
+	        obj.parent.removeChild(obj);
+	    }
+		}
+
 
 		//game.input.onDown.add(this.click, this);
 		game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
@@ -66,6 +83,7 @@ Player.prototype = {
 
 	kill: function(player, trail) {
 		player.kill();
+		this.dead = true;
 	},
 
 	render: function(){
