@@ -1,15 +1,18 @@
 var GameMananger = function(g) {
 
 	game = g;
+	groupPlayers = game.add.group();
 };
 
 GameMananger.prototype = {
 
 	preload: function() {
-		player1 = new Player(1, 100, 380, Phaser.Keyboard.A);
+		
+
+		player1 = new Player(1, 100, 380, Phaser.Keyboard.A, groupPlayers);
 		player1.preload();
 
-		player2 = new Player(2, 1000, 380, Phaser.Keyboard.L);
+		player2 = new Player(2, 1000, 380, Phaser.Keyboard.L, groupPlayers);
 		player2.preload();
 	},
 
