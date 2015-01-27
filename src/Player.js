@@ -1,16 +1,16 @@
 var Player = function(id, x, y, key, game) {
 	this.game = game;
 	this.player = null;
-	this.size = 2;
+	this.size = 1;
 	this.direction = 1;
 	this.id = id;
 	this.x = x;
 	this.y = y;
 	this.key = key;
 	this.killTrail = false;
-	this.ready = false;
 	this.dead = false;
 	this.groupTrail = null;
+	this.ready = true;
 };
 
 Player.prototype = {
@@ -19,12 +19,13 @@ Player.prototype = {
 		this.groupTrail = this.game.add.group();
 		this.player = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.player.anchor.setTo(.5,.5);
-		groupPlayers.add(this.player);
 		groupTrails.push(this.groupTrail);
 
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
 		this.groupTrail.enableBody = true;
     //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
+    this.game.time.events.add(Phaser.Timer.SECOND * this.size, function(){this.killTrail = true;}, this);
+
 
 	},
 
@@ -46,7 +47,6 @@ Player.prototype = {
 		}
 		
 		if(this.dead){
-			console.log("oi")
 			this.killTrail = true;
 			this.ready = false;
 			//getAt() returns -1 if the object doesn't exist
@@ -77,11 +77,6 @@ Player.prototype = {
 
 	keyPressed: function() {
 		this.direction *= -1;
-
-		if (!this.ready) {
-			this.game.time.events.add(Phaser.Timer.SECOND * 3, function(){this.killTrail = true;}, this);
-			this.ready = true;
-		}
 	},
 
 	kill: function() {
@@ -93,6 +88,8 @@ Player.prototype = {
 		power.kill();
 		this.killTrail = false;
 		this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){this.killTrail = true;}, this);
+		this.size++;
+
 	},
 
 	render: function(){
