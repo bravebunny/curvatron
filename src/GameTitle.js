@@ -28,7 +28,7 @@ gameTitle.prototype = {
     	///////////////////////////////////////Number of players////////////////////////////////////////////////////////
 		var playersAuxButton = this.game.add.sprite(this.game.world.centerX,480,"auxBar");
 		playersAuxButton.anchor.setTo(0.5,0.5);
-		textPlayers = this.game.add.text(this.game.world.centerX,480, "1 players", {
+		textPlayers = this.game.add.text(this.game.world.centerX,480, numberOfPlayers + " players", {
 	        font: "40px Arial",
 	        fill: "#363636",
 	        align: "center"
