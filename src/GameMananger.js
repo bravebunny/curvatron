@@ -2,24 +2,31 @@ var gameMananger = function(game) {
 	this.crown = null;
 	this.players = [];
 	this.crowned = -1;
-	this.numberOfPlayers = 0; 
+	this.numberOfPlayers = 0;
+	this.keys = [Phaser.Keyboard.Q,Phaser.Keyboard.P,Phaser.Keyboard.Z,Phaser.Keyboard.M] 
 }
 	
 gameMananger.prototype = {
 	init: function(numberPlayers){
 		this.numberOfPlayers = numberPlayers;
+		console.log(this.numberOfPlayers);
 	},
 
 	preload: function() {
 		this.game.load.image('power', 'assets/power.png');
-		this.game.load.image('player1', 'assets/player1.png');
-		this.game.load.image('player2', 'assets/player2.png');
-		this.game.load.image('trail1', 'assets/trail1.png');
-		this.game.load.image('trail2', 'assets/trail2.png');
-		this.game.load.image('crown', 'assets/crown.png');
+		this.game.load.image('crown', 'assets/crown.png');	
 
-		this.players[0] = new Player(1, 100, 380, Phaser.Keyboard.A, this.game);
-		this.players[1] = new Player(2, 1000, 380, Phaser.Keyboard.L, this.game);
+		for(var i=1; i <= this.numberOfPlayers+1; i++){
+			this.game.load.image('player' + i, 'assets/player' + i +'.png');
+			this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
+		}
+
+		for(var i=0; i <= this.numberOfPlayers; i++){
+			this.players[i] = new Player(i+1, 
+			Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*300 + 1366/2, 
+			Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*200 + 768/2, 
+			this.keys[i], this.game);
+		}
 	},
 
 	create: function() {
@@ -31,6 +38,7 @@ gameMananger.prototype = {
 
 		for(var i=0; i <= this.numberOfPlayers; i++){
 			this.players[i].create();
+			this.players[i].player.rotation = ((360/(this.numberOfPlayers+1))*i);
 		}
 
 		this.crown = this.game.add.sprite(683, 10, 'crown');
