@@ -52,27 +52,25 @@ Player.prototype = {
 			//getAt() returns -1 if the object doesn't exist
 			var obj = this.groupTrail.getAt(this.groupTrail.length - 1);
 			if (obj != -1)
-	    {
-        obj.kill();
-        obj.parent.removeChild(obj);
-	    }
+	    	{
+		        obj.kill();
+		        obj.parent.removeChild(obj);
+	    	}
 		}
 
 
 		if(this.killTrail){
 			//getFirstAlive() returns null if the object doesn't exist
 			var obj = this.groupTrail.getFirstAlive();
-	    if (obj)
-	    {
-        obj.kill();
-        obj.parent.removeChild(obj);
-	    }
+		    if (obj)
+		    {
+		        obj.kill();
+		        obj.parent.removeChild(obj);
+		    }
 		}
 
 		this.game.input.onDown.add(this.keyPressed, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
-		this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger");}, this);
-
 	},
 
 

@@ -1,15 +1,12 @@
-var gameMananger = function(game) {
-	this.crown = null;
-	this.players = [];
-	this.crowned = -1;
-	this.numberOfPlayers = 0;
-	this.keys = [Phaser.Keyboard.Q,Phaser.Keyboard.P,Phaser.Keyboard.Z,Phaser.Keyboard.M] 
-}
-	
+var gameMananger = function(game) {}
+
 gameMananger.prototype = {
 	init: function(numberPlayers){
+		this.crown = null;
+		this.players = [];
+		this.crowned = -1;
+		this.keys = [Phaser.Keyboard.Q,Phaser.Keyboard.P,Phaser.Keyboard.Z,Phaser.Keyboard.M] 
 		this.numberOfPlayers = numberPlayers;
-		console.log(this.numberOfPlayers);
 	},
 
 	preload: function() {
@@ -71,12 +68,8 @@ gameMananger.prototype = {
 			}
 		}
 
-
-		/*if (this.crowned != this.oldCrowned) {
-			console.log("oi")
-			var tween = this.game.add.tween(this.crown).to( { x: this.players[this.crowned].x, y: this.players[this.crowned].y }, 2400, Phaser.Easing.Bounce.Out, true);
-			this.oldCrowned = this.crowned;
-		}*/
+		this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger",true,false,this.numberOfPlayers);}, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function(){this.game.state.start("GameTitle");}, this);
 
 	},
 
