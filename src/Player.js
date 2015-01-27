@@ -69,7 +69,7 @@ Player.prototype = {
 	    }
 		}
 
-		//game.input.onDown.add(this.click, this);
+		this.game.input.onDown.add(this.keyPressed, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
 	},
