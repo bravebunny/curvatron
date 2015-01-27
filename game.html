@@ -5,6 +5,7 @@
     <title>CurvaTorn</title>
     <script type="text/javascript" src="js/phaser.js"></script>
     <script type="text/javascript" src="src/GameMananger.js"></script>
+    <script type="text/javascript" src="src/Player.js"></script>
     <style type="text/css">
         body {
             background-color: #363636;
@@ -18,7 +19,7 @@
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(640, 768, Phaser.Auto, 'phaser-game', {preload: preload, create: create, update: update, render:render });
+var game = new Phaser.Game(1366, 768, Phaser.Auto, 'phaser-game', {preload: preload, create: create, update: update, render:render });
 //10 64 cubes by 12 64 cubes
 
 function preload() {
