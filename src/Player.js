@@ -13,12 +13,12 @@ var Player = function(id, x, y, key) {
 Player.prototype = {
 
 	preload: function() {
-		game.load.image('player', 'assets/player' + this.id + '.png');
-		game.load.image('trail', 'assets/trail' + this.id + '.png');
+		game.load.image('player' + this.id, 'assets/player' + this.id + '.png');
+		game.load.image('trail' + this.id, 'assets/trail' + this.id + '.png');
 	},
 
 	create: function() {
-		this.player = game.add.sprite(this.x, this.y, 'player');
+		this.player = game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.player.anchor.setTo(.5,.5);
 
 		game.physics.enable(this.player, Phaser.Physics.ARCADE);
@@ -31,13 +31,14 @@ Player.prototype = {
 		this.player.body.angularVelocity = this.direction*200;
 		game.physics.arcade.velocityFromAngle(this.player.angle, 300, this.player.body.velocity);
 
-		this.groupTrail.create(this.player.x, this.player.y, 'trail');
+		this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
 		
 		if(this.killTrail){
-			var baddie = this.groupTrail.getFirstAlive();
-		    if (baddie)
+			var obj = this.groupTrail.getFirstAlive();
+		    if (obj)
 		    {
-		        baddie.kill();
+		        obj.kill();
+		        obj.parent.removeChild(obj);
 		    }
 		}
 
