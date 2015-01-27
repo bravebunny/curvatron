@@ -11,6 +11,9 @@ var Player = function(id, x, y, key, game) {
 	this.dead = false;
 	this.groupTrail = null;
 	this.ready = true;
+	this.speed = 1.5;
+	this.angularVelocity = 1;
+	this.growth = 1;
 };
 
 Player.prototype = {
@@ -24,7 +27,7 @@ Player.prototype = {
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
 		this.groupTrail.enableBody = true;
     //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
-    this.game.time.events.add(Phaser.Timer.SECOND * this.size, function(){this.killTrail = true;}, this);
+    this.game.time.events.add(Phaser.Timer.SECOND * this.size/this.speed, function(){this.killTrail = true;}, this);
 
 
 	},
@@ -37,8 +40,8 @@ Player.prototype = {
 			this.kill();
 		}
 
-		this.player.body.angularVelocity = this.direction*200;
-		this.game.physics.arcade.velocityFromAngle(this.player.angle, 300, this.player.body.velocity);
+		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
+		this.game.physics.arcade.velocityFromAngle(this.player.angle, 300*this.speed, this.player.body.velocity);
 
 		if (this.ready) {
 			var trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
@@ -86,7 +89,7 @@ Player.prototype = {
 	collect: function(player, power) {
 		power.kill();
 		this.killTrail = false;
-		this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){this.killTrail = true;}, this);
+		this.game.time.events.add(Phaser.Timer.SECOND * this.growth/this.speed, function(){this.killTrail = true;}, this);
 		this.size++;
 
 	},

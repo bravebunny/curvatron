@@ -2,6 +2,7 @@ var gameTitle = function(game){
 	numberOfPlayers = 1;
 	gameMode = 0;
 	gameModes = ["Nomral Mode", "coiso", "Outro coiso"];
+	maxPlayers = 8;
 }
 
 gameTitle.prototype = {
@@ -66,7 +67,7 @@ gameTitle.prototype = {
 
 	DecNumberOfPlayers: function(){
 		if(numberOfPlayers==1){
-			numberOfPlayers=4;
+			numberOfPlayers=maxPlayers;
 		}
 		else{
 			numberOfPlayers--;
@@ -75,7 +76,7 @@ gameTitle.prototype = {
 	},
 
 	IncNumberOfPlayers: function(){
-		if(numberOfPlayers==4){
+		if(numberOfPlayers==maxPlayers){
 		    numberOfPlayers=1;
 	    }
 	    else{

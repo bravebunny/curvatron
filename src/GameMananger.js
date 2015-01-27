@@ -20,8 +20,8 @@ gameMananger.prototype = {
 
 		for(var i=0; i <= this.numberOfPlayers; i++){
 			this.players[i] = new Player(i+1, 
-			Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*300 + 1366/2, 
-			Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*200 + 768/2, 
+			Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500 + 1366/2, 
+			Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250 + 768/2, 
 			this.keys[i], this.game);
 		}
 	},
