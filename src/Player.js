@@ -1,4 +1,5 @@
-var Player = function(id, x, y, key) {
+var Player = function(id, x, y, key, game) {
+	this.game = game;
 	this.player = null;
 	this.size = 2;
 	this.direction = 1;
@@ -6,17 +7,18 @@ var Player = function(id, x, y, key) {
 	this.x = x;
 	this.y = y;
 	this.key = key;
-	this.groupTrail = game.add.group();
 	this.killTrail = false;
 	this.ready = false;
 	this.dead = false;
+	this.groupTrail = null;
 };
 
 Player.prototype = {
 
 	preload: function() {
-		game.load.image('player' + this.id, 'assets/player' + this.id + '.png');
-		game.load.image('trail' + this.id, 'assets/trail' + this.id + '.png');
+		this.groupTrail = this.game.add.group();
+		this.game.load.image('player' + this.id, 'assets/player' + this.id + '.png');
+		this.game.load.image('trail' + this.id, 'assets/trail' + this.id + '.png');
 	},
 
 	create: function() {
@@ -24,16 +26,16 @@ Player.prototype = {
 		this.player.anchor.setTo(.5,.5);
 		groupPlayers.add(this.player);
 
-		game.physics.enable(this.player, Phaser.Physics.ARCADE);
+		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
 		this.groupTrail.enableBody = true;
     //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
 	},
 
 	update: function() {
-		game.physics.arcade.collide(groupPlayers, this.groupTrail, this.kill, null, this);
+		this.game.physics.arcade.collide(groupPlayers, this.groupTrail, this.kill, null, this);
 
 		this.player.body.angularVelocity = this.direction*200;
-		game.physics.arcade.velocityFromAngle(this.player.angle, 300, this.player.body.velocity);
+		this.game.physics.arcade.velocityFromAngle(this.player.angle, 300, this.player.body.velocity);
 
 		if (this.ready) {
 			var trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
@@ -67,7 +69,7 @@ Player.prototype = {
 
 
 		//game.input.onDown.add(this.click, this);
-		game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
+		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
 	},
 
@@ -76,7 +78,7 @@ Player.prototype = {
 		this.direction *= -1;
 
 		if (!this.ready) {
-			game.time.events.add(Phaser.Timer.SECOND * 3, function(){this.killTrail = true;}, this);
+			this.game.time.events.add(Phaser.Timer.SECOND * 3, function(){this.killTrail = true;}, this);
 			this.ready = true;
 		}
 	},

@@ -8,8 +8,10 @@ gameTitle.prototype = {
 		playButton.anchor.setTo(0.5,0.5);*/
 
 		//Cenas do MENU
-	},
-	playTheGame: function(){
+
 		this.game.state.start("GameMananger");
-	}
+	},
+	/*playTheGame: function(){
+		this.game.state.start("GameMananger");
+	}*/
 }
