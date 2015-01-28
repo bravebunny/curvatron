@@ -13,8 +13,9 @@ var Player = function(id, x, y, key, game) {
 	this.ready = true;
 	this.speed = 1;
 	this.angularVelocity = 1;
-	this.growth = 1;
+	this.growth = 30;
 	this.frameCount = 0;
+	this.lastTrailLength = 0;
 };
 
 Player.prototype = {
@@ -26,11 +27,10 @@ Player.prototype = {
 		groupTrails.push(this.groupTrail);
 
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
-		this.player.body.setSize(16, 16, 0, 0);
+		this.player.body.setSize(16*this.game.world.scale.x, 16*this.game.world.scale.x, 0, 0);
 		this.groupTrail.enableBody = true;
     //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
-    this.game.time.events.add(Phaser.Timer.SECOND * this.size/this.speed, function(){this.killTrail = true;}, this);
-
+    this.lastTrailLength = this.growth;
 
 	},
 
@@ -52,6 +52,7 @@ Player.prototype = {
 			trailPiece.anchor.setTo(.5,.5);
 		}
 		
+		//erase trail from behind
 		if(this.dead && this.frameCount == 0){
 			this.killTrail = true;
 			this.ready = false;
@@ -64,8 +65,15 @@ Player.prototype = {
 	    	}
 		}
 
+		if (!this.killTrail && (this.groupTrail.length >= (this.lastTrailLength + this.growth))) {
+			console.log(this.lastTrailLength)
+			this.killTrail = true;
+			this.lastTrailLength = this.groupTrail.length;
+		}
 
+		//erase trail from front
 		if(this.killTrail && this.frameCount == 0){
+
 			//getFirstAlive() returns null if the object doesn't exist
 			var obj = this.groupTrail.getFirstAlive();
 		    if (obj)
@@ -88,15 +96,12 @@ Player.prototype = {
 		if (trail == null || (trail.frameName != 'assets/trail' + this.id + '.png')) {
 			this.player.kill();
 			this.dead = true;
-		} else {
-			console.log("ouch")
 		}
 	},
 
 	collect: function(player, power) {
 		power.kill();
 		this.killTrail = false;
-		this.game.time.events.add(Phaser.Timer.SECOND * this.growth/this.speed, function(){this.killTrail = true;}, this);
 		this.size++;
 
 	},
