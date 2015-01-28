@@ -98,6 +98,14 @@ Player.prototype = {
 		this.dead = true;
 
 		console.log('Player ' + this.id + 'collided with ' + trail.frameName)
+
+		var newMax = -1;
+		for (var i = 0; i < players.length; i++) {
+			if (i != this.id && players[i].score > newMax) {
+				newMax = players[i].score;
+				crowned = i;
+			}
+		}
 	},
 
 	collect: function(player, power) {
@@ -125,6 +133,6 @@ Player.prototype = {
 	},
 
 	render: function(){
-		this.game.debug.body(this.player);
+		//this.game.debug.body(this.player);
 	}
 };
