@@ -13,7 +13,8 @@ boot.prototype = {
 	    this.game.scale.refresh();
 
 	    this.game.physics.startSystem(Phaser.Physics.ARCADE);
-	    this.game.physics.arcade.gravity.y = 1000;
+	    this.game.world.setBounds(-1366/2, -768/2, 1366, 768);
+
 		this.game.state.start("PreloadMenu");
 	}
 }

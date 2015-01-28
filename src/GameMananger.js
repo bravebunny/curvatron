@@ -8,21 +8,16 @@ gameMananger.prototype = {
 		this.keys = [Phaser.Keyboard.Q,Phaser.Keyboard.P,Phaser.Keyboard.Z,Phaser.Keyboard.M] 
 		this.numberOfPlayers = numberPlayers;
 
+		this.game.world.scale.set(0.5);
 	},
 
 	create: function() {
-		this.game.world.scale.set(0.5);
-		
-
 		//Choose snake locations
 		for(var i=0; i <= this.numberOfPlayers; i++){
 			this.players[i] = new Player(i,
-			Math.round(Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500/*/this.game.world.scale.x*/), 
-			Math.round(Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250/*/this.game.world.scale.y*/), 
+			Math.round(Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500/this.game.world.scale.x), 
+			Math.round(Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250/this.game.world.scale.y), 
 			this.keys[i], this.game);
-			console.log("X: " + Math.round(Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500/this.game.world.scale.x))
-			console.log("Y: " + Math.round(Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250/this.game.world.scale.y))
-
 		}
 
 		groupPowers = this.game.add.group();

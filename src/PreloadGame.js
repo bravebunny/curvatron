@@ -7,7 +7,7 @@ preloadGame.prototype = {
 	},
 
 	preload: function(){ 
-        var loadingBar = this.add.sprite(this.game.world.centerX,240,"loading");
+        var loadingBar = this.add.sprite(0,0,"loading");
         loadingBar.anchor.setTo(0.5,0.5);
         this.load.setPreloadSprite(loadingBar);
 

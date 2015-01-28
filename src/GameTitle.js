@@ -8,19 +8,20 @@ var gameTitle = function(game){
 gameTitle.prototype = {
 
   create: function(){
-  	this.game.world.setBounds(-1366/2, -768/2, 1366, 768);
-		var gameTitle = this.game.add.sprite(0,160,"gametitle");
+  		this.game.world.scale.set(1);
+
+		var gameTitle = this.game.add.sprite(0,-320,"gametitle");
 		gameTitle.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(0,160, "CurvaTorn", {
+		text = this.game.add.text(0,-320, "CurvaTorn", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
     	});
     	text.anchor.setTo(0.5,0.5);
 
-		var playButton = this.game.add.button(0,320-768/2,"play",this.playTheGame,this);
+		var playButton = this.game.add.button(0,-160,"play",this.playTheGame,this);
 		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(0,320, "PLAY", {
+		text = this.game.add.text(0,-160, "PLAY", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
@@ -28,35 +29,35 @@ gameTitle.prototype = {
     	text.anchor.setTo(0.5,0.5);
 
     	///////////////////////////////////////Number of players////////////////////////////////////////////////////////
-		var playersAuxButton = this.game.add.sprite(0,480-768/2,"auxBar");
+		var playersAuxButton = this.game.add.sprite(0,0,"auxBar");
 		playersAuxButton.anchor.setTo(0.5,0.5);
-		textPlayers = this.game.add.text(0,480, (numberOfPlayers+1) + " players", {
+		textPlayers = this.game.add.text(0,0, (numberOfPlayers+1) + " players", {
 	        font: "40px Arial",
 	        fill: "#363636",
 	        align: "center"
     	});
     	textPlayers.anchor.setTo(0.5,0.5);
 
-    	var leftArrow = this.game.add.button(0-112,480-768/2,"arrow",this.DecNumberOfPlayers,this);
+    	var leftArrow = this.game.add.button(0-112,0,"arrow",this.DecNumberOfPlayers,this);
 		leftArrow.anchor.setTo(0.5,0.5);
 
-		var rightArrow = this.game.add.button(0+112,480-768/2,"arrow",this.IncNumberOfPlayers,this);
+		var rightArrow = this.game.add.button(0+112,0,"arrow",this.IncNumberOfPlayers,this);
 		rightArrow.anchor.setTo(0.5,0.5);
 
 		///////////////////////////////////////////Game Mode////////////////////////////////////////////////////////////////
-		var playersAuxButton = this.game.add.sprite(0,640,"auxBar");
+		var playersAuxButton = this.game.add.sprite(0,160,"auxBar");
 		playersAuxButton.anchor.setTo(0.5,0.5);
-		textGameMode = this.game.add.text(0,640, "Normal Game", {
+		textGameMode = this.game.add.text(0,160, "Normal Game", {
 	        font: "40px Arial",
 	        fill: "#363636",
 	        align: "center"
     	});
     	textGameMode.anchor.setTo(0.5,0.5);
 
-    	var leftArrow = this.game.add.button(0-112,640,"arrow",this.DecGameMode,this);
+    	var leftArrow = this.game.add.button(0-112,160,"arrow",this.DecGameMode,this);
 		leftArrow.anchor.setTo(0.5,0.5);
 
-		var rightArrow = this.game.add.button(0+112,640,"arrow",this.IncGameMode,this);
+		var rightArrow = this.game.add.button(0+112,160,"arrow",this.IncGameMode,this);
 		rightArrow.anchor.setTo(0.5,0.5);
 
 		//this.game.state.start("GameMananger");

@@ -40,11 +40,6 @@ Player.prototype = {
 		this.game.physics.arcade.overlap(this.player, groupTrails, this.kill, null, this);
 		this.game.physics.arcade.overlap(this.player, groupPowers, this.collect, null, this);
 		
-
-		if (!this.player.inCamera) {
-			this.kill();
-		}
-
 		//Snake movement
 		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 		this.game.physics.arcade.velocityFromAngle(this.player.angle, 300*this.speed, this.player.body.velocity);
