@@ -11,7 +11,7 @@ var Player = function(id, x, y, key, game) {
 	this.dead = false;
 	this.groupTrail = null;
 	this.ready = true;
-	this.speed = 0.25;
+	this.speed = 1;
 	this.angularVelocity = 1;
 	this.growth = 1;
 	this.frameCount = 0;
@@ -26,6 +26,7 @@ Player.prototype = {
 		groupTrails.push(this.groupTrail);
 
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+		this.player.body.setSize(16, 16, 0, 0);
 		this.groupTrail.enableBody = true;
     //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
     this.game.time.events.add(Phaser.Timer.SECOND * this.size/this.speed, function(){this.killTrail = true;}, this);
@@ -36,16 +37,20 @@ Player.prototype = {
 	update: function() {
 		this.frameCount = (this.frameCount + 1) % 1/this.speed;
 
-		this.game.physics.arcade.collide(this.player, groupTrails, this.kill, null, this);
-		this.game.physics.arcade.collide(this.player, groupPowers, this.collect, null, this);
+		this.game.physics.arcade.overlap(this.player, groupTrails, this.kill, null, this);
+		this.game.physics.arcade.overlap(this.player, groupPowers, this.collect, null, this);
+		
 
 		if (!this.player.inCamera) {
 			this.kill();
 		}
 
+		//Snake movement
 		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 		this.game.physics.arcade.velocityFromAngle(this.player.angle, 300*this.speed, this.player.body.velocity);
 
+
+		//Create trail
 		if (this.ready && this.frameCount == 0) {
 			var trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
 			trailPiece.body.immovable = true;
@@ -84,9 +89,13 @@ Player.prototype = {
 		this.direction *= -1;
 	},
 
-	kill: function() {
-		this.player.kill();
-		this.dead = true;
+	kill: function(player, trail) {
+		if (trail == null || (trail.frameName != 'assets/trail' + this.id + '.png')) {
+			this.player.kill();
+			this.dead = true;
+		} else {
+			console.log("ouch")
+		}
 	},
 
 	collect: function(player, power) {
@@ -106,5 +115,6 @@ Player.prototype = {
 	},
 
 	render: function(){
+		this.game.debug.body(this.player);
 	}
 };

@@ -11,12 +11,18 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
+		this.game.world.scale.set(0.5);
+		
 
+		//Choose snake locations
 		for(var i=0; i <= this.numberOfPlayers; i++){
 			this.players[i] = new Player(i,
-			Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500 + 1366/2, 
-			Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250 + 768/2, 
+			Math.round(Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500/*/this.game.world.scale.x*/), 
+			Math.round(Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250/*/this.game.world.scale.y*/), 
 			this.keys[i], this.game);
+			console.log("X: " + Math.round(Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500/this.game.world.scale.x))
+			console.log("Y: " + Math.round(Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250/this.game.world.scale.y))
+
 		}
 
 		groupPowers = this.game.add.group();
@@ -39,10 +45,13 @@ gameMananger.prototype = {
 	},
 
 	update: function() {
+
+		//Update players
 		for(var i=0; i <= this.numberOfPlayers; i++){
 			this.players[i].update();
 		}
 
+		//Select crowned player
 		for (var i = 0; i < this.players.length; i++) {
 			for (var j = 0; j < this.players.length; j++) {
 				if ((i != j) && this.players[i].size > this.players[j].size) {
@@ -54,8 +63,7 @@ gameMananger.prototype = {
 			}
 		}
 
-		
-
+		//Give crown
 		if (this.crowned != -1) {
 			if (Math.abs(this.crown.x - this.players[this.crowned].player.x) < 30 && Math.abs(this.crown.y - this.players[this.crowned].player.y) < 30) {
 				this.players[this.crowned].addCrown();
@@ -69,6 +77,16 @@ gameMananger.prototype = {
 			}
 		}
 
+		//World scale
+		/*var maxX = 
+		var minX
+		var maxY
+		var minY;
+		for(var i=0; i <= this.numberOfPlayers; i++){
+			if (this.players[i].update();
+		}*/
+
+		//Controls
 		this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger",true,false,this.numberOfPlayers);}, this);
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function(){this.game.state.start("GameTitle");}, this);
 
@@ -81,5 +99,6 @@ gameMananger.prototype = {
 	},
 
 	render: function(){
+		this.players[0].render();
 	}
 };
