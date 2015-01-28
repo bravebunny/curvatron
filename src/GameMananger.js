@@ -7,6 +7,7 @@ gameMananger.prototype = {
 		this.crowned = -1;
 		this.keys = [Phaser.Keyboard.Q,Phaser.Keyboard.P,Phaser.Keyboard.Z,Phaser.Keyboard.M] 
 		this.numberOfPlayers = numberPlayers;
+
 	},
 
 	create: function() {

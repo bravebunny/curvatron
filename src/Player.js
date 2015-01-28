@@ -11,9 +11,10 @@ var Player = function(id, x, y, key, game) {
 	this.dead = false;
 	this.groupTrail = null;
 	this.ready = true;
-	this.speed = 0.5;
+	this.speed = 0.25;
 	this.angularVelocity = 1;
 	this.growth = 1;
+	this.frameCount = 0;
 };
 
 Player.prototype = {
@@ -33,6 +34,8 @@ Player.prototype = {
 	},
 
 	update: function() {
+		this.frameCount = (this.frameCount + 1) % 1/this.speed;
+
 		this.game.physics.arcade.collide(this.player, groupTrails, this.kill, null, this);
 		this.game.physics.arcade.collide(this.player, groupPowers, this.collect, null, this);
 
@@ -43,13 +46,13 @@ Player.prototype = {
 		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 		this.game.physics.arcade.velocityFromAngle(this.player.angle, 300*this.speed, this.player.body.velocity);
 
-		if (this.ready) {
+		if (this.ready && this.frameCount == 0) {
 			var trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
 			trailPiece.body.immovable = true;
 			trailPiece.anchor.setTo(.5,.5);
 		}
 		
-		if(this.dead){
+		if(this.dead && this.frameCount == 0){
 			this.killTrail = true;
 			this.ready = false;
 			//getAt() returns -1 if the object doesn't exist
@@ -62,7 +65,7 @@ Player.prototype = {
 		}
 
 
-		if(this.killTrail){
+		if(this.killTrail && this.frameCount == 0){
 			//getFirstAlive() returns null if the object doesn't exist
 			var obj = this.groupTrail.getFirstAlive();
 		    if (obj)
