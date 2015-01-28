@@ -31,6 +31,14 @@ gameMananger.prototype = {
 			this.players[i].player.rotation = ((2*Math.PI/(this.numberOfPlayers+1))*i);
 		}
 
+		for(var i=0; i <= this.numberOfPlayers; i++){
+			for (var j = 0; j < groupTrails.length; j++) {
+				if (groupTrails[j] != this.players[i].groupTrail) {
+					this.players[i].enemyTrails.push(groupTrails[j]);
+				}
+			}
+		}
+
 		this.crown = this.game.add.sprite(683, 10, 'crown');
 		this.crown.anchor.setTo(0.5,0.8);
 		this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);

@@ -16,6 +16,7 @@ var Player = function(id, x, y, key, game) {
 	this.growth = 30;
 	this.frameCount = 0;
 	this.lastTrailLength = 0;
+	this.enemyTrails = [];
 };
 
 Player.prototype = {
@@ -37,7 +38,7 @@ Player.prototype = {
 	update: function() {
 		this.frameCount = (this.frameCount + 1) % 1/this.speed;
 
-		this.game.physics.arcade.overlap(this.player, groupTrails, this.kill, null, this);
+		this.game.physics.arcade.overlap(this.player, this.enemyTrails, this.kill, null, this);
 		this.game.physics.arcade.overlap(this.player, groupPowers, this.collect, null, this);
 		
 		//Snake movement
@@ -97,6 +98,7 @@ Player.prototype = {
 			this.player.kill();
 			this.dead = true;
 		}
+		console.log("ouch")
 	},
 
 	collect: function(player, power) {
