@@ -101,7 +101,7 @@ Player.prototype = {
 
 		var newMax = -1;
 		for (var i = 0; i < players.length; i++) {
-			if (i != this.id && players[i].score > newMax) {
+			if (i != this.id && players[i].score > newMax && !players[i].dead) {
 				newMax = players[i].score;
 				crowned = i;
 			}
