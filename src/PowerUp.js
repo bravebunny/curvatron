@@ -15,11 +15,11 @@ PowerUp.prototype = {
 	create: function() {
 		var randNum = this.game.rnd.integerInRange(0, 100);
 		if (randNum < 60) {
-			this.size = 0.5;
-		} else if (randNum < 80) {
 			this.size = 1;
-		} else if (randNum < 95) {
+		} else if (randNum < 80) {
 			this.size = 2;
+		} else if (randNum < 95) {
+			this.size = 3;
 		} else {
 			this.size = 4;
 		}

@@ -56,18 +56,6 @@ gameMananger.prototype = {
 			players[i].update();
 		}
 
-		//Select crowned player
-		/*for (var i = 0; i < players.length; i++) {
-			for (var j = 0; j < players.length; j++) {
-				if ((i != j) && players[i].size > players[j].size) {
-					if (crowned != -1) {
-						players[crowned].removeCrown();
-					}
-					crowned = i;
-				}
-			}
-		}*/
-
 		//Give crown
 		if (crowned != -1) {
 			if (Math.abs(this.crown.x - players[crowned].player.x) < 30 && Math.abs(this.crown.y - players[crowned].player.y) < 30) {
