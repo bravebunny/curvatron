@@ -15,9 +15,10 @@ preloadGame.prototype = {
 		this.game.load.image('power', 'assets/power.png');
 		this.game.load.image('crown', 'assets/crown.png');	
 
-		for(var i=1; i <= this.numberOfPlayers+1; i++){
+		for(var i=0; i <= this.numberOfPlayers; i++){
 			this.game.load.image('player' + i, 'assets/player' + i +'.png');
 			this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
+			this.game.load.image('crown' + i, 'assets/crown'+ i +'.png');
 		}
 	},
   	create: function(){

@@ -12,7 +12,7 @@ gameMananger.prototype = {
 	create: function() {
 
 		for(var i=0; i <= this.numberOfPlayers; i++){
-			this.players[i] = new Player(i+1, 
+			this.players[i] = new Player(i,
 			Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500 + 1366/2, 
 			Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250 + 768/2, 
 			this.keys[i], this.game);
@@ -45,17 +45,26 @@ gameMananger.prototype = {
 		for (var i = 0; i < this.players.length; i++) {
 			for (var j = 0; j < this.players.length; j++) {
 				if ((i != j) && this.players[i].size > this.players[j].size) {
+					if (this.crowned != -1) {
+						this.players[this.crowned].removeCrown();
+					}
 					this.crowned = i;
 				}
 			}
 		}
+
+		
+
 		if (this.crowned != -1) {
 			if (Math.abs(this.crown.x - this.players[this.crowned].player.x) < 30 && Math.abs(this.crown.y - this.players[this.crowned].player.y) < 30) {
+				this.players[this.crowned].addCrown();
 				this.crown.x = this.players[this.crowned].player.x;
 				this.crown.y = this.players[this.crowned].player.y;
 				//this.crown.rotation = this.players[this.crowned].player.rotation;
+				this.crown.visible = false;
 			} else {
 				this.game.physics.arcade.moveToObject(this.crown, this.players[this.crowned].player, 800);
+				this.crown.visible = true;
 			}
 		}
 

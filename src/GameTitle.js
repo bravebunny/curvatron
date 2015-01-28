@@ -1,8 +1,8 @@
 var gameTitle = function(game){
-	numberOfPlayers = 1;
+	numberOfPlayers = 0;
 	gameMode = 0;
 	gameModes = ["Nomral Mode", "coiso", "Outro coiso"];
-	maxPlayers = 8;
+	maxPlayers = 7;
 }
 
 gameTitle.prototype = {
@@ -29,7 +29,7 @@ gameTitle.prototype = {
     	///////////////////////////////////////Number of players////////////////////////////////////////////////////////
 		var playersAuxButton = this.game.add.sprite(this.game.world.centerX,480,"auxBar");
 		playersAuxButton.anchor.setTo(0.5,0.5);
-		textPlayers = this.game.add.text(this.game.world.centerX,480, numberOfPlayers + " players", {
+		textPlayers = this.game.add.text(this.game.world.centerX,480, (numberOfPlayers+1) + " players", {
 	        font: "40px Arial",
 	        fill: "#363636",
 	        align: "center"
@@ -66,23 +66,23 @@ gameTitle.prototype = {
 	},
 
 	DecNumberOfPlayers: function(){
-		if(numberOfPlayers==1){
+		if(numberOfPlayers==0){
 			numberOfPlayers=maxPlayers;
 		}
 		else{
 			numberOfPlayers--;
 		}
-		textPlayers.setText("" + numberOfPlayers + " players");
+		textPlayers.setText("" + (numberOfPlayers+1) + " players");
 	},
 
 	IncNumberOfPlayers: function(){
 		if(numberOfPlayers==maxPlayers){
-		    numberOfPlayers=1;
+		    numberOfPlayers=0;
 	    }
 	    else{
 			numberOfPlayers++;
 	    }
-	    textPlayers.setText("" + numberOfPlayers + " players");
+	    textPlayers.setText("" + (numberOfPlayers+1) + " players");
 	},
 
 	DecGameMode: function(){

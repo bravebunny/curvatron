@@ -11,7 +11,7 @@ var Player = function(id, x, y, key, game) {
 	this.dead = false;
 	this.groupTrail = null;
 	this.ready = true;
-	this.speed = 1;
+	this.speed = 0.5;
 	this.angularVelocity = 1;
 	this.growth = 1;
 };
@@ -92,6 +92,14 @@ Player.prototype = {
 		this.game.time.events.add(Phaser.Timer.SECOND * this.growth/this.speed, function(){this.killTrail = true;}, this);
 		this.size++;
 
+	},
+
+	addCrown: function() {
+		this.player.loadTexture('crown' + this.id)
+	},
+
+	removeCrown: function() {
+		this.player.loadTexture('player' + this.id)
 	},
 
 	render: function(){
