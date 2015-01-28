@@ -17,12 +17,6 @@ PowerUp.prototype = {
 		groupPowers.add(this.sprite);
 
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-	},
-
-	kill: function(player, power) {
-		sprite.kill();
-	},
-
-	render: function(){
+		this.sprite.body.setSize(16*this.game.world.scale.x, 16*this.game.world.scale.x, 0, 0);
 	}
 };

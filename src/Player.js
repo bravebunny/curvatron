@@ -51,6 +51,7 @@ Player.prototype = {
 			var trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
 			trailPiece.body.immovable = true;
 			trailPiece.anchor.setTo(.5,.5);
+			trailPiece.body.setSize(16*this.game.world.scale.x, 16*this.game.world.scale.x, 0, 0);
 		}
 		
 		//erase trail from behind
@@ -67,7 +68,6 @@ Player.prototype = {
 		}
 
 		if (!this.killTrail && (this.groupTrail.length >= (this.lastTrailLength + this.growth))) {
-			console.log(this.lastTrailLength)
 			this.killTrail = true;
 			this.lastTrailLength = this.groupTrail.length;
 		}
@@ -94,11 +94,10 @@ Player.prototype = {
 	},
 
 	kill: function(player, trail) {
-		if (trail == null || (trail.frameName != 'assets/trail' + this.id + '.png')) {
-			this.player.kill();
-			this.dead = true;
-		}
-		console.log("ouch")
+		this.player.kill();
+		this.dead = true;
+
+		console.log('Player ' + this.id + 'collided with ' + trail.frameName)
 	},
 
 	collect: function(player, power) {
