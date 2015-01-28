@@ -1,7 +1,7 @@
 var Player = function(id, x, y, key, game) {
 	this.game = game;
 	this.player = null;
-	this.size = 1;
+	this.score = 0;
 	this.direction = 1;
 	this.id = id;
 	this.x = x;
@@ -37,7 +37,6 @@ Player.prototype = {
 
 	update: function() {
 		this.frameCount = (this.frameCount + 1) % 1/(this.speed*this.game.world.scale.x);
-		console.log(1/(this.speed*this.game.world.scale.x));
 
 		this.game.physics.arcade.overlap(this.player, this.enemyTrails, this.kill, null, this);
 		this.game.physics.arcade.overlap(this.player, groupPowers, this.collect, null, this);
@@ -105,8 +104,15 @@ Player.prototype = {
 		power.kill();
 		this.killTrail = false;
 		this.growth = 30*power.scale.x;
-		console.log(this.growth);
-		this.size = this.size + power.scale.x;
+		this.score = this.score + power.scale.x;
+		console.log("palyer" + this.id + " is now " + this.score)
+
+		if (this.score > highScore) {
+			highScore = this.score;
+			crowned = this.id;
+			players[crowned].removeCrown();
+			console.log(crowned)
+		}
 
 	},
 
