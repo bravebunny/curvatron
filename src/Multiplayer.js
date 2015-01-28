@@ -1,6 +1,6 @@
 var multiplayer = function(game){
 	maxPlayers = 7;
-	numberOfPlayers = 0;
+	numberOfPlayers = 1;
 };
   
 multiplayer.prototype = {
@@ -62,7 +62,7 @@ multiplayer.prototype = {
 	},
 
 	DecNumberOfPlayers: function(){
-		if(numberOfPlayers==0){
+		if(numberOfPlayers==1){
 			numberOfPlayers=maxPlayers;
 		}
 		else{
@@ -73,7 +73,7 @@ multiplayer.prototype = {
 
 	IncNumberOfPlayers: function(){
 		if(numberOfPlayers==maxPlayers){
-		    numberOfPlayers=0;
+		    numberOfPlayers=1;
 	    }
 	    else{
 			numberOfPlayers++;
