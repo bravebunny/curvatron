@@ -80,15 +80,6 @@ gameMananger.prototype = {
 			}
 		}
 
-		//World scale
-		/*var maxX = 
-		var minX
-		var maxY
-		var minY;
-		for(var i=0; i <= this.numberOfPlayers; i++){
-			if (this.players[i].update();
-		}*/
-
 		//Controls
 		this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger",true,false,this.numberOfPlayers);}, this);
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function(){this.game.state.start("GameTitle");}, this);
@@ -96,7 +87,8 @@ gameMananger.prototype = {
 	},
 
 	createPower: function() {
-		var powerup = new PowerUp(this.game.rnd.integerInRange(10, 1356), this.game.rnd.integerInRange(10, 758), this.game);
+		var powerup = new PowerUp(this.game.rnd.integerInRange((-this.game.world.width/2)/this.game.world.scale.x, (this.game.world.width/2)/this.game.world.scale.x), 
+			this.game.rnd.integerInRange((-this.game.world.height/2)/this.game.world.scale.x, (this.game.world.height/2)/this.game.world.scale.x), this.game);
 		powerup.preload();
 		powerup.create();
 	},
