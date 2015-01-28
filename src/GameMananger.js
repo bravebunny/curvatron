@@ -8,7 +8,7 @@ gameMananger.prototype = {
 		this.keys = [Phaser.Keyboard.Q,Phaser.Keyboard.P,Phaser.Keyboard.Z,Phaser.Keyboard.M] 
 		this.numberOfPlayers = numberPlayers;
 
-		this.game.world.scale.set(0.5);
+		this.game.world.scale.set((-1/24)*numberPlayers+7/12);
 	},
 
 	create: function() {
