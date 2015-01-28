@@ -36,7 +36,8 @@ Player.prototype = {
 	},
 
 	update: function() {
-		this.frameCount = (this.frameCount + 1) % 1/this.speed;
+		this.frameCount = (this.frameCount + 1) % 1/(this.speed*this.game.world.scale.x);
+		console.log(1/(this.speed*this.game.world.scale.x));
 
 		this.game.physics.arcade.overlap(this.player, this.enemyTrails, this.kill, null, this);
 		this.game.physics.arcade.overlap(this.player, groupPowers, this.collect, null, this);
@@ -103,7 +104,9 @@ Player.prototype = {
 	collect: function(player, power) {
 		power.kill();
 		this.killTrail = false;
-		this.size++;
+		this.growth = 30*power.scale.x;
+		console.log(this.growth);
+		this.size = this.size + power.scale.x;
 
 	},
 
