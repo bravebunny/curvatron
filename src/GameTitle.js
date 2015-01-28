@@ -62,7 +62,7 @@ gameTitle.prototype = {
 	},
 
 	playTheGame: function(){
-		this.game.state.start("GameMananger",true,false,numberOfPlayers-1);
+		this.game.state.start("PreloadGame",true,false,numberOfPlayers);
 	},
 
 	DecNumberOfPlayers: function(){

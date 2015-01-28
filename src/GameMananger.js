@@ -9,14 +9,7 @@ gameMananger.prototype = {
 		this.numberOfPlayers = numberPlayers;
 	},
 
-	preload: function() {
-		this.game.load.image('power', 'assets/power.png');
-		this.game.load.image('crown', 'assets/crown.png');	
-
-		for(var i=1; i <= this.numberOfPlayers+1; i++){
-			this.game.load.image('player' + i, 'assets/player' + i +'.png');
-			this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
-		}
+	create: function() {
 
 		for(var i=0; i <= this.numberOfPlayers; i++){
 			this.players[i] = new Player(i+1, 
@@ -24,9 +17,7 @@ gameMananger.prototype = {
 			Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250 + 768/2, 
 			this.keys[i], this.game);
 		}
-	},
 
-	create: function() {
 		groupPowers = this.game.add.group();
 		groupTrails = [];
 
