@@ -11,7 +11,7 @@ var Player = function(id, x, y, key, game) {
 	this.dead = false;
 	this.groupTrail = null;
 	this.ready = true;
-	this.speed = 1.5;
+	this.speed = 1;
 	this.angularVelocity = 1;
 	this.growth = 1;
 };
