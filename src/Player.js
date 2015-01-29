@@ -18,6 +18,8 @@ var Player = function(id, x, y, key, game) {
 	this.lastTrailLength = 0;
 	this.enemyTrails = [];
 	this.keyText = null;
+	this.circle = null;
+	this.trailPiece = null;
 	this.border = [-((this.game.world.width/2)/this.game.world.scale.x),
 			(this.game.world.width/2)/this.game.world.scale.x,
 			-((this.game.world.height/2)/this.game.world.scale.y),
@@ -38,6 +40,9 @@ Player.prototype = {
     //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
     this.lastTrailLength = this.growth;
 
+    //debug circle
+
+
 	},
 
 	update: function() {
@@ -54,11 +59,14 @@ Player.prototype = {
 	  	this.keyText.anchor.setTo(0.5,0.5);
 		}
 
-
-
 		this.frameCount = (this.frameCount + 1) % 1/(this.speed*this.game.world.scale.x);
 
-		this.game.physics.arcade.overlap(this.player, this.enemyTrails, this.kill, null, this);
+		if (numberPlayers > 0) {
+			this.game.physics.arcade.overlap(this.player, this.enemyTrails, this.kill, null, this);
+		} else {
+			this.game.physics.arcade.collide(this.player, this.groupTrail, this.kill, null, this);
+		}
+
 		this.game.physics.arcade.overlap(this.player, groupPowers, this.collect, null, this);
 		
 		//Snake movement
@@ -68,10 +76,9 @@ Player.prototype = {
 
 		//Create trail
 		if (this.ready && this.frameCount == 0) {
-			var trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
-			trailPiece.body.immovable = true;
-			trailPiece.anchor.setTo(.5,.5);
-			trailPiece.body.setSize(16*this.game.world.scale.x, 16*this.game.world.scale.x, 0, 0);
+			this.trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
+			this.trailPiece.body.immovable = true;
+			this.trailPiece.anchor.setTo(.5,.5);
 		}
 		
 		//erase trail from behind
@@ -82,8 +89,9 @@ Player.prototype = {
 			var obj = this.groupTrail.getAt(this.groupTrail.length - 1);
 			if (obj != -1)
 	    	{
-		        obj.kill();
-		        obj.parent.removeChild(obj);
+	    		obj.body.destroy();
+	        obj.kill();
+	        obj.parent.removeChild(obj);
 	    	}
 		}
 
@@ -99,17 +107,34 @@ Player.prototype = {
 			var obj = this.groupTrail.getFirstAlive();
 		    if (obj)
 		    {
-		        obj.kill();
-		        obj.parent.removeChild(obj);
+	    		obj.body.destroy();
+	        obj.kill();
+	        obj.parent.removeChild(obj);
 		    }
 		}
 
-		if(((this.player.x-16)<=this.border[0]) || ((this.player.x+16)>=this.border[1])){
-			this.kill();
+		//Screen border collisions
+		if (numberPlayers > 0) {
+			if(((this.player.x-16)<=this.border[0]) || ((this.player.x+16)>=this.border[1])){
+				this.kill();
+			}
+			if(((this.player.y-16)<=this.border[2]) || ((this.player.y+16)>=this.border[3])){
+				this.kill();
+			}
+		} else {
+			if((this.player.x+8)<=this.border[0]) {
+				this.player.x = this.border[1];
+			} else if ((this.player.x-8)>=this.border[1]) {
+				this.player.x = this.border[0];
+			}
+
+			if((this.player.y+8)<=this.border[2]) {
+				this.player.y = this.border[3];
+			} else if ((this.player.y-8)>=this.border[3]) {
+				this.player.y = this.border[2];
+			}
 		}
-		if(((this.player.y-16)<=this.border[2]) || ((this.player.y+16)>=this.border[3])){
-			this.kill();
-		}
+
 
 		this.game.input.onDown.add(this.keyPressed, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
@@ -119,7 +144,6 @@ Player.prototype = {
 	keyPressed: function() {
 		this.direction *= -1;
 		if (this.keyText.alpha == 1) {
-			console.log(this.keyText.alpha);
 			this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 		}
 	},
@@ -127,8 +151,15 @@ Player.prototype = {
 	kill: function(player, trail) {
 		this.player.kill();
 		this.dead = true;
+		if (trail) {
+			this.circle = new Phaser.Circle(trail.x, trail.y, 16);
+			console.log('Player ' + this.id + 'collided with ' + trail.frameName);
+			console.log(trail);
+			//this.game.paused = true;
 
-		//console.log('Player ' + this.id + 'collided with ' + trail.frameName)
+		} else {
+			console.log('Player ' + this.id + 'collided with a wall');
+		}
 
 		var newMax = -1;
 		for (var i = 0; i < players.length; i++) {
@@ -146,7 +177,7 @@ Player.prototype = {
 		this.score = this.score + power.scale.x;
 		console.log("palyer" + this.id + " is now " + this.score)
 
-		if (this.score > highScore) {
+		if (this.score > highScore && numberPlayers != 0) {
 			highScore = this.score;
 			crowned = this.id;
 			players[crowned].removeCrown();
@@ -164,6 +195,8 @@ Player.prototype = {
 	},
 
 	render: function(){
+		this.game.debug.geom(this.circle,'#cfffff');
 		//this.game.debug.body(this.player);
+
 	}
 };

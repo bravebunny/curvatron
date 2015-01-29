@@ -13,15 +13,19 @@ PowerUp.prototype = {
 	},
 
 	create: function() {
-		var randNum = this.game.rnd.integerInRange(0, 100);
-		if (randNum < 60) {
-			this.size = 1;
-		} else if (randNum < 80) {
-			this.size = 2;
-		} else if (randNum < 95) {
-			this.size = 3;
+		if (numberPlayers > 0) {
+			var randNum = this.game.rnd.integerInRange(0, 100);
+			if (randNum < 60) {
+				this.size = 1;
+			} else if (randNum < 80) {
+				this.size = 2;
+			} else if (randNum < 95) {
+				this.size = 3;
+			} else {
+				this.size = 4;
+			}
 		} else {
-			this.size = 4;
+			this.size = 1;
 		}
 		this.sprite = this.game.add.sprite(this.x, this.y, 'power');
 		this.sprite.anchor.setTo(.5,.5);
