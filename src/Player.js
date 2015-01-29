@@ -167,6 +167,9 @@ Player.prototype = {
 					crowned = i;
 				}
 			}
+			if (players[crowned].dead) {
+				crowned = -1;
+			}
 		}
 	},
 
