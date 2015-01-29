@@ -105,30 +105,35 @@ gameMananger.prototype = {
 				players[i].kill();
 			}
 		highScore = this.game.add.sprite(w2, h2, 'play');
-        highScore.anchor.setTo(0.5, 0.5);
-        highScore.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+    highScore.anchor.setTo(0.5, 0.5);
+    highScore.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-        score = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
-        score.anchor.setTo(0.5, 0.5);
-        score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+    score = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
+    score.anchor.setTo(0.5, 0.5);
+    score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-        backButton = this.game.add.button(w2, h2+128/this.game.world.scale.x,"play",function(){this.game.state.start("GameTitle");},this);
+    backButton = this.game.add.button(w2, h2+128/this.game.world.scale.x,"play",function(){this.game.state.start("GameTitle");},this);
+    backButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
 		backButton.anchor.setTo(0.5,0.5);
 		text = this.game.add.text(w2, h2+128/this.game.world.scale.x, "Main Menu", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
     	});
-    	text.anchor.setTo(0.5,0.5);
-
-    	restartButton = this.game.add.button(w2, h2+192/this.game.world.scale.x,"play",function(){this.game.state.restart(true,false,numberPlayers);},this);
+  	text.anchor.setTo(0.5,0.5);
+		text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		
+  	restartButton = this.game.add.button(w2, h2+192/this.game.world.scale.x,"play",function(){this.game.state.restart(true,false,numberPlayers);},this);
+		restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		restartButton.anchor.setTo(0.5,0.5);
 		text = this.game.add.text(w2, h2+192/this.game.world.scale.x, "Restart", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
     	});
-    	text.anchor.setTo(0.5,0.5);
+  	text.anchor.setTo(0.5,0.5);
+  	text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 	},
 
 	pauseGame:function(){
