@@ -14,7 +14,7 @@ gameMananger.prototype = {
 		}
 		w2 = (this.game.world.width/2)/this.game.world.scale.x;
 		h2 = (this.game.world.height/2)/this.game.world.scale.x;
-
+		gameOver = false;
 	},
 
 	create: function() {
@@ -94,6 +94,10 @@ gameMananger.prototype = {
 			this.endGame();
 		}
 
+		else if(players[0].dead){
+			this.endGame();
+		}
+
 	},
 
 	createPower: function() {
@@ -111,15 +115,15 @@ gameMananger.prototype = {
 				players[i].kill();
 			}
 		highScore = this.game.add.sprite(w2, h2, 'play');
-    highScore.anchor.setTo(0.5, 0.5);
-    highScore.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	    highScore.anchor.setTo(0.5, 0.5);
+	    highScore.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-    score = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
-    score.anchor.setTo(0.5, 0.5);
-    score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	    score = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
+	    score.anchor.setTo(0.5, 0.5);
+	    score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-    backButton = this.game.add.button(w2, h2+128/this.game.world.scale.x,"play",function(){this.game.state.start("GameTitle");},this);
-    backButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	    backButton = this.game.add.button(w2, h2+128/this.game.world.scale.x,"play",function(){this.game.state.start("GameTitle");},this);
+	    backButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
 		backButton.anchor.setTo(0.5,0.5);
 		text = this.game.add.text(w2, h2+128/this.game.world.scale.x, "Main Menu", {
@@ -127,10 +131,10 @@ gameMananger.prototype = {
 	        fill: "#ff0044",
 	        align: "center"
     	});
-  	text.anchor.setTo(0.5,0.5);
-		text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	  	text.anchor.setTo(0.5,0.5);
+			text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-  	restartButton = this.game.add.button(w2, h2+192/this.game.world.scale.x,"play",function(){this.game.state.restart(true,false,numberPlayers);},this);
+	  	restartButton = this.game.add.button(w2, h2+192/this.game.world.scale.x,"play",function(){this.game.state.restart(true,false,numberPlayers);},this);
 		restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		restartButton.anchor.setTo(0.5,0.5);
 		text = this.game.add.text(w2, h2+192/this.game.world.scale.x, "Restart", {
@@ -138,36 +142,37 @@ gameMananger.prototype = {
 	        fill: "#ff0044",
 	        align: "center"
     	});
-  	text.anchor.setTo(0.5,0.5);
-  	text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	  	text.anchor.setTo(0.5,0.5);
+	  	text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	  	gameOver = true;
 	},
 
 	pauseGame:function(){
 		// Create a label to use as a button
 	    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function () {
-	    	if(!this.game.paused){
-		        // When the paus button is pressed, we pause the game
-		        this.game.paused = true;
+    	if(!this.game.paused){
+	        // When the paus button is pressed, we pause the game
+	        this.game.paused = true;
 
-		        // Then add the menu
-		        menu = this.game.add.sprite(w2, h2, 'play');
-		        menu.anchor.setTo(0.5, 0.5);
-		        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	        // Then add the menu
+	        menu = this.game.add.sprite(w2, h2, 'play');
+	        menu.anchor.setTo(0.5, 0.5);
+	        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-		        restart = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
-		        restart.anchor.setTo(0.5, 0.5);
-		        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	        restart = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
+	        restart.anchor.setTo(0.5, 0.5);
+	        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-		        back = this.game.add.sprite(w2, h2+128/this.game.world.scale.x, 'auxBar');
-		        back.anchor.setTo(0.5, 0.5);
-		        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-		    }
-		    else{
+	        back = this.game.add.sprite(w2, h2+128/this.game.world.scale.x, 'auxBar');
+	        back.anchor.setTo(0.5, 0.5);
+	        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	    }
+	    else{
           menu.destroy();
           restart.destroy();
           back.destroy();
           this.game.paused = false;
-		    }
+		}
 
 	    }, this);
 
@@ -191,17 +196,14 @@ gameMananger.prototype = {
 	                // Unpause the game
 	                this.game.paused = false;
 	            }
-
 	            if((event.x > x1) && (event.x < x2) && (event.y > (y1+64)) && (event.y < (y2+64) )){
 	             	this.game.paused = false;
 	            	this.game.state.restart();
 	            }
-
 	            if((event.x > x1) && (event.x < x2) && (event.y > (y1+128)) && (event.y < (y2+128) )){
 	             	this.game.paused = false;
 	            	this.game.state.start("GameTitle");
 	            }
-
 	        }
 	    };
 	},
