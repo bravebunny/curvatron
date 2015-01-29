@@ -1,10 +1,8 @@
 var gameMananger = function(game) {}
 
 gameMananger.prototype = {
-	init: function(numberPlayers){
+	init: function(){
 		this.crown = null;
-		this.numberOfPlayers = numberPlayers;
-
 		this.game.world.scale.set((-1/24)*numberPlayers+7/12);
 		highScore = 0;
 		crowned = -1;
@@ -12,11 +10,12 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
+
 		//Choose snake locations
-		for(var i=0; i <= this.numberOfPlayers; i++){
+		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
-			Math.round(Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500/this.game.world.scale.x), 
-			Math.round(Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250/this.game.world.scale.y), 
+			Math.round(Math.cos((2*Math.PI/(numberPlayers+1))*i)*500/this.game.world.scale.x), 
+			Math.round(Math.sin((2*Math.PI/(numberPlayers+1))*i)*250/this.game.world.scale.y), 
 			keys[i], this.game);
 		}
 
@@ -26,12 +25,12 @@ gameMananger.prototype = {
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.game.physics.arcade.gravity.y = 0;
 
-		for(var i=0; i <= this.numberOfPlayers; i++){
+		for(var i=0; i <= numberPlayers; i++){
 			players[i].create();
-			players[i].player.rotation = ((2*Math.PI/(this.numberOfPlayers+1))*i);
+			players[i].player.rotation = ((2*Math.PI/(numberPlayers+1))*i);
 		}
 
-		for(var i=0; i <= this.numberOfPlayers; i++){
+		for(var i=0; i <= numberPlayers; i++){
 			for (var j = 0; j < groupTrails.length; j++) {
 				if (groupTrails[j] != players[i].groupTrail) {
 					players[i].enemyTrails.push(groupTrails[j]);
@@ -43,7 +42,8 @@ gameMananger.prototype = {
 		this.crown.anchor.setTo(0.5,0.8);
 		this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
 
-		this.game.time.events.loop(Phaser.Timer.SECOND * 1, this.createPower, this);
+		//Generate powers
+		this.game.time.events.loop(Phaser.Timer.SECOND * 8, this.createPower, this);
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
 			// Create a label to use as a button
@@ -100,7 +100,7 @@ gameMananger.prototype = {
 	update: function() {
 
 		//Update players
-		for(var i=0; i <= this.numberOfPlayers; i++){
+		for(var i=0; i <= numberPlayers; i++){
 			players[i].update();
 		}
 
@@ -119,7 +119,7 @@ gameMananger.prototype = {
 		}
 
 		//Controls
-		this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger",true,false,this.numberOfPlayers);}, this);
+		//this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger",true,false,numberPlayers);}, this);
 
 	},
 

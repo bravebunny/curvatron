@@ -10,6 +10,7 @@ var gameTitle = function(game){
     Phaser.Keyboard.B,
     Phaser.Keyboard.P,
     Phaser.Keyboard.M,]
+   numberPlayers = 0;
 
 }
 
@@ -58,7 +59,8 @@ gameTitle.prototype = {
 	},
 
 	playTheGame: function(){
-		this.game.state.start("PreloadGame",true,false,0);
+		numberPlayers = 0;
+		this.game.state.start("PreloadGame",true,false);
 	},
 
 	multiplayer: function(){

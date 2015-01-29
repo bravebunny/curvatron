@@ -1,15 +1,17 @@
 var multiplayer = function(game){
-
-	numberOfPlayers = 1;
 };
   
 multiplayer.prototype = {
   	create: function(){
 
+  	if (numberPlayers == 0) {
+  		numberPlayers = 1;
+  	}
+
     	//Number of players
 		var playersAuxButton = this.game.add.sprite(0,0,"auxBar");
 		playersAuxButton.anchor.setTo(0.5,0.5);
-		textPlayers = this.game.add.text(0,0, (numberOfPlayers+1) + " players", {
+		textPlayers = this.game.add.text(0,0, (numberPlayers+1) + " players", {
 	        font: "40px Arial",
 	        fill: "#363636",
 	        align: "center"
@@ -48,7 +50,7 @@ multiplayer.prototype = {
 	},
 
 	playTheGame: function(){
-		this.game.state.start("PreloadGame",true,false,numberOfPlayers);
+		this.game.state.start("PreloadGame",true,false,numberPlayers);
 	},
 
 	back:function(){
@@ -56,22 +58,22 @@ multiplayer.prototype = {
 	},
 
 	DecNumberOfPlayers: function(){
-		if(numberOfPlayers==1){
-			numberOfPlayers=maxPlayers;
+		if(numberPlayers==1){
+			numberPlayers=maxPlayers;
 		}
 		else{
-			numberOfPlayers--;
+			numberPlayers--;
 		}
-		textPlayers.setText("" + (numberOfPlayers+1) + " players");
+		textPlayers.setText("" + (numberPlayers+1) + " players");
 	},
 
 	IncNumberOfPlayers: function(){
-		if(numberOfPlayers==maxPlayers){
-		    numberOfPlayers=1;
+		if(numberPlayers==maxPlayers){
+		    numberPlayers=1;
 	    }
 	    else{
-			numberOfPlayers++;
+			numberPlayers++;
 	    }
-	    textPlayers.setText("" + (numberOfPlayers+1) + " players");
+	    textPlayers.setText("" + (numberPlayers+1) + " players");
 	},
 }
