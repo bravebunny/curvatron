@@ -10,6 +10,8 @@ gameMananger.prototype = {
 		this.timeBar = null;
 		this.gameTime = 10; //sec 
 		this.initialTime = 0;
+		w2 = (this.game.world.width/2)/this.game.world.scale.x;
+		h2 = (this.game.world.height/2)/this.game.world.scale.x;
 	},
 
 	create: function() {
@@ -17,8 +19,8 @@ gameMananger.prototype = {
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
-			Math.round(Math.cos((2*Math.PI/(numberPlayers+1))*i)*500/this.game.world.scale.x), 
-			Math.round(Math.sin((2*Math.PI/(numberPlayers+1))*i)*250/this.game.world.scale.y), 
+			Math.round(Math.cos((2*Math.PI/(numberPlayers+1))*i)*500/this.game.world.scale.x)+w2, 
+			Math.round(Math.sin((2*Math.PI/(numberPlayers+1))*i)*250/this.game.world.scale.y)+h2, 
 			keys[i], this.game);
 		}
 
@@ -41,7 +43,7 @@ gameMananger.prototype = {
 			}
 		}
 
-		this.crown = this.game.add.sprite(0, -(this.game.world.height/2+32)/this.game.world.scale.y, 'crown');
+		this.crown = this.game.add.sprite(0, -(h2+32)/this.game.world.scale.y, 'crown');
 		this.crown.anchor.setTo(0.5,0.8);
 		this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
 
@@ -88,8 +90,8 @@ gameMananger.prototype = {
 	},
 
 	createPower: function() {
-		var powerup = new PowerUp(this.game.rnd.integerInRange(((-this.game.world.width/2)+32)/this.game.world.scale.x, ((this.game.world.width/2)-32)/this.game.world.scale.x), 
-			this.game.rnd.integerInRange(((-this.game.world.height/2)+32)/this.game.world.scale.x, ((this.game.world.height/2)-32)/this.game.world.scale.x), this.game);
+		var powerup = new PowerUp(this.game.rnd.integerInRange((-w2+32)/this.game.world.scale.x, (w2-32)/this.game.world.scale.x), 
+			this.game.rnd.integerInRange((-h2+32)/this.game.world.scale.x, (h2-32)/this.game.world.scale.x), this.game);
 		powerup.preload();
 		powerup.create();
 	},
@@ -102,26 +104,26 @@ gameMananger.prototype = {
 		for(var i = 0; i<players.length; i++){
 				players[i].kill();
 			}
-		highScore = this.game.add.sprite(0, 0, 'play');
+		highScore = this.game.add.sprite(w2, h2, 'play');
         highScore.anchor.setTo(0.5, 0.5);
         highScore.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-        score = this.game.add.sprite(0, 64/this.game.world.scale.x, 'auxBar');
+        score = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
         score.anchor.setTo(0.5, 0.5);
         score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-        backButton = this.game.add.button(0, 128/this.game.world.scale.x,"play",function(){this.game.state.start("GameTitle");},this);
+        backButton = this.game.add.button(w2, h2+128/this.game.world.scale.x,"play",function(){this.game.state.start("GameTitle");},this);
 		backButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(0, 128/this.game.world.scale.x, "Main Menu", {
+		text = this.game.add.text(w2, h2+128/this.game.world.scale.x, "Main Menu", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
     	});
     	text.anchor.setTo(0.5,0.5);
 
-    	restartButton = this.game.add.button(0, 192/this.game.world.scale.x,"play",function(){this.game.state.restart(true,false,numberPlayers);},this);
+    	restartButton = this.game.add.button(w2, h2+192/this.game.world.scale.x,"play",function(){this.game.state.restart(true,false,numberPlayers);},this);
 		restartButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(0, 192/this.game.world.scale.x, "Restart", {
+		text = this.game.add.text(w2, h2+192/this.game.world.scale.x, "Restart", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
@@ -137,15 +139,15 @@ gameMananger.prototype = {
 		        this.game.paused = true;
 
 		        // Then add the menu
-		        menu = this.game.add.sprite(0, 0, 'play');
+		        menu = this.game.add.sprite(w2, h2, 'play');
 		        menu.anchor.setTo(0.5, 0.5);
 		        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-		        restart = this.game.add.sprite(0, 64/this.game.world.scale.x, 'auxBar');
+		        restart = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
 		        restart.anchor.setTo(0.5, 0.5);
 		        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-		        back = this.game.add.sprite(0, 128/this.game.world.scale.x, 'auxBar');
+		        back = this.game.add.sprite(w2, h2+128/this.game.world.scale.x, 'auxBar');
 		        back.anchor.setTo(0.5, 0.5);
 		        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		    }
@@ -166,8 +168,8 @@ gameMananger.prototype = {
 	        // Only act if paused
 	        if(this.game.paused){
 	            // Calculate the corners of the menu
-	            var x1 = this.game.width/2 - 128, x2 = this.game.width/2 + 128, //128+128 é o tamanho da imagem
-	                y1 = this.game.height/2 - 16, y2 = this.game.height/2 + 16;
+	            var x1 = this.game.world.width/2 - 128, x2 = this.game.world.width/2 + 128, //128+128 é o tamanho da imagem
+	                y1 = this.game.world.height/2 - 16, y2 = this.game.world.height/2 + 16;
      
 	            // Check if the click was inside the menu*/
 	           if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){

@@ -9,25 +9,25 @@ multiplayer.prototype = {
   	}
 
     	//Number of players
-		var playersAuxButton = this.game.add.sprite(this.game.world.width,this.game.world.height,"auxBar");
+		var playersAuxButton = this.game.add.sprite(w2,h2,"auxBar");
 		playersAuxButton.anchor.setTo(0.5,0.5);
-		textPlayers = this.game.add.text(this.game.world.width,this.game.world.height, (numberPlayers+1) + " players", {
+		textPlayers = this.game.add.text(w2,h2, (numberPlayers+1) + " players", {
 	        font: "40px Arial",
 	        fill: "#363636",
 	        align: "center"
     	});
     	textPlayers.anchor.setTo(0.5,0.5);
 
-    	var leftArrow = this.game.add.button(this.game.world.width-112,this.game.world.height,"arrow",this.DecNumberOfPlayers,this);
+    	var leftArrow = this.game.add.button(w2-112,h2,"arrow",this.DecNumberOfPlayers,this);
 		leftArrow.anchor.setTo(0.5,0.5);
 
-		var rightArrow = this.game.add.button(this.game.world.width+112,this.game.world.height,"arrow",this.IncNumberOfPlayers,this);
+		var rightArrow = this.game.add.button(w2+112,h2,"arrow",this.IncNumberOfPlayers,this);
 		rightArrow.anchor.setTo(0.5,0.5);
 
 		//Play Button
-		var playButton = this.game.add.button(this.game.world.width,160+this.game.world.height,"play",this.playTheGame,this);
+		var playButton = this.game.add.button(w2,160+h2,"play",this.playTheGame,this);
 		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(this.game.world.width,160+this.game.world.height, "PLAY", {
+		text = this.game.add.text(w2,160+h2, "PLAY", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
@@ -35,9 +35,9 @@ multiplayer.prototype = {
     	text.anchor.setTo(0.5,0.5);
 
     	//Go back Button
-		var backButton = this.game.add.button(this.game.world.width-480,320+this.game.world.height,"play",this.back,this);
+		var backButton = this.game.add.button(w2-480,320+h2,"play",this.back,this);
 		backButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(this.game.world.width-480,320+this.game.world.height, "Back", {
+		text = this.game.add.text(w2-480,320+h2, "Back", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"

@@ -20,10 +20,8 @@ var Player = function(id, x, y, key, game) {
 	this.keyText = null;
 	this.circle = null;
 	this.trailPiece = null;
-	this.border = [-((this.game.world.width/2)/this.game.world.scale.x),
-			(this.game.world.width/2)/this.game.world.scale.x,
-			-((this.game.world.height/2)/this.game.world.scale.y),
-			(this.game.world.height/2)/this.game.world.scale.y]
+	this.border = [0, this.game.world.width/this.game.world.scale.x,
+					0,this.game.world.height/this.game.world.scale.y]
 };
 
 Player.prototype = {

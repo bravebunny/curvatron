@@ -17,20 +17,23 @@ var gameTitle = function(game){
 gameTitle.prototype = {
 
   create: function(){
+  	w2 = this.game.world.width/2;
+	h2 = this.game.world.height/2;
+
   	this.game.world.scale.set(1);
 
-		var gameTitle = this.game.add.sprite(this.game.world.width,-160+this.game.world.height,"gametitle");
+		var gameTitle = this.game.add.sprite(w2,-160+h2,"gametitle");
 		gameTitle.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(this.game.world.width,-160+this.game.world.height, "CurvaTorn", {
+		text = this.game.add.text(w2,-160+h2, "CurvaTorn", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
     	});
     	text.anchor.setTo(0.5,0.5);
 
-		var playButton = this.game.add.button(this.game.world.width,this.game.world.height,"play",this.playTheGame,this);
+		var playButton = this.game.add.button(w2,h2,"play",this.playTheGame,this);
 		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(this.game.world.width,this.game.world.height, "Single Player", {
+		text = this.game.add.text(w2,h2, "Single Player", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
@@ -38,9 +41,9 @@ gameTitle.prototype = {
     	text.anchor.setTo(0.5,0.5);
 
     //Multiplayer
-		var playButton = this.game.add.button(this.game.world.width,160+this.game.world.height,"play",this.multiplayer,this);
+		var playButton = this.game.add.button(w2,160+h2,"play",this.multiplayer,this);
 		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(this.game.world.width,160+this.game.world.height, "Multiplayer", {
+		text = this.game.add.text(w2,160+h2, "Multiplayer", {
       font: "40px Arial",
       fill: "#ff0044",
       align: "center"
@@ -48,9 +51,9 @@ gameTitle.prototype = {
   	text.anchor.setTo(0.5,0.5);
 
   	//SetKeys
-  	var playButton = this.game.add.button(this.game.world.width,320+this.game.world.height,"play",this.setKeys,this);
+  	var playButton = this.game.add.button(w2,320+h2,"play",this.setKeys,this);
 		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(this.game.world.width,320+this.game.world.height, "Set Keys", {
+		text = this.game.add.text(w2,320+h2, "Set Keys", {
       font: "40px Arial",
       fill: "#ff0044",
       align: "center"

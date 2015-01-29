@@ -6,25 +6,25 @@ var setKeys = function(game){
 setKeys.prototype = {
   create: function(){
   	//select player
-		var playersAuxButton = this.game.add.sprite(0,0,"auxBar");
+		var playersAuxButton = this.game.add.sprite(w2,h2,"auxBar");
 		playersAuxButton.anchor.setTo(0.5,0.5);
-		textPlayers = this.game.add.text(0,0, "Player " + (this.selectedPlayer+1), {
+		textPlayers = this.game.add.text(w2,h2, "Player " + (this.selectedPlayer+1), {
 	        font: "40px Arial",
 	        fill: "#363636",
 	        align: "center"
   	});
   	textPlayers.anchor.setTo(0.5,0.5);
 
-    var leftArrow = this.game.add.button(-112,0,"arrow",this.DecSelected,this);
+    var leftArrow = this.game.add.button(w2-112,h2,"arrow",this.DecSelected,this);
 		leftArrow.anchor.setTo(0.5,0.5);
 
-		var rightArrow = this.game.add.button(+112,0,"arrow",this.IncSelected,this);
+		var rightArrow = this.game.add.button(w2+112,h2,"arrow",this.IncSelected,this);
 		rightArrow.anchor.setTo(0.5,0.5);
 
   	//key select button
-		var keyButton = this.game.add.button(0,160,"key",this.selectKey,this);
+		var keyButton = this.game.add.button(w2,160+h2,"key",this.selectKey,this);
 		keyButton.anchor.setTo(0.5,0.5);
-		this.keyText = this.game.add.text(0,160, String.fromCharCode(keys[this.selectedPlayer]), {
+		this.keyText = this.game.add.text(w2,160+h2, String.fromCharCode(keys[this.selectedPlayer]), {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
@@ -32,9 +32,9 @@ setKeys.prototype = {
   	this.keyText.anchor.setTo(0.5,0.5);
 
   	//back button
-		var backButton = this.game.add.button(-480,320,"play",this.back,this);
+		var backButton = this.game.add.button(w2-480,320+h2,"play",this.back,this);
 		backButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(-480,320, "Back", {
+		text = this.game.add.text(w2-480,320+h2, "Back", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"

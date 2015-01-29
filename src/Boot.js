@@ -13,7 +13,9 @@ boot.prototype = {
 	    this.game.scale.refresh();
 
 	    this.game.physics.startSystem(Phaser.Physics.ARCADE);
-	    this.game.world.setBounds(-1366/2, -768/2, 1366, 768);
+
+	    w2 = this.game.world.width/2;
+		h2 = this.game.world.height/2;
 
 		this.game.state.start("PreloadMenu");
 	}
