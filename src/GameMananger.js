@@ -124,8 +124,8 @@ gameMananger.prototype = {
 	},
 
 	createPower: function() {
-		var powerup = new PowerUp(this.game.rnd.integerInRange((-this.game.world.width/2)/this.game.world.scale.x, (this.game.world.width/2)/this.game.world.scale.x), 
-			this.game.rnd.integerInRange((-this.game.world.height/2)/this.game.world.scale.x, (this.game.world.height/2)/this.game.world.scale.x), this.game);
+		var powerup = new PowerUp(this.game.rnd.integerInRange(((-this.game.world.width/2)+32)/this.game.world.scale.x, ((this.game.world.width/2)-32)/this.game.world.scale.x), 
+			this.game.rnd.integerInRange(((-this.game.world.height/2)+32)/this.game.world.scale.x, ((this.game.world.height/2)-32)/this.game.world.scale.x), this.game);
 		powerup.preload();
 		powerup.create();
 	},
