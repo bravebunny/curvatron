@@ -4,7 +4,16 @@ gameMananger.prototype = {
 	init: function(numberPlayers){
 		this.crown = null;
 		
-		this.keys = [Phaser.Keyboard.Q,Phaser.Keyboard.P,Phaser.Keyboard.Z,Phaser.Keyboard.M] 
+		this.keys = [
+			Phaser.Keyboard.Q,
+			Phaser.Keyboard.Z,
+			Phaser.Keyboard.R,
+			Phaser.Keyboard.C,
+			Phaser.Keyboard.U,
+			Phaser.Keyboard.B,
+			Phaser.Keyboard.P,
+			Phaser.Keyboard.M,
+			] 
 		this.numberOfPlayers = numberPlayers;
 
 		this.game.world.scale.set((-1/24)*numberPlayers+7/12);
@@ -59,7 +68,7 @@ gameMananger.prototype = {
 		        menu.anchor.setTo(0.5, 0.5);
 		        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-		        back = this.game.add.sprite(0, 128, 'auxBar');
+		        back = this.game.add.sprite(0, 64/this.game.world.scale.x, 'auxBar');
 		        back.anchor.setTo(0.5, 0.5);
 		        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		    }
