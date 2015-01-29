@@ -19,18 +19,18 @@ gameTitle.prototype = {
   create: function(){
   	this.game.world.scale.set(1);
 
-		var gameTitle = this.game.add.sprite(0,-160,"gametitle");
+		var gameTitle = this.game.add.sprite(this.game.world.width,-160+this.game.world.height,"gametitle");
 		gameTitle.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(0,-160, "CurvaTorn", {
+		text = this.game.add.text(this.game.world.width,-160+this.game.world.height, "CurvaTorn", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
     	});
     	text.anchor.setTo(0.5,0.5);
 
-		var playButton = this.game.add.button(0,0,"play",this.playTheGame,this);
+		var playButton = this.game.add.button(this.game.world.width,this.game.world.height,"play",this.playTheGame,this);
 		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(0,0, "Single Player", {
+		text = this.game.add.text(this.game.world.width,this.game.world.height, "Single Player", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
@@ -38,9 +38,9 @@ gameTitle.prototype = {
     	text.anchor.setTo(0.5,0.5);
 
     //Multiplayer
-		var playButton = this.game.add.button(0,160,"play",this.multiplayer,this);
+		var playButton = this.game.add.button(this.game.world.width,160+this.game.world.height,"play",this.multiplayer,this);
 		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(0,160, "Multiplayer", {
+		text = this.game.add.text(this.game.world.width,160+this.game.world.height, "Multiplayer", {
       font: "40px Arial",
       fill: "#ff0044",
       align: "center"
@@ -48,9 +48,9 @@ gameTitle.prototype = {
   	text.anchor.setTo(0.5,0.5);
 
   	//SetKeys
-  	var playButton = this.game.add.button(0,320,"play",this.setKeys,this);
+  	var playButton = this.game.add.button(this.game.world.width,320+this.game.world.height,"play",this.setKeys,this);
 		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(0,320, "Set Keys", {
+		text = this.game.add.text(this.game.world.width,320+this.game.world.height, "Set Keys", {
       font: "40px Arial",
       fill: "#ff0044",
       align: "center"
