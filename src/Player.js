@@ -18,6 +18,10 @@ var Player = function(id, x, y, key, game) {
 	this.lastTrailLength = 0;
 	this.enemyTrails = [];
 	this.keyText = null;
+	this.border = [-((this.game.world.width/2)/this.game.world.scale.x),
+			(this.game.world.width/2)/this.game.world.scale.x,
+			-((this.game.world.height/2)/this.game.world.scale.y),
+			(this.game.world.height/2)/this.game.world.scale.y]
 };
 
 Player.prototype = {
@@ -100,6 +104,13 @@ Player.prototype = {
 		    }
 		}
 
+		if(((this.player.x-16)<=this.border[0]) || ((this.player.x+16)>=this.border[1])){
+			this.kill();
+		}
+		if(((this.player.y-16)<=this.border[2]) || ((this.player.y+16)>=this.border[3])){
+			this.kill();
+		}
+
 		this.game.input.onDown.add(this.keyPressed, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 	},
@@ -117,7 +128,7 @@ Player.prototype = {
 		this.player.kill();
 		this.dead = true;
 
-		console.log('Player ' + this.id + 'collided with ' + trail.frameName)
+		//console.log('Player ' + this.id + 'collided with ' + trail.frameName)
 
 		var newMax = -1;
 		for (var i = 0; i < players.length; i++) {
