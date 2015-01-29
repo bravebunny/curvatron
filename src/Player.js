@@ -17,6 +17,7 @@ var Player = function(id, x, y, key, game) {
 	this.frameCount = 0;
 	this.lastTrailLength = 0;
 	this.enemyTrails = [];
+	this.keyText = null;
 };
 
 Player.prototype = {
@@ -36,6 +37,21 @@ Player.prototype = {
 	},
 
 	update: function() {
+		//Show player's key
+		if (!this.keyText) {
+			this.keyText = this.game.add.text(
+				Math.round(Math.cos(this.player.rotation + Math.PI/2)*80) + this.x,
+				Math.round(Math.sin(this.player.rotation + Math.PI/2)*80) + this.y,
+				String.fromCharCode(this.key), {
+		      font: "80px Arial",
+		      fill: "#ffffff",
+		      align: "center"
+		  	});
+	  	this.keyText.anchor.setTo(0.5,0.5);
+		}
+
+
+
 		this.frameCount = (this.frameCount + 1) % 1/(this.speed*this.game.world.scale.x);
 
 		this.game.physics.arcade.overlap(this.player, this.enemyTrails, this.kill, null, this);
@@ -91,6 +107,10 @@ Player.prototype = {
 
 	keyPressed: function() {
 		this.direction *= -1;
+		if (this.keyText.alpha == 1) {
+			console.log(this.keyText.alpha);
+			this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+		}
 	},
 
 	kill: function(player, trail) {
