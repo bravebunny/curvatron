@@ -1,7 +1,7 @@
 var gameTitle = function(game){
 	this.menuSpace = 160;
 	maxPlayers = 7;
-	    var keys = [
+	  keys = [
     Phaser.Keyboard.Q,
     Phaser.Keyboard.Z,
     Phaser.Keyboard.R,

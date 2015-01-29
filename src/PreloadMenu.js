@@ -11,6 +11,7 @@ preloadMenu.prototype = {
 		this.game.load.image("play","assets/play.png");
 		this.game.load.image("auxBar","assets/auxBar.png");
 		this.game.load.image("arrow","assets/arrows.png");
+		this.game.load.image("key","assets/key.png");
 	},
   	create: function(){
 		this.game.state.start("GameTitle");
