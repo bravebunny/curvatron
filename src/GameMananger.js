@@ -47,6 +47,56 @@ gameMananger.prototype = {
 
 		this.game.time.events.loop(Phaser.Timer.SECOND * 1, this.createPower, this);
 
+		/////////////////////////////////////////////////////////////////////////////////////////////
+			// Create a label to use as a button
+	    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function () {
+	    	if(!this.game.paused){
+		        // When the paus button is pressed, we pause the game
+		        this.game.paused = true;
+
+		        // Then add the menu
+		        menu = this.game.add.sprite(0, 0, 'play');
+		        menu.anchor.setTo(0.5, 0.5);
+		        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
+		        back = this.game.add.sprite(0, 128, 'auxBar');
+		        back.anchor.setTo(0.5, 0.5);
+		        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		    }
+		    else{
+                menu.destroy();
+                back.destroy();
+                this.game.paused = false;
+		    }
+
+	    }, this);
+
+	    // Add a input listener that can help us return from being paused
+	    this.game.input.onDown.add(unpause, this);
+
+	    // And finally the method that handels the pause menu
+	    function unpause(event){
+	        // Only act if paused
+	        if(this.game.paused){
+	            // Calculate the corners of the menu
+	            var x1 = this.game.width/2 - 128, x2 = this.game.width/2 + 128, //128+128 é o tamanho da imagem
+	                y1 = this.game.height/2 - 16, y2 = this.game.height/2 + 16;
+     
+	            // Check if the click was inside the menu*/
+	           if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
+	                // Remove the menu and the label
+	                menu.destroy();
+	                back.destroy();
+	                // Unpause the game
+	                this.game.paused = false;
+	            }
+
+	             if((event.x > x1) && (event.x < x2) && (event.y > (y1+64)) && (event.y < (y2+64) )){
+	             	this.game.paused = false;
+	            	this.game.state.start("GameTitle");
+	            }
+	        }
+	    };
 	},
 
 	update: function() {
@@ -72,7 +122,6 @@ gameMananger.prototype = {
 
 		//Controls
 		this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger",true,false,this.numberOfPlayers);}, this);
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function(){this.game.state.start("GameTitle");}, this);
 
 	},
 
@@ -84,6 +133,6 @@ gameMananger.prototype = {
 	},
 
 	render: function(){
-		players[0].render();
+		//players[0].render();
 	}
 };
