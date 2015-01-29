@@ -3,17 +3,6 @@ var gameMananger = function(game) {}
 gameMananger.prototype = {
 	init: function(numberPlayers){
 		this.crown = null;
-		
-		this.keys = [
-			Phaser.Keyboard.Q,
-			Phaser.Keyboard.Z,
-			Phaser.Keyboard.R,
-			Phaser.Keyboard.C,
-			Phaser.Keyboard.U,
-			Phaser.Keyboard.B,
-			Phaser.Keyboard.P,
-			Phaser.Keyboard.M,
-			] 
 		this.numberOfPlayers = numberPlayers;
 
 		this.game.world.scale.set((-1/24)*numberPlayers+7/12);
@@ -28,7 +17,7 @@ gameMananger.prototype = {
 			players[i] = new Player(i,
 			Math.round(Math.cos((2*Math.PI/(this.numberOfPlayers+1))*i)*500/this.game.world.scale.x), 
 			Math.round(Math.sin((2*Math.PI/(this.numberOfPlayers+1))*i)*250/this.game.world.scale.y), 
-			this.keys[i], this.game);
+			keys[i], this.game);
 		}
 
 		groupPowers = this.game.add.group();
@@ -49,7 +38,8 @@ gameMananger.prototype = {
 				}
 			}
 		}
-		this.crown = this.game.add.sprite(0, -(this.game.world.height/2+30)/this.game.world.scale.x, 'crown');
+
+		this.crown = this.game.add.sprite(683, 10, 'crown');
 		this.crown.anchor.setTo(0.5,0.8);
 		this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
 
@@ -72,9 +62,9 @@ gameMananger.prototype = {
 		        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		    }
 		    else{
-                menu.destroy();
-                back.destroy();
-                this.game.paused = false;
+          menu.destroy();
+          back.destroy();
+          this.game.paused = false;
 		    }
 
 	    }, this);

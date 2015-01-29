@@ -1,15 +1,9 @@
 var multiplayer = function(game){
-	maxPlayers = 7;
+
 	numberOfPlayers = 1;
 };
   
 multiplayer.prototype = {
-	preload: function(){
-        this.game.load.image("loading","assets/Load.png");
-        this.game.renderer.roundPixels = false;
-
-	    this.game.stage.smoothed = true;
-	},
   	create: function(){
 
     	//Number of players
@@ -39,8 +33,8 @@ multiplayer.prototype = {
     	text.anchor.setTo(0.5,0.5);
 
     	//Go back Button
-		var playButton = this.game.add.button(-480,320,"play",this.back,this);
-		playButton.anchor.setTo(0.5,0.5);
+		var backButton = this.game.add.button(-480,320,"play",this.back,this);
+		backButton.anchor.setTo(0.5,0.5);
 		text = this.game.add.text(-480,320, "Back", {
 	        font: "40px Arial",
 	        fill: "#ff0044",
