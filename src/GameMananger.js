@@ -3,15 +3,18 @@ var gameMananger = function(game) {}
 gameMananger.prototype = {
 	init: function(){
 		this.crown = null;
-		this.game.world.scale.set((-1/24)*numberPlayers+7/12);
 		highScore = 0;
 		crowned = -1;
 		players = [];
 		this.timeBar = null;
-		this.gameTime = 10; //sec 
+		this.gameTime = 1000; //sec 
 		this.initialTime = 0;
+		if (numberPlayers > 0) {
+			this.game.world.scale.set((-1/24)*numberPlayers+7/12);
+		}
 		w2 = (this.game.world.width/2)/this.game.world.scale.x;
 		h2 = (this.game.world.height/2)/this.game.world.scale.x;
+
 	},
 
 	create: function() {
@@ -56,7 +59,11 @@ gameMananger.prototype = {
 		this.pauseGame();
 
 		//Generate powers
-		this.game.time.events.loop(Phaser.Timer.SECOND * 8, this.createPower, this);
+		if (numberPlayers > 0) {
+			this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
+		} else {
+			this.createPower();
+		}
 		
 	},
 
@@ -90,8 +97,7 @@ gameMananger.prototype = {
 	},
 
 	createPower: function() {
-		var powerup = new PowerUp(this.game.rnd.integerInRange((-w2+32)/this.game.world.scale.x, (w2-32)/this.game.world.scale.x), 
-			this.game.rnd.integerInRange((-h2+32)/this.game.world.scale.x, (h2-32)/this.game.world.scale.x), this.game);
+		var powerup = new PowerUp(this.game);
 		powerup.preload();
 		powerup.create();
 	},
@@ -123,7 +129,7 @@ gameMananger.prototype = {
     	});
   	text.anchor.setTo(0.5,0.5);
 		text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-		
+
   	restartButton = this.game.add.button(w2, h2+192/this.game.world.scale.x,"play",function(){this.game.state.restart(true,false,numberPlayers);},this);
 		restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		restartButton.anchor.setTo(0.5,0.5);

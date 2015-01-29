@@ -184,6 +184,12 @@ Player.prototype = {
 			console.log(crowned)
 		}
 
+		if (numberPlayers == 0) {
+			var powerup = new PowerUp(this.game);
+			powerup.preload();
+			powerup.create();
+		}
+
 	},
 
 	addCrown: function() {
