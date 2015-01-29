@@ -149,23 +149,25 @@ Player.prototype = {
 	},
 
 	kill: function(player, trail) {
-		this.player.kill();
-		this.dead = true;
-		if (trail) {
-			this.circle = new Phaser.Circle(trail.x, trail.y, 16);
-			console.log('Player ' + this.id + 'collided with ' + trail.frameName);
-			console.log(trail);
-			//this.game.paused = true;
+		if(!this.dead){
+			this.player.kill();
+			this.dead = true;
+			if (trail) {
+				this.circle = new Phaser.Circle(trail.x, trail.y, 16);
+				console.log('Player ' + this.id + 'collided with ' + trail.frameName);
+				console.log(trail);
+				//this.game.paused = true;
 
-		} else {
-			console.log('Player ' + this.id + 'collided with a wall');
-		}
+			} else {
+				console.log('Player ' + this.id + 'collided with a wall');
+			}
 
-		var newMax = -1;
-		for (var i = 0; i < players.length; i++) {
-			if (i != this.id && players[i].score > newMax && !players[i].dead) {
-				newMax = players[i].score;
-				crowned = i;
+			var newMax = -1;
+			for (var i = 0; i < players.length; i++) {
+				if (i != this.id && players[i].score > newMax && !players[i].dead) {
+					newMax = players[i].score;
+					crowned = i;
+				}
 			}
 		}
 	},

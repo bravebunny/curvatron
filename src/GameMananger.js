@@ -7,6 +7,9 @@ gameMananger.prototype = {
 		highScore = 0;
 		crowned = -1;
 		players = [];
+		this.timeBar = null;
+		this.gameTime = 10; //sec 
+		this.initialTime = 0;
 	},
 
 	create: function() {
@@ -42,59 +45,17 @@ gameMananger.prototype = {
 		this.crown.anchor.setTo(0.5,0.8);
 		this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
 
+		if(numberPlayers>0){
+			this.timeBar = this.game.add.sprite(0, 0, 'gametitle');
+		}
+		this.initialTime = this.game.time.totalElapsedSeconds();
+
+		//Pause Game
+		this.pauseGame();
+
 		//Generate powers
 		this.game.time.events.loop(Phaser.Timer.SECOND * 8, this.createPower, this);
-
-		/////////////////////////////////////////////////////////////////////////////////////////////
-			// Create a label to use as a button
-	    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function () {
-	    	if(!this.game.paused){
-		        // When the paus button is pressed, we pause the game
-		        this.game.paused = true;
-
-		        // Then add the menu
-		        menu = this.game.add.sprite(0, 0, 'play');
-		        menu.anchor.setTo(0.5, 0.5);
-		        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-
-		        back = this.game.add.sprite(0, 64/this.game.world.scale.x, 'auxBar');
-		        back.anchor.setTo(0.5, 0.5);
-		        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-		    }
-		    else{
-          menu.destroy();
-          back.destroy();
-          this.game.paused = false;
-		    }
-
-	    }, this);
-
-	    // Add a input listener that can help us return from being paused
-	    this.game.input.onDown.add(unpause, this);
-
-	    // And finally the method that handels the pause menu
-	    function unpause(event){
-	        // Only act if paused
-	        if(this.game.paused){
-	            // Calculate the corners of the menu
-	            var x1 = this.game.width/2 - 128, x2 = this.game.width/2 + 128, //128+128 é o tamanho da imagem
-	                y1 = this.game.height/2 - 16, y2 = this.game.height/2 + 16;
-     
-	            // Check if the click was inside the menu*/
-	           if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
-	                // Remove the menu and the label
-	                menu.destroy();
-	                back.destroy();
-	                // Unpause the game
-	                this.game.paused = false;
-	            }
-
-	             if((event.x > x1) && (event.x < x2) && (event.y > (y1+64)) && (event.y < (y2+64) )){
-	             	this.game.paused = false;
-	            	this.game.state.start("GameTitle");
-	            }
-	        }
-	    };
+		
 	},
 
 	update: function() {
@@ -117,9 +78,15 @@ gameMananger.prototype = {
 				this.crown.visible = true;
 			}
 		}
+		if(numberPlayers>0 && this.gameTime >= (this.game.time.totalElapsedSeconds()-this.initialTime)){
+			this.timeBar.scale.x = (-1/this.gameTime)*(this.game.time.totalElapsedSeconds()-this.initialTime)+1;
+		}
+		else if(numberPlayers>0){
+			this.endGame();
+		}
 
 		//Controls
-		//this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger",true,false,numberPlayers);}, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger",true,false,numberPlayers);}, this);
 
 	},
 
@@ -128,6 +95,105 @@ gameMananger.prototype = {
 			this.game.rnd.integerInRange(((-this.game.world.height/2)+32)/this.game.world.scale.x, ((this.game.world.height/2)-32)/this.game.world.scale.x), this.game);
 		powerup.preload();
 		powerup.create();
+	},
+
+	decreaseTimeBar: function(timeCut){
+		this.timeBar.width=this.timeBar.width-timeCut;
+	},
+
+	endGame: function(){
+		for(var i = 0; i<players.length; i++){
+				players[i].kill();
+			}
+		highScore = this.game.add.sprite(0, 0, 'play');
+        highScore.anchor.setTo(0.5, 0.5);
+        highScore.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
+        score = this.game.add.sprite(0, 64/this.game.world.scale.x, 'auxBar');
+        score.anchor.setTo(0.5, 0.5);
+        score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
+        backButton = this.game.add.button(0, 128/this.game.world.scale.x,"play",function(){this.game.state.start("GameTitle");},this);
+		backButton.anchor.setTo(0.5,0.5);
+		text = this.game.add.text(0, 128/this.game.world.scale.x, "Main Menu", {
+	        font: "40px Arial",
+	        fill: "#ff0044",
+	        align: "center"
+    	});
+    	text.anchor.setTo(0.5,0.5);
+
+    	restartButton = this.game.add.button(0, 192/this.game.world.scale.x,"play",function(){this.game.state.restart(true,false,numberPlayers);},this);
+		restartButton.anchor.setTo(0.5,0.5);
+		text = this.game.add.text(0, 192/this.game.world.scale.x, "Restart", {
+	        font: "40px Arial",
+	        fill: "#ff0044",
+	        align: "center"
+    	});
+    	text.anchor.setTo(0.5,0.5);
+	},
+
+	pauseGame:function(){
+		// Create a label to use as a button
+	    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function () {
+	    	if(!this.game.paused){
+		        // When the paus button is pressed, we pause the game
+		        this.game.paused = true;
+
+		        // Then add the menu
+		        menu = this.game.add.sprite(0, 0, 'play');
+		        menu.anchor.setTo(0.5, 0.5);
+		        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
+		        restart = this.game.add.sprite(0, 64/this.game.world.scale.x, 'auxBar');
+		        restart.anchor.setTo(0.5, 0.5);
+		        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
+		        back = this.game.add.sprite(0, 128/this.game.world.scale.x, 'auxBar');
+		        back.anchor.setTo(0.5, 0.5);
+		        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		    }
+		    else{
+          menu.destroy();
+          restart.destroy();
+          back.destroy();
+          this.game.paused = false;
+		    }
+
+	    }, this);
+
+	    // Add a input listener that can help us return from being paused
+	    this.game.input.onDown.add(unpause, this);
+
+	    // And finally the method that handels the pause menu
+	    function unpause(event){
+	        // Only act if paused
+	        if(this.game.paused){
+	            // Calculate the corners of the menu
+	            var x1 = this.game.width/2 - 128, x2 = this.game.width/2 + 128, //128+128 é o tamanho da imagem
+	                y1 = this.game.height/2 - 16, y2 = this.game.height/2 + 16;
+     
+	            // Check if the click was inside the menu*/
+	           if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
+	                // Remove the menu and the label
+	                menu.destroy();
+	                restart.destroy();
+	                back.destroy();
+	                // Unpause the game
+	                this.game.paused = false;
+	            }
+
+	            if((event.x > x1) && (event.x < x2) && (event.y > (y1+64)) && (event.y < (y2+64) )){
+	             	this.game.paused = false;
+	            	this.game.state.restart();
+	            }
+
+	            if((event.x > x1) && (event.x < x2) && (event.y > (y1+128)) && (event.y < (y2+128) )){
+	             	this.game.paused = false;
+	            	this.game.state.start("GameTitle");
+	            }
+
+	        }
+	    };
 	},
 
 	render: function(){
