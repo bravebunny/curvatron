@@ -53,7 +53,9 @@ setKeys.prototype = {
 	},
 
 	back:function(){
+		this.game.input.keyboard.onDownCallback = null;
 		this.game.state.start("GameTitle");
+		
 	},
 
 	DecSelected: function(){
@@ -80,6 +82,7 @@ setKeys.prototype = {
 	},
 
 	onPressed: function(){
+		console.log("onPressed")
 		keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode;
 		this.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
 	}
