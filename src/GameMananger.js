@@ -85,9 +85,6 @@ gameMananger.prototype = {
 			this.endGame();
 		}
 
-		//Controls
-		this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(){this.game.state.start("GameMananger",true,false,numberPlayers);}, this);
-
 	},
 
 	createPower: function() {
