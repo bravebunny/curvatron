@@ -39,7 +39,7 @@ gameMananger.prototype = {
 			}
 		}
 
-		this.crown = this.game.add.sprite(683, 10, 'crown');
+		this.crown = this.game.add.sprite(0, -(this.game.world.height/2+32)/this.game.world.scale.y, 'crown');
 		this.crown.anchor.setTo(0.5,0.8);
 		this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
 
