@@ -112,27 +112,26 @@ Player.prototype = {
 		}
 
 		//Screen border collisions
-		if (numberPlayers > 0) {
+		/*if (numberPlayers > 0) {
 			if(((this.player.x-16)<=this.border[0]) || ((this.player.x+16)>=this.border[1])){
 				this.kill();
 			}
 			if(((this.player.y-16)<=this.border[2]) || ((this.player.y+16)>=this.border[3])){
 				this.kill();
 			}
-		} else {
-			if((this.player.x+8)<=this.border[0]) {
-				this.player.x = this.border[1];
-			} else if ((this.player.x-8)>=this.border[1]) {
-				this.player.x = this.border[0];
-			}
-
-			if((this.player.y+8)<=this.border[2]) {
-				this.player.y = this.border[3];
-			} else if ((this.player.y-8)>=this.border[3]) {
-				this.player.y = this.border[2];
-			}
+		} else {*/
+		if((this.player.x+8)<=this.border[0]) {
+			this.player.x = this.border[1];
+		} else if ((this.player.x-8)>=this.border[1]) {
+			this.player.x = this.border[0];
 		}
 
+		if((this.player.y+8)<=this.border[2]) {
+			this.player.y = this.border[3];
+		} else if ((this.player.y-8)>=this.border[3]) {
+			this.player.y = this.border[2];
+		}
+		/*}*/
 
 		this.game.input.onDown.add(this.keyPressed, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
@@ -140,9 +139,14 @@ Player.prototype = {
 
 
 	keyPressed: function() {
-		this.direction *= -1;
-		if (this.keyText.alpha == 1) {
-			this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+		if(gameOver){
+			gameOver=false;
+			this.game.state.restart(true,false,numberPlayers);
+		}else{
+			this.direction *= -1;
+			if (this.keyText.alpha == 1) {
+				this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+			}
 		}
 	},
 
@@ -167,7 +171,7 @@ Player.prototype = {
 					crowned = i;
 				}
 			}
-			if (players[crowned].dead) {
+			if (crowned != -1 && players[crowned].dead) {
 				crowned = -1;
 			}
 		}
@@ -188,6 +192,7 @@ Player.prototype = {
 		}
 
 		if (numberPlayers == 0) {
+			highScore++;
 			var powerup = new PowerUp(this.game);
 			powerup.preload();
 			powerup.create();
