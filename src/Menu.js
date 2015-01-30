@@ -44,39 +44,47 @@ menu.prototype = {
 		spButton.anchor.setTo(0.5,0.5);
 		spButton.onInputOver.add(this.spOver, this);
 		spButton.onInputOut.add(this.spOut, this);
+    spButton.input.useHandCursor=true;
 
-		//Score label that shows on hover
-		this.scoreLabel = this.game.add.sprite(w2-265,h2,"sp_score");
-		this.scoreLabel.anchor.setTo(0.5,0.5);
-		this.scoreLabel.alpha = 0;
-		this.scoreText = this.game.add.text(w2-290,h2+10, bestScore, {
-        font: "120px Dosis Extrabold",
-        fill: colorHex,
-        align: "center"
-  	});
-  	this.scoreText.anchor.setTo(0.5,0.5);
-  	this.scoreText.alpha = 0;
+		//Score label that shows on hove
+    if(bestScore != 0){
+  		this.scoreLabel = this.game.add.sprite(w2-265,h2,"sp_score");
+  		this.scoreLabel.anchor.setTo(0.5,0.5);
+  		this.scoreLabel.alpha = 0;
+  		this.scoreText = this.game.add.text(w2-290,h2+10, bestScore, {
+          font: "120px Dosis Extrabold",
+          fill: colorHex,
+          align: "center"
+    	});
+    	this.scoreText.anchor.setTo(0.5,0.5);
+    	this.scoreText.alpha = 0;
+    }
 
     //Multiplayer
 		var mpButton = this.game.add.button(w2+150,h2,"multiplayer_button",this.multiplayer,this);
 		mpButton.anchor.setTo(0.5,0.5);
+    mpButton.input.useHandCursor=true;
 
   	//SetKeys
   	var keysButton = this.game.add.button(w2-250,h2+230,"setkeys_button",this.setKeys,this);
 		keysButton.anchor.setTo(0.5,0.5);
+    keysButton.input.useHandCursor=true;
 
   	//Stats
   	var statsButton = this.game.add.button(w2,h2+230,"stats_button",this.stats,this);
 		statsButton.anchor.setTo(0.5,0.5);
+    statsButton.input.useHandCursor=true;
 
   	//Audio
     if(this.game.sound.mute){
     	audioButton = this.game.add.button(w2+250,h2+230,"audiooff_button",this.muteSound,this);
   		audioButton.anchor.setTo(0.5,0.5);
+      audioButton.input.useHandCursor=true;
     }
     else{
       audioButton = this.game.add.button(w2+250,h2+230,"audio_button",this.muteSound,this);
       audioButton.anchor.setTo(0.5,0.5);
+      audioButton.input.useHandCursor=true;
     }
 
 	},
