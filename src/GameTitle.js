@@ -12,6 +12,8 @@ var gameTitle = function(game){
     Phaser.Keyboard.M,]
   numberPlayers = 0;
   bestScore = 0;
+  this.scoreLabel = null;
+  this.scoreText = null;
 
 }
 
@@ -40,6 +42,20 @@ gameTitle.prototype = {
     //Single Player
 		var spButton = this.game.add.button(w2-150,h2,"singleplayer_button",this.playTheGame,this);
 		spButton.anchor.setTo(0.5,0.5);
+		spButton.onInputOver.add(this.spOver, this);
+		spButton.onInputOut.add(this.spOut, this);
+
+		//Score label that shows on hover
+		this.scoreLabel = this.game.add.sprite(w2-265,h2,"sp_score");
+		this.scoreLabel.anchor.setTo(0.5,0.5);
+		this.scoreLabel.alpha = 0;
+		this.scoreText = this.game.add.text(w2-290,h2+10, bestScore, {
+        font: "120px Dosis Extrabold",
+        fill: colorHex,
+        align: "center"
+  	});
+  	this.scoreText.anchor.setTo(0.5,0.5);
+  	this.scoreText.alpha = 0;
 
     //Multiplayer
 		var mpButton = this.game.add.button(w2+150,h2,"multiplayer_button",this.multiplayer,this);
@@ -70,5 +86,16 @@ gameTitle.prototype = {
 
 	setKeys: function() {
 		this.game.state.start("SetKeys");
+	},
+
+	spOver: function() {
+		this.game.add.tween(this.scoreLabel).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+		this.game.add.tween(this.scoreText).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+
+	},
+
+	spOut: function() {
+		this.game.add.tween(this.scoreLabel).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
+		this.game.add.tween(this.scoreText).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
 	}
 }
