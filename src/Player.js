@@ -163,6 +163,7 @@ Player.prototype = {
 	},
 
 	kill: function(player, trail) {
+		this.keyText.destroy();
 		if(!this.dead){
 			this.player.kill();
 			this.dead = true;
@@ -181,7 +182,6 @@ Player.prototype = {
 				if (i != this.id && players[i].score > newMax && !players[i].dead) {
 					newMax = players[i].score;
 					crowned = i;
-					lastCrowned = crowned;
 				}
 			}
 			if (crowned != -1 && players[crowned].dead) {
@@ -203,6 +203,7 @@ Player.prototype = {
 		if (this.score > highScore && numberPlayers != 0) {
 			highScore = this.score;
 			crowned = this.id;
+			lastCrowned = crowned+1;
 			players[crowned].removeCrown();
 			console.log(crowned)
 		}
