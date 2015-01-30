@@ -4,11 +4,13 @@ preloadMenu.prototype = {
 	preload: function(){ 
 		text = this.game.add.text(0,0, "", {font: "40px Dosis Extrabold",});
 
-    var loadingBar = this.add.sprite(w2,h2,"loading");
-    loadingBar.anchor.setTo(0.5,0.5);
-    this.load.setPreloadSprite(loadingBar);
+	    var loadingBar = this.add.sprite(w2,h2,"loading");
+	    loadingBar.anchor.setTo(0.5,0.5);
+	    this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
+	    loadingBar.body.angularVelocity = 200;
+		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
 
-    //Load all stuf from menu
+    	//Load all stuf from menu
 		this.game.load.image("audio_button","assets/sprites/menu/audio.png");
 		this.game.load.image("audiooff_button","assets/sprites/menu/audiooff.png");
 		this.game.load.image("multiplayer_button","assets/sprites/menu/multiplayer.png");
@@ -23,8 +25,8 @@ preloadMenu.prototype = {
 
 	},
   	create: function(){
-			this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
-				this.game.state.start("Menu");
-			}, this);
+		this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+			this.game.state.start("Menu");
+		}, this);
 	}
 }
