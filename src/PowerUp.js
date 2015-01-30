@@ -32,6 +32,10 @@ PowerUp.prototype = {
 
 		groupPowers.add(this.sprite);
 
+		powerText.setText(highScore+1);
+		powerText.x = this.sprite.x;
+		powerText.y = this.sprite.y;
+
 	},
 
 	place: function() {

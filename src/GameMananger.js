@@ -18,7 +18,6 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
-
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
@@ -46,9 +45,16 @@ gameMananger.prototype = {
 			}
 		}
 
-		this.crown = this.game.add.sprite(0, -(h2+32)/this.game.world.scale.y, 'crown');
+		this.crown = this.game.add.sprite(w2, -32/this.game.world.scale.y, 'crown');
 		this.crown.anchor.setTo(0.5,0.8);
 		this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
+
+		powerText = this.game.add.text(this.x, this.y, "1",
+				{ font: "15px Arial Black",
+		      fill: "#ffffff",
+		      align: "center"
+		  	});
+	  	powerText.anchor.setTo(0.5,0.5);
 
 		if(numberPlayers>0){
 			this.timeBar = this.game.add.sprite(0, 0, 'gametitle');
@@ -114,13 +120,13 @@ gameMananger.prototype = {
 		for(var i = 0; i<players.length; i++){
 				players[i].kill();
 			}
-		highScore = this.game.add.sprite(w2, h2, 'play');
+		/*highScore = this.game.add.sprite(w2, h2, 'play');
 	    highScore.anchor.setTo(0.5, 0.5);
 	    highScore.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
 	    score = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
 	    score.anchor.setTo(0.5, 0.5);
-	    score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	    score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);*/
 
 	    backButton = this.game.add.button(w2, h2+128/this.game.world.scale.x,"play",function(){this.game.state.start("GameTitle");},this);
 	    backButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);

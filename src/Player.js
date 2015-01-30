@@ -192,6 +192,7 @@ Player.prototype = {
 		}
 
 		if (numberPlayers == 0) {
+			highScore++;
 			var powerup = new PowerUp(this.game);
 			powerup.preload();
 			powerup.create();
