@@ -10,6 +10,7 @@ preloadMenu.prototype = {
 
     //Load all stuf from menu
 		this.game.load.image("audio_button","assets/sprites/menu/audio.png");
+		this.game.load.image("audiooff_button","assets/sprites/menu/audiooff.png");
 		this.game.load.image("multiplayer_button","assets/sprites/menu/multiplayer.png");
 		this.game.load.image("setkeys_button","assets/sprites/menu/setkeys.png");
 		this.game.load.image("singleplayer_button","assets/sprites/menu/singleplayer.png");

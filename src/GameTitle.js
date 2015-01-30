@@ -70,8 +70,14 @@ gameTitle.prototype = {
 		statsButton.anchor.setTo(0.5,0.5);
 
   	//Audio
-  	var audioButton = this.game.add.button(w2+250,h2+230,"audio_button",this.setKeys,this);
-		audioButton.anchor.setTo(0.5,0.5);
+    if(this.game.sound.mute){
+    	audioButton = this.game.add.button(w2+250,h2+230,"audiooff_button",this.muteSound,this);
+  		audioButton.anchor.setTo(0.5,0.5);
+    }
+    else{
+      audioButton = this.game.add.button(w2+250,h2+230,"audio_button",this.muteSound,this);
+      audioButton.anchor.setTo(0.5,0.5);
+    }
 
 	},
 
@@ -97,5 +103,16 @@ gameTitle.prototype = {
 	spOut: function() {
 		this.game.add.tween(this.scoreLabel).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
 		this.game.add.tween(this.scoreText).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
-	}
+	},
+
+  muteSound: function(){
+    if(this.game.sound.mute){
+      audioButton.loadTexture('audio_button');
+      this.game.sound.mute = false;
+    }
+    else{
+      audioButton.loadTexture('audiooff_button');
+      this.game.sound.mute = true;
+    }
+  }
 }
