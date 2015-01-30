@@ -21,6 +21,8 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
+    this.game.stage.backgroundColor = bgColorsDark[chosenColor];
+
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
@@ -54,7 +56,7 @@ gameMananger.prototype = {
 
 		if(numberPlayers > 0){
 			graphics.lineStyle(0);
-			graphics.beginFill(0x111111, 1);
+			graphics.beginFill(0x000000, 0.2);
 			this.timeCircle = graphics.drawCircle(w2,h2,Math.sqrt(w2*w2+h2*h2)*2);
 			this.timeCircle.pivot.x = w2;
 			this.timeCircle.pivot.y = h2;
@@ -252,6 +254,11 @@ gameMananger.prototype = {
 	            }
 	        }
 	    };
+	},
+
+	componentToHex: function(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
 	},
 
 	render: function(){

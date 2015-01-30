@@ -18,6 +18,7 @@ var gameTitle = function(game){
 gameTitle.prototype = {
 
   create: function(){
+  	this.game.stage.backgroundColor = colorHex;
   	w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 
@@ -28,45 +29,34 @@ gameTitle.prototype = {
   		bestScore = 0;
   	}
 
-		var gameTitle = this.game.add.sprite(w2,-160+h2,"gametitle");
-		gameTitle.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(w2,-160+h2, "CurvaTorn", {
-	        font: "40px BAUHS93",
-	        fill: "#ff0044",
+		//Game Title
+		var text = this.game.add.text(w2,150, "curvatron", {
+	        font: "200px Dosis Extrabold",
+	        fill: "#ffffff",
 	        align: "center"
     	});
     	text.anchor.setTo(0.5,0.5);
 
-		var playButton = this.game.add.button(w2,h2,"play",this.playTheGame,this);
-		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(w2,h2, "Single Player: " + bestScore, {
-	        font: "40px BAUHS93",
-	        fill: "#ff0044",
-	        align: "center"
-    	});
-    	text.anchor.setTo(0.5,0.5);
+    //Single Player
+		var spButton = this.game.add.button(w2-150,h2,"singleplayer_button",this.playTheGame,this);
+		spButton.anchor.setTo(0.5,0.5);
 
     //Multiplayer
-		var playButton = this.game.add.button(w2,160+h2,"play",this.multiplayer,this);
-		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(w2,160+h2, "Multiplayer", {
-      font: "40px BAUHS93",
-      fill: "#ff0044",
-      align: "center"
-  	});
-  	text.anchor.setTo(0.5,0.5);
+		var mpButton = this.game.add.button(w2+150,h2,"multiplayer_button",this.multiplayer,this);
+		mpButton.anchor.setTo(0.5,0.5);
 
   	//SetKeys
-  	var playButton = this.game.add.button(w2,320+h2,"play",this.setKeys,this);
-		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(w2,320+h2, "Set Keys", {
-      font: "40px BAUHS93",
-      fill: "#ff0044",
-      align: "center"
-  	});
-  	text.anchor.setTo(0.5,0.5);
+  	var keysButton = this.game.add.button(w2-250,h2+230,"setkeys_button",this.setKeys,this);
+		keysButton.anchor.setTo(0.5,0.5);
 
-  	//this.game.state.start("GameTitle");
+  	//Stats
+  	var statsButton = this.game.add.button(w2,h2+230,"stats_button",this.setKeys,this);
+		statsButton.anchor.setTo(0.5,0.5);
+
+  	//Audio
+  	var audioButton = this.game.add.button(w2+250,h2+230,"audio_button",this.setKeys,this);
+		audioButton.anchor.setTo(0.5,0.5);
+
 	},
 
 	playTheGame: function(){

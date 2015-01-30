@@ -2,13 +2,18 @@ var boot = function(game){};
   
 boot.prototype = {
 	preload: function(){
-			bgColors = ['#76b83d', '#47a2b3', '#ca555a', '#d96d53'];
+			bgColors = ['#76b83d', '#cf5e4f', '#805296', '#4c99b9'];
+			bgColorsDark = ['#213311', '#331713', '#2c1c33', '#152a33'];
+	    chosenColor = this.game.rnd.integerInRange(0, 3);
 
      	this.game.load.image("loading","assets/Load.png");
       this.game.renderer.roundPixels = false;
 
 	    this.game.stage.smoothed = true;
-	    this.game.stage.backgroundColor = bgColors[this.game.rnd.integerInRange(0, 3)];
+
+	    colorHex = bgColors[chosenColor];
+	    document.body.style.background = colorHex;
+	    this.game.stage.backgroundColor = colorHex;
 	},
   	create: function(){
 		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
