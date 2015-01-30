@@ -20,7 +20,7 @@ preloadMenu.prototype = {
 	},
   	create: function(){
 			this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
-				this.game.state.start("GameTitle");
+				this.game.state.start("Menu");
 			}, this);
 	}
 }

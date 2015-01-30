@@ -138,7 +138,7 @@ gameMananger.prototype = {
 	    score.anchor.setTo(0.5, 0.5);
 	    score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);*/
 
-	    backButton = this.game.add.button(w2, h2+128/this.game.world.scale.x,"play",function(){this.game.state.start("GameTitle");},this);
+	    backButton = this.game.add.button(w2, h2+128/this.game.world.scale.x,"play",function(){this.game.state.start("Menu");},this);
 	    backButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
 		backButton.anchor.setTo(0.5,0.5);
@@ -250,7 +250,7 @@ gameMananger.prototype = {
 	            }
 	            if((event.x > x1) && (event.x < x2) && (event.y > (y1+128)) && (event.y < (y2+128) )){
 	             	this.game.paused = false;
-	            	this.game.state.start("GameTitle");
+	            	this.game.state.start("Menu");
 	            }
 	        }
 	    };

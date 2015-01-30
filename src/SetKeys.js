@@ -47,14 +47,14 @@ setKeys.prototype = {
 	update: function(){
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(
 			function(){
-				this.game.state.start("GameTitle");
+				this.game.state.start("Menu");
 			},this);
 
 	},
 
 	back:function(){
 		this.game.input.keyboard.onDownCallback = null;
-		this.game.state.start("GameTitle");
+		this.game.state.start("Menu");
 		
 	},
 

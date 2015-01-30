@@ -1,4 +1,4 @@
-var gameTitle = function(game){
+var menu = function(game){
 	this.menuSpace = 160;
 	maxPlayers = 7;
 	  keys = [
@@ -17,7 +17,7 @@ var gameTitle = function(game){
 
 }
 
-gameTitle.prototype = {
+menu.prototype = {
 
   create: function(){
   	this.game.stage.backgroundColor = colorHex;
@@ -66,7 +66,7 @@ gameTitle.prototype = {
 		keysButton.anchor.setTo(0.5,0.5);
 
   	//Stats
-  	var statsButton = this.game.add.button(w2,h2+230,"stats_button",this.setKeys,this);
+  	var statsButton = this.game.add.button(w2,h2+230,"stats_button",this.stats,this);
 		statsButton.anchor.setTo(0.5,0.5);
 
   	//Audio
@@ -93,6 +93,10 @@ gameTitle.prototype = {
 	setKeys: function() {
 		this.game.state.start("SetKeys");
 	},
+
+  stats: function() {
+    this.game.state.start("Stats");
+  },
 
 	spOver: function() {
 		this.game.add.tween(this.scoreLabel).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);

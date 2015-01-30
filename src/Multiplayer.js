@@ -46,7 +46,7 @@ multiplayer.prototype = {
 	},
 
 	update: function(){
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function(){this.game.state.start("GameTitle");}, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function(){this.game.state.start("Menu");}, this);
 	},
 
 	playTheGame: function(){
@@ -54,7 +54,7 @@ multiplayer.prototype = {
 	},
 
 	back:function(){
-		this.game.state.start("GameTitle");
+		this.game.state.start("Menu");
 	},
 
 	DecNumberOfPlayers: function(){
