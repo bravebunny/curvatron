@@ -47,15 +47,22 @@ Player.prototype = {
 		//Show player's key
 		if (!this.keyText) {
 			this.keyText = this.game.add.text(
-				Math.round(Math.cos(this.player.rotation + Math.PI/2)*80) + this.x,
-				Math.round(Math.sin(this.player.rotation + Math.PI/2)*80) + this.y,
+				Math.round(Math.cos(this.player.rotation + Math.PI/2)*88) + this.x,
+				Math.round(Math.sin(this.player.rotation + Math.PI/2)*88) + this.y,
 				String.fromCharCode(this.key), {
-		      font: "80px Arial",
+		      font: "80px Arial Black",
 		      fill: "#ffffff",
 		      align: "center"
 		  	});
 	  	this.keyText.anchor.setTo(0.5,0.5);
+
+	  	if (numberPlayers == 0) {
+	  		this.keyText.setText(bestScore);
+	  		this.keyText.scale.set(0.75);
+	  	}
 		}
+
+
 
 		this.frameCount = (this.frameCount + 1) % 1/(this.speed*this.game.world.scale.x);
 
