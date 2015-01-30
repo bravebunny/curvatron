@@ -156,6 +156,18 @@ gameMananger.prototype = {
     	});
 	  	text.anchor.setTo(0.5,0.5);
 	  	text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
+    	if(numberPlayers == 0){
+    		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, bestScore, {
+	        font: "40px Arial",
+	        fill: "#ff0044",
+	        align: "center"});
+    		scoreInMenu.anchor.setTo(0.5,0.5);
+	  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+    	}
+	  	
+
+
 	  	gameOver = true;
 	},
 
@@ -178,11 +190,21 @@ gameMananger.prototype = {
 	        back = this.game.add.sprite(w2, h2+128/this.game.world.scale.x, 'auxBar');
 	        back.anchor.setTo(0.5, 0.5);
 	        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
+	        if(numberPlayers == 0){
+	    		scoreInMenu = this.game.add.text(w2, h2+192/this.game.world.scale.x, bestScore, {
+		        font: "40px Arial",
+		        fill: "#ff0044",
+		        align: "center"});
+	    		scoreInMenu.anchor.setTo(0.5,0.5);
+		  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+    		}
 	    }
 	    else{
           menu.destroy();
           restart.destroy();
           back.destroy();
+          scoreInMenu.destroy();
           this.game.paused = false;
 		}
 
@@ -205,6 +227,7 @@ gameMananger.prototype = {
 	                menu.destroy();
 	                restart.destroy();
 	                back.destroy();
+	                scoreInMenu.destroy();
 	                // Unpause the game
 	                this.game.paused = false;
 	            }
