@@ -2,10 +2,13 @@ var boot = function(game){};
   
 boot.prototype = {
 	preload: function(){
-        this.game.load.image("loading","assets/Load.png");
-        this.game.renderer.roundPixels = false;
+			bgColors = ['#76b83d', '#47a2b3', '#ca555a', '#d96d53'];
+
+     	this.game.load.image("loading","assets/Load.png");
+      this.game.renderer.roundPixels = false;
 
 	    this.game.stage.smoothed = true;
+	    this.game.stage.backgroundColor = bgColors[this.game.rnd.integerInRange(0, 3)];
 	},
   	create: function(){
 		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;

@@ -13,7 +13,7 @@ preloadGame.prototype = {
     //Load all stuf from game
 		this.game.load.image('power', 'assets/power.png');
 		this.game.load.image('crown', 'assets/crown.png');
-		for(var i=0; i<=4; i++) {
+		for(var i=0; i<=3; i++) {
 			this.game.load.audio('sfx_collect' + i, 'assets/sfx/collect' + i + '.ogg');	
 		}
 
