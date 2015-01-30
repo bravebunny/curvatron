@@ -9,6 +9,7 @@ gameMananger.prototype = {
 		this.timeCircle = null;
 		this.gameTime = 10; //sec 
 		this.initialTime = 0;
+		lastCrowned = null;
 		if (numberPlayers > 0) {
 			this.game.world.scale.set((-1/24)*numberPlayers+7/12);
 		}
@@ -90,6 +91,7 @@ gameMananger.prototype = {
 		if (crowned != -1) {
 			if (Math.abs(this.crown.x - players[crowned].player.x) < 30 && Math.abs(this.crown.y - players[crowned].player.y) < 30) {
 				players[crowned].addCrown();
+
 				this.crown.x = players[crowned].player.x;
 				this.crown.y = players[crowned].player.y;
 				//this.crown.rotation = players[crowned].player.rotation;
@@ -156,6 +158,15 @@ gameMananger.prototype = {
     	});
 	  	text.anchor.setTo(0.5,0.5);
 	  	text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
+	  	if(numberPlayers > 0){
+	  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, "player: " + lastCrowned + " with: " + highScore, {
+	        font: "40px Arial",
+	        fill: "#ff0044",
+	        align: "center"});
+    		scoreInMenu.anchor.setTo(0.5,0.5);
+	  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	  	}
 
     	if(numberPlayers == 0){
     		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, bestScore, {
