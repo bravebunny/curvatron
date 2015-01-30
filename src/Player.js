@@ -196,6 +196,11 @@ Player.prototype = {
 			var powerup = new PowerUp(this.game);
 			powerup.preload();
 			powerup.create();
+
+			if (highScore > bestScore) {
+				bestScore = highScore;
+				localStorage.setItem("highScore", highScore);
+			}
 		}
 
 	},

@@ -10,7 +10,8 @@ var gameTitle = function(game){
     Phaser.Keyboard.B,
     Phaser.Keyboard.P,
     Phaser.Keyboard.M,]
-   numberPlayers = 0;
+  numberPlayers = 0;
+  bestScore = 0;
 
 }
 
@@ -18,9 +19,14 @@ gameTitle.prototype = {
 
   create: function(){
   	w2 = this.game.world.width/2;
-	h2 = this.game.world.height/2;
+		h2 = this.game.world.height/2;
 
   	this.game.world.scale.set(1);
+
+  	bestScore = localStorage.getItem("highScore");
+  	if(bestScore == null) {
+  		bestScore = 0;
+  	}
 
 		var gameTitle = this.game.add.sprite(w2,-160+h2,"gametitle");
 		gameTitle.anchor.setTo(0.5,0.5);
@@ -33,7 +39,7 @@ gameTitle.prototype = {
 
 		var playButton = this.game.add.button(w2,h2,"play",this.playTheGame,this);
 		playButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(w2,h2, "Single Player", {
+		text = this.game.add.text(w2,h2, "Single Player: " + bestScore, {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"
