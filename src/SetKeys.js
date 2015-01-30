@@ -9,7 +9,7 @@ setKeys.prototype = {
 		var playersAuxButton = this.game.add.sprite(w2,h2,"auxBar");
 		playersAuxButton.anchor.setTo(0.5,0.5);
 		textPlayers = this.game.add.text(w2,h2, "Player " + (this.selectedPlayer+1), {
-	        font: "40px Arial",
+	        font: "40px BAUHS93",
 	        fill: "#363636",
 	        align: "center"
   	});
@@ -25,7 +25,7 @@ setKeys.prototype = {
 		var keyButton = this.game.add.button(w2,160+h2,"key",this.selectKey,this);
 		keyButton.anchor.setTo(0.5,0.5);
 		this.keyText = this.game.add.text(w2,160+h2, String.fromCharCode(keys[this.selectedPlayer]), {
-	        font: "40px Arial",
+	        font: "40px BAUHS93",
 	        fill: "#ff0044",
 	        align: "center"
   	});
@@ -35,7 +35,7 @@ setKeys.prototype = {
 		var backButton = this.game.add.button(w2-480,320+h2,"play",this.back,this);
 		backButton.anchor.setTo(0.5,0.5);
 		text = this.game.add.text(w2-480,320+h2, "Back", {
-	        font: "40px Arial",
+	        font: "40px BAUHS93",
 	        fill: "#ff0044",
 	        align: "center"
   	});

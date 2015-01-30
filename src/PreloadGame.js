@@ -22,6 +22,7 @@ preloadGame.prototype = {
 			this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
 			this.game.load.image('crown' + i, 'assets/crown'+ i +'.png');
 		}
+
 	},
   	create: function(){
 		this.game.state.start("GameMananger");
