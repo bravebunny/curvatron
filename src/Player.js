@@ -133,16 +133,20 @@ Player.prototype = {
 			}
 		}
 
-
 		this.game.input.onDown.add(this.keyPressed, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 	},
 
 
 	keyPressed: function() {
-		this.direction *= -1;
-		if (this.keyText.alpha == 1) {
-			this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+		if(gameOver){
+			gameOver=false;
+			this.game.state.restart(true,false,numberPlayers);
+		}else{
+			this.direction *= -1;
+			if (this.keyText.alpha == 1) {
+				this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+			}
 		}
 	},
 
@@ -167,7 +171,7 @@ Player.prototype = {
 					crowned = i;
 				}
 			}
-			if (players[crowned].dead) {
+			if (crowned != -1 && players[crowned].dead) {
 				crowned = -1;
 			}
 		}
