@@ -20,6 +20,7 @@ var Player = function(id, x, y, key, game) {
 	this.keyText = null;
 	this.circle = null;
 	this.trailPiece = null;
+	this.collectSound = null;
 	this.border = [0, this.game.world.width/this.game.world.scale.x,
 					0,this.game.world.height/this.game.world.scale.y]
 };
@@ -38,8 +39,12 @@ Player.prototype = {
     //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
     this.lastTrailLength = this.growth;
 
-    //debug circle
-
+    //create sound effects
+    this.collectSounds = [
+    	this.game.add.audio('sfx_collect0'),
+    	this.game.add.audio('sfx_collect1'),
+    	this.game.add.audio('sfx_collect2'),
+    	this.game.add.audio('sfx_collect3')];
 
 	},
 
@@ -179,12 +184,16 @@ Player.prototype = {
 				}
 			}
 			if (crowned != -1 && players[crowned].dead) {
+				lastCrowned = crowned;
 				crowned = -1;
 			}
 		}
 	},
 
 	collect: function(player, power) {
+
+		this.collectSounds[this.game.rnd.integerInRange(0, 3)].play();
+
 		power.kill();
 		this.killTrail = false;
 		this.growth = 30*power.scale.x;
