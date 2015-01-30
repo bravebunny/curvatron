@@ -32,7 +32,7 @@ menu.prototype = {
   	}
 
 		//Game Title
-		var text = this.game.add.text(w2,150, "curvatron", {
+		var text = this.game.add.text(w2,120, "curvatron", {
 	        font: "200px Dosis Extrabold",
 	        fill: "#ffffff",
 	        align: "center"

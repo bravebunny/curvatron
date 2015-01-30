@@ -8,7 +8,14 @@ multiplayer.prototype = {
   		numberPlayers = 1;
   	}
 
-    	//Number of players
+		var text = this.game.add.text(w2,120, "multiplayer", {
+        font: "200px Dosis Extrabold",
+        fill: "#ffffff",
+        align: "center"
+  	});
+  	text.anchor.setTo(0.5,0.5);
+
+    //Number of players
 		var playersAuxButton = this.game.add.sprite(w2,h2,"auxBar");
 		playersAuxButton.anchor.setTo(0.5,0.5);
 		textPlayers = this.game.add.text(w2,h2, (numberPlayers+1) + " players", {

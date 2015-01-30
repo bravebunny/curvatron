@@ -16,6 +16,10 @@ preloadMenu.prototype = {
 		this.game.load.image("singleplayer_button","assets/sprites/menu/singleplayer.png");
 		this.game.load.image("stats_button","assets/sprites/menu/stats.png");
 		this.game.load.image("sp_score","assets/sprites/menu/score.png");
+		this.game.load.image("back_button","assets/sprites/menu/back.png");
+		this.game.load.image("accept_button","assets/sprites/menu/accept.png");
+		this.game.load.image("number_players","assets/sprites/menu/numberPlayers.png");
+		this.game.load.image("set_players","assets/sprites/menu/setPlayers.png");
 
 	},
   	create: function(){
