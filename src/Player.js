@@ -181,10 +181,10 @@ Player.prototype = {
 				if (i != this.id && players[i].score > newMax && !players[i].dead) {
 					newMax = players[i].score;
 					crowned = i;
+					lastCrowned = crowned;
 				}
 			}
 			if (crowned != -1 && players[crowned].dead) {
-				lastCrowned = crowned;
 				crowned = -1;
 			}
 		}

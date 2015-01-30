@@ -9,7 +9,7 @@ gameMananger.prototype = {
 		this.timeCircle = null;
 		this.gameTime = 10; //sec 
 		this.initialTime = 0;
-		lastCrowned = null;
+		lastCrowned = 0;
 		if (numberPlayers > 0) {
 			this.game.world.scale.set((-1/24)*numberPlayers+7/12);
 		}
@@ -160,7 +160,7 @@ gameMananger.prototype = {
 	  	text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
 	  	if(numberPlayers > 0){
-	  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, "player: " + lastCrowned + " with: " + highScore, {
+	  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, "player " + lastCrowned + " with: " + highScore, {
 	        font: "40px Arial",
 	        fill: "#ff0044",
 	        align: "center"});
