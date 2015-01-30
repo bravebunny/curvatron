@@ -6,8 +6,8 @@ gameMananger.prototype = {
 		highScore = 0;
 		crowned = -1;
 		players = [];
-		this.timeBar = null;
-		this.gameTime = 1000; //sec 
+		this.timeCircle = null;
+		this.gameTime = 10; //sec 
 		this.initialTime = 0;
 		if (numberPlayers > 0) {
 			this.game.world.scale.set((-1/24)*numberPlayers+7/12);
@@ -15,6 +15,8 @@ gameMananger.prototype = {
 		w2 = (this.game.world.width/2)/this.game.world.scale.x;
 		h2 = (this.game.world.height/2)/this.game.world.scale.x;
 		gameOver = false;
+		graphics = this.game.add.graphics(w2, h2);
+
 	},
 
 	create: function() {
@@ -49,9 +51,12 @@ gameMananger.prototype = {
 		this.crown.anchor.setTo(0.5,0.8);
 		this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
 
-		
 		if(numberPlayers > 0){
-			this.timeBar = this.game.add.sprite(0, 0, 'gametitle');
+			graphics.lineStyle(0);
+			graphics.beginFill(0x111111, 1);
+			this.timeCircle = graphics.drawCircle(w2,h2,Math.sqrt(w2*w2+h2*h2)*2);
+			this.timeCircle.pivot.x = w2;
+			this.timeCircle.pivot.y = h2;
 		} else {
 			powerText = this.game.add.text(this.x, this.y, "1",
 				{ font: "15px Arial Black",
@@ -95,7 +100,7 @@ gameMananger.prototype = {
 			}
 		}
 		if(numberPlayers>0 && this.gameTime >= (this.game.time.totalElapsedSeconds()-this.initialTime)){
-			this.timeBar.scale.x = (-1/this.gameTime)*(this.game.time.totalElapsedSeconds()-this.initialTime)+1;
+			this.timeCircle.scale.set((-1/this.gameTime)*(this.game.time.totalElapsedSeconds()-this.initialTime)+1)	
 		}
 		else if(numberPlayers>0){
 			this.endGame();
