@@ -176,16 +176,14 @@ gameMananger.prototype = {
     		scoreInMenu.anchor.setTo(0.5,0.5);
 	  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
     	}
-	  	
-
 
 	  	gameOver = true;
 	},
 
 	pauseGame:function(){
-		// Create a label to use as a button
+	// Create a label to use as a button
 	    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function () {
-    	if(!this.game.paused){
+    	if(!this.game.paused && !gameOver){
 	        // When the paus button is pressed, we pause the game
 	        this.game.paused = true;
 
@@ -210,13 +208,15 @@ gameMananger.prototype = {
 	    		scoreInMenu.anchor.setTo(0.5,0.5);
 		  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
     		}
-	    }
+		}
 	    else{
-          menu.destroy();
-          restart.destroy();
-          back.destroy();
-          scoreInMenu.destroy();
-          this.game.paused = false;
+	        menu.destroy();
+	        restart.destroy();
+	        back.destroy();
+	        if(numberPlayers == 0){
+	        	scoreInMenu.destroy();
+	        }
+	        this.game.paused = false;
 		}
 
 	    }, this);
