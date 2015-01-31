@@ -191,6 +191,8 @@ Player.prototype = {
 	kill: function(player, trail) {
 		this.keyText.destroy();
 		if(!this.dead){
+			deadCounter += 1;
+			localStorage.setItem("deadCounter", deadCounter);
 			this.player.kill();
 			this.dead = true;
 			if (trail) {

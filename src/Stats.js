@@ -5,23 +5,22 @@ stats.prototype = {
   	create: function(){
 
 		var text = this.game.add.text(w2,120, "singleplayer stats", {
-      font: "150px Dosis Extrabold",
-      fill: "#ffffff",
-      align: "center"
-  	});
-  	text.anchor.setTo(0.5,0.5);
+	      font: "150px Dosis Extrabold",
+	      fill: "#ffffff",
+	      align: "center"
+	  	});
+	  	text.anchor.setTo(0.5,0.5);
 
-
-		var stastPlayer = this.game.add.sprite(w2-64, h2-64, 'gametitle');
+		var stastPlayer = this.game.add.sprite(w2/2, h2, 'score-stat');
 		stastPlayer.anchor.setTo(0.5,0.5);
-		statsPlayers = this.game.add.text(w2-64, h2-64, "stats", {
+		statsPlayers = this.game.add.text(w2/2, h2, localStorage.getItem("highScore"), {
 	        font: "40px Arial",
 	        fill: "#363636",
 	        align: "center"
     	});
     	statsPlayers.anchor.setTo(0.5,0.5);
 
-		var stastPlayer = this.game.add.sprite(w2, h2, 'gametitle');
+		var stastPlayer = this.game.add.sprite(w2, h2, 'score-stat');
 		stastPlayer.anchor.setTo(0.5,0.5);
 		statsPlayers = this.game.add.text(w2,h2, "stats", {
 	        font: "40px Arial",
@@ -30,14 +29,14 @@ stats.prototype = {
     	});
     	statsPlayers.anchor.setTo(0.5,0.5);
 
-    	var stastPlayer = this.game.add.sprite(w2+64, h2+64, 'gametitle');
-		stastPlayer.anchor.setTo(0.5,0.5);
-		statsPlayers = this.game.add.text(w2+64, h2+64, "stats", {
+    	var statsDeaths = this.game.add.sprite(w2+w2/2, h2, 'deaths-stats');
+		statsDeaths.anchor.setTo(0.5,0.5);
+		textDeaths = this.game.add.text(w2+w2/2, h2, localStorage.getItem("deadCounter"), {
 	        font: "40px Arial",
 	        fill: "#363636",
 	        align: "center"
     	});
-    	statsPlayers.anchor.setTo(0.5,0.5);
+    	textDeaths.anchor.setTo(0.5,0.5);
 
     	//back button
 		var backButton = this.game.add.button(w2/2,h2+230,"back_button",function(){this.game.state.start("Menu");},this);

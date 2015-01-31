@@ -4,6 +4,7 @@ gameMananger.prototype = {
 	init: function(){
 		this.crown = null;
 		highScore = 0;
+		deadCounter = parseInt(localStorage.getItem("deadCounter"));
 		crowned = -1;
 		players = [];
 		this.timeCircle = null;
