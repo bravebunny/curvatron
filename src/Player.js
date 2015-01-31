@@ -51,12 +51,10 @@ Player.prototype = {
 		this.game.input.onDown.add(this.keyPressed, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
-
 	},
 
 	update: function() {
 		if (!this.paused && paused) {
-			console.log("player attempt pause")
 			this.paused = true;
 			this.pause();
 		} else if (this.paused && !paused) {
@@ -214,7 +212,6 @@ Player.prototype = {
 			crowned = this.id;
 			lastCrowned = crowned+1;
 			players[crowned].removeCrown();
-			console.log(crowned)
 		}
 
 		if (numberPlayers == 0) {
@@ -240,23 +237,17 @@ Player.prototype = {
 	},
 
 	pause: function() {
-		console.log("player pause")
 		this.player.body.angularVelocity = 0;
 		this.player.body.velocity.x = 0;
 		this.player.body.velocity.y = 0;
-		//this.game.physics.arcade.velocityFromAngle(this.player.angle, 300*this.speed, this.player.body.velocity);
 	},
 
 	unpause: function() {
-		console.log("player unpause")
 		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
-		//this.player.body.velocity = 1;
-		//this.game.physics.arcade.velocityFromAngle(this.player.angle, 300*this.speed, this.player.body.velocity);
 	},
 
 	render: function(){
 		this.game.debug.geom(this.circle,'#cfffff');
 		//this.game.debug.body(this.player);
-
 	}
 };

@@ -53,9 +53,11 @@ gameMananger.prototype = {
 			}
 		}
 
-		this.crown = this.game.add.sprite(w2, -32/this.game.world.scale.y, 'crown');
-		this.crown.anchor.setTo(0.5,0.8);
-		this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
+		if(numberPlayers > 0){
+			this.crown = this.game.add.sprite(w2, -32/this.game.world.scale.y, 'crown');
+			this.crown.anchor.setTo(0.5,0.8);
+			this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
+		}
 
 		if(numberPlayers > 0){
 			graphics.lineStyle(0);
@@ -182,6 +184,7 @@ gameMananger.prototype = {
 	pause: function() {
 		if (!paused) { //pause
 			paused = true;
+			this.game.input.onDown.active = false;
 			if (numberPlayers > 0) {
 				this.game.time.events.remove(this.powerTimer);
 			}
@@ -203,14 +206,12 @@ gameMananger.prototype = {
 	        exit.input.useHandCursor=true;
 
 	        if(this.game.sound.mute){
-	        	console.log("A")
 		    	audioButton = this.game.add.button(w2+150/this.game.world.scale.x, h2,"audiooff_button",this.muteSound,this);
 		  		audioButton.anchor.setTo(0.5,0.5);
 		  		audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		  		audioButton.input.useHandCursor=true;
 		    }
 		    else{
-		    	console.log("B")
 		        audioButton = this.game.add.button(w2+150/this.game.world.scale.x, h2,"audio_button",this.muteSound,this);
 		        audioButton.anchor.setTo(0.5,0.5);
 		        audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
@@ -221,6 +222,7 @@ gameMananger.prototype = {
 			if (numberPlayers > 0) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
+			this.game.input.onDown.active = true;
 			menu.destroy();
             restart.destroy();
             exit.destroy();
