@@ -14,40 +14,40 @@ setKeys.prototype = {
 
 
   	//select player
-		var playersAuxButton = this.game.add.sprite(w2,h2,"singleplayer_button");
+		var playersAuxButton = this.game.add.sprite(w2,h2-80,"player_select");
 		playersAuxButton.anchor.setTo(0.5,0.5);
-		textPlayers = this.game.add.text(w2,h2, (this.selectedPlayer+1), {
-	        font: "40px BAUHS93",
+		textPlayers = this.game.add.text(w2,h2-20, (this.selectedPlayer+1), {
+	        font: "100px Dosis Extrabold",
 	        fill: "#ffffff",
 	        align: "center"
   	});
   	textPlayers.anchor.setTo(0.5,0.5);
 
-    var leftArrow = this.game.add.button(w2-112,h2,"arrow",this.DecSelected,this);
+    var leftArrow = this.game.add.button(w2-90,h2-80,"set_players",this.DecSelected,this);
 		leftArrow.anchor.setTo(0.5,0.5);
+		leftArrow.scale.x = -1;
+		leftArrow.alpha = .7;
+		leftArrow.input.useHandCursor=true;
 
-		var rightArrow = this.game.add.button(w2+112,h2,"arrow",this.IncSelected,this);
+		var rightArrow = this.game.add.button(w2+90,h2-80,"set_players",this.IncSelected,this);
 		rightArrow.anchor.setTo(0.5,0.5);
+		rightArrow.alpha = .7;
+		rightArrow.input.useHandCursor=true;
 
   	//key select button
-		var keyButton = this.game.add.button(w2,160+h2,"key",this.selectKey,this);
+		var keyButton = this.game.add.sprite(w2,160+h2,"key_button");
 		keyButton.anchor.setTo(0.5,0.5);
-		this.keyText = this.game.add.text(w2,160+h2, String.fromCharCode(keys[this.selectedPlayer]), {
-	        font: "40px BAUHS93",
-	        fill: "#ff0044",
-	        align: "center"
+		this.keyText = this.game.add.text(w2,h2+140, String.fromCharCode(keys[this.selectedPlayer]), {
+      font: "150px Dosis Extrabold",
+      fill: colorHex,
+      align: "center"
   	});
   	this.keyText.anchor.setTo(0.5,0.5);
 
-  	//back button
-		var backButton = this.game.add.button(w2-480,320+h2,"play",this.back,this);
+    	//Go back Button
+		var backButton = this.game.add.button(w2/2,h2+230,"back_button",this.back,this);
 		backButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(w2-480,320+h2, "Back", {
-	        font: "40px BAUHS93",
-	        fill: "#ff0044",
-	        align: "center"
-  	});
-  	text.anchor.setTo(0.5,0.5);
+		backButton.input.useHandCursor=true;
 
   	this.game.input.keyboard.addCallbacks(this, this.onPressed);
 	},
@@ -73,7 +73,7 @@ setKeys.prototype = {
 		else{
 			this.selectedPlayer--;
 		}
-		textPlayers.setText("Player " + (this.selectedPlayer+1));
+		textPlayers.setText(this.selectedPlayer+1);
 		this.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
 	},
 
@@ -84,7 +84,7 @@ setKeys.prototype = {
 	    else{
 				this.selectedPlayer++;
 	    }
-    textPlayers.setText("Player " + (this.selectedPlayer+1));
+    textPlayers.setText(this.selectedPlayer+1);
     this.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
 
 	},
