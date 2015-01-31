@@ -5,12 +5,20 @@ var setKeys = function(game){
   
 setKeys.prototype = {
   create: function(){
+		var text = this.game.add.text(w2,120, "configure keys", {
+        font: "150px Dosis Extrabold",
+        fill: "#ffffff",
+        align: "center"
+  	});
+  	text.anchor.setTo(0.5,0.5);
+
+
   	//select player
-		var playersAuxButton = this.game.add.sprite(w2,h2,"auxBar");
+		var playersAuxButton = this.game.add.sprite(w2,h2,"singleplayer_button");
 		playersAuxButton.anchor.setTo(0.5,0.5);
-		textPlayers = this.game.add.text(w2,h2, "Player " + (this.selectedPlayer+1), {
+		textPlayers = this.game.add.text(w2,h2, (this.selectedPlayer+1), {
 	        font: "40px BAUHS93",
-	        fill: "#363636",
+	        fill: "#ffffff",
 	        align: "center"
   	});
   	textPlayers.anchor.setTo(0.5,0.5);

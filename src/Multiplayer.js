@@ -9,7 +9,7 @@ multiplayer.prototype = {
   	}
 
 		var text = this.game.add.text(w2,120, "multiplayer", {
-        font: "200px Dosis Extrabold",
+        font: "150px Dosis Extrabold",
         fill: "#ffffff",
         align: "center"
   	});
