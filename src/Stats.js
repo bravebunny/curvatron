@@ -32,14 +32,9 @@ stats.prototype = {
     	statsPlayers.anchor.setTo(0.5,0.5);
 
     	//back button
-		var backButton = this.game.add.button(w2-480,320+h2,"play",function(){this.game.state.start("Menu");},this);
+		var backButton = this.game.add.button(w2/2,h2+230,"back_button",function(){this.game.state.start("Menu");},this);
 		backButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(w2-480,320+h2, "Back", {
-	        font: "40px BAUHS93",
-	        fill: "#ff0044",
-	        align: "center"
-	  	});
-	  	text.anchor.setTo(0.5,0.5);
+		backButton.input.useHandCursor=true;
 
 	},
 

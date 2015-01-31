@@ -83,10 +83,11 @@ gameMananger.prototype = {
 		} else {
 			this.createPower();
 		}
-
-		pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchePauseButton,this);
-	    pauseSprite.anchor.setTo(0.5, 0.5);
-	    pauseSprite.input.useHandCursor=true;
+		if(mobile){
+			pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchePauseButton,this);
+	    	pauseSprite.anchor.setTo(0.5, 0.5);
+	    	pauseSprite.input.useHandCursor=true;
+		}
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);	
 	},
@@ -164,8 +165,10 @@ gameMananger.prototype = {
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
 
-			pauseSprite.alpha = 0;
-			pauseSprite.input.useHandCursor=false;
+			if(mobile){
+				pauseSprite.alpha = 0;
+				pauseSprite.input.useHandCursor=false;
+			}
 
 		  	if(numberPlayers > 0){
 		  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, "player " + lastCrowned + " with: " + highScore, {
@@ -193,10 +196,13 @@ gameMananger.prototype = {
 			if(pauseTween){
 				pauseTween.stop();
 			}
-			pauseSprite.alpha = 0;
 			paused = true;
 			this.game.input.onDown.active = false;
-			pauseSprite.callBack
+
+			if(mobile){
+				pauseSprite.alpha = 0;
+				pauseSprite.callBack
+			}
 
 			if (numberPlayers > 0) {
 				this.game.time.events.remove(this.powerTimer);
@@ -235,9 +241,11 @@ gameMananger.prototype = {
 			if (numberPlayers > 0) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
-			pauseSprite.alpha = 0.1;
 			this.game.input.onDown.active = true;
-			pauseSprite.input.useHandCursor=true;
+			if(mobile){
+				pauseSprite.alpha = 0.1;
+				pauseSprite.input.useHandCursor=true;
+			}
 			menu.destroy();
             restart.destroy();
             exit.destroy();
@@ -250,7 +258,9 @@ gameMananger.prototype = {
 	touchePauseButton: function(){
 		if(!paused){
 			this.pause();
-			pauseSprite.input.useHandCursor=false;
+			if(mobile){
+				pauseSprite.input.useHandCursor=false;
+			}
 		}	
 	},
 

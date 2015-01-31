@@ -49,7 +49,12 @@ Player.prototype = {
     	this.game.add.audio('sfx_collect3')];
 		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 
-		this.game.input.onDown.add(this.click, this);
+		if(mobile){
+			this.game.input.onDown.add(this.click, this);
+		}
+		else{
+			this.game.input.onDown.add(this.keyPressed, this);
+		}
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
 	},
@@ -166,7 +171,7 @@ Player.prototype = {
 			this.direction *= -1;
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-				if(pauseSprite.alpha == 1){
+				if(mobile && pauseSprite.alpha == 1){
 					pauseTween = this.game.add.tween(pauseSprite).to( { alpha: 0.1 }, 2000, Phaser.Easing.Linear.None, true);
 				}
 			}
