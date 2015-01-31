@@ -29,6 +29,7 @@ preloadMenu.prototype = {
 		this.game.load.image("restart_button","assets/sprites/menu/restart.png");
 		this.game.load.image("deaths-stats","assets/sprites/menu/deaths-stats.png");		
 		this.game.load.image("score-stat","assets/sprites/menu/score-stat.png");
+		this.game.load.image("total-stats","assets/sprites/menu/total-stats.png");
 	},
   	create: function(){
 		this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
