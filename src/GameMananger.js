@@ -20,6 +20,7 @@ gameMananger.prototype = {
 		muteAudio = false;
 		paused = false;
 		this.powerTimer = null;
+		totalTime = 0;
 
 	},
 
@@ -89,6 +90,7 @@ gameMananger.prototype = {
 
 	update: function() {
 		if(!paused){
+			totalTime += this.game.time.physicsElapsed;
 
 			//Give crown
 			if (crowned != -1) {
@@ -104,8 +106,8 @@ gameMananger.prototype = {
 					this.crown.visible = true;
 				}
 			}
-			if(numberPlayers>0 && this.gameTime >= (this.game.time.totalElapsedSeconds()-this.initialTime)){
-				this.timeCircle.scale.set((-1/this.gameTime)*(this.game.time.totalElapsedSeconds()-this.initialTime)+1)	
+			if(numberPlayers>0 && this.gameTime >= (totalTime)){
+				this.timeCircle.scale.set((-1/this.gameTime)*(totalTime)+1);
 			}
 			else if(numberPlayers>0){
 				this.endGame();
