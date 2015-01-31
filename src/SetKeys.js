@@ -95,8 +95,10 @@ setKeys.prototype = {
 	},
 
 	onPressed: function(){
-		console.log("onPressed")
-		keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode;
-		this.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
+		if (this.game.input.keyboard.lastKey.keyCode >= 48 && this.game.input.keyboard.lastKey.keyCode <= 90) {
+			keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode;
+			this.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
+		}
+
 	}
 }

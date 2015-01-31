@@ -2,14 +2,14 @@ var menu = function(game){
 	this.menuSpace = 160;
 	maxPlayers = 7;
 	  keys = [
-    Phaser.Keyboard.Q,
-    Phaser.Keyboard.Z,
-    Phaser.Keyboard.R,
-    Phaser.Keyboard.C,
-    Phaser.Keyboard.U,
-    Phaser.Keyboard.B,
+    Phaser.Keyboard.W,
     Phaser.Keyboard.P,
-    Phaser.Keyboard.M,]
+    Phaser.Keyboard.B,
+    Phaser.Keyboard.Z,
+    Phaser.Keyboard.M,
+    Phaser.Keyboard.C,
+    Phaser.Keyboard.R,
+    Phaser.Keyboard.U,]
   numberPlayers = 0;
   bestScore = 0;
   ballsScore = 0;
@@ -30,17 +30,17 @@ menu.prototype = {
   	this.game.world.scale.set(1);
 
   	bestScore = parseInt(localStorage.getItem("highScore"));
-  	if(bestScore == null) {
+  	if(isNaN(bestScore)) {
   		bestScore = 0;
   	}
 
     ballsScore = parseInt(localStorage.getItem("ballsScore"));
-    if(ballsScore == null) {
+    if(isNaN(ballsScore)) {
       ballsScore = 0;
     }
 
     deathScore = parseInt(localStorage.getItem("deathScore"));
-    if(deathScore == null) {
+    if(isNaN(deathScore)) {
       deathScore = 0;
     }
 

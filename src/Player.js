@@ -52,7 +52,7 @@ Player.prototype = {
 		if(mobile){
 			this.game.input.onDown.add(this.click, this);
 		}
-		else{
+		else if (numberPlayers == 0){
 			this.game.input.onDown.add(this.keyPressed, this);
 		}
 		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
@@ -148,16 +148,11 @@ Player.prototype = {
 				Math.round(Math.cos(this.player.rotation + Math.PI/2)*88) + this.x,
 				Math.round(Math.sin(this.player.rotation + Math.PI/2)*88) + this.y,
 				String.fromCharCode(this.key), {
-		      font: "80px Arial Black",
+		      font: "80px Dosis Extrabold",
 		      fill: "#ffffff",
 		      align: "center"
 		  	});
 	  	this.keyText.anchor.setTo(0.5,0.5);
-
-	  	if (numberPlayers == 0) {
-	  		this.keyText.setText(bestScore);
-	  		this.keyText.scale.set(0.75);
-	  	}
 		}
 
 	},
@@ -171,6 +166,8 @@ Player.prototype = {
 			this.direction *= -1;
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+				tempLabel = this.game.add.tween(tempLabel).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+				tempLabelText = this.game.add.tween(tempLabelText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 				if(mobile && pauseSprite.alpha == 1){
 					pauseTween = this.game.add.tween(pauseSprite).to( { alpha: 0.1 }, 2000, Phaser.Easing.Linear.None, true);
 				}

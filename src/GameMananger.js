@@ -7,7 +7,7 @@ gameMananger.prototype = {
 		crowned = -1;
 		players = [];
 		this.timeCircle = null;
-		this.gameTime = 10; //sec 
+		this.gameTime = 60; //sec 
 		this.initialTime = 0;
 		lastCrowned = 0;
 		if (numberPlayers > 0) {
@@ -35,8 +35,18 @@ gameMananger.prototype = {
 
 		if(mobile){
 			pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchePauseButton,this);
-	    	pauseSprite.anchor.setTo(0.5, 0.5);
-	    	pauseSprite.input.useHandCursor=true;
+    	pauseSprite.anchor.setTo(0.5, 0.5);
+    	pauseSprite.input.useHandCursor=true;
+		} else if (numberPlayers == 0){
+			tempLabel = this.game.add.sprite(w2, h2, 'score-stat');
+			tempLabel.anchor.setTo(0.5,0.5);
+			tempLabel.alpha = 0.7;
+			tempLabelText = this.game.add.text(w2+50, h2+8, bestScore.toString(), {
+	      font: "100px Dosis Extrabold",
+	      fill: colorHex,
+	      align: "center"
+	  	});
+	  	tempLabelText.anchor.setTo(0.5,0.5);
 		}
 
 		//Choose snake locations
@@ -223,7 +233,6 @@ gameMananger.prototype = {
 			if(gameOver) {
 				this.game.state.start("Menu");
 			}
-
 			this.overlay.alpha = 0.5;
 
 			if(pauseTween){
@@ -234,7 +243,9 @@ gameMananger.prototype = {
 
 			if(mobile){
 				pauseSprite.alpha = 0;
-				pauseSprite.callBack
+			} else if (numberPlayers == 0){
+				tempLabel.alpha = 0;
+				tempLabelText.alpha = 0;
 			}
 
 			if (numberPlayers > 0) {
