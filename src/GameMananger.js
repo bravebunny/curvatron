@@ -21,7 +21,6 @@ gameMananger.prototype = {
 		paused = false;
 		this.powerTimer = null;
 		totalTime = 0;
-
 	},
 
 	create: function() {
@@ -73,9 +72,6 @@ gameMananger.prototype = {
 	  	powerText.anchor.setTo(0.5,0.5);
 		}
 		this.initialTime = this.game.time.totalElapsedSeconds();
-
-		//Pause Game
-		this.pauseGame();
 
 		//Generate powers
 		if (numberPlayers > 0) {
@@ -144,157 +140,92 @@ gameMananger.prototype = {
 	},
 
 	endGame: function(){
-		if (numberPlayers > 0) {
-			this.game.time.events.remove(this.powerTimer);
-		}
-		for(var i = 0; i<players.length; i++){
+		if(!gameOver){
+			if (numberPlayers > 0) {
+				this.game.time.events.remove(this.powerTimer);
+			}
+			for(var i = 0; i<players.length; i++){
 				players[i].kill();
 			}
-		/*highScore = this.game.add.sprite(w2, h2, 'play');
-	    highScore.anchor.setTo(0.5, 0.5);
-	    highScore.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-	    score = this.game.add.sprite(w2, h2+64/this.game.world.scale.x, 'auxBar');
-	    score.anchor.setTo(0.5, 0.5);
-	    score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);*/
+		    mainMenu = this.game.add.button(w2, h2-97/this.game.world.scale.x,"exit_button",function(){this.game.state.start("Menu");},this);
+		    mainMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+			mainMenu.anchor.setTo(0.5,0.5);
+			mainMenu.input.useHandCursor=true;
 
-	    mainMenu = this.game.add.button(w2, h2-97/this.game.world.scale.x,"exit_button",function(){this.game.state.start("Menu");},this);
-	    mainMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-		mainMenu.anchor.setTo(0.5,0.5);
+		  	restartButton = this.game.add.button(w2, h2+97/this.game.world.scale.x,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
+			restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+			restartButton.anchor.setTo(0.5,0.5);
+			restartButton.input.useHandCursor=true;
 
-	  	restartButton = this.game.add.button(w2, h2+97/this.game.world.scale.x,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
-		restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-		restartButton.anchor.setTo(0.5,0.5);
+		  	if(numberPlayers > 0){
+		  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, "player " + lastCrowned + " with: " + highScore, {
+		        font: "40px Arial",
+		        fill: "#ff0044",
+		        align: "center"});
+	    		scoreInMenu.anchor.setTo(0.5,0.5);
+		  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		  	}
 
-	  	if(numberPlayers > 0){
-	  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, "player " + lastCrowned + " with: " + highScore, {
-	        font: "40px Arial",
-	        fill: "#ff0044",
-	        align: "center"});
-    		scoreInMenu.anchor.setTo(0.5,0.5);
-	  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-	  	}
-
-    	if(numberPlayers == 0){
-    		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, bestScore, {
-	        font: "40px Arial",
-	        fill: "#ff0044",
-	        align: "center"});
-    		scoreInMenu.anchor.setTo(0.5,0.5);
-	  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-    	}
-
-	  	gameOver = true;
-	},
-
-	pauseGame:function(){
-	// Create a label to use as a button
-	    	
-	    	/*if(!this.game.paused && !gameOver){
-		        // When the paus button is pressed, we pause the game
-		        this.game.paused = true;
-
-		        // Then add the menu
-		        menu = this.game.add.sprite(w2, h2-150/this.game.world.scale.x, 'resume_button');
-		        menu.anchor.setTo(0.5, 0.5);
-		        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-
-		        restart = this.game.add.sprite(w2-150/this.game.world.scale.x, h2, 'restart_button');
-		        restart.anchor.setTo(0.5, 0.5);
-		        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-
-		        back = this.game.add.sprite(w2, h2+150/this.game.world.scale.x, 'exit_button');
-		        back.anchor.setTo(0.5, 0.5);
-		        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-
-		        if(this.game.sound.mute){
-			    	audioButton = this.game.add.sprite(w2+150/this.game.world.scale.x, h2,"audiooff_button");
-			  		audioButton.anchor.setTo(0.5,0.5);
-			  		audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-			    }
-			    else{
-			        audioButton = this.game.add.sprite(w2+150/this.game.world.scale.x, h2,"audio_button");
-			        audioButton.anchor.setTo(0.5,0.5);
-			        audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-			    }
-
-			}
-		    else{
-		        menu.destroy();
-		        restart.destroy();
-		        back.destroy();
-		        audioButton.destroy();
-		        this.game.paused = false;
-			}*/
-
-	    // Add a input listener that can help us return from being paused
-	    this.game.input.onDown.add(unpauseOld, this);
-
-	    // And finally the method that handels the pause menu
-	    function unpauseOld(event){
-	        // Only act if paused
-	        if(this.game.paused){
-	            // Calculate the corners of the menu
-	            var x1 = this.game.world.width/2 - 81, x2 = this.game.world.width/2 + 81, //128+128 é o tamanho da imagem
-	                y1 = this.game.world.height/2 - 69, y2 = this.game.world.height/2 -231;
-     
-	            // resume
-	           if(event.x > x1 && event.x < x2 && event.y < y1 && event.y > y2 ){
-	                // Remove the menu and the label
-	                menu.destroy();
-	                restart.destroy();
-	                back.destroy();
-	                audioButton.destroy();
-	                this.game.paused = false;
-	            }
-	            //Exit
-	            var x1 = this.game.world.width/2 - 81, x2 = this.game.world.width/2 + 81, //128+128 é o tamanho da imagem
-	                y1 = this.game.world.height/2 + 49 , y2 = this.game.world.height/2 + 211;
-
-	            if((event.x > x1) && (event.x < x2) && (event.y > y1) && (event.y < y2 )){
-	             	this.game.paused = false;
-	             	this.game.state.start("Menu");
-	            }
-
-	            //Restart
-	            var x1 = this.game.world.width/2-211, x2 = this.game.world.width/2-49, //128+128 é o tamanho da imagem
-	                y1 = this.game.world.height/2+81 , y2 = this.game.world.height/2-81;
-
-	            if((event.x > x1) && (event.x < x2) && (event.y < y1) && (event.y > y2 )){
-	             	this.game.paused = false;
-	             	this.game.state.restart();	
-	            }
-
-	            //Sound
-	            var x1 = this.game.world.width/2+49, x2 = this.game.world.width/2+211, //128+128 é o tamanho da imagem
-	                y1 = this.game.world.height/2+81 , y2 = this.game.world.height/2-81;
-
-	            if((event.x > x1) && (event.x < x2) && (event.y < y1) && (event.y > y2)){
-	             	if(this.game.sound.mute){
-	             		muteAudio = false;
-	             		console.log("eeeeeeeeeee")
-				    }
-				    else{
-				    	muteAudio = true;
-				    	console.log("aagagaha")
-				    }	
-	            }
-	        }
-	    };
+	    	if(numberPlayers == 0){
+	    		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, bestScore, {
+		        font: "40px Arial",
+		        fill: "#ff0044",
+		        align: "center"});
+	    		scoreInMenu.anchor.setTo(0.5,0.5);
+		  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	    	}
+		  	gameOver = true;
+		}
 	},
 
 	pause: function() {
-		if (!paused) {
+		if (!paused) { //pause
 			paused = true;
 			if (numberPlayers > 0) {
 				this.game.time.events.remove(this.powerTimer);
 			}
+
+	        // Then add the menu
+	        menu = this.game.add.button(w2, h2-150/this.game.world.scale.x, 'resume_button',function(){this.pause();},this);
+	        menu.anchor.setTo(0.5, 0.5);
+	        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	        menu.input.useHandCursor=true;
+
+	        restart = this.game.add.button(w2-150/this.game.world.scale.x, h2, 'restart_button',function(){this.game.state.restart();},this);
+	        restart.anchor.setTo(0.5, 0.5);
+	        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	        restart.input.useHandCursor=true;
+
+	        exit = this.game.add.button(w2, h2+150/this.game.world.scale.x, 'exit_button',function(){this.game.state.start("Menu");},this);
+	        exit.anchor.setTo(0.5, 0.5);
+	        exit.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	        exit.input.useHandCursor=true;
+
+	        if(this.game.sound.mute){
+	        	console.log("A")
+		    	audioButton = this.game.add.button(w2+150/this.game.world.scale.x, h2,"audiooff_button",this.muteSound,this);
+		  		audioButton.anchor.setTo(0.5,0.5);
+		  		audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		  		audioButton.input.useHandCursor=true;
+		    }
+		    else{
+		    	console.log("B")
+		        audioButton = this.game.add.button(w2+150/this.game.world.scale.x, h2,"audio_button",this.muteSound,this);
+		        audioButton.anchor.setTo(0.5,0.5);
+		        audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		        audioButton.input.useHandCursor=true;
+		    }
 			
-		} else {
-			paused = false;
+		}else { //unpause
 			if (numberPlayers > 0) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
+			menu.destroy();
+            restart.destroy();
+            exit.destroy();
+            audioButton.destroy();
+            paused = false;
 		}
 
 	},
@@ -303,6 +234,17 @@ gameMananger.prototype = {
     var hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
 	},
+
+	muteSound: function(){
+	    if(this.game.sound.mute){
+		    audioButton.loadTexture('audio_button');
+		    this.game.sound.mute = false;
+	    }
+	    else{
+	        audioButton.loadTexture('audiooff_button');
+	        this.game.sound.mute = true;
+	    }
+  	},
 
 	render: function(){
 		//players[0].render();
