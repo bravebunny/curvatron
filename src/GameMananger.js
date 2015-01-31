@@ -164,6 +164,9 @@ gameMananger.prototype = {
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
 
+			pauseSprite.alpha = 0;
+			pauseSprite.input.useHandCursor=false;
+
 		  	if(numberPlayers > 0){
 		  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, "player " + lastCrowned + " with: " + highScore, {
 		        font: "40px Arial",
