@@ -70,7 +70,7 @@ menu.prototype = {
 		keysButton.anchor.setTo(0.5,0.5);
     keysButton.input.useHandCursor=true;
     
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    if(mobile) {
       keysButton.alpha = 0.2;
     }
 
@@ -103,7 +103,9 @@ menu.prototype = {
 	},
 
 	setKeys: function() {
-		this.game.state.start("SetKeys");
+    if (mobile) {
+      this.game.state.start("SetKeys");
+    }
 	},
 
   stats: function() {

@@ -2,6 +2,7 @@ var boot = function(game){};
   
 boot.prototype = {
 	preload: function(){
+		mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 		bgColors = ['#76b83d', '#cf5e4f', '#805296', '#4c99b9'];
 		bgColorsDark = ['#213311', '#331713', '#2c1c33', '#152a33'];
 	    chosenColor = this.game.rnd.integerInRange(0, 3);

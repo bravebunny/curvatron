@@ -45,7 +45,7 @@ multiplayer.prototype = {
 		playButton.input.useHandCursor=true;
 
 
-    	//Go back Button
+    //Go back Button
 		var backButton = this.game.add.button(w2/2,h2+230,"back_button",this.back,this);
 		backButton.anchor.setTo(0.5,0.5);
 		backButton.input.useHandCursor=true;
