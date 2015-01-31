@@ -83,6 +83,9 @@ menu.prototype = {
     //Multiplayer
 		var mpButton = this.game.add.button(w2+w2/4,h2,"multiplayer_button",this.multiplayer,this);
 		mpButton.anchor.setTo(0.5,0.5);
+    if (mobile) {
+      mpButton.alpha = 0.2;
+    }
     mpButton.input.useHandCursor=true;
 
   	//SetKeys
@@ -119,7 +122,9 @@ menu.prototype = {
 	},
 
 	multiplayer: function(){
-		this.game.state.start("Multiplayer");
+    if (!mobile) {
+      this.game.state.start("Multiplayer");
+    }
 	},
 
 	setKeys: function() {

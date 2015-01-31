@@ -101,6 +101,11 @@ gameMananger.prototype = {
 			this.createPower();
 		}
 
+		this.overlay = this.game.add.sprite(0, 0, 'overlay');
+		this.overlay.width = w2*2;
+		this.overlay.height = h2*2;
+		this.overlay.alpha = 0;
+
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);	
 	},
 
@@ -159,6 +164,13 @@ gameMananger.prototype = {
 
 	endGame: function(){
 		if(!gameOver){
+
+			this.game.input.onDown.active = false;
+			this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
+				this.game.input.onDown.active = true;
+			}, this);
+
+			this.overlay.alpha = 0.5;
 			if (numberPlayers > 0) {
 				this.game.time.events.remove(this.powerTimer);
 			}
@@ -208,6 +220,12 @@ gameMananger.prototype = {
 
 	pause: function() {
 		if (!paused) { //pause
+			if(gameOver) {
+				this.game.state.start("Menu");
+			}
+
+			this.overlay.alpha = 0.5;
+
 			if(pauseTween){
 				pauseTween.stop();
 			}
@@ -253,6 +271,7 @@ gameMananger.prototype = {
 		    }
 			
 		}else { //unpause
+			this.overlay.alpha = 0;
 			if (numberPlayers > 0) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
@@ -285,15 +304,15 @@ gameMananger.prototype = {
 	},
 
 	muteSound: function(){
-	    if(this.game.sound.mute){
-		    audioButton.loadTexture('audio_button');
-		    this.game.sound.mute = false;
-	    }
-	    else{
-	        audioButton.loadTexture('audiooff_button');
-	        this.game.sound.mute = true;
-	    }
-  	},
+    if(this.game.sound.mute){
+	    audioButton.loadTexture('audio_button');
+	    this.game.sound.mute = false;
+    }
+    else{
+        audioButton.loadTexture('audiooff_button');
+        this.game.sound.mute = true;
+    }
+	},
 
 	render: function(){
 		//players[0].render();

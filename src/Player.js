@@ -55,7 +55,7 @@ Player.prototype = {
 		else{
 			this.game.input.onDown.add(this.keyPressed, this);
 		}
-		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
+		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
 	},
 
@@ -164,7 +164,7 @@ Player.prototype = {
 
 
 	keyPressed: function() {
-		if(gameOver && numberPlayers == 0){
+		if(gameOver && numberPlayers == 0 && this.game.input.onDown.active){
 			gameOver=false;
 			this.game.state.restart(true,false,numberPlayers);
 		} else {
