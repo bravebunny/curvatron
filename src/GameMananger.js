@@ -18,6 +18,7 @@ gameMananger.prototype = {
 		gameOver = false;
 		graphics = this.game.add.graphics(w2, h2);
 		muteAudio = false;
+		paused = false;
 
 	},
 
@@ -84,46 +85,47 @@ gameMananger.prototype = {
 	},
 
 	update: function() {
+		if(!paused){
 
-		//Update players
-		for(var i=0; i <= numberPlayers; i++){
-			players[i].update();
-		}
+			//Update players
+			for(var i=0; i <= numberPlayers; i++){
+				players[i].update();
+			}
 
-		//Give crown
-		if (crowned != -1) {
-			if (Math.abs(this.crown.x - players[crowned].player.x) < 30 && Math.abs(this.crown.y - players[crowned].player.y) < 30) {
-				players[crowned].addCrown();
+			//Give crown
+			if (crowned != -1) {
+				if (Math.abs(this.crown.x - players[crowned].player.x) < 30 && Math.abs(this.crown.y - players[crowned].player.y) < 30) {
+					players[crowned].addCrown();
 
-				this.crown.x = players[crowned].player.x;
-				this.crown.y = players[crowned].player.y;
-				//this.crown.rotation = players[crowned].player.rotation;
-				this.crown.visible = false;
-			} else {
-				this.game.physics.arcade.moveToObject(this.crown, players[crowned].player, 800);
-				this.crown.visible = true;
+					this.crown.x = players[crowned].player.x;
+					this.crown.y = players[crowned].player.y;
+					//this.crown.rotation = players[crowned].player.rotation;
+					this.crown.visible = false;
+				} else {
+					this.game.physics.arcade.moveToObject(this.crown, players[crowned].player, 800);
+					this.crown.visible = true;
+				}
+			}
+			if(numberPlayers>0 && this.gameTime >= (this.game.time.totalElapsedSeconds()-this.initialTime)){
+				this.timeCircle.scale.set((-1/this.gameTime)*(this.game.time.totalElapsedSeconds()-this.initialTime)+1)	
+			}
+			else if(numberPlayers>0){
+				this.endGame();
+			}
+
+			else if(players[0].dead){
+				this.endGame();
+			}
+
+			if(muteAudio && !this.game.mute){
+				audioButton.loadTexture('audiooff_button');
+		        this.game.sound.mute = true;
+			}
+			else if(!muteAudio && this.game.mute){
+				audioButton.loadTexture('audio_button');
+		        this.game.sound.mute = false;
 			}
 		}
-		if(numberPlayers>0 && this.gameTime >= (this.game.time.totalElapsedSeconds()-this.initialTime)){
-			this.timeCircle.scale.set((-1/this.gameTime)*(this.game.time.totalElapsedSeconds()-this.initialTime)+1)	
-		}
-		else if(numberPlayers>0){
-			this.endGame();
-		}
-
-		else if(players[0].dead){
-			this.endGame();
-		}
-
-		if(muteAudio && !this.game.mute){
-			audioButton.loadTexture('audiooff_button');
-	        this.game.sound.mute = true;
-		}
-		else if(!muteAudio && this.game.mute){
-			audioButton.loadTexture('audio_button');
-	        this.game.sound.mute = false;
-		}
-
 	},
 
 	createPower: function() {
@@ -180,42 +182,44 @@ gameMananger.prototype = {
 	pauseGame:function(){
 	// Create a label to use as a button
 	    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function () {
-    	if(!this.game.paused && !gameOver){
-	        // When the paus button is pressed, we pause the game
-	        this.game.paused = true;
+	    	paused = true;
 
-	        // Then add the menu
-	        menu = this.game.add.sprite(w2, h2-150/this.game.world.scale.x, 'resume_button');
-	        menu.anchor.setTo(0.5, 0.5);
-	        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	    	/*if(!this.game.paused && !gameOver){
+		        // When the paus button is pressed, we pause the game
+		        this.game.paused = true;
 
-	        restart = this.game.add.sprite(w2-150/this.game.world.scale.x, h2, 'restart_button');
-	        restart.anchor.setTo(0.5, 0.5);
-	        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		        // Then add the menu
+		        menu = this.game.add.sprite(w2, h2-150/this.game.world.scale.x, 'resume_button');
+		        menu.anchor.setTo(0.5, 0.5);
+		        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-	        back = this.game.add.sprite(w2, h2+150/this.game.world.scale.x, 'exit_button');
-	        back.anchor.setTo(0.5, 0.5);
-	        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		        restart = this.game.add.sprite(w2-150/this.game.world.scale.x, h2, 'restart_button');
+		        restart.anchor.setTo(0.5, 0.5);
+		        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-	        if(this.game.sound.mute){
-		    	audioButton = this.game.add.sprite(w2+150/this.game.world.scale.x, h2,"audiooff_button");
-		  		audioButton.anchor.setTo(0.5,0.5);
-		  		audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-		    }
+		        back = this.game.add.sprite(w2, h2+150/this.game.world.scale.x, 'exit_button');
+		        back.anchor.setTo(0.5, 0.5);
+		        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+
+		        if(this.game.sound.mute){
+			    	audioButton = this.game.add.sprite(w2+150/this.game.world.scale.x, h2,"audiooff_button");
+			  		audioButton.anchor.setTo(0.5,0.5);
+			  		audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+			    }
+			    else{
+			        audioButton = this.game.add.sprite(w2+150/this.game.world.scale.x, h2,"audio_button");
+			        audioButton.anchor.setTo(0.5,0.5);
+			        audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+			    }
+
+			}
 		    else{
-		        audioButton = this.game.add.sprite(w2+150/this.game.world.scale.x, h2,"audio_button");
-		        audioButton.anchor.setTo(0.5,0.5);
-		        audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-		    }
-
-		}
-	    else{
-	        menu.destroy();
-	        restart.destroy();
-	        back.destroy();
-	        audioButton.destroy();
-	        this.game.paused = false;
-		}
+		        menu.destroy();
+		        restart.destroy();
+		        back.destroy();
+		        audioButton.destroy();
+		        this.game.paused = false;
+			}*/
 
 	    }, this);
 
