@@ -25,7 +25,12 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
-    this.game.stage.backgroundColor = bgColorsDark[chosenColor];
+		if (numberPlayers > 0) {
+			this.game.stage.backgroundColor = bgColorsDark[chosenColor];
+		} else {
+			document.body.style.background = bgColorsDark[chosenColor];
+
+		}
 
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
@@ -67,12 +72,17 @@ gameMananger.prototype = {
 			this.timeCircle.pivot.x = w2;
 			this.timeCircle.pivot.y = h2;
 		} else {
+			var textSize = 15;
+	  	if (mobile) {
+	  		textSize = 30
+	  	}
 			powerText = this.game.add.text(this.x, this.y, "1",
-				{ font: "15px Arial Black",
-		      fill: "#ffffff",
-		      align: "center"
-		  	});
+			{ font: "" + textSize + "px Arial Black",
+	      fill: "#ffffff",
+	      align: "center"
+	  	});
 	  	powerText.anchor.setTo(0.5,0.5);
+
 		}
 
 		this.initialTime = this.game.time.totalElapsedSeconds();

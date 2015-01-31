@@ -25,7 +25,11 @@ PowerUp.prototype = {
 				this.size = 4;
 			}
 		} else {
-			this.size = 1;
+			if (mobile) {
+				this.size = 1.5;
+			} else {
+				this.size = 1;
+			}
 		}
 
 		this.place();

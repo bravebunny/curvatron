@@ -3,7 +3,15 @@ var stats = function(game){
   
 stats.prototype = {
   	create: function(){
-    	
+
+		var text = this.game.add.text(w2,120, "singleplayer stats", {
+      font: "150px Dosis Extrabold",
+      fill: "#ffffff",
+      align: "center"
+  	});
+  	text.anchor.setTo(0.5,0.5);
+
+
 		var stastPlayer = this.game.add.sprite(w2-64, h2-64, 'gametitle');
 		stastPlayer.anchor.setTo(0.5,0.5);
 		statsPlayers = this.game.add.text(w2-64, h2-64, "stats", {

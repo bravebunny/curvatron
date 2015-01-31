@@ -21,6 +21,7 @@ menu.prototype = {
 
   create: function(){
   	this.game.stage.backgroundColor = colorHex;
+    document.body.style.background = colorHex;
   	w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 
@@ -33,11 +34,18 @@ menu.prototype = {
 
 		//Game Title
 		var text = this.game.add.text(w2,120, "curvatron", {
-	        font: "200px Dosis Extrabold",
-	        fill: "#ffffff",
-	        align: "center"
-    	});
-    	text.anchor.setTo(0.5,0.5);
+      font: "200px Dosis Extrabold",
+      fill: "#ffffff",
+      align: "center"
+  	});
+  	text.anchor.setTo(0.5,0.5);
+    
+    var text = this.game.add.text(w2,120, "curvatron", {
+      font: "200px Dosis Extrabold",
+      fill: "#ffffff",
+      align: "center"
+    });
+    text.anchor.setTo(0.5,0.5);
 
     //Single Player
 		var spButton = this.game.add.button(w2-w2/4,h2,"singleplayer_button",this.playTheGame,this);
