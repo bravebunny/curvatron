@@ -30,7 +30,6 @@ gameMananger.prototype = {
 			this.game.stage.backgroundColor = bgColorsDark[chosenColor];
 		} else {
 			document.body.style.background = bgColorsDark[chosenColor];
-
 		}
 
 		if(mobile){
@@ -167,15 +166,15 @@ gameMananger.prototype = {
 				players[i].kill();
 			}
 
-		    mainMenu = this.game.add.button(w2, h2-97/this.game.world.scale.x,"exit_button",function(){this.game.state.start("Menu");},this);
-		    mainMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-			mainMenu.anchor.setTo(0.5,0.5);
-			mainMenu.input.useHandCursor=true;
-
-		  	restartButton = this.game.add.button(w2, h2+97/this.game.world.scale.x,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
+	  	restartButton = this.game.add.button(w2+97/this.game.world.scale.x, h2-97/this.game.world.scale.x,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
 			restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
+
+	    mainMenu = this.game.add.button(w2-97/this.game.world.scale.x, h2-97/this.game.world.scale.x,"exit_button",function(){this.game.state.start("Menu");},this);
+	    mainMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+			mainMenu.anchor.setTo(0.5,0.5);
+			mainMenu.input.useHandCursor=true;
 
 			if(mobile){
 				pauseSprite.alpha = 0;
@@ -192,12 +191,16 @@ gameMananger.prototype = {
 		  	}
 
 	    	if(numberPlayers == 0){
-	    		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, bestScore, {
-		        font: "40px Arial",
-		        fill: "#ff0044",
-		        align: "center"});
-	    		scoreInMenu.anchor.setTo(0.5,0.5);
-		  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+					spScoreLabel = this.game.add.button(w2, h2+97/this.game.world.scale.x,"score-stat");
+					spScoreLabel.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+					spScoreLabel.anchor.setTo(0.5,0.5);
+					spScoreLabel.alpha = 0.7;
+					statsPlayers = this.game.add.text(w2+50, h2+105/this.game.world.scale.x, bestScore, {
+			      font: "100px Dosis Extrabold",
+			      fill: colorHex,
+			      align: "center"
+		    	});
+		    	statsPlayers.anchor.setTo(0.5,0.5);
 	    	}
 		  	gameOver = true;
 		}
