@@ -190,7 +190,10 @@ gameMananger.prototype = {
 
 	pause: function() {
 		if (!paused) { //pause
-			pauseTween.stop();
+			if(pauseTween){
+				pauseTween.stop();
+			}
+			pauseSprite.alpha = 0;
 			paused = true;
 			this.game.input.onDown.active = false;
 			pauseSprite.callBack
@@ -247,7 +250,6 @@ gameMananger.prototype = {
 	touchePauseButton: function(){
 		if(!paused){
 			this.pause();
-			pauseSprite.alpha = 0;
 			pauseSprite.input.useHandCursor=false;
 		}	
 	},

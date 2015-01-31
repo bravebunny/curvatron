@@ -49,7 +49,7 @@ Player.prototype = {
     	this.game.add.audio('sfx_collect3')];
 		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 
-		this.game.input.onDown.add(this.keyPressed, this);
+		this.game.input.onDown.add(this.click, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
 	},
@@ -173,6 +173,16 @@ Player.prototype = {
 		}
 	},
 
+	click: function(){
+		var x1 = w2 - 81 , x2 = w2 + 82,
+            y1 = h2 - 81, y2 = h2 + 81;
+
+        if(this.game.input.position.x > x1 && this.game.input.position.x < x2 && this.game.input.position.y > y1 && this.game.input.position.y < y2 ){}
+        else{
+        	this.keyPressed();
+        }
+	},
+
 	kill: function(player, trail) {
 		this.keyText.destroy();
 		if(!this.dead){
@@ -241,14 +251,18 @@ Player.prototype = {
 	},
 
 	pause: function() {
-		this.textTween.pause();
+		if(this.textTween){
+			this.textTween.pause();
+		}
 		this.player.body.angularVelocity = 0;
 		this.player.body.velocity.x = 0;
 		this.player.body.velocity.y = 0;
 	},
 
 	unpause: function() {
-		this.textTween.resume();
+		if(this.textTween){
+			this.textTween.resume();
+		}
 		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 	},
 
