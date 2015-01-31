@@ -42,4 +42,9 @@ stats.prototype = {
 	  	text.anchor.setTo(0.5,0.5);
 
 	},
+
+	update: function(){
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function(){this.game.state.start("Menu");}, this);
+	},
+
 }
