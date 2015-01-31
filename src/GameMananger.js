@@ -19,6 +19,7 @@ gameMananger.prototype = {
 		graphics = this.game.add.graphics(w2, h2);
 		muteAudio = false;
 		paused = false;
+		this.powerTimer = null;
 
 	},
 
@@ -77,20 +78,17 @@ gameMananger.prototype = {
 
 		//Generate powers
 		if (numberPlayers > 0) {
-			this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
+			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 		} else {
 			this.createPower();
 		}
+
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);
 		
 	},
 
 	update: function() {
 		if(!paused){
-
-			//Update players
-			for(var i=0; i <= numberPlayers; i++){
-				players[i].update();
-			}
 
 			//Give crown
 			if (crowned != -1) {
@@ -126,6 +124,11 @@ gameMananger.prototype = {
 		        this.game.sound.mute = false;
 			}
 		}
+
+		//Update players
+		for(var i=0; i <= numberPlayers; i++){
+			players[i].update();
+		}
 	},
 
 	createPower: function() {
@@ -139,6 +142,9 @@ gameMananger.prototype = {
 	},
 
 	endGame: function(){
+		if (numberPlayers > 0) {
+			this.game.time.events.remove(this.powerTimer);
+		}
 		for(var i = 0; i<players.length; i++){
 				players[i].kill();
 			}
@@ -181,9 +187,7 @@ gameMananger.prototype = {
 
 	pauseGame:function(){
 	// Create a label to use as a button
-	    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function () {
-	    	paused = true;
-
+	    	
 	    	/*if(!this.game.paused && !gameOver){
 		        // When the paus button is pressed, we pause the game
 		        this.game.paused = true;
@@ -221,13 +225,11 @@ gameMananger.prototype = {
 		        this.game.paused = false;
 			}*/
 
-	    }, this);
-
 	    // Add a input listener that can help us return from being paused
-	    this.game.input.onDown.add(unpause, this);
+	    this.game.input.onDown.add(unpauseOld, this);
 
 	    // And finally the method that handels the pause menu
-	    function unpause(event){
+	    function unpauseOld(event){
 	        // Only act if paused
 	        if(this.game.paused){
 	            // Calculate the corners of the menu
@@ -277,6 +279,22 @@ gameMananger.prototype = {
 	            }
 	        }
 	    };
+	},
+
+	pause: function() {
+		if (!paused) {
+			paused = true;
+			if (numberPlayers > 0) {
+				this.game.time.events.remove(this.powerTimer);
+			}
+			
+		} else {
+			paused = false;
+			if (numberPlayers > 0) {
+				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
+			}
+		}
+
 	},
 
 	componentToHex: function(c) {
