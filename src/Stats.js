@@ -11,27 +11,30 @@ stats.prototype = {
 	  	});
 	  	text.anchor.setTo(0.5,0.5);
 
-		var stastPlayer = this.game.add.sprite(w2/2, h2, 'score-stat');
-		stastPlayer.anchor.setTo(0.5,0.5);
-		statsPlayers = this.game.add.text(w2/2+50, h2+8, localStorage.getItem("highScore"), {
+		var highScore = this.game.add.sprite(w2/2, h2, 'score-stat');
+		highScore.anchor.setTo(0.5,0.5);
+		highScore.alpha = 0.7;
+		highScoretext = this.game.add.text(w2/2+50, h2+8, bestScore.toString(), {
 	        font: "60px Dosis Extrabold",
 	        fill: colorHex,
 	        align: "center"
     	});
-    	statsPlayers.anchor.setTo(0.5,0.5);
+    	highScoretext.anchor.setTo(0.5,0.5);
 
-		var stastPlayer = this.game.add.sprite(w2, h2, 'total-stats');
-		stastPlayer.anchor.setTo(0.5,0.5);
-		statsPlayers = this.game.add.text(w2+50,h2+8, localStorage.getItem("ballsCounter"), {
+		var totalBalls = this.game.add.sprite(w2, h2, 'total-stats');
+		totalBalls.anchor.setTo(0.5,0.5);
+		totalBalls.alpha = 0.7;
+		totalBallsText = this.game.add.text(w2+50,h2+8, ballsScore.toString(), {
 	        font: "60px Dosis Extrabold",
 	        fill: colorHex,
 	        align: "center"
     	});
-    	statsPlayers.anchor.setTo(0.5,0.5);
+    	totalBallsText.anchor.setTo(0.5,0.5);
 
     	var statsDeaths = this.game.add.sprite(w2+w2/2, h2, 'deaths-stats');
 		statsDeaths.anchor.setTo(0.5,0.5);
-		textDeaths = this.game.add.text(w2+w2/2+50, h2+8, localStorage.getItem("deadCounter"), {
+		statsDeaths.alpha = 0.7;
+		textDeaths = this.game.add.text(w2+w2/2+50, h2+8, deathScore.toString(), {
 	        font: "60px Dosis Extrabold",
 	        fill: colorHex,
 	        align: "center"

@@ -191,8 +191,10 @@ Player.prototype = {
 	kill: function(player, trail) {
 		this.keyText.destroy();
 		if(!this.dead){
-			deadCounter += 1;
-			localStorage.setItem("deadCounter", deadCounter);
+			if(numberPlayers == 0){
+				deathScore++;
+				localStorage.setItem("deathScore", deathScore);
+			}
 			this.player.kill();
 			this.dead = true;
 			if (trail) {
@@ -240,6 +242,9 @@ Player.prototype = {
 			var powerup = new PowerUp(this.game);
 			powerup.preload();
 			powerup.create();
+
+			ballsScore++;
+			localStorage.setItem("ballsScore", ballsScore);
 
 			if (highScore > bestScore) {
 				bestScore = highScore;

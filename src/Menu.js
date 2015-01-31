@@ -12,6 +12,8 @@ var menu = function(game){
     Phaser.Keyboard.M,]
   numberPlayers = 0;
   bestScore = 0;
+  ballsScore = 0;
+  deathScore = 0;
   this.scoreLabel = null;
   this.scoreText = null;
 
@@ -27,10 +29,20 @@ menu.prototype = {
 
   	this.game.world.scale.set(1);
 
-  	bestScore = localStorage.getItem("highScore");
+  	bestScore = parseInt(localStorage.getItem("highScore"));
   	if(bestScore == null) {
   		bestScore = 0;
   	}
+
+    ballsScore = parseInt(localStorage.getItem("ballsScore"));
+    if(ballsScore == null) {
+      ballsScore = 0;
+    }
+
+    deathScore = parseInt(localStorage.getItem("deathScore"));
+    if(deathScore == null) {
+      deathScore = 0;
+    }
 
 		//Game Title
 		var text = this.game.add.text(w2,120, "curvatron", {
