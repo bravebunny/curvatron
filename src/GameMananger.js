@@ -25,6 +25,8 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
+		nextBallHigh = 0;
+
 		if (numberPlayers > 0) {
 			this.game.stage.backgroundColor = bgColorsDark[chosenColor];
 		} else {
@@ -148,7 +150,6 @@ gameMananger.prototype = {
 
 	createPower: function() {
 		var powerup = new PowerUp(this.game);
-		powerup.preload();
 		powerup.create();
 	},
 

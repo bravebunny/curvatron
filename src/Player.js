@@ -240,11 +240,14 @@ Player.prototype = {
 		if (numberPlayers == 0) {
 			highScore++;
 			var powerup = new PowerUp(this.game);
-			powerup.preload();
 			powerup.create();
 
 			ballsScore++;
 			localStorage.setItem("ballsScore", ballsScore);
+
+			if((nextBallHigh == 0) && (highScore==bestScore-1)){
+				nextBallHigh = 1;
+			}
 
 			if (highScore > bestScore) {
 				bestScore = highScore;

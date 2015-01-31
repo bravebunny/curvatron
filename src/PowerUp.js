@@ -8,10 +8,6 @@ var PowerUp = function(game) {
 
 PowerUp.prototype = {
 
-	preload: function() {
-		this.game.load.image('power', 'assets/power.png');
-	},
-
 	create: function() {
 		if (numberPlayers > 0) {
 			var randNum = this.game.rnd.integerInRange(0, 100);
@@ -33,6 +29,11 @@ PowerUp.prototype = {
 		}
 
 		this.place();
+
+		if(nextBallHigh == 1){
+			this.sprite.loadTexture('superPower');
+			nextBallHigh = 2;
+		}
 
 		groupPowers.add(this.sprite);
 
