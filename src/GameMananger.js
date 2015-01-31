@@ -21,6 +21,7 @@ gameMananger.prototype = {
 		paused = false;
 		this.powerTimer = null;
 		totalTime = 0;
+		pauseTween = null;
 	},
 
 	create: function() {
@@ -73,6 +74,7 @@ gameMananger.prototype = {
 		  	});
 	  	powerText.anchor.setTo(0.5,0.5);
 		}
+
 		this.initialTime = this.game.time.totalElapsedSeconds();
 
 		//Generate powers
@@ -82,8 +84,11 @@ gameMananger.prototype = {
 			this.createPower();
 		}
 
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);
-		
+		pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchePauseButton,this);
+	    pauseSprite.anchor.setTo(0.5, 0.5);
+	    pauseSprite.input.useHandCursor=true;
+
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);	
 	},
 
 	update: function() {
@@ -97,7 +102,6 @@ gameMananger.prototype = {
 
 					this.crown.x = players[crowned].player.x;
 					this.crown.y = players[crowned].player.y;
-					//this.crown.rotation = players[crowned].player.rotation;
 					this.crown.visible = false;
 				} else {
 					this.game.physics.arcade.moveToObject(this.crown, players[crowned].player, 800);
@@ -183,8 +187,11 @@ gameMananger.prototype = {
 
 	pause: function() {
 		if (!paused) { //pause
+			pauseTween.stop();
 			paused = true;
 			this.game.input.onDown.active = false;
+			pauseSprite.callBack
+
 			if (numberPlayers > 0) {
 				this.game.time.events.remove(this.powerTimer);
 			}
@@ -222,7 +229,9 @@ gameMananger.prototype = {
 			if (numberPlayers > 0) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
+			pauseSprite.alpha = 0.1;
 			this.game.input.onDown.active = true;
+			pauseSprite.input.useHandCursor=true;
 			menu.destroy();
             restart.destroy();
             exit.destroy();
@@ -232,9 +241,17 @@ gameMananger.prototype = {
 
 	},
 
+	touchePauseButton: function(){
+		if(!paused){
+			this.pause();
+			pauseSprite.alpha = 0;
+			pauseSprite.input.useHandCursor=false;
+		}	
+	},
+
 	componentToHex: function(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
+	    var hex = c.toString(16);
+	    return hex.length == 1 ? "0" + hex : hex;
 	},
 
 	muteSound: function(){

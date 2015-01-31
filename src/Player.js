@@ -22,6 +22,7 @@ var Player = function(id, x, y, key, game) {
 	this.trailPiece = null;
 	this.collectSound = null;
 	this.paused = false;
+	this.textTween = null;
 	this.border = [0, this.game.world.width/this.game.world.scale.x,
 					0,this.game.world.height/this.game.world.scale.y]
 };
@@ -37,16 +38,16 @@ Player.prototype = {
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
 		this.player.body.setSize(16*this.game.world.scale.x, 16*this.game.world.scale.x, 0, 0);
 		this.groupTrail.enableBody = true;
-    //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
-    this.lastTrailLength = this.growth;
+	    //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
+	    this.lastTrailLength = this.growth;
 
-    //create sound effects
-    this.collectSounds = [
+	    //create sound effects
+	    this.collectSounds = [
     	this.game.add.audio('sfx_collect0'),
     	this.game.add.audio('sfx_collect1'),
     	this.game.add.audio('sfx_collect2'),
     	this.game.add.audio('sfx_collect3')];
-		this.unpause();
+		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 
 		this.game.input.onDown.add(this.keyPressed, this);
 		this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
@@ -164,7 +165,10 @@ Player.prototype = {
 		} else {
 			this.direction *= -1;
 			if (this.keyText.alpha == 1) {
-				this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+				if(pauseSprite.alpha == 1){
+					pauseTween = this.game.add.tween(pauseSprite).to( { alpha: 0.1 }, 2000, Phaser.Easing.Linear.None, true);
+				}
 			}
 		}
 	},
@@ -237,12 +241,14 @@ Player.prototype = {
 	},
 
 	pause: function() {
+		this.textTween.pause();
 		this.player.body.angularVelocity = 0;
 		this.player.body.velocity.x = 0;
 		this.player.body.velocity.y = 0;
 	},
 
 	unpause: function() {
+		this.textTween.resume();
 		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 	},
 
