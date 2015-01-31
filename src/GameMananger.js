@@ -32,6 +32,12 @@ gameMananger.prototype = {
 
 		}
 
+		if(mobile){
+			pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchePauseButton,this);
+	    	pauseSprite.anchor.setTo(0.5, 0.5);
+	    	pauseSprite.input.useHandCursor=true;
+		}
+
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
@@ -92,11 +98,6 @@ gameMananger.prototype = {
 			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 		} else {
 			this.createPower();
-		}
-		if(mobile){
-			pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchePauseButton,this);
-	    	pauseSprite.anchor.setTo(0.5, 0.5);
-	    	pauseSprite.input.useHandCursor=true;
 		}
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);	
