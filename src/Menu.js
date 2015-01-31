@@ -69,8 +69,9 @@ menu.prototype = {
   	var keysButton = this.game.add.button(w2/2,h2+230,"setkeys_button",this.setKeys,this);
 		keysButton.anchor.setTo(0.5,0.5);
     keysButton.input.useHandCursor=true;
+    
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-      keysButton.alhpa = 0.2;
+      keysButton.alpha = 0.2;
     }
 
   	//Stats
