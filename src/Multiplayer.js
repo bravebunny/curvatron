@@ -40,7 +40,7 @@ multiplayer.prototype = {
 
 
 		//Play Button
-		var playButton = this.game.add.button(w2+w2/2,h2+230,"accept_button",this.playTheGame,this);
+		var playButton = this.game.add.button(w2+w2/2,h2+230,"resume_button",this.playTheGame,this);
 		playButton.anchor.setTo(0.5,0.5);
 		playButton.input.useHandCursor=true;
 

@@ -103,7 +103,7 @@ menu.prototype = {
 	},
 
 	setKeys: function() {
-    if (mobile) {
+    if (!mobile) {
       this.game.state.start("SetKeys");
     }
 	},
