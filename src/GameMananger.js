@@ -17,6 +17,7 @@ gameMananger.prototype = {
 		h2 = (this.game.world.height/2)/this.game.world.scale.x;
 		gameOver = false;
 		graphics = this.game.add.graphics(w2, h2);
+		muteAudio = false;
 
 	},
 
@@ -114,11 +115,13 @@ gameMananger.prototype = {
 			this.endGame();
 		}
 
-		if(this.gamePaused){
-			
+		if(muteAudio && !this.game.mute){
+			audioButton.loadTexture('audiooff_button');
+	        this.game.sound.mute = true;
 		}
-		else{
-
+		else if(!muteAudio && this.game.mute){
+			audioButton.loadTexture('audio_button');
+	        this.game.sound.mute = false;
 		}
 
 	},
@@ -145,28 +148,13 @@ gameMananger.prototype = {
 	    score.anchor.setTo(0.5, 0.5);
 	    score.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);*/
 
-	    backButton = this.game.add.button(w2, h2+128/this.game.world.scale.x,"exit_button",function(){this.game.state.start("Menu");},this);
-	    backButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	    mainMenu = this.game.add.button(w2, h2-97/this.game.world.scale.x,"exit_button",function(){this.game.state.start("Menu");},this);
+	    mainMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		mainMenu.anchor.setTo(0.5,0.5);
 
-		backButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(w2, h2+128/this.game.world.scale.x, "Main Menu", {
-	        font: "40px Arial",
-	        fill: "#ff0044",
-	        align: "center"
-    	});
-	  	text.anchor.setTo(0.5,0.5);
-			text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-
-	  	restartButton = this.game.add.button(w2, h2+192/this.game.world.scale.x,"play",function(){this.game.state.restart(true,false,numberPlayers);},this);
+	  	restartButton = this.game.add.button(w2, h2+97/this.game.world.scale.x,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
 		restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		restartButton.anchor.setTo(0.5,0.5);
-		text = this.game.add.text(w2, h2+192/this.game.world.scale.x, "Restart", {
-	        font: "40px Arial",
-	        fill: "#ff0044",
-	        align: "center"
-    	});
-	  	text.anchor.setTo(0.5,0.5);
-	  	text.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
 	  	if(numberPlayers > 0){
 	  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, "player " + lastCrowned + " with: " + highScore, {
@@ -197,25 +185,25 @@ gameMananger.prototype = {
 	        this.game.paused = true;
 
 	        // Then add the menu
-	        menu = this.game.add.sprite(w2, h2-150, 'exit_button');
+	        menu = this.game.add.sprite(w2, h2-150/this.game.world.scale.x, 'resume_button');
 	        menu.anchor.setTo(0.5, 0.5);
 	        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-	        restart = this.game.add.sprite(w2-150, h2/this.game.world.scale.x, 'exit_button');
+	        restart = this.game.add.sprite(w2-150/this.game.world.scale.x, h2, 'restart_button');
 	        restart.anchor.setTo(0.5, 0.5);
 	        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
-	        back = this.game.add.sprite(w2+150, h2/this.game.world.scale.x, 'exit_button');
+	        back = this.game.add.sprite(w2, h2+150/this.game.world.scale.x, 'exit_button');
 	        back.anchor.setTo(0.5, 0.5);
 	        back.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 
 	        if(this.game.sound.mute){
-		    	audioButton = this.game.add.sprite(w2, h2+150,"audiooff_button");
+		    	audioButton = this.game.add.sprite(w2+150/this.game.world.scale.x, h2,"audiooff_button");
 		  		audioButton.anchor.setTo(0.5,0.5);
 		  		audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		    }
 		    else{
-		        audioButton = this.game.add.sprite(w2, h2+150,"audio_button");
+		        audioButton = this.game.add.sprite(w2+150/this.game.world.scale.x, h2,"audio_button");
 		        audioButton.anchor.setTo(0.5,0.5);
 		        audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		    }
@@ -270,18 +258,17 @@ gameMananger.prototype = {
 	            }
 
 	            //Sound
-	            var x1 = this.game.world.width/2+211, x2 = this.game.world.width/2+49, //128+128 é o tamanho da imagem
+	            var x1 = this.game.world.width/2+49, x2 = this.game.world.width/2+211, //128+128 é o tamanho da imagem
 	                y1 = this.game.world.height/2+81 , y2 = this.game.world.height/2-81;
 
 	            if((event.x > x1) && (event.x < x2) && (event.y < y1) && (event.y > y2)){
 	             	if(this.game.sound.mute){
-				        audioButton.loadTexture('audio_button');
-				        localStorage.setItem("audio", 1);
+	             		muteAudio = false;
+	             		console.log("eeeeeeeeeee")
 				    }
 				    else{
-				        audioButton.loadTexture('audiooff_button');
-				        localStorage.setItem("audio", 0);
-				        this.game.sound.mute = true;
+				    	muteAudio = true;
+				    	console.log("aagagaha")
 				    }	
 	            }
 	        }
