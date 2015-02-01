@@ -137,16 +137,7 @@ gameMananger.prototype = {
 
 			//Give crown
 			if (crowned != -1) {
-				if (Math.abs(this.crown.x - players[crowned].player.x) < 30 && Math.abs(this.crown.y - players[crowned].player.y) < 30) {
-					players[crowned].addCrown();
-
-					this.crown.x = players[crowned].player.x;
-					this.crown.y = players[crowned].player.y;
-					this.crown.visible = false;
-				} else {
-					this.game.physics.arcade.moveToObject(this.crown, players[crowned].player, 800);
-					this.crown.visible = true;
-				}
+				players[crowned].addCrown();
 			}
 			if(numberPlayers>0 && this.gameTime >= (totalTime)){
 				this.timeCircle.scale.set((-1/this.gameTime)*(totalTime)+1);

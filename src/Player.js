@@ -206,8 +206,6 @@ Player.prototype = {
 				this.circle = new Phaser.Circle(trail.x, trail.y, 16);
 				console.log('Player ' + this.id + 'collided with ' + trail.frameName);
 				console.log(trail);
-				//this.game.paused = true;
-
 			} else {
 				console.log('Player ' + this.id + 'collided with a wall');
 			}
