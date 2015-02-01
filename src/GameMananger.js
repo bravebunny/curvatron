@@ -362,7 +362,9 @@ gameMananger.prototype = {
 
 	render: function(){
 		//players[0].render();
-		//groupPowers.forEachAlive(this.renderGroup, this);
+		for(var i = 0; i<groupTrails.length; i++ ){
+			groupTrails[i].forEachAlive(this.renderGroup, this);
+		}
 	},
 
 	renderGroup: function(member) {
