@@ -47,8 +47,8 @@ PowerUp.prototype = {
 	},
 
 	place: function() {
-		this.x = this.game.rnd.integerInRange(32, w2-32/this.game.world.scale.x);
-		this.y = this.game.rnd.integerInRange(32, h2-32/this.game.world.scale.y);
+		this.x = this.game.rnd.integerInRange(32/this.game.world.scale.x, 2*w2-32/this.game.world.scale.x);
+		this.y = this.game.rnd.integerInRange(32/this.game.world.scale.x, 2*h2-32/this.game.world.scale.y);
 
 		this.sprite = this.game.add.sprite(this.x, this.y, 'power');
 
