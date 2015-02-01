@@ -230,9 +230,12 @@ Player.prototype = {
 
 		if (this.score > highScore && numberPlayers != 0) {
 			highScore = this.score;
+			if(crowned > -1){
+				players[crowned].removeCrown();
+			}
 			crowned = this.id;
 			lastCrowned = crowned+1;
-			players[crowned].removeCrown();
+			
 		}
 
 		if (numberPlayers == 0) {
