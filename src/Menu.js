@@ -16,6 +16,7 @@ var menu = function(game){
   deathScore = 0;
   this.scoreLabel = null;
   this.scoreText = null;
+  menuMusic = null;
 
 }
 
@@ -28,6 +29,20 @@ menu.prototype = {
 		h2 = this.game.world.height/2;
 
   	this.game.world.scale.set(1);
+
+    if (numberPlayers == 0) {
+      if (!menuMusic) {
+        console.log("!menuMusic")
+        menuMusic = this.game.add.audio('dream');
+        menuMusic.play();
+        menuMusic.loop = true;   
+      } else if (!menuMusic.isPlaying){
+        menuMusic.play();
+        menuMusic.volume = 1;
+      }
+    }
+
+
 
   	bestScore = parseInt(localStorage.getItem("highScore"));
   	if(isNaN(bestScore)) {
@@ -118,6 +133,7 @@ menu.prototype = {
 
 	playTheGame: function(){
 		numberPlayers = 0;
+    menuMusic.fadeOut(2000);
 		this.game.state.start("PreloadGame",true,false);
 	},
 

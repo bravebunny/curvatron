@@ -25,6 +25,11 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
+		menuMusic.fadeOut(2000);
+		/*this.game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+			menuMusic.pause();
+		}, this);*/
+
 		nextBallHigh = 0;
 
 		if (numberPlayers > 0) {
