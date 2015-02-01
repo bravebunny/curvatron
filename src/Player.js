@@ -157,11 +157,18 @@ Player.prototype = {
 
 
 	keyPressed: function() {
+
 		if(gameOver && numberPlayers == 0 && this.game.input.onDown.active){
 			gameOver=false;
 			this.game.state.restart(true,false,numberPlayers);
 		} else {
-			this.direction *= -1;
+			if (this.direction == 1) {
+				this.direction = -1;
+				moveSounds[0].play();
+			} else {
+				this.direction = 1;
+				moveSounds[1].play();
+			}
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 				if (numberPlayers == 0 && !mobile) {

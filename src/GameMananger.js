@@ -29,6 +29,10 @@ gameMananger.prototype = {
 		changeColor = true;
 
     //create sound effects
+    moveSounds = [];
+    moveSounds[0] = this.game.add.audio('move0');
+    moveSounds[1] = this.game.add.audio('move1');
+
     collectSounds = []
     for (var i = 0; i <= numberSounds; i++) {
 	  	collectSounds[i] = this.game.add.audio('sfx_collect' + i);

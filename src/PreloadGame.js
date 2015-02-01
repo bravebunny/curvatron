@@ -16,6 +16,8 @@ preloadGame.prototype = {
 		this.game.load.image('power', 'assets/power.png');
 		this.game.load.image('pauseButton', 'assets/sprites/menu/pause.png');
 		this.game.load.image('overlay', 'assets/overlay.png');
+		this.game.load.audio('move0', 'assets/sfx/move0.ogg');
+		this.game.load.audio('move1', 'assets/sfx/move1.ogg');
 
 		numberSounds = 0;
 		for(var i=0; i<=numberSounds; i++) {
