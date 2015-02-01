@@ -9,7 +9,7 @@ gameMananger.prototype = {
 		this.timeCircle = null;
 		this.gameTime = 60; //sec 
 		this.initialTime = 0;
-		lastCrowned = 0;
+		lastCrowned = -1;
 		if (numberPlayers > 0) {
 			this.game.world.scale.set((-1/24)*numberPlayers+7/12);
 		}
@@ -149,11 +149,24 @@ gameMananger.prototype = {
 			}
 			else if(numberPlayers>0){
 				this.endGame();
-			}
-
-			else if(players[0].dead){
+			}	else if(players[0].dead){
 				this.endGame();
 			}
+
+			var numberAlive = 0;
+			var playerAlive = -1;
+			for (var i = 0; i < players.length; i++) {
+				if (!players[i].dead) {
+					playerAlive = i;
+					numberAlive++;
+					if (numberAlive > 1) break;
+				}
+			}
+			if(numberAlive < 2 && numberPlayers>0) {
+				lastCrowned = playerAlive;
+				this.endGame();
+			}
+
 
 			if(muteAudio && !this.game.mute){
 				audioButton.loadTexture('audiooff_button');
@@ -182,19 +195,18 @@ gameMananger.prototype = {
 
 	endGame: function(){
 		if(!gameOver){
-
 			this.game.input.onDown.active = false;
 			this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
 				this.game.input.onDown.active = true;
 			}, this);
 
-			this.overlay.alpha = 0.66;
+			this.overlay.alpha = 0.5;
 			if (numberPlayers > 0) {
 				this.game.time.events.remove(this.powerTimer);
 			}
-			for(var i = 0; i<players.length; i++){
+			/*for(var i = 0; i<players.length; i++){
 				players[i].kill();
-			}
+			}*/
 
 	  	restartButton = this.game.add.button(w2+97/this.game.world.scale.x, h2-97/this.game.world.scale.x,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
 			restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
@@ -212,9 +224,11 @@ gameMananger.prototype = {
 			}
 
 		  	if(numberPlayers > 0){
-		  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x, "player " + lastCrowned + " with: " + highScore, {
-		        font: "40px Arial",
-		        fill: "#ff0044",
+		  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x,
+		  			"Player " + String.fromCharCode(players[lastCrowned].key) + " wins",
+		  	{
+		        font: "80px Dosis Extrabold",
+		        fill: "#ffffff",
 		        align: "center"});
 	    		scoreInMenu.anchor.setTo(0.5,0.5);
 		  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
@@ -227,7 +241,7 @@ gameMananger.prototype = {
 					spScoreLabel.alpha = 0.7;
 					statsPlayers = this.game.add.text(w2+50, h2+105/this.game.world.scale.x, bestScore, {
 			      font: "100px Dosis Extrabold",
-			      fill: colorHex,
+			      fill: bgColorsDark[chosenColor],
 			      align: "center"
 		    	});
 		    	statsPlayers.anchor.setTo(0.5,0.5);
@@ -241,7 +255,7 @@ gameMananger.prototype = {
 			if(gameOver) {
 				this.game.state.start("Menu");
 			}
-			this.overlay.alpha = 0.66;
+			this.overlay.alpha = 0.5;
 
 			if(pauseTween){
 				pauseTween.stop();
