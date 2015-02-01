@@ -201,6 +201,7 @@ Player.prototype = {
 				localStorage.setItem("deathScore", deathScore);
 			}
 			this.player.kill();
+			killSound.play();
 			this.dead = true;
 			if (trail) {
 				this.circle = new Phaser.Circle(trail.x, trail.y, 16);

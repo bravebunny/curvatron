@@ -25,13 +25,13 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
-		menuMusic.fadeOut(2000);
 		changeColor = true;
 
     //create sound effects
     moveSounds = [];
     moveSounds[0] = this.game.add.audio('move0');
     moveSounds[1] = this.game.add.audio('move1');
+    killSound = this.game.add.audio('kill');
 
     collectSounds = []
     for (var i = 0; i <= numberSounds; i++) {
@@ -128,11 +128,15 @@ gameMananger.prototype = {
 		this.overlay.height = h2*2;
 		this.overlay.alpha = 0;
 
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);	
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);
+		menuMusic.volume = 1;	
 	},
 
 	update: function() {
 		if(!paused){
+			if (menuMusic.isPlaying && (menuMusic.volume == 1) && !gameOver) {
+				menuMusic.fadeOut(2000);
+			}
 			totalTime += this.game.time.physicsElapsed;
 
 			//Give crown
@@ -191,6 +195,8 @@ gameMananger.prototype = {
 
 	endGame: function(){
 		if(!gameOver){
+			menuMusic.play();
+			menuMusic.volume = 1;
 			this.game.input.onDown.active = false;
 			this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
 				this.game.input.onDown.active = true;
