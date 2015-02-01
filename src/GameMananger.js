@@ -30,7 +30,7 @@ gameMananger.prototype = {
 
     //create sound effects
     collectSounds = []
-    for (var i = 0; i <= 5; i++) {
+    for (var i = 0; i <= numberSounds; i++) {
 	  	collectSounds[i] = this.game.add.audio('sfx_collect' + i);
     }
 		nextBallHigh = 0;

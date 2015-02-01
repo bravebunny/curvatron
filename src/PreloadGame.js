@@ -17,7 +17,8 @@ preloadGame.prototype = {
 		this.game.load.image('pauseButton', 'assets/sprites/menu/pause.png');
 		this.game.load.image('overlay', 'assets/overlay.png');
 
-		for(var i=0; i<=5; i++) {
+		numberSounds = 0;
+		for(var i=0; i<=numberSounds; i++) {
 			this.game.load.audio('sfx_collect' + i, 'assets/sfx/collect' + i + '.ogg');	
 		}
 

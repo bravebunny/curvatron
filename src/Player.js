@@ -219,7 +219,7 @@ Player.prototype = {
 	},
 
 	collect: function(player, power) {
-		var randSound = this.game.rnd.integerInRange(0, 5);
+		var randSound = this.game.rnd.integerInRange(0, numberSounds);
 		collectSounds[randSound].play();
 
 		power.kill();
