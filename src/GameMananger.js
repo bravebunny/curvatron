@@ -26,10 +26,13 @@ gameMananger.prototype = {
 
 	create: function() {
 		menuMusic.fadeOut(2000);
-		/*this.game.time.events.add(Phaser.Timer.SECOND * 2, function() {
-			menuMusic.pause();
-		}, this);*/
+		changeColor = true;
 
+    //create sound effects
+    collectSounds = []
+    for (var i = 0; i <= 5; i++) {
+	  	collectSounds[i] = this.game.add.audio('sfx_collect' + i);
+    }
 		nextBallHigh = 0;
 
 		if (numberPlayers > 0) {
@@ -185,7 +188,7 @@ gameMananger.prototype = {
 				this.game.input.onDown.active = true;
 			}, this);
 
-			this.overlay.alpha = 0.5;
+			this.overlay.alpha = 0.66;
 			if (numberPlayers > 0) {
 				this.game.time.events.remove(this.powerTimer);
 			}
@@ -238,7 +241,7 @@ gameMananger.prototype = {
 			if(gameOver) {
 				this.game.state.start("Menu");
 			}
-			this.overlay.alpha = 0.5;
+			this.overlay.alpha = 0.66;
 
 			if(pauseTween){
 				pauseTween.stop();

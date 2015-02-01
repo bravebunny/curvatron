@@ -23,6 +23,13 @@ var menu = function(game){
 menu.prototype = {
 
   create: function(){
+    if (changeColor) {
+      chosenColor = this.game.rnd.integerInRange(0, 3);
+      colorHex = bgColors[chosenColor];
+      document.body.style.background = colorHex;
+      this.game.stage.backgroundColor = colorHex;
+      changeColor = false;
+    }
   	this.game.stage.backgroundColor = colorHex;
     document.body.style.background = colorHex;
   	w2 = this.game.world.width/2;

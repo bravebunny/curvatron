@@ -41,12 +41,6 @@ Player.prototype = {
 	    //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
 	    this.lastTrailLength = this.growth;
 
-	    //create sound effects
-	    this.collectSounds = [
-    	this.game.add.audio('sfx_collect0'),
-    	this.game.add.audio('sfx_collect1'),
-    	this.game.add.audio('sfx_collect2'),
-    	this.game.add.audio('sfx_collect3')];
 		this.player.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 
 		if(mobile){
@@ -225,8 +219,8 @@ Player.prototype = {
 	},
 
 	collect: function(player, power) {
-
-		this.collectSounds[this.game.rnd.integerInRange(0, 3)].play();
+		var randSound = this.game.rnd.integerInRange(0, 5);
+		collectSounds[randSound].play();
 
 		power.kill();
 		this.killTrail = false;
