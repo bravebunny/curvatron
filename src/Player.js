@@ -153,6 +153,10 @@ Player.prototype = {
 		      align: "center"
 		  	});
 	  	this.keyText.anchor.setTo(0.5,0.5);
+
+	  	if (mobile) {
+	  		this.keyText.setText(bestScore);
+	  	}
 		}
 
 	},
