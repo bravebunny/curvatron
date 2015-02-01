@@ -161,7 +161,7 @@ Player.prototype = {
 		if(gameOver && numberPlayers == 0 && this.game.input.onDown.active){
 			gameOver=false;
 			this.game.state.restart(true,false,numberPlayers);
-		} else {
+		} else if (!this.dead) {
 			if (this.direction == 1) {
 				this.direction = -1;
 				moveSounds[0].play();

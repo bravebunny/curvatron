@@ -158,6 +158,7 @@ gameMananger.prototype = {
 				}
 			}
 			if(numberAlive < 2 && numberPlayers>0) {
+				console.log("numberAlive: " + lastCrowned);
 				lastCrowned = playerAlive;
 				this.endGame();
 			}
@@ -219,14 +220,25 @@ gameMananger.prototype = {
 			}
 
 		  	if(numberPlayers > 0){
-		  		scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x,
-		  			"Player " + String.fromCharCode(players[lastCrowned].key) + " wins",
-		  	{
-		        font: "80px Dosis Extrabold",
-		        fill: colorPlayers[lastCrowned-1],
-		        align: "center"});
+		  		console.log("right now:" + crowned);
+		  		if (crowned == -1) {
+						scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x,
+		  			"It's a tie",
+			  		{
+			        font: "80px Dosis Extrabold",
+			        fill: "#ffffff",
+			        align: "center"});
+		  		} else {
+		  			scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x,
+		  			"Player " + String.fromCharCode(players[crowned].key) + " wins",
+			  		{
+			        font: "80px Dosis Extrabold",
+			        fill: colorPlayers[crowned],
+			        align: "center"});
+		  		}
 	    		scoreInMenu.anchor.setTo(0.5,0.5);
 		  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		  		
 		  	}
 
 	    	if(numberPlayers == 0){
