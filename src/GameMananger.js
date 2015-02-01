@@ -7,7 +7,7 @@ gameMananger.prototype = {
 		crowned = -1;
 		players = [];
 		this.timeCircle = null;
-		this.gameTime = 60; //sec 
+		this.gameTime = 10; //sec 
 		this.initialTime = 0;
 		lastCrowned = -1;
 		if (numberPlayers > 0) {
@@ -203,13 +203,13 @@ gameMananger.prototype = {
 				players[i].kill();
 			}*/
 
-	  	restartButton = this.game.add.button(w2+97/this.game.world.scale.x, h2-97/this.game.world.scale.x,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
+	  		restartButton = this.game.add.button(w2+97/this.game.world.scale.x, h2-97/this.game.world.scale.x,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
 			restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
 
-	    mainMenu = this.game.add.button(w2-97/this.game.world.scale.x, h2-97/this.game.world.scale.x,"exit_button",function(){this.game.state.start("Menu");},this);
-	    mainMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		    mainMenu = this.game.add.button(w2-97/this.game.world.scale.x, h2-97/this.game.world.scale.x,"exit_button",function(){this.game.state.start("Menu");},this);
+		    mainMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 			mainMenu.anchor.setTo(0.5,0.5);
 			mainMenu.input.useHandCursor=true;
 
@@ -223,18 +223,18 @@ gameMananger.prototype = {
 		  			"Player " + String.fromCharCode(players[lastCrowned].key) + " wins",
 		  	{
 		        font: "80px Dosis Extrabold",
-		        fill: "#ffffff",
+		        fill: colorPlayers[lastCrowned-1],
 		        align: "center"});
 	    		scoreInMenu.anchor.setTo(0.5,0.5);
 		  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
 		  	}
 
 	    	if(numberPlayers == 0){
-					spScoreLabel = this.game.add.button(w2, h2+97/this.game.world.scale.x,"score-stat");
-					spScoreLabel.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
-					spScoreLabel.anchor.setTo(0.5,0.5);
-					spScoreLabel.alpha = 0.7;
-					statsPlayers = this.game.add.text(w2+50, h2+105/this.game.world.scale.x, bestScore, {
+				spScoreLabel = this.game.add.button(w2, h2+97/this.game.world.scale.x,"score-stat");
+				spScoreLabel.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+				spScoreLabel.anchor.setTo(0.5,0.5);
+				spScoreLabel.alpha = 0.7;
+				statsPlayers = this.game.add.text(w2+50, h2+105/this.game.world.scale.x, bestScore, {
 			      font: "100px Dosis Extrabold",
 			      fill: bgColorsDark[chosenColor],
 			      align: "center"
