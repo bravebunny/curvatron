@@ -96,7 +96,7 @@ Player.prototype = {
 				this.trailPiece.scale.set(scale)*/
 				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 				this.trailArray.push(trailPiece);
-		    bmd.circle(this.sprite.x, this.sprite.y, 8*scale, "rgba(255,255,255,1)");
+		   		bmd.circle(this.sprite.x, this.sprite.y, 8*scale, "rgba(255,255,255,1)");
 			}
 			
 			

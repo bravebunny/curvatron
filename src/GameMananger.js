@@ -23,7 +23,8 @@ gameMananger.prototype = {
 		this.powerTimer = null;
 		totalTime = 0;
 		pauseTween = null;
-		borders = [0, this.game.world.width, 0,this.game.world.height]
+		borders = [0, this.game.world.width, 0,this.game.world.height];
+		bmd = null;
 	},
 
 	create: function() {
