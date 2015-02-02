@@ -78,6 +78,7 @@ Player.prototype = {
 			//Create trail
 			if (this.ready && this.frameCount == 0) {
 				this.trailPiece = this.groupTrail.create(this.player.x, this.player.y, 'trail' + this.id);
+				this.groupTrail.add(this.trailPiece);
 				this.trailPiece.body.immovable = true;
 				this.trailPiece.anchor.setTo(.5,.5);
 			}
@@ -196,30 +197,34 @@ Player.prototype = {
 	kill: function(player, trail) {
 		this.keyText.destroy();
 		if(!this.dead){
-			if(numberPlayers == 0){
-				deathScore++;
-				localStorage.setItem("deathScore", deathScore);
-			}
-			this.player.kill();
-			killSound.play();
-			this.dead = true;
 			if (trail) {
-				this.circle = new Phaser.Circle(trail.x, trail.y, 16);
+				var groupCopy = groupTrails;
+				for (var i = 0; i<groupCopy.length; i++) {
+					groupCopy[i].removeChild(trail);
+				}
+				if (this.game.physics.arcade.overlap(trail, groupCopy)) {
+					if(numberPlayers == 0){
+						deathScore++;
+						localStorage.setItem("deathScore", deathScore);
+					}
+					this.player.kill();
+					killSound.play();
+					this.dead = true;
+
+					var newMax = -1;
+					for (var i = 0; i < players.length; i++) {
+						if (i != this.id && players[i].score > newMax && !players[i].dead) {
+							newMax = players[i].score;
+							crowned = i;
+						}
+					}
+					if (crowned != -1 && players[crowned].dead) {
+						crowned = -1;
+					}
+				}
 				console.log('Player ' + this.id + 'collided with ' + trail.frameName);
-				console.log(trail);
 			} else {
 				console.log('Player ' + this.id + 'collided with a wall');
-			}
-
-			var newMax = -1;
-			for (var i = 0; i < players.length; i++) {
-				if (i != this.id && players[i].score > newMax && !players[i].dead) {
-					newMax = players[i].score;
-					crowned = i;
-				}
-			}
-			if (crowned != -1 && players[crowned].dead) {
-				crowned = -1;
 			}
 		}
 	},
