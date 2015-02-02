@@ -3,23 +3,18 @@
 <head> 
     <meta charset="iso-8859-1" />
     <title>Curvatron</title>
+    <link href='style.css' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="js/phaser.js"></script>
     <script type="text/javascript" src="src/Boot.js"></script>
     <script type="text/javascript" src="src/PreloadMenu.js"></script>
-    <script type="text/javascript" src="src/GameTitle.js"></script>
+    <script type="text/javascript" src="src/Menu.js"></script>
     <script type="text/javascript" src="src/Multiplayer.js"></script>
     <script type="text/javascript" src="src/SetKeys.js"></script>
     <script type="text/javascript" src="src/PreloadGame.js"></script>
     <script type="text/javascript" src="src/GameMananger.js"></script>
     <script type="text/javascript" src="src/Player.js"></script>
     <script type="text/javascript" src="src/PowerUp.js"></script>
-    <style type="text/css">
-        body {
-            background-color: #363636;
-            margin: 0px 0px 0px 0px; /* the extra 1px allows the iOS inner/outer check to work */
-        }
-    </style>
-
+    <script type="text/javascript" src="src/Stats.js"></script>
 </head>
 
 <body>
@@ -30,9 +25,10 @@
     var game = new Phaser.Game(1366, 768, Phaser.CANVAS, "");
     game.state.add("Boot",boot);
     game.state.add("PreloadMenu",preloadMenu);
-    game.state.add("GameTitle",gameTitle);
+    game.state.add("Menu",menu);
     game.state.add("Multiplayer",multiplayer);
     game.state.add("SetKeys",setKeys);
+    game.state.add("Stats",stats);
     game.state.add("PreloadGame",preloadGame);
     game.state.add("GameMananger",gameMananger);
     game.state.start("Boot");

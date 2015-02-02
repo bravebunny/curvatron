@@ -8,10 +8,6 @@ var PowerUp = function(game) {
 
 PowerUp.prototype = {
 
-	preload: function() {
-		this.game.load.image('power', 'assets/power.png');
-	},
-
 	create: function() {
 		if (numberPlayers > 0) {
 			var randNum = this.game.rnd.integerInRange(0, 100);
@@ -25,33 +21,44 @@ PowerUp.prototype = {
 				this.size = 4;
 			}
 		} else {
-			this.size = 1;
+			if (mobile) {
+				this.size = 1.5;
+			} else {
+				this.size = 1;
+			}
 		}
 
 		this.place();
 
+		if(nextBallHigh == 1){
+			this.sprite.loadTexture('superPower');
+			nextBallHigh = 2;
+		}
+
 		groupPowers.add(this.sprite);
 
-		powerText.setText(highScore+1);
-		powerText.x = this.sprite.x;
-		powerText.y = this.sprite.y;
+		if (numberPlayers == 0) {
+			powerText.setText(highScore+1);
+			powerText.x = this.sprite.x;
+			powerText.y = this.sprite.y;
+		}
+
 
 	},
 
 	place: function() {
-		this.x = this.game.rnd.integerInRange(32, this.game.world.width/this.game.world.scale.x);
-		this.y = this.game.rnd.integerInRange(32, this.game.world.height/this.game.world.scale.y);
+		this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
+		this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
 
 		this.sprite = this.game.add.sprite(this.x, this.y, 'power');
 
 		this.sprite.anchor.setTo(.5,.5);
-		this.sprite.scale.set(this.size);
+		this.sprite.scale.set((this.size/2)*scale);
 
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-		this.sprite.body.setSize(16*this.game.world.scale.x, 16*this.game.world.scale.x, 0, 0);
+		//this.sprite.body.setSize(64*scale, 64*scale, 0, 0);
 
 		if (this.game.physics.arcade.overlap(this.sprite, groupTrails, null, null)) {
-			console.log("detected overlap")
 			this.sprite.kill();
 			this.place();
 		}
