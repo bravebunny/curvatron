@@ -10,11 +10,12 @@ gameMananger.prototype = {
 		this.gameTime = 10; //sec 
 		this.initialTime = 0;
 		lastCrowned = -1;
+		scale = 1;
 		if (numberPlayers > 0) {
-			this.game.world.scale.set((-1/24)*numberPlayers+7/12);
+			scale = (-1/24)*numberPlayers+7/12;
 		}
-		w2 = (this.game.world.width/2)/this.game.world.scale.x;
-		h2 = (this.game.world.height/2)/this.game.world.scale.x;
+		w2 = this.game.world.width/2;
+		h2 = this.game.world.height/2;
 		gameOver = false;
 		graphics = this.game.add.graphics(w2, h2);
 		muteAudio = false;
@@ -22,6 +23,7 @@ gameMananger.prototype = {
 		this.powerTimer = null;
 		totalTime = 0;
 		pauseTween = null;
+		borders = [0, this.game.world.width, 0,this.game.world.height]
 	},
 
 	create: function() {
@@ -64,8 +66,8 @@ gameMananger.prototype = {
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
-			Math.round(Math.cos((2*Math.PI/(numberPlayers+1))*i)*500/this.game.world.scale.x)+w2, 
-			Math.round(Math.sin((2*Math.PI/(numberPlayers+1))*i)*250/this.game.world.scale.y)+h2, 
+			Math.round(Math.cos((2*Math.PI/(numberPlayers+1))*i)*500)+w2, 
+			Math.round(Math.sin((2*Math.PI/(numberPlayers+1))*i)*250)+h2, 
 			keys[i], this.game);
 		}
 
@@ -77,7 +79,7 @@ gameMananger.prototype = {
 
 		for(var i=0; i <= numberPlayers; i++){
 			players[i].create();
-			players[i].player.rotation = ((2*Math.PI/(numberPlayers+1))*i);
+			players[i].sprite.rotation = ((2*Math.PI/(numberPlayers+1))*i);
 		}
 
 		for(var i=0; i <= numberPlayers; i++){
@@ -89,7 +91,7 @@ gameMananger.prototype = {
 		}
 
 		if(numberPlayers > 0){
-			this.crown = this.game.add.sprite(w2, -32/this.game.world.scale.y, 'crown');
+			this.crown = this.game.add.sprite(w2, -32, 'crown');
 			this.crown.anchor.setTo(0.5,0.8);
 			this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
 		}
@@ -210,13 +212,13 @@ gameMananger.prototype = {
 				players[i].kill();
 			}*/
 
-	  		restartButton = this.game.add.button(w2+97/this.game.world.scale.x, h2-97/this.game.world.scale.x,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
-			restartButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	  		restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
+			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
 
-		    mainMenu = this.game.add.button(w2-97/this.game.world.scale.x, h2-97/this.game.world.scale.x,"exit_button",function(){this.game.state.start("Menu");},this);
-		    mainMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		    mainMenu = this.game.add.button(w2-97, h2-97,"exit_button",function(){this.game.state.start("Menu");},this);
+		    mainMenu.scale.set(1,1);
 			mainMenu.anchor.setTo(0.5,0.5);
 			mainMenu.input.useHandCursor=true;
 
@@ -228,14 +230,14 @@ gameMananger.prototype = {
 		  	if(numberPlayers > 0){
 		  		console.log("right now:" + crowned);
 		  		if (crowned == -1) {
-						scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x,
+						scoreInMenu = this.game.add.text(w2, h2+256,
 		  			"It's a tie",
 			  		{
 			        font: "80px Dosis Extrabold",
 			        fill: "#ffffff",
 			        align: "center"});
 		  		} else {
-		  			scoreInMenu = this.game.add.text(w2, h2+256/this.game.world.scale.x,
+		  			scoreInMenu = this.game.add.text(w2, h2+256,
 		  			"Player " + String.fromCharCode(players[crowned].key) + " wins",
 			  		{
 			        font: "80px Dosis Extrabold",
@@ -243,16 +245,16 @@ gameMananger.prototype = {
 			        align: "center"});
 		  		}
 	    		scoreInMenu.anchor.setTo(0.5,0.5);
-		  		scoreInMenu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		  		scoreInMenu.scale.set(1,1);
 		  		
 		  	}
 
 	    	if(numberPlayers == 0){
-				spScoreLabel = this.game.add.button(w2, h2+97/this.game.world.scale.x,"score-stat");
-				spScoreLabel.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+				spScoreLabel = this.game.add.button(w2, h2+97,"score-stat");
+				spScoreLabel.scale.set(1,1);
 				spScoreLabel.anchor.setTo(0.5,0.5);
 				spScoreLabel.alpha = 0.7;
-				statsPlayers = this.game.add.text(w2+50, h2+105/this.game.world.scale.x, bestScore, {
+				statsPlayers = this.game.add.text(w2+50, h2+105, bestScore, {
 			      font: "100px Dosis Extrabold",
 			      fill: bgColorsDark[chosenColor],
 			      align: "center"
@@ -288,31 +290,31 @@ gameMananger.prototype = {
 			}
 
 	        // Then add the menu
-	        menu = this.game.add.button(w2, h2-150/this.game.world.scale.x, 'resume_button',function(){this.pause();},this);
+	        menu = this.game.add.button(w2, h2-150, 'resume_button',function(){this.pause();},this);
 	        menu.anchor.setTo(0.5, 0.5);
-	        menu.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	        menu.scale.set(1,1);
 	        menu.input.useHandCursor=true;
 
-	        restart = this.game.add.button(w2-150/this.game.world.scale.x, h2, 'restart_button',function(){this.game.state.restart();},this);
+	        restart = this.game.add.button(w2-150, h2, 'restart_button',function(){this.game.state.restart();},this);
 	        restart.anchor.setTo(0.5, 0.5);
-	        restart.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	        restart.scale.set(1,1);
 	        restart.input.useHandCursor=true;
 
-	        exit = this.game.add.button(w2, h2+150/this.game.world.scale.x, 'exit_button',function(){this.game.state.start("Menu");},this);
+	        exit = this.game.add.button(w2, h2+150, 'exit_button',function(){this.game.state.start("Menu");},this);
 	        exit.anchor.setTo(0.5, 0.5);
-	        exit.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+	        exit.scale.set(1,1);
 	        exit.input.useHandCursor=true;
 
 	        if(this.game.sound.mute){
-		    	audioButton = this.game.add.button(w2+150/this.game.world.scale.x, h2,"audiooff_button",this.muteSound,this);
+		    	audioButton = this.game.add.button(w2+150, h2,"audiooff_button",this.muteSound,this);
 		  		audioButton.anchor.setTo(0.5,0.5);
-		  		audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		  		audioButton.scale.set(1,1);
 		  		audioButton.input.useHandCursor=true;
 		    }
 		    else{
-		        audioButton = this.game.add.button(w2+150/this.game.world.scale.x, h2,"audio_button",this.muteSound,this);
+		        audioButton = this.game.add.button(w2+150, h2,"audio_button",this.muteSound,this);
 		        audioButton.anchor.setTo(0.5,0.5);
-		        audioButton.scale.set(1/this.game.world.scale.x,1/this.game.world.scale.x);
+		        audioButton.scale.set(1,1);
 		        audioButton.input.useHandCursor=true;
 		    }
 			
