@@ -19,19 +19,22 @@ var Player = function(id, x, y, key, game) {
 	this.enemyTrails = [];
 	this.keyText = null;
 	this.circle = null;
-	this.trailPiece = null;
 	this.collectSound = null;
 	this.paused = false;
 	this.textTween = null;
+	this.trailArray = [];
 };
 
 Player.prototype = {
 
 	create: function() {
 		this.groupTrail = this.game.add.group();
+		this.bmd = this.game.add.bitmapData(this.game.width, this.game.height);
+		this.bmd.addToWorld();
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.sprite.anchor.setTo(.5,.5);
 		groupTrails.push(this.groupTrail);
+		
 
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		this.sprite.body.setSize(16*scale, 16*scale, 0, 0);
@@ -69,21 +72,24 @@ Player.prototype = {
 			if (numberPlayers > 0) {
 				this.game.physics.arcade.overlap(this.sprite, this.enemyTrails, this.kill, null, this);
 			} else {
-				this.game.physics.arcade.collide(this.sprite, this.groupTrail, this.kill, null, this);
+				this.game.physics.arcade.collide(this.sprite, this.bmd, this.kill, null, this);
 			}
 
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
 
 			//Create trail
 			if (this.ready && this.frameCount == 0) {
-				this.trailPiece = this.groupTrail.create(this.sprite.x, this.sprite.y, 'trail' + this.id);
+				/*this.trailPiece = this.groupTrail.create(this.sprite.x, this.sprite.y, 'trail' + this.id);
 				this.groupTrail.add(this.trailPiece);
 				this.trailPiece.body.immovable = true;
 				this.trailPiece.anchor.setTo(.5,.5);
-				this.trailPiece.scale.set(scale)
+				this.trailPiece.scale.set(scale)*/
+				var trailPiece = {"x": this.sprite.x, "y": this.sprite.y, "n": 1};
+				this.trailArray.push(trailPiece);
+		    this.bmd.circle(this.sprite.x, this.sprite.y, 8*scale, "rgba(255,255,255,1)");
 			}
 			
-			//erase trail from behind
+			//erase trail from front
 			if(this.dead && this.frameCount == 0){
 				this.killTrail = true;
 				this.ready = false;
@@ -97,22 +103,26 @@ Player.prototype = {
 		    	}
 			}
 
-			if (!this.killTrail && (this.groupTrail.length >= (this.lastTrailLength + this.growth))) {
+			if (!this.killTrail && (this.trailArray.length >= (this.lastTrailLength + this.growth))) {
 				this.killTrail = true;
-				this.lastTrailLength = this.groupTrail.length;
+				this.lastTrailLength = this.trailArray.length;
 			}
 
-			//erase trail from front
+			//erase trail from behind
 			if(this.killTrail && this.frameCount == 0){
+				var bgColor = Phaser.Color.hexToColor(colorHex);
+		    this.bmd.circle(this.trailArray[0].x, this.trailArray[0].y, 10*scale, "rgba(" + bgColor.r + "," + bgColor.g + ","+ bgColor.b + ",1)");
+				this.trailArray.shift();
+				this.bmd.circle(this.trailArray[0].x, this.trailArray[0].y, 9*scale, "rgba(255,255,255,1)");
 
 				//getFirstAlive() returns null if the object doesn't exist
-				var obj = this.groupTrail.getFirstAlive();
+				/*var obj = this.groupTrail.getFirstAlive();
 			    if (obj)
 			    {
 		    		obj.body.destroy();
 		        obj.kill();
 		        obj.parent.removeChild(obj);
-			    }
+			    }*/
 			}
 
 			//Screen border collisions
@@ -240,7 +250,6 @@ Player.prototype = {
 		this.killTrail = false;
 		this.growth = 30*power.scale.x;
 		this.score = this.score + power.scale.x;
-		//console.log("palyer" + this.id + " is now " + this.score)
 
 		if (this.score > highScore && numberPlayers != 0) {
 			highScore = this.score;
