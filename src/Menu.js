@@ -39,7 +39,6 @@ menu.prototype = {
 
     if (numberPlayers == 0) {
       if (!menuMusic) {
-        console.log("!menuMusic")
         menuMusic = this.game.add.audio('dream');
         menuMusic.play();
         menuMusic.loop = true;   
@@ -73,6 +72,13 @@ menu.prototype = {
       align: "center"
   	});
   	text.anchor.setTo(0.5,0.5);
+
+    var text = this.game.add.text(w2+360,210, "BETA", {
+      font: "50px Dosis Extrabold",
+      fill: "#ffffff",
+      align: "center"
+    });
+    text.anchor.setTo(0.5,0.5);
     
     var text = this.game.add.text(w2,120, "curvatron", {
       font: "200px Dosis Extrabold",

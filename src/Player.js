@@ -164,10 +164,10 @@ Player.prototype = {
 			gameOver=false;
 			this.game.state.restart(true,false,numberPlayers);
 		} else if (!this.dead) {
-			if (this.direction == 1) {
+			if (this.direction == 1 && !gameOver) {
 				this.direction = -1;
 				moveSounds[0].play();
-			} else {
+			} else if (!gameOver) {
 				this.direction = 1;
 				moveSounds[1].play();
 			}

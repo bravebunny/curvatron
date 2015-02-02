@@ -7,7 +7,7 @@ gameMananger.prototype = {
 		crowned = -1;
 		players = [];
 		this.timeCircle = null;
-		this.gameTime = 10; //sec 
+		this.gameTime = 60; //sec 
 		this.initialTime = 0;
 		lastCrowned = -1;
 		scale = 1;
@@ -141,45 +141,37 @@ gameMananger.prototype = {
 			}
 			totalTime += this.game.time.physicsElapsed;
 
-			//Give crown
-			if (crowned != -1) {
-				players[crowned].addCrown();
-			}
-			if(numberPlayers>0 && this.gameTime >= (totalTime)){
-				this.timeCircle.scale.set((-1/this.gameTime)*(totalTime)+1);
-			}
-			else if(numberPlayers>0){
-				this.endGame();
-			}	else if(players[0].dead){
-				this.endGame();
-			}
-
-			var numberAlive = 0;
-			var playerAlive = -1;
-			for (var i = 0; i < players.length; i++) {
-				if (!players[i].dead) {
-					playerAlive = i;
-					numberAlive++;
-					if (numberAlive > 1) break;
+			
+			if (!gameOver) {
+				//Give crown
+				if (crowned != -1) {
+					players[crowned].addCrown();
 				}
-			}
-			if(numberAlive < 2 && numberPlayers>0) {
-				console.log("numberAlive: " + lastCrowned);
-				lastCrowned = playerAlive;
-				this.endGame();
-			}
+				if(numberPlayers>0 && this.gameTime >= (totalTime)){
+					this.timeCircle.scale.set((-1/this.gameTime)*(totalTime)+1);
+				}
+				else if(numberPlayers>0){
+					this.endGame();
+				}	else if(players[0].dead){
+					this.endGame();
+				}
 
+				var numberAlive = 0;
+				var playerAlive = -1;
+				for (var i = 0; i < players.length; i++) {
+					if (!players[i].dead) {
+						playerAlive = i;
+						numberAlive++;
+						if (numberAlive > 1) break;
+					}
+				}
+				if(numberAlive < 2 && numberPlayers>0) {
+					lastCrowned = playerAlive;
+					this.endGame();
+				}
 
-			if(muteAudio && !this.game.mute){
-				audioButton.loadTexture('audiooff_button');
-		        this.game.sound.mute = true;
-			}
-			else if(!muteAudio && this.game.mute){
-				audioButton.loadTexture('audio_button');
-		        this.game.sound.mute = false;
 			}
 		}
-
 		//Update players
 		for(var i=0; i <= numberPlayers; i++){
 			players[i].update();
@@ -370,6 +362,6 @@ gameMananger.prototype = {
 	},
 
 	renderGroup: function(member) {
-		this.game.debug.body(member);
+		//this.game.debug.body(member);
 	}
 };
