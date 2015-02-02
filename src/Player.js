@@ -206,7 +206,7 @@ Player.prototype = {
 			killSound.play();
 			this.dead = true;
 
-			var newMax = -1;
+			var newMax = 0;
 			for (var i = 0; i < players.length; i++) {
 				if (i != this.id && players[i].score > newMax && !players[i].dead) {
 					newMax = players[i].score;
@@ -227,7 +227,7 @@ Player.prototype = {
 		this.killTrail = false;
 		this.growth = 30*power.scale.x;
 		this.score = this.score + power.scale.x;
-		console.log("palyer" + this.id + " is now " + this.score)
+		//console.log("palyer" + this.id + " is now " + this.score)
 
 		if (this.score > highScore && numberPlayers != 0) {
 			highScore = this.score;

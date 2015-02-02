@@ -7,7 +7,7 @@ gameMananger.prototype = {
 		crowned = -1;
 		players = [];
 		this.timeCircle = null;
-		this.gameTime = 10; //sec 
+		this.gameTime = 60; //sec 
 		this.initialTime = 0;
 		lastCrowned = -1;
 		scale = 1;
@@ -193,16 +193,14 @@ gameMananger.prototype = {
 			menuMusic.volume = 1;
 			this.game.input.onDown.active = false;
 			this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
-				this.game.input.onDown.active = true;
+			this.game.input.onDown.active = true;
 			}, this);
 
 			this.overlay.alpha = 0.5;
 			if (numberPlayers > 0) {
 				this.game.time.events.remove(this.powerTimer);
+				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(function(){this.game.state.restart(true,false,numberPlayers);}, this);
 			}
-			/*for(var i = 0; i<players.length; i++){
-				players[i].kill();
-			}*/
 
 	  		restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
 			restartButton.scale.set(1,1);
@@ -220,16 +218,16 @@ gameMananger.prototype = {
 			}
 
 		  	if(numberPlayers > 0){
-		  		console.log("right now:" + crowned);
+		  		//console.log("right now:" + crowned);
 		  		if (crowned == -1) {
-						scoreInMenu = this.game.add.text(w2, h2+256,
+						scoreInMenu = this.game.add.text(w2, h2+128,
 		  			"It's a tie",
 			  		{
 			        font: "80px Dosis Extrabold",
 			        fill: "#ffffff",
 			        align: "center"});
 		  		} else {
-		  			scoreInMenu = this.game.add.text(w2, h2+256,
+		  			scoreInMenu = this.game.add.text(w2, h2+128,
 		  			"Player " + String.fromCharCode(players[crowned].key) + " wins",
 			  		{
 			        font: "80px Dosis Extrabold",
