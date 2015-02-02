@@ -206,15 +206,28 @@ Player.prototype = {
 			killSound.play();
 			this.dead = true;
 
-			var newMax = -1;
+			var alreadyDead = 0;
 			for (var i = 0; i < players.length; i++) {
-				if (i != this.id && players[i].score > newMax && !players[i].dead) {
+				if(players[i].dead){
+					alreadyDead++;
+				}
+			}
+
+			var newMax = 0;
+			for (var i = 0; i < players.length; i++) {
+				if (players.length - alreadyDead == 1 && i != this.id && !players[i].dead) {
+					newMax = players[i].score;
+					crowned = i;
+				}
+				else if (i != this.id && players[i].score > newMax && !players[i].dead) {
 					newMax = players[i].score;
 					crowned = i;
 				}
 			}
+
 			if (crowned != -1 && players[crowned].dead) {
 				crowned = -1;
+				highScore = 0;
 			}
 		}
 	},
