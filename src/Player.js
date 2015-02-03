@@ -310,7 +310,7 @@ Player.prototype = {
 
 	render: function(){
 		//this.game.debug.geom(this.circle,'#cfffff');
-		this.game.debug.body(this.sprite);
+		//this.game.debug.body(this.sprite);
 
 	}
 };
