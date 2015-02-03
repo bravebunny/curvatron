@@ -17,13 +17,14 @@ gameMananger.prototype = {
 		w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 		gameOver = false;
-		graphics = this.game.add.graphics(w2, h2);
+		graphics = null
 		muteAudio = false;
 		paused = false;
 		this.powerTimer = null;
 		totalTime = 0;
 		pauseTween = null;
-		borders = [0, this.game.world.width, 0,this.game.world.height]
+		borders = [0, this.game.world.width, 0,this.game.world.height];
+		bmd = null;
 	},
 
 	create: function() {
@@ -34,7 +35,7 @@ gameMananger.prototype = {
     moveSounds[0] = this.game.add.audio('move0');
     moveSounds[1] = this.game.add.audio('move1');
     killSound = this.game.add.audio('kill');
-
+    
     collectSounds = []
     for (var i = 0; i <= numberSounds; i++) {
 	  	collectSounds[i] = this.game.add.audio('sfx_collect' + i);
@@ -42,9 +43,11 @@ gameMananger.prototype = {
 		nextBallHigh = 0;
 
 		if (numberPlayers > 0) {
-			this.game.stage.backgroundColor = bgColorsDark[chosenColor];
+			this.game.stage.backgroundColor = colorHexDark;
+			bgColor = Phaser.Color.hexToColor(colorHexDark);
 		} else {
-			document.body.style.background = bgColorsDark[chosenColor];
+			document.body.style.background = colorHexDark;
+			bgColor = Phaser.Color.hexToColor(colorHex);
 		}
 
 		if(mobile){
@@ -63,46 +66,44 @@ gameMananger.prototype = {
 	  	tempLabelText.anchor.setTo(0.5,0.5);
 		}
 
-		//Choose snake locations
-		for(var i=0; i <= numberPlayers; i++){
-			players[i] = new Player(i,
-			Math.round(Math.cos((2*Math.PI/(numberPlayers+1))*i)*500)+w2, 
-			Math.round(Math.sin((2*Math.PI/(numberPlayers+1))*i)*250)+h2, 
-			keys[i], this.game);
-		}
-
-		groupPowers = this.game.add.group();
-		groupTrails = [];
-
-		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.game.physics.arcade.gravity.y = 0;
-
-		for(var i=0; i <= numberPlayers; i++){
-			players[i].create();
-			players[i].sprite.rotation = ((2*Math.PI/(numberPlayers+1))*i);
-		}
-
-		for(var i=0; i <= numberPlayers; i++){
-			for (var j = 0; j < groupTrails.length; j++) {
-				if (groupTrails[j] != players[i].groupTrail) {
-					players[i].enemyTrails.push(groupTrails[j]);
-				}
-			}
-		}
-
 		if(numberPlayers > 0){
 			this.crown = this.game.add.sprite(w2, -32, 'crown');
 			this.crown.anchor.setTo(0.5,0.8);
 			this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
 		}
 
+		this.initialTime = this.game.time.totalElapsedSeconds();
+
+		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
+		bmd.addToWorld();
+		bmd.smoothed = false;
+
+		this.game.physics.startSystem(Phaser.Physics.ARCADE);
+		this.game.physics.arcade.gravity.y = 0;
+
+		//Choose snake locations
+		for(var i=0; i <= numberPlayers; i++){
+			players[i] = new Player(i,
+			Math.cos((2*Math.PI/(numberPlayers+1))*i)*500+w2, 
+			Math.sin((2*Math.PI/(numberPlayers+1))*i)*250+h2, 
+			keys[i], this.game);
+		}
+
+		for(var i=0; i <= numberPlayers; i++){
+			players[i].create();
+		}
+
+		graphics = this.game.add.graphics(w2, h2);
 		if(numberPlayers > 0){
 			graphics.lineStyle(0);
 			graphics.beginFill(0x000000, 0.2);
 			this.timeCircle = graphics.drawCircle(w2,h2,Math.sqrt(w2*w2+h2*h2)*2);
 			this.timeCircle.pivot.x = w2;
 			this.timeCircle.pivot.y = h2;
-		} else {
+		}
+
+		groupPowers = this.game.add.group();
+		if (numberPlayers == 0) {
 			var textSize = 15;
 	  	if (mobile) {
 	  		textSize = 30
@@ -112,11 +113,8 @@ gameMananger.prototype = {
 	      fill: "#ffffff",
 	      align: "center"
 	  	});
-	  	powerText.anchor.setTo(0.5,0.5);
-
+	  	powerText.anchor.setTo(0.5,0.5);			
 		}
-
-		this.initialTime = this.game.time.totalElapsedSeconds();
 
 		//Generate powers
 		if (numberPlayers > 0) {
@@ -202,13 +200,13 @@ gameMananger.prototype = {
 				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(function(){this.game.state.restart(true,false,numberPlayers);}, this);
 			}
 
-	  		restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
+	  	restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
 
-		    mainMenu = this.game.add.button(w2-97, h2-97,"exit_button",function(){this.game.state.start("Menu");},this);
-		    mainMenu.scale.set(1,1);
+		  mainMenu = this.game.add.button(w2-97, h2-97,"exit_button",function(){this.game.state.start("Menu");},this);
+		  mainMenu.scale.set(1,1);
 			mainMenu.anchor.setTo(0.5,0.5);
 			mainMenu.input.useHandCursor=true;
 
@@ -246,7 +244,7 @@ gameMananger.prototype = {
 				spScoreLabel.alpha = 0.7;
 				statsPlayers = this.game.add.text(w2+50, h2+105, bestScore, {
 			      font: "100px Dosis Extrabold",
-			      fill: bgColorsDark[chosenColor],
+			      fill: colorHexDark,
 			      align: "center"
 		    	});
 		    	statsPlayers.anchor.setTo(0.5,0.5);
@@ -354,9 +352,6 @@ gameMananger.prototype = {
 
 	render: function(){
 		//players[0].render();
-		for(var i = 0; i<groupTrails.length; i++ ){
-			groupTrails[i].forEachAlive(this.renderGroup, this);
-		}
 	},
 
 	renderGroup: function(member) {

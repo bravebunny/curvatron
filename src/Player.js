@@ -9,36 +9,41 @@ var Player = function(id, x, y, key, game) {
 	this.key = key;
 	this.killTrail = false;
 	this.dead = false;
-	this.groupTrail = null;
 	this.ready = true;
 	this.speed = 1;
 	this.angularVelocity = 1;
 	this.growth = 30;
 	this.frameCount = 0;
 	this.lastTrailLength = 0;
-	this.enemyTrails = [];
 	this.keyText = null;
 	this.circle = null;
-	this.trailPiece = null;
 	this.collectSound = null;
 	this.paused = false;
 	this.textTween = null;
+	this.trailArray = [];
 };
 
 Player.prototype = {
 
 	create: function() {
-		this.groupTrail = this.game.add.group();
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.sprite.anchor.setTo(.5,.5);
-		groupTrails.push(this.groupTrail);
 
+		//used to do this in a fancier way, but it broke some stuff
+		if(this.y > h2) {
+			this.sprite.rotation = Math.PI;
+		}
+
+		if (numberPlayers > 0) {
+			this.color = Phaser.Color.hexToColor(colorPlayers[this.id]);
+		} else {
+			this.color = Phaser.Color.hexToColor("#FFFFFF");
+		}
+		
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-		this.sprite.body.setSize(16*scale, 16*scale, 0, 0);
+		//this.sprite.body.setSize(16*scale, 16*scale, 0, 0);
 		this.sprite.scale.set(scale);
-		this.groupTrail.enableBody = true;
-	    //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
-	    this.lastTrailLength = this.growth;
+    this.lastTrailLength = this.growth;
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 
@@ -65,54 +70,62 @@ Player.prototype = {
 			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
+			if (!this.dead) {
+				//collision detection
+				var collSize = 16*scale;
+				var xx = Math.cos(this.sprite.rotation)*20*scale + this.sprite.x;
+				var yy = Math.sin(this.sprite.rotation)*20*scale + this.sprite.y;
 
-			if (numberPlayers > 0) {
-				this.game.physics.arcade.overlap(this.sprite, this.enemyTrails, this.kill, null, this);
-			} else {
-				this.game.physics.arcade.collide(this.sprite, this.groupTrail, this.kill, null, this);
+				for (var i = 0; i < players.length; i++) {
+					for (var j = 0; j < this.trailArray.length; j++) {
+						var curTrail = players[i].trailArray[j];
+						if (curTrail && curTrail.x-collSize < xx && curTrail.x+collSize > xx &&
+							 	curTrail.y-collSize < yy && curTrail.y+collSize > yy) {
+							 	this.kill();
+						}
+					}
+				}
 			}
-
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
 
-			//Create trail
-			if (this.ready && this.frameCount == 0) {
-				this.trailPiece = this.groupTrail.create(this.sprite.x, this.sprite.y, 'trail' + this.id);
-				this.groupTrail.add(this.trailPiece);
-				this.trailPiece.body.immovable = true;
-				this.trailPiece.anchor.setTo(.5,.5);
-				this.trailPiece.scale.set(scale)
-			}
-			
-			//erase trail from behind
-			if(this.dead && this.frameCount == 0){
-				this.killTrail = true;
-				this.ready = false;
-				//getAt() returns -1 if the object doesn't exist
-				var obj = this.groupTrail.getAt(this.groupTrail.length - 1);
-				if (obj != -1)
-		    	{
-		    		obj.body.destroy();
-		        obj.kill();
-		        obj.parent.removeChild(obj);
-		    	}
-			}
+			var trailPiece = null;
 
-			if (!this.killTrail && (this.groupTrail.length >= (this.lastTrailLength + this.growth))) {
-				this.killTrail = true;
-				this.lastTrailLength = this.groupTrail.length;
+			//Create trail
+			if (this.ready && this.frameCount == 0 && !this.dead) {
+				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
+				this.trailArray.push(trailPiece);
+		   	bmd.circle(this.sprite.x, this.sprite.y, 8*scale,
+		   		"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
 			}
 
 			//erase trail from front
-			if(this.killTrail && this.frameCount == 0){
+			if(this.dead && this.frameCount == 0 && this.trailArray[0]){
+				trailPiece = this.trailArray.pop();;
+		    bmd.circle(trailPiece.x, trailPiece.y, 10*scale,
+		    	"rgba(" + bgColor.r + "," + bgColor.g + ","+ bgColor.b + ",1)");
+				
+				if (this.trailArray[0]) {
+					trailPiece = this.trailArray[this.trailArray.length -1];
+					bmd.circle(trailPiece.x, trailPiece.y, 8*scale,
+						"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
+				}
+			}
 
-				//getFirstAlive() returns null if the object doesn't exist
-				var obj = this.groupTrail.getFirstAlive();
-			    if (obj)
-			    {
-		    		obj.body.destroy();
-		        obj.kill();
-		        obj.parent.removeChild(obj);
-			    }
+			if (!this.killTrail && (this.trailArray.length >= (this.lastTrailLength + this.growth))) {
+				this.killTrail = true;
+				this.lastTrailLength = this.trailArray.length;
+			}
+
+			//erase trail from behind
+			if(this.killTrail && this.frameCount == 0 && this.trailArray[0]){
+				trailPiece = this.trailArray.shift();
+		    bmd.circle(trailPiece.x, trailPiece.y, 10*scale,
+		    	"rgba(" + bgColor.r + "," + bgColor.g + ","+ bgColor.b + ",1)");
+				
+				if (this.trailArray[0]) {
+					bmd.circle(this.trailArray[0].x, this.trailArray[0].y, 8*scale,
+						"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
+				}
 			}
 
 			//Screen border collisions
@@ -195,7 +208,7 @@ Player.prototype = {
         }
 	},
 
-	kill: function(player, trail) {
+	kill: function() {
 		this.keyText.destroy();
 		if(!this.dead){
 			if(numberPlayers == 0){
@@ -238,9 +251,8 @@ Player.prototype = {
 
 		power.kill();
 		this.killTrail = false;
-		this.growth = 30*power.scale.x;
+		this.growth = 60*power.scale.x;
 		this.score = this.score + power.scale.x;
-		//console.log("palyer" + this.id + " is now " + this.score)
 
 		if (this.score > highScore && numberPlayers != 0) {
 			highScore = this.score;
