@@ -13,6 +13,7 @@ boot.prototype = {
     document.body.style.background = colorHex;
     this.game.stage.backgroundColor = colorHex;
     changeColor = false;
+    mute = false;
 
    	this.game.load.image("loading","assets/sprites/menu/loading.png");
   	this.game.renderer.roundPixels = false;

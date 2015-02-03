@@ -132,12 +132,15 @@ gameMananger.prototype = {
 		this.overlay.alpha = 0;
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);
-		menuMusic.volume = 1;	
+		
+		if (!mute) {
+			menuMusic.volume = 1;
+		}
 	},
 
 	update: function() {
 		if(!paused){
-			if (menuMusic.isPlaying && (menuMusic.volume == 1) && !gameOver) {
+			if (menuMusic.isPlaying && (menuMusic.volume == 1) && !gameOver && !mute) {
 				menuMusic.fadeOut(2000);
 			}
 			totalTime += this.game.time.physicsElapsed;
@@ -190,8 +193,10 @@ gameMananger.prototype = {
 
 	endGame: function(){
 		if(!gameOver){
-			menuMusic.play();
-			menuMusic.volume = 1;
+			if (!mute) {
+				menuMusic.play();
+				menuMusic.volume = 1;
+			}
 			this.game.input.onDown.active = false;
 			this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
 			this.game.input.onDown.active = true;
@@ -308,7 +313,7 @@ gameMananger.prototype = {
 	        exit.scale.set(1,1);
 	        exit.input.useHandCursor=true;
 
-	        if(this.game.sound.mute){
+	        if (mute){
 		    	audioButton = this.game.add.button(w2+150, h2,"audiooff_button",this.muteSound,this);
 		  		audioButton.anchor.setTo(0.5,0.5);
 		  		audioButton.scale.set(1,1);
@@ -355,13 +360,15 @@ gameMananger.prototype = {
 	},
 
 	muteSound: function(){
-    if(this.game.sound.mute){
+    if(mute){
 	    audioButton.loadTexture('audio_button');
-	    this.game.sound.mute = false;
-    }
-    else{
-        audioButton.loadTexture('audiooff_button');
-        this.game.sound.mute = true;
+	    mute = false;
+    } else {
+      audioButton.loadTexture('audiooff_button');
+      mute = true;
+      if (menuMusic && menuMusic.isPlaying) {
+      	menuMusic.stop();
+    	}
     }
 	},
 
