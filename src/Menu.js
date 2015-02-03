@@ -118,13 +118,17 @@ menu.prototype = {
     }
     mpButton.input.useHandCursor=true;
 
-  	//SetKeys
-  	var keysButton = this.game.add.button(w2/2,h2+230,"setkeys_button",this.setKeys,this);
-		keysButton.anchor.setTo(0.5,0.5);
-    keysButton.input.useHandCursor=true;
-    
-    if(mobile) {
-      keysButton.alpha = 0.2;
+  	
+    if(mobile){
+      //FullScreen
+      var fullScreenButton = this.game.add.button(w2+w2/2,h2+230,"fullscreen_button",this.fullScreen,this);
+      fullScreenButton.anchor.setTo(0.5,0.5);
+      fullScreenButton.input.useHandCursor=true;
+    } else {
+      //SetKeys
+      var keysButton = this.game.add.button(w2+w2/2,h2+230,"setkeys_button",this.setKeys,this);
+      keysButton.anchor.setTo(0.5,0.5);
+      keysButton.input.useHandCursor=true;
     }
 
   	//Stats
@@ -134,20 +138,14 @@ menu.prototype = {
 
   	//Audio
     if(this.game.sound.mute){
-    	audioButton = this.game.add.button(w2+w2/2,h2+230,"audiooff_button",this.muteSound,this);
+    	audioButton = this.game.add.button(w2/2,h2+230,"audiooff_button",this.muteSound,this);
   		audioButton.anchor.setTo(0.5,0.5);
       audioButton.input.useHandCursor=true;
     }
     else{
-      audioButton = this.game.add.button(w2+w2/2,h2+230,"audio_button",this.muteSound,this);
+      audioButton = this.game.add.button(w2/2,h2+230,"audio_button",this.muteSound,this);
       audioButton.anchor.setTo(0.5,0.5);
       audioButton.input.useHandCursor=true;
-    }
-    if(mobile){
-      //FullScreen
-      var fullScreenButton = this.game.add.button(w2*2-36,h2+230,"fullScreen_button",this.fullScreen,this);
-      fullScreenButton.anchor.setTo(0.5,0.5);
-      fullScreenButton.input.useHandCursor=true;
     }
 	},
 

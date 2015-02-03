@@ -68,6 +68,7 @@ gameMananger.prototype = {
 			this.timeCircle = graphics.drawCircle(w2,h2,Math.sqrt(w2*w2+h2*h2)*2);
 			this.timeCircle.pivot.x = w2;
 			this.timeCircle.pivot.y = h2;
+			graphics.endFill();
 		}
 
 		groupPowers = this.game.add.group();
@@ -227,24 +228,36 @@ gameMananger.prototype = {
 			        fill: "#ffffff",
 			        align: "center"});
 		  		} else {
-		  			scoreInMenu = this.game.add.text(w2, h2+128,
+		  			/*scoreInMenu = this.game.add.text(w2, h2+128,
 		  			"Player " + String.fromCharCode(players[crowned].key) + " wins",
 			  		{
 			        font: "80px Dosis Extrabold",
 			        fill: colorPlayers[crowned],
 			        align: "center"});
-		  		}
-	    		scoreInMenu.anchor.setTo(0.5,0.5);
-		  		scoreInMenu.scale.set(1,1);
-		  		
-		  	}
+			    		scoreInMenu.anchor.setTo(0.5,0.5);
+				  		scoreInMenu.scale.set(1,1);*/
 
-	    	if(numberPlayers == 0){
-				spScoreLabel = this.game.add.button(w2, h2+97,"score-stat");
-				spScoreLabel.scale.set(1,1);
-				spScoreLabel.anchor.setTo(0.5,0.5);
-				spScoreLabel.alpha = 0.7;
-				statsPlayers = this.game.add.text(w2+50, h2+105, bestScore, {
+			  		var winnerFill = this.game.add.sprite(w2-75,h2+97, "player" + players[crowned].id);
+			  		winnerFill.scale.set(5);
+			  		winnerFill.anchor.setTo(0.5,0.5);
+
+						var winnerLabel = this.game.add.sprite(w2, h2+97,"winner");
+						winnerLabel.scale.set(1,1);
+						winnerLabel.anchor.setTo(0.5,0.5);
+						var textWinner = this.game.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
+				      font: "100px Dosis Extrabold",
+				      fill: colorPlayers[crowned],
+				      align: "center"
+			    	});
+			    	textWinner.anchor.setTo(0.5,0.5);
+		  		}
+		  		
+		  	} else {
+					spScoreLabel = this.game.add.sprite(w2, h2+97,"score-stat");
+					spScoreLabel.scale.set(1,1);
+					spScoreLabel.anchor.setTo(0.5,0.5);
+					spScoreLabel.alpha = 0.7;
+					statsPlayers = this.game.add.text(w2+50, h2+105, bestScore, {
 			      font: "100px Dosis Extrabold",
 			      fill: colorHexDark,
 			      align: "center"
