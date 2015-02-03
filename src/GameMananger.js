@@ -50,22 +50,6 @@ gameMananger.prototype = {
 			bgColor = Phaser.Color.hexToColor(colorHex);
 		}
 
-		if(mobile){
-			pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchePauseButton,this);
-    	pauseSprite.anchor.setTo(0.5, 0.5);
-    	pauseSprite.input.useHandCursor=true;
-		} else if (numberPlayers == 0){
-			tempLabel = this.game.add.sprite(w2, h2, 'score-stat');
-			tempLabel.anchor.setTo(0.5,0.5);
-			tempLabel.alpha = 0.7;
-			tempLabelText = this.game.add.text(w2+50, h2+8, bestScore.toString(), {
-	      font: "100px Dosis Extrabold",
-	      fill: colorHex,
-	      align: "center"
-	  	});
-	  	tempLabelText.anchor.setTo(0.5,0.5);
-		}
-
 		if(numberPlayers > 0){
 			this.crown = this.game.add.sprite(w2, -32, 'crown');
 			this.crown.anchor.setTo(0.5,0.8);
@@ -76,7 +60,7 @@ gameMananger.prototype = {
 
 		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
 		bmd.addToWorld();
-		bmd.smoothed = true;
+		bmd.smoothed = false;
 
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.game.physics.arcade.gravity.y = 0;
@@ -121,6 +105,22 @@ gameMananger.prototype = {
 			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 		} else {
 			this.createPower();
+		}
+
+		if(mobile){
+			pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
+    	pauseSprite.anchor.setTo(0.5, 0.5);
+    	pauseSprite.input.useHandCursor=true;
+		} else if (numberPlayers == 0){
+			tempLabel = this.game.add.sprite(w2, h2, 'score-stat');
+			tempLabel.anchor.setTo(0.5,0.5);
+			tempLabel.alpha = 0.7;
+			tempLabelText = this.game.add.text(w2+50, h2+8, bestScore.toString(), {
+	      font: "100px Dosis Extrabold",
+	      fill: colorHex,
+	      align: "center"
+	  	});
+	  	tempLabelText.anchor.setTo(0.5,0.5);
 		}
 
 		this.overlay = this.game.add.sprite(0, 0, 'overlay');
@@ -325,7 +325,7 @@ gameMananger.prototype = {
 
 	},
 
-	touchePauseButton: function(){
+	touchPauseButton: function(){
 		if(!paused){
 			this.pause();
 			if(mobile){
