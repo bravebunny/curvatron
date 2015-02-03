@@ -93,7 +93,7 @@ Player.prototype = {
 
 			//Create trail
 			if (this.ready && this.frameCount == 0 && !this.dead) {
-				trailPiece = {"x": this.sprite.x-Math.cos(this.sprite.rotation)*2*scale,"y": this.sprite.y-Math.sin(this.sprite.rotation)*2*scale, "n": 1};
+				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 				this.trailArray.push(trailPiece);
 		   		bmd.circle(this.sprite.x, this.sprite.y, 8*scale,
 		   		"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
