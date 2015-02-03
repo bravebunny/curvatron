@@ -183,10 +183,14 @@ Player.prototype = {
 		} else if (!this.dead) {
 			if (this.direction == 1 && !gameOver) {
 				this.direction = -1;
-				moveSounds[0].play();
+				if(!mute) {
+					moveSounds[0].play();
+				}
 			} else if (!gameOver) {
 				this.direction = 1;
-				moveSounds[1].play();
+				if(!mute) {
+					moveSounds[1].play();
+				}
 			}
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
@@ -220,7 +224,9 @@ Player.prototype = {
 				localStorage.setItem("deathScore", deathScore);
 			}
 			this.sprite.kill();
-			killSound.play();
+			if(!mute) {
+				killSound.play();
+			}
 			this.dead = true;
 
 			var alreadyDead = 0;
@@ -251,8 +257,9 @@ Player.prototype = {
 
 	collect: function(player, power) {
 		var randSound = this.game.rnd.integerInRange(0, numberSounds);
-		collectSounds[randSound].play();
-
+		if (!mute) {
+			collectSounds[randSound].play();
+		}
 		power.kill();
 		this.killTrail = false;
 		this.growth = 60*power.scale.x;

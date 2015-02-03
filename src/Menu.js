@@ -40,17 +40,15 @@ menu.prototype = {
   	this.game.world.scale.set(1);
 
     if (numberPlayers == 0) {
-      if (!menuMusic) {
+      if (!menuMusic && !mute) {
         menuMusic = this.game.add.audio('dream');
         menuMusic.play();
         menuMusic.loop = true;   
-      } else if (!menuMusic.isPlaying){
+      } else if (!menuMusic.isPlaying && !mute){
         menuMusic.play();
         menuMusic.volume = 1;
       }
     }
-
-
 
   	bestScore = parseInt(localStorage.getItem("highScore"));
   	if(isNaN(bestScore)) {
@@ -138,7 +136,7 @@ menu.prototype = {
     statsButton.input.useHandCursor=true;
 
   	//Audio
-    if(this.game.sound.mute){
+    if(mute){
     	audioButton = this.game.add.button(w2/2,h2+230,"audiooff_button",this.muteSound,this);
   		audioButton.anchor.setTo(0.5,0.5);
       audioButton.input.useHandCursor=true;
@@ -184,13 +182,24 @@ menu.prototype = {
 	},
 
   muteSound: function(){
-    if(this.game.sound.mute){
+    if(mute){
       audioButton.loadTexture('audio_button');
-      this.game.sound.mute = false;
+      //this.game.sound.mute = false;
+      mute = false;
+      if (!menuMusic) {
+        menuMusic = this.game.add.audio('dream');  
+      }
+      menuMusic.play();
+      menuMusic.volume = 1;
+      menuMusic.loop = true; 
     }
     else{
       audioButton.loadTexture('audiooff_button');
-      this.game.sound.mute = true;
+      //this.game.sound.mute = true;
+      mute = true;
+      if (menuMusic && menuMusic.isPlaying) {
+        menuMusic.stop();
+      }
     }
   },
 
