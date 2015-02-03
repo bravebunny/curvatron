@@ -17,6 +17,7 @@ preloadMenu.prototype = {
 		this.game.load.image("setkeys_button","assets/sprites/menu/setkeys.png");
 		this.game.load.image("singleplayer_button","assets/sprites/menu/singleplayer.png");
 		this.game.load.image("stats_button","assets/sprites/menu/stats.png");
+		this.game.load.image("fullscreen_button","assets/sprites/menu/fullscreen.png");
 		this.game.load.image("sp_score","assets/sprites/menu/score.png");
 		this.game.load.image("back_button","assets/sprites/menu/back.png");
 		this.game.load.image("accept_button","assets/sprites/menu/accept.png");
