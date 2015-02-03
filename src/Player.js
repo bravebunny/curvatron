@@ -110,7 +110,7 @@ Player.prototype = {
 				trailPiece = this.trailArray.pop();;
 		    ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 				
-				if (this.trailArray[0]) {
+				if (this.trailArray.length > 0) {
 					trailPiece = this.trailArray[this.trailArray.length -1];
 					bmd.circle(trailPiece.x, trailPiece.y, 8*scale,
 						"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
@@ -127,7 +127,7 @@ Player.prototype = {
 				trailPiece = this.trailArray.shift();
 				ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 				
-				if (this.trailArray[0]) {
+				if (this.trailArray.length > 0) {
 					bmd.circle(this.trailArray[0].x, this.trailArray[0].y, 8*scale,
 						"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
 				}
