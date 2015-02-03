@@ -56,11 +56,21 @@ PowerUp.prototype = {
 		this.sprite.scale.set((this.size/2)*scale);
 
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-		//this.sprite.body.setSize(64*scale, 64*scale, 0, 0);
+		this.sprite.body.setSize(64*scale, 64*scale, 0, 0);
 
-		/*if (this.game.physics.arcade.overlap(this.sprite, groupTrails, null, null)) {
-			this.sprite.kill();
-			this.place();
-		}*/
+		var collSize = 16*scale;
+		var xx = Math.cos(this.sprite.rotation)*30*scale + this.sprite.x;
+		var yy = Math.sin(this.sprite.rotation)*30*scale + this.sprite.y;
+
+		for (var i = 0; i < players.length; i++) {
+			for (var j = 0; j < players[i].trailArray.length; j++) {
+				var curTrail = players[i].trailArray[j];
+				if (curTrail && curTrail.x-collSize < this.sprite.x && curTrail.x+collSize > this.sprite.x &&
+					 	curTrail.y-collSize < this.sprite.y && curTrail.y+collSize > this.sprite.y) {
+					 	this.sprite.kill();
+						this.place();
+				}
+			}
+		}
 	}
 };
