@@ -58,9 +58,9 @@ PowerUp.prototype = {
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		//this.sprite.body.setSize(64*scale, 64*scale, 0, 0);
 
-		if (this.game.physics.arcade.overlap(this.sprite, groupTrails, null, null)) {
+		/*if (this.game.physics.arcade.overlap(this.sprite, groupTrails, null, null)) {
 			this.sprite.kill();
 			this.place();
-		}
+		}*/
 	}
 };

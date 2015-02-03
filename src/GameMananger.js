@@ -78,22 +78,19 @@ gameMananger.prototype = {
 		bmd.addToWorld();
 		bmd.smoothed = false;
 
-		//Choose snake locations
-		for(var i=0; i <= numberPlayers; i++){
-			players[i] = new Player(i,
-			Math.round(Math.cos((2*Math.PI/(numberPlayers+1))*i)*500)+w2, 
-			Math.round(Math.sin((2*Math.PI/(numberPlayers+1))*i)*250)+h2, 
-			keys[i], this.game);
-		}
-
-		groupTrails = [];
-
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.game.physics.arcade.gravity.y = 0;
 
+		//Choose snake locations
+		for(var i=0; i <= numberPlayers; i++){
+			players[i] = new Player(i,
+			Math.cos((2*Math.PI/(numberPlayers+1))*i)*500+w2, 
+			Math.sin((2*Math.PI/(numberPlayers+1))*i)*250+h2, 
+			keys[i], this.game);
+		}
+
 		for(var i=0; i <= numberPlayers; i++){
 			players[i].create();
-			players[i].sprite.rotation = ((2*Math.PI/(numberPlayers+1))*i);
 		}
 
 		graphics = this.game.add.graphics(w2, h2);
@@ -103,15 +100,14 @@ gameMananger.prototype = {
 			this.timeCircle = graphics.drawCircle(w2,h2,Math.sqrt(w2*w2+h2*h2)*2);
 			this.timeCircle.pivot.x = w2;
 			this.timeCircle.pivot.y = h2;
-		} else {
-			var textSize = 15;
-	  	if (mobile) {
-	  		textSize = 30
-	  	}
 		}
 
 		groupPowers = this.game.add.group();
 		if (numberPlayers == 0) {
+			var textSize = 15;
+	  	if (mobile) {
+	  		textSize = 30
+	  	}
 			powerText = this.game.add.text(this.x, this.y, "1",
 			{ font: "" + textSize + "px Arial Black",
 	      fill: "#ffffff",
@@ -119,15 +115,6 @@ gameMananger.prototype = {
 	  	});
 	  	powerText.anchor.setTo(0.5,0.5);			
 		}
-
-		for(var i=0; i <= numberPlayers; i++){
-			for (var j = 0; j < groupTrails.length; j++) {
-				if (groupTrails[j] != players[i].groupTrail) {
-					players[i].enemyTrails.push(groupTrails[j]);
-				}
-			}
-		}
-
 
 		//Generate powers
 		if (numberPlayers > 0) {
@@ -365,9 +352,6 @@ gameMananger.prototype = {
 
 	render: function(){
 		//players[0].render();
-		for(var i = 0; i<groupTrails.length; i++ ){
-			groupTrails[i].forEachAlive(this.renderGroup, this);
-		}
 	},
 
 	renderGroup: function(member) {

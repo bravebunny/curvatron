@@ -9,14 +9,12 @@ var Player = function(id, x, y, key, game) {
 	this.key = key;
 	this.killTrail = false;
 	this.dead = false;
-	this.groupTrail = null;
 	this.ready = true;
 	this.speed = 1;
 	this.angularVelocity = 1;
 	this.growth = 30;
 	this.frameCount = 0;
 	this.lastTrailLength = 0;
-	this.enemyTrails = [];
 	this.keyText = null;
 	this.circle = null;
 	this.collectSound = null;
@@ -28,23 +26,24 @@ var Player = function(id, x, y, key, game) {
 Player.prototype = {
 
 	create: function() {
-		this.groupTrail = this.game.add.group();
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.sprite.anchor.setTo(.5,.5);
-		groupTrails.push(this.groupTrail);
+
+		//used to do this in a fancier way, but it broke some stuff
+		if(this.y > h2) {
+			this.sprite.rotation = Math.PI;
+		}
+
 		if (numberPlayers > 0) {
 			this.color = Phaser.Color.hexToColor(colorPlayers[this.id]);
 		} else {
 			this.color = Phaser.Color.hexToColor("#FFFFFF");
 		}
 		
-
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-		this.sprite.body.setSize(16*scale, 16*scale, 0, 0);
+		//this.sprite.body.setSize(16*scale, 16*scale, 0, 0);
 		this.sprite.scale.set(scale);
-		this.groupTrail.enableBody = true;
-	    //this.groupTrail.physicsBodyType = Phaser.Physics.ARCADE;
-	    this.lastTrailLength = this.growth;
+    this.lastTrailLength = this.growth;
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 
@@ -71,14 +70,12 @@ Player.prototype = {
 			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
-			/*if (numberPlayers > 0) {
-				this.game.physics.arcade.overlap(this.sprite, this.enemyTrails, this.kill, null, this);
-			} else */
 			if (!this.dead) {
 				//collision detection
 				var collSize = 16*scale;
-				var xx = Math.round(Math.cos(this.sprite.rotation)*20*scale) + this.sprite.x;
-				var yy = Math.round(Math.sin(this.sprite.rotation)*20*scale) + this.sprite.y;
+				var xx = Math.cos(this.sprite.rotation)*20*scale + this.sprite.x;
+				var yy = Math.sin(this.sprite.rotation)*20*scale + this.sprite.y;
+
 				for (var i = 0; i < players.length; i++) {
 					for (var j = 0; j < this.trailArray.length; j++) {
 						var curTrail = players[i].trailArray[j];
@@ -89,25 +86,17 @@ Player.prototype = {
 					}
 				}
 			}
-
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
 
 			var trailPiece = null;
 
 			//Create trail
 			if (this.ready && this.frameCount == 0 && !this.dead) {
-				/*this.trailPiece = this.groupTrail.create(this.sprite.x, this.sprite.y, 'trail' + this.id);
-				this.groupTrail.add(this.trailPiece);
-				this.trailPiece.body.immovable = true;
-				this.trailPiece.anchor.setTo(.5,.5);
-				this.trailPiece.scale.set(scale)*/
 				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 				this.trailArray.push(trailPiece);
 		   	bmd.circle(this.sprite.x, this.sprite.y, 8*scale,
 		   		"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
 			}
-			
-			
 
 			//erase trail from front
 			if(this.dead && this.frameCount == 0 && this.trailArray[0]){
@@ -219,7 +208,7 @@ Player.prototype = {
         }
 	},
 
-	kill: function(player, trail) {
+	kill: function() {
 		this.keyText.destroy();
 		if(!this.dead){
 			if(numberPlayers == 0){
