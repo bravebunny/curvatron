@@ -120,17 +120,16 @@ menu.prototype = {
 
   	
 
-      //FullScreen
-      /*var fullScreenButton = this.game.add.button(w2+w2/2,h2+230,"fullscreen_button",this.fullScreen,this);
-      fullScreenButton.anchor.setTo(0.5,0.5);
-      fullScreenButton.input.useHandCursor=true;*/
-      //SetKeys
-      var keysButton = this.game.add.button(w2+w2/2,h2+230,"setkeys_button",this.setKeys,this);
-      keysButton.anchor.setTo(0.5,0.5);
-      keysButton.input.useHandCursor=true;
-      if(mobile){
-        keysButton.alpha = 0.2;
-      }
+    //FullScreen
+    /*var fullScreenButton = this.game.add.button(w2+w2/2,h2+230,"fullscreen_button",this.fullScreen,this);
+    fullScreenButton.anchor.setTo(0.5,0.5);
+    fullScreenButton.input.useHandCursor=true;*/
+    //SetKeys
+    var keysButton = this.game.add.button(w2+w2/2,h2+230,"setkeys_button",this.setKeys,this);
+    keysButton.anchor.setTo(0.5,0.5);
+    keysButton.input.useHandCursor=true;
+    if(mobile){
+      keysButton.alpha = 0.2;
     }
 
   	//Stats
