@@ -88,8 +88,14 @@ Player.prototype = {
 				}
 			}
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
+			for (var i = 0; i < players.length; i++) {
+				if (i != this.id) {
+					this.game.physics.arcade.overlap(this.sprite, players[i].sprite, this.kill, null, this);
+				}
+			}
 
 			var trailPiece = null;
+			var ctx = bmd.context;
 
 			//Create trail
 			if (this.ready && this.frameCount == 0 && !this.dead) {
@@ -102,8 +108,7 @@ Player.prototype = {
 			//erase trail from front
 			if(this.dead && this.frameCount == 0 && this.trailArray[0]){
 				trailPiece = this.trailArray.pop();;
-		    bmd.circle(trailPiece.x, trailPiece.y, 10*scale,
-		    	"rgba(" + bgColor.r + "," + bgColor.g + ","+ bgColor.b + ",1)");
+		    ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 				
 				if (this.trailArray[0]) {
 					trailPiece = this.trailArray[this.trailArray.length -1];
@@ -120,8 +125,7 @@ Player.prototype = {
 			//erase trail from behind
 			if(this.killTrail && this.frameCount == 0 && this.trailArray[0]){
 				trailPiece = this.trailArray.shift();
-		    bmd.circle(trailPiece.x, trailPiece.y, 10*scale,
-		    	"rgba(" + bgColor.r + "," + bgColor.g + ","+ bgColor.b + ",1)");
+				ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 				
 				if (this.trailArray[0]) {
 					bmd.circle(this.trailArray[0].x, this.trailArray[0].y, 8*scale,

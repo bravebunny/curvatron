@@ -58,24 +58,8 @@ gameMananger.prototype = {
 
 		this.initialTime = this.game.time.totalElapsedSeconds();
 
-		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
-		bmd.addToWorld();
-		bmd.smoothed = false;
-
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.game.physics.arcade.gravity.y = 0;
-
-		//Choose snake locations
-		for(var i=0; i <= numberPlayers; i++){
-			players[i] = new Player(i,
-			Math.cos((2*Math.PI/(numberPlayers+1))*i)*500+w2, 
-			Math.sin((2*Math.PI/(numberPlayers+1))*i)*250+h2, 
-			keys[i], this.game);
-		}
-
-		for(var i=0; i <= numberPlayers; i++){
-			players[i].create();
-		}
 
 		graphics = this.game.add.graphics(w2, h2);
 		if(numberPlayers > 0){
@@ -122,6 +106,24 @@ gameMananger.prototype = {
 	  	});
 	  	tempLabelText.anchor.setTo(0.5,0.5);
 		}
+
+		//create BitmapData
+		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
+		bmd.addToWorld();
+		bmd.smoothed = false;
+
+		//Choose snake locations
+		for(var i=0; i <= numberPlayers; i++){
+			players[i] = new Player(i,
+			Math.cos((2*Math.PI/(numberPlayers+1))*i)*500+w2, 
+			Math.sin((2*Math.PI/(numberPlayers+1))*i)*250+h2, 
+			keys[i], this.game);
+		}
+
+		for(var i=0; i <= numberPlayers; i++){
+			players[i].create();
+		}
+
 
 		this.overlay = this.game.add.sprite(0, 0, 'overlay');
 		this.overlay.width = w2*2;
