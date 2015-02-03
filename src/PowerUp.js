@@ -59,9 +59,6 @@ PowerUp.prototype = {
 		this.sprite.body.setSize(64*scale, 64*scale, 0, 0);
 
 		var collSize = 16*scale;
-		var xx = Math.cos(this.sprite.rotation)*30*scale + this.sprite.x;
-		var yy = Math.sin(this.sprite.rotation)*30*scale + this.sprite.y;
-
 		for (var i = 0; i < players.length; i++) {
 			for (var j = 0; j < players[i].trailArray.length; j++) {
 				var curTrail = players[i].trailArray[j];
