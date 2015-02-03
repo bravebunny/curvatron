@@ -42,8 +42,6 @@ PowerUp.prototype = {
 			powerText.x = this.sprite.x;
 			powerText.y = this.sprite.y;
 		}
-
-
 	},
 
 	place: function() {
@@ -56,7 +54,6 @@ PowerUp.prototype = {
 		this.sprite.scale.set((this.size/2)*scale);
 
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-		this.sprite.body.setSize(64*scale, 64*scale, 0, 0);
 
 		var collSize = 16*scale;
 		for (var i = 0; i < players.length; i++) {
@@ -69,5 +66,9 @@ PowerUp.prototype = {
 				}
 			}
 		}
+	},
+
+	render: function(){
+		//this.game.debug.body(this.sprite);
 	}
 };
