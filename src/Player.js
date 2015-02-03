@@ -66,15 +66,16 @@ Player.prototype = {
 			this.unpause();
 		}
 
-		if (!this.paused) {
+			if (!this.paused) {
 			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
+
 			if (!this.dead) {
 				//collision detection
 				var collSize = 16*scale;
-				var xx = Math.cos(this.sprite.rotation)*20*scale + this.sprite.x;
-				var yy = Math.sin(this.sprite.rotation)*20*scale + this.sprite.y;
+				var xx = Math.cos(this.sprite.rotation)*30*scale + this.sprite.x;
+				var yy = Math.sin(this.sprite.rotation)*30*scale + this.sprite.y;
 
 				for (var i = 0; i < players.length; i++) {
 					for (var j = 0; j < this.trailArray.length; j++) {
@@ -94,7 +95,7 @@ Player.prototype = {
 			if (this.ready && this.frameCount == 0 && !this.dead) {
 				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 				this.trailArray.push(trailPiece);
-		   	bmd.circle(this.sprite.x, this.sprite.y, 8*scale,
+		   		bmd.circle(this.sprite.x, this.sprite.y, 8*scale,
 		   		"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
 			}
 
@@ -153,19 +154,18 @@ Player.prototype = {
 		//Show player's key
 		if (!this.keyText) {
 			this.keyText = this.game.add.text(
-				Math.round(Math.cos(this.sprite.rotation + Math.PI/2)*88*scale) + this.x,
-				Math.round(Math.sin(this.sprite.rotation + Math.PI/2)*88*scale) + this.y,
-				String.fromCharCode(this.key), {
-		      font: "80px Dosis Extrabold",
-		      fill: "#ffffff",
-		      align: "center"
-		  	});
+			Math.round(Math.cos(this.sprite.rotation + Math.PI/2)*88*scale) + this.x,
+			Math.round(Math.sin(this.sprite.rotation + Math.PI/2)*88*scale) + this.y,
+			String.fromCharCode(this.key), {
+		        font: "80px Dosis Extrabold",
+		        fill: "#ffffff",
+		        align: "center"});
 			this.keyText.scale.set(scale);
-	  	this.keyText.anchor.setTo(0.5,0.5);
+	  		this.keyText.anchor.setTo(0.5,0.5);
 
-	  	if (mobile) {
-	  		this.keyText.setText(bestScore);
-	  	}
+		  	if (mobile) {
+		  		this.keyText.setText(bestScore);
+		  	}
 		}
 
 	},
@@ -309,7 +309,8 @@ Player.prototype = {
 	},
 
 	render: function(){
-		this.game.debug.geom(this.circle,'#cfffff');
-		//this.game.debug.body(this.sprite);
+		//this.game.debug.geom(this.circle,'#cfffff');
+		this.game.debug.body(this.sprite);
+
 	}
 };

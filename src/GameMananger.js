@@ -351,7 +351,7 @@ gameMananger.prototype = {
 	},
 
 	render: function(){
-		//players[0].render();
+		players[0].render();
 	},
 
 	renderGroup: function(member) {
