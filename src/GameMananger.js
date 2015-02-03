@@ -23,7 +23,8 @@ gameMananger.prototype = {
 		this.powerTimer = null;
 		totalTime = 0;
 		pauseTween = null;
-		borders = [0, this.game.world.width, 0,this.game.world.height]
+		borders = [0, this.game.world.width, 0,this.game.world.height];
+		bmd = null;
 	},
 
 	create: function() {
@@ -35,6 +36,10 @@ gameMananger.prototype = {
     moveSounds[1] = this.game.add.audio('move1');
     killSound = this.game.add.audio('kill');
 
+		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
+		bmd.addToWorld();
+		bmd.smoothed = false;
+    
     collectSounds = []
     for (var i = 0; i <= numberSounds; i++) {
 	  	collectSounds[i] = this.game.add.audio('sfx_collect' + i);
