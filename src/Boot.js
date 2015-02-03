@@ -9,6 +9,7 @@ boot.prototype = {
 		colorPlayers = ['#eb1c1c','#4368e0','#f07dc1','#44c83a','#9e432e','#3dd6e0','#9339e0','#ebd90f'];
     chosenColor = this.game.rnd.integerInRange(0, 3);
     colorHex = bgColors[chosenColor];
+    colorHexDark = ['#3b5c1e', '#672f27', '#40294b', '#264c5c'];
     document.body.style.background = colorHex;
     this.game.stage.backgroundColor = colorHex;
     changeColor = false;
