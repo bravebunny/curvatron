@@ -76,7 +76,7 @@ gameMananger.prototype = {
 
 		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
 		bmd.addToWorld();
-		bmd.smoothed = false;
+		bmd.smoothed = true;
 
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.game.physics.arcade.gravity.y = 0;
