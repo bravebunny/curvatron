@@ -116,24 +116,24 @@ menu.prototype = {
     }
     mpButton.input.useHandCursor=true;
 
-  	
-
     //FullScreen
     /*var fullScreenButton = this.game.add.button(w2+w2/2,h2+230,"fullscreen_button",this.fullScreen,this);
     fullScreenButton.anchor.setTo(0.5,0.5);
     fullScreenButton.input.useHandCursor=true;*/
     //SetKeys
-    var keysButton = this.game.add.button(w2+w2/2,h2+230,"setkeys_button",this.setKeys,this);
-    keysButton.anchor.setTo(0.5,0.5);
-    keysButton.input.useHandCursor=true;
-    if(mobile){
-      keysButton.alpha = 0.2;
+    if(!mobile){
+      var keysButton = this.game.add.button(w2+w2/2,h2+230,"setkeys_button",this.setKeys,this);
+      keysButton.anchor.setTo(0.5,0.5);
+      keysButton.input.useHandCursor=true;
     }
 
   	//Stats
   	var statsButton = this.game.add.button(w2,h2+230,"stats_button",this.stats,this);
 		statsButton.anchor.setTo(0.5,0.5);
     statsButton.input.useHandCursor=true;
+    if (mobile) {
+      statsButton.x = w2+w2/6;
+    }
 
   	//Audio
     if(mute){
@@ -145,6 +145,9 @@ menu.prototype = {
       audioButton = this.game.add.button(w2/2,h2+230,"audio_button",this.muteSound,this);
       audioButton.anchor.setTo(0.5,0.5);
       audioButton.input.useHandCursor=true;
+    }
+    if (mobile) {
+      audioButton.x = w2-w2/6;
     }
 	},
 
