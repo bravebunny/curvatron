@@ -47,9 +47,11 @@ gameMananger.prototype = {
 		nextBallHigh = 0;
 
 		if (numberPlayers > 0) {
-			this.game.stage.backgroundColor = bgColorsDark[chosenColor];
+			this.game.stage.backgroundColor = colorHexDark;
+			bgColor = Phaser.Color.hexToColor(colorHexDark);
 		} else {
-			document.body.style.background = bgColorsDark[chosenColor];
+			document.body.style.background = colorHexDark;
+			bgColor = Phaser.Color.hexToColor(colorHex);
 		}
 
 		if(mobile){
@@ -251,7 +253,7 @@ gameMananger.prototype = {
 				spScoreLabel.alpha = 0.7;
 				statsPlayers = this.game.add.text(w2+50, h2+105, bestScore, {
 			      font: "100px Dosis Extrabold",
-			      fill: bgColorsDark[chosenColor],
+			      fill: colorHexDark,
 			      align: "center"
 		    	});
 		    	statsPlayers.anchor.setTo(0.5,0.5);

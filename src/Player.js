@@ -32,6 +32,11 @@ Player.prototype = {
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.sprite.anchor.setTo(.5,.5);
 		groupTrails.push(this.groupTrail);
+		if (numberPlayers > 0) {
+			this.color = Phaser.Color.hexToColor(colorPlayers[this.id]);
+		} else {
+			this.color = "rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)"
+		}
 		
 
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
@@ -74,10 +79,13 @@ Player.prototype = {
 				var collSize = 16*scale;
 				var xx = Math.round(Math.cos(this.sprite.rotation)*20*scale) + this.sprite.x;
 				var yy = Math.round(Math.sin(this.sprite.rotation)*20*scale) + this.sprite.y;
-				for (var i = 0; i < this.trailArray.length; i++) {
-					if (this.trailArray[i].x-collSize < xx && this.trailArray[i].x+collSize > xx &&
-						 	this.trailArray[i].y-collSize < yy && this.trailArray[i].y+collSize > yy) {
-						 	this.kill();
+				for (var i = 0; i < players.length; i++) {
+					for (var j = 0; j < this.trailArray.length; j++) {
+						var curTrail = players[i].trailArray[j];
+						if (curTrail && curTrail.x-collSize < xx && curTrail.x+collSize > xx &&
+							 	curTrail.y-collSize < yy && curTrail.y+collSize > yy) {
+							 	this.kill();
+						}
 					}
 				}
 			}
@@ -85,7 +93,6 @@ Player.prototype = {
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
 
 			var trailPiece = null;
-			var bgColor = Phaser.Color.hexToColor(colorHex);
 
 			//Create trail
 			if (this.ready && this.frameCount == 0 && !this.dead) {
@@ -96,7 +103,8 @@ Player.prototype = {
 				this.trailPiece.scale.set(scale)*/
 				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 				this.trailArray.push(trailPiece);
-		   		bmd.circle(this.sprite.x, this.sprite.y, 8*scale, "rgba(255,255,255,1)");
+		   	bmd.circle(this.sprite.x, this.sprite.y, 8*scale,
+		   		"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
 			}
 			
 			
@@ -104,11 +112,13 @@ Player.prototype = {
 			//erase trail from front
 			if(this.dead && this.frameCount == 0 && this.trailArray[0]){
 				trailPiece = this.trailArray.pop();;
-		    bmd.circle(trailPiece.x, trailPiece.y, 10*scale, "rgba(" + bgColor.r + "," + bgColor.g + ","+ bgColor.b + ",1)");
+		    bmd.circle(trailPiece.x, trailPiece.y, 10*scale,
+		    	"rgba(" + bgColor.r + "," + bgColor.g + ","+ bgColor.b + ",1)");
 				
 				if (this.trailArray[0]) {
 					trailPiece = this.trailArray[this.trailArray.length -1];
-					bmd.circle(trailPiece.x, trailPiece.y, 8*scale, "rgba(255,255,255,1)");
+					bmd.circle(trailPiece.x, trailPiece.y, 8*scale,
+						"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
 				}
 			}
 
@@ -120,10 +130,12 @@ Player.prototype = {
 			//erase trail from behind
 			if(this.killTrail && this.frameCount == 0 && this.trailArray[0]){
 				trailPiece = this.trailArray.shift();
-		    bmd.circle(trailPiece.x, trailPiece.y, 10*scale, "rgba(" + bgColor.r + "," + bgColor.g + ","+ bgColor.b + ",1)");
+		    bmd.circle(trailPiece.x, trailPiece.y, 10*scale,
+		    	"rgba(" + bgColor.r + "," + bgColor.g + ","+ bgColor.b + ",1)");
 				
 				if (this.trailArray[0]) {
-					bmd.circle(this.trailArray[0].x, this.trailArray[0].y, 8*scale, "rgba(255,255,255,1)");
+					bmd.circle(this.trailArray[0].x, this.trailArray[0].y, 8*scale,
+						"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
 				}
 			}
 
