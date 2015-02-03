@@ -17,7 +17,7 @@ gameMananger.prototype = {
 		w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 		gameOver = false;
-		graphics = this.game.add.graphics(w2, h2);
+		graphics = null
 		muteAudio = false;
 		paused = false;
 		this.powerTimer = null;
@@ -35,10 +35,6 @@ gameMananger.prototype = {
     moveSounds[0] = this.game.add.audio('move0');
     moveSounds[1] = this.game.add.audio('move1');
     killSound = this.game.add.audio('kill');
-
-		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
-		bmd.addToWorld();
-		bmd.smoothed = false;
     
     collectSounds = []
     for (var i = 0; i <= numberSounds; i++) {
@@ -70,6 +66,18 @@ gameMananger.prototype = {
 	  	tempLabelText.anchor.setTo(0.5,0.5);
 		}
 
+		if(numberPlayers > 0){
+			this.crown = this.game.add.sprite(w2, -32, 'crown');
+			this.crown.anchor.setTo(0.5,0.8);
+			this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
+		}
+
+		this.initialTime = this.game.time.totalElapsedSeconds();
+
+		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
+		bmd.addToWorld();
+		bmd.smoothed = false;
+
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
@@ -78,7 +86,6 @@ gameMananger.prototype = {
 			keys[i], this.game);
 		}
 
-		groupPowers = this.game.add.group();
 		groupTrails = [];
 
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -89,20 +96,7 @@ gameMananger.prototype = {
 			players[i].sprite.rotation = ((2*Math.PI/(numberPlayers+1))*i);
 		}
 
-		for(var i=0; i <= numberPlayers; i++){
-			for (var j = 0; j < groupTrails.length; j++) {
-				if (groupTrails[j] != players[i].groupTrail) {
-					players[i].enemyTrails.push(groupTrails[j]);
-				}
-			}
-		}
-
-		if(numberPlayers > 0){
-			this.crown = this.game.add.sprite(w2, -32, 'crown');
-			this.crown.anchor.setTo(0.5,0.8);
-			this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
-		}
-
+		graphics = this.game.add.graphics(w2, h2);
 		if(numberPlayers > 0){
 			graphics.lineStyle(0);
 			graphics.beginFill(0x000000, 0.2);
@@ -114,16 +108,26 @@ gameMananger.prototype = {
 	  	if (mobile) {
 	  		textSize = 30
 	  	}
+		}
+
+		groupPowers = this.game.add.group();
+		if (numberPlayers == 0) {
 			powerText = this.game.add.text(this.x, this.y, "1",
 			{ font: "" + textSize + "px Arial Black",
 	      fill: "#ffffff",
 	      align: "center"
 	  	});
-	  	powerText.anchor.setTo(0.5,0.5);
-
+	  	powerText.anchor.setTo(0.5,0.5);			
 		}
 
-		this.initialTime = this.game.time.totalElapsedSeconds();
+		for(var i=0; i <= numberPlayers; i++){
+			for (var j = 0; j < groupTrails.length; j++) {
+				if (groupTrails[j] != players[i].groupTrail) {
+					players[i].enemyTrails.push(groupTrails[j]);
+				}
+			}
+		}
+
 
 		//Generate powers
 		if (numberPlayers > 0) {
@@ -209,13 +213,13 @@ gameMananger.prototype = {
 				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(function(){this.game.state.restart(true,false,numberPlayers);}, this);
 			}
 
-	  		restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
+	  	restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
 
-		    mainMenu = this.game.add.button(w2-97, h2-97,"exit_button",function(){this.game.state.start("Menu");},this);
-		    mainMenu.scale.set(1,1);
+		  mainMenu = this.game.add.button(w2-97, h2-97,"exit_button",function(){this.game.state.start("Menu");},this);
+		  mainMenu.scale.set(1,1);
 			mainMenu.anchor.setTo(0.5,0.5);
 			mainMenu.input.useHandCursor=true;
 

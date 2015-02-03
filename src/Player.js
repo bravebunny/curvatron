@@ -35,7 +35,7 @@ Player.prototype = {
 		if (numberPlayers > 0) {
 			this.color = Phaser.Color.hexToColor(colorPlayers[this.id]);
 		} else {
-			this.color = "rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)"
+			this.color = Phaser.Color.hexToColor("#FFFFFF");
 		}
 		
 
@@ -262,7 +262,7 @@ Player.prototype = {
 
 		power.kill();
 		this.killTrail = false;
-		this.growth = 30*power.scale.x;
+		this.growth = 60*power.scale.x;
 		this.score = this.score + power.scale.x;
 
 		if (this.score > highScore && numberPlayers != 0) {
