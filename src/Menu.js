@@ -143,7 +143,12 @@ menu.prototype = {
       audioButton.anchor.setTo(0.5,0.5);
       audioButton.input.useHandCursor=true;
     }
-
+    if(mobile){
+      //FullScreen
+      var fullScreenButton = this.game.add.button(w2*2-36,h2+230,"fullScreen_button",this.fullScreen,this);
+      fullScreenButton.anchor.setTo(0.5,0.5);
+      fullScreenButton.input.useHandCursor=true;
+    }
 	},
 
 	playTheGame: function(){
@@ -187,6 +192,15 @@ menu.prototype = {
     else{
       audioButton.loadTexture('audiooff_button');
       this.game.sound.mute = true;
+    }
+  },
+
+  fullScreen: function(){
+    if (this.game.scale.isFullScreen){
+      this.game.scale.stopFullScreen();
+    }
+    else{
+      this.game.scale.startFullScreen(false);
     }
   }
 }
