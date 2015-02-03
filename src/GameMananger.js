@@ -355,6 +355,7 @@ gameMananger.prototype = {
 	},
 
 	renderGroup: function(member) {
+		console.log(this.game.time.fps); 
 		//this.game.debug.body(member);
 	}
 };
