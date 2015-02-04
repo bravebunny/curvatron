@@ -68,21 +68,21 @@ menu.prototype = {
 
 		//Game Title
 		var text = this.game.add.text(w2,120, "curvatron", {
-      font: "200px Dosis Extrabold",
+      font: "200px dosis",
       fill: "#ffffff",
       align: "center"
   	});
   	text.anchor.setTo(0.5,0.5);
 
     var text = this.game.add.text(w2+360,210, "BETA", {
-      font: "50px Dosis Extrabold",
+      font: "50px dosis",
       fill: "#ffffff",
       align: "center"
     });
     text.anchor.setTo(0.5,0.5);
     
     var text = this.game.add.text(w2,120, "curvatron", {
-      font: "200px Dosis Extrabold",
+      font: "200px dosis",
       fill: "#ffffff",
       align: "center"
     });
@@ -101,7 +101,7 @@ menu.prototype = {
   		this.scoreLabel.anchor.setTo(0.5,0.5);
   		this.scoreLabel.alpha = 0;
   		this.scoreText = this.game.add.text(w2-300,h2+10, bestScore, {
-          font: "120px Dosis Extrabold",
+          font: "120px dosis",
           fill: colorHex,
           align: "center"
     	});

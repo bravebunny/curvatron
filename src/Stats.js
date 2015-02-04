@@ -4,7 +4,7 @@ var stats = function(game){
 stats.prototype = {
 	create: function(){
 		var text = this.game.add.text(w2,120, "singleplayer stats", {
-	      font: "150px Dosis Extrabold",
+	      font: "150px dosis",
 	      fill: "#ffffff",
 	      align: "center"
 	  	});
@@ -14,7 +14,7 @@ stats.prototype = {
 		highScore.anchor.setTo(0.5,0.5);
 		highScore.alpha = 0.7;
 		highScoretext = this.game.add.text(w2/2+50, h2+8, bestScore.toString(), {
-	        font: "60px Dosis Extrabold",
+	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"
     	});
@@ -24,7 +24,7 @@ stats.prototype = {
 		totalBalls.anchor.setTo(0.5,0.5);
 		totalBalls.alpha = 0.7;
 		totalBallsText = this.game.add.text(w2+50,h2+8, ballsScore.toString(), {
-	        font: "60px Dosis Extrabold",
+	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"
     	});
@@ -34,7 +34,7 @@ stats.prototype = {
 		statsDeaths.anchor.setTo(0.5,0.5);
 		statsDeaths.alpha = 0.7;
 		textDeaths = this.game.add.text(w2+w2/2+50, h2+8, deathScore.toString(), {
-	        font: "60px Dosis Extrabold",
+	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"
     	});

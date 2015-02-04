@@ -101,7 +101,7 @@ gameMananger.prototype = {
 			tempLabel.anchor.setTo(0.5,0.5);
 			tempLabel.alpha = 0.7;
 			tempLabelText = this.game.add.text(w2+50, h2+8, bestScore.toString(), {
-	      font: "100px Dosis Extrabold",
+	      font: "100px dosis",
 	      fill: colorHex,
 	      align: "center"
 	  	});
@@ -111,7 +111,7 @@ gameMananger.prototype = {
 		//create BitmapData
 		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
 		bmd.addToWorld();
-		bmd.smoothed = false;
+		bmd.smoothed = true;
 
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
@@ -229,14 +229,14 @@ gameMananger.prototype = {
 						scoreInMenu = this.game.add.text(w2, h2+128,
 		  			"It's a tie",
 			  		{
-			        font: "80px Dosis Extrabold",
+			        font: "80px dosis",
 			        fill: "#ffffff",
 			        align: "center"});
 		  		} else {
 		  			/*scoreInMenu = this.game.add.text(w2, h2+128,
 		  			"Player " + String.fromCharCode(players[crowned].key) + " wins",
 			  		{
-			        font: "80px Dosis Extrabold",
+			        font: "80px dosis",
 			        fill: colorPlayers[crowned],
 			        align: "center"});
 			    		scoreInMenu.anchor.setTo(0.5,0.5);
@@ -250,7 +250,7 @@ gameMananger.prototype = {
 						winnerLabel.scale.set(1,1);
 						winnerLabel.anchor.setTo(0.5,0.5);
 						var textWinner = this.game.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
-				      font: "100px Dosis Extrabold",
+				      font: "100px dosis",
 				      fill: colorPlayers[crowned],
 				      align: "center"
 			    	});
@@ -263,7 +263,7 @@ gameMananger.prototype = {
 					spScoreLabel.anchor.setTo(0.5,0.5);
 					spScoreLabel.alpha = 0.7;
 					statsPlayers = this.game.add.text(w2+50, h2+105, bestScore, {
-			      font: "100px Dosis Extrabold",
+			      font: "100px dosis",
 			      fill: colorHexDark,
 			      align: "center"
 		    	});

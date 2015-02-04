@@ -162,7 +162,7 @@ Player.prototype = {
 			Math.round(Math.cos(this.sprite.rotation + Math.PI/2)*88*scale) + this.x,
 			Math.round(Math.sin(this.sprite.rotation + Math.PI/2)*88*scale) + this.y,
 			String.fromCharCode(this.key), {
-		        font: "80px Dosis Extrabold",
+		        font: "80px dosis",
 		        fill: "#ffffff",
 		        align: "center"});
 			this.keyText.scale.set(scale);
