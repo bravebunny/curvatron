@@ -5,13 +5,6 @@ var setKeys = function(game){
   
 setKeys.prototype = {
   create: function(){
-    if (mobile) {
-	    Cocoon.App.exitCallback(function() {
-	        this.game.state.states[this.game.state.current].backPressed();
-	      }.bind(this)
-	    );
-    }
-
 		var text = this.game.add.text(w2,120, "configure keys", {
         font: "150px Dosis Extrabold",
         fill: "#ffffff",

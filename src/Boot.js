@@ -19,6 +19,21 @@ boot.prototype = {
   	this.game.renderer.roundPixels = false;
     this.game.stage.smoothed = true;
 
+    if (mobile) {
+	    Cocoon.App.exitCallback(
+	    	function() {
+		    	if (this.game.state.states[this.game.state.current].backPressed) {
+		    		this.game.state.states[this.game.state.current].backPressed();
+		    	}
+		    	if (this.game.state.current == "Menu") {
+		    		return true;
+		    	} else {
+		        return false;
+		    	}
+		    }.bind(this)
+	    );
+    }
+
 	},
   	create: function(){
 		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
