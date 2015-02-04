@@ -29,9 +29,9 @@ Player.prototype = {
 	create: function() {
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.sprite.anchor.setTo(.5,.5);
-		this.trail = this.game.make.sprite(0, 0, 'player' + this.id);
+		this.trail = this.game.make.sprite(0, 0, 'trail' + this.id);
 		this.trail.anchor.set(0.5);
-		this.trail.scale.set(scale/2);
+		this.trail.scale.set(scale);
 
 		//used to do this in a fancier way, but it broke some stuff
 		if(this.y > h2) {
