@@ -2,7 +2,12 @@ var stats = function(game){
 };
   
 stats.prototype = {
-  	create: function(){
+	create: function(){
+    if (mobile) {
+      Cocoon.App.exitCallback(function(){
+          this.game.state.states[this.game.state.current].backPressed();
+      });
+    }
 
 		var text = this.game.add.text(w2,120, "singleplayer stats", {
 	      font: "150px Dosis Extrabold",
@@ -42,14 +47,16 @@ stats.prototype = {
     	textDeaths.anchor.setTo(0.5,0.5);
 
     	//back button
-		var backButton = this.game.add.button(w2/2,h2+230,"back_button",function(){this.game.state.start("Menu");},this);
+		var backButton = this.game.add.button(w2/2,h2+230,"back_button",this.backPressed,this);
 		backButton.anchor.setTo(0.5,0.5);
 		backButton.input.useHandCursor=true;
 
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
+
 	},
 
-	update: function(){
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function(){this.game.state.start("Menu");}, this);
-	},
+	backPressed:function(){
+		this.game.state.start("Menu");
+	}
 
 }

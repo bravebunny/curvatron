@@ -2,10 +2,16 @@ var multiplayer = function(game){
 };
   
 multiplayer.prototype = {
-  	create: function(){
-	  	if (numberPlayers == 0) {
-	  		numberPlayers = 1;
-	  	}
+	create: function(){
+    if (mobile) {
+      Cocoon.App.exitCallback(function(){
+          this.game.state.states[this.game.state.current].backPressed();
+      });
+    }
+
+  	if (numberPlayers == 0) {
+  		numberPlayers = 1;
+  	}
 
 		var text = this.game.add.text(w2,120, "multiplayer", {
 	    font: "150px Dosis Extrabold",
@@ -40,21 +46,18 @@ multiplayer.prototype = {
 		playButton.input.useHandCursor=true;
 
 
-	    //Go back Button
-		var backButton = this.game.add.button(w2/2,h2+230,"back_button",this.back,this);
+	   //Go back Button
+		var backButton = this.game.add.button(w2/2,h2+230,"back_button",this.backPressed,this);
 		backButton.anchor.setTo(0.5,0.5);
 		backButton.input.useHandCursor=true;
-	},
-
-	update: function(){
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(function(){this.game.state.start("Menu");}, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
 
 	playTheGame: function(){
 		this.game.state.start("PreloadGame",true,false,numberPlayers);
 	},
 
-	back:function(){
+	backPressed:function(){
 		this.game.state.start("Menu");
 	},
 

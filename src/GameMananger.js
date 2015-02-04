@@ -28,6 +28,12 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
+    if (mobile) {
+      Cocoon.App.exitCallback(function(){
+          this.game.state.states[this.game.state.current].backPressed();
+      });
+    }
+
 		changeColor = true;
 
     //create sound effects
@@ -371,6 +377,10 @@ gameMananger.prototype = {
     	}
     }
 	},
+
+	backPressed: function() {
+    this.pause();
+  },
 
 	render: function(){
 		players[0].render();

@@ -22,6 +22,12 @@ var menu = function(game){
 
 menu.prototype = {
   create: function(){
+    if (mobile) {
+      Cocoon.App.exitCallback(function(){
+          this.game.state.states[this.game.state.current].backPressed();
+      });
+    }
+
     if (changeColor) {
       chosenColor = this.game.rnd.integerInRange(0, 3);
       colorHex = bgColors[chosenColor];
@@ -42,9 +48,10 @@ menu.prototype = {
     if (numberPlayers == 0) {
       if (!menuMusic && !mute) {
         menuMusic = this.game.add.audio('dream');
+        menuMusic.loop = true;
         menuMusic.play();
-        menuMusic.loop = true;   
       } else if (!menuMusic.isPlaying && !mute){
+        menuMusic.loop = true;
         menuMusic.play();
         menuMusic.volume = 1;
       }
@@ -192,9 +199,9 @@ menu.prototype = {
       if (!menuMusic) {
         menuMusic = this.game.add.audio('dream');  
       }
+      menuMusic.loop = true;
       menuMusic.play();
       menuMusic.volume = 1;
-      menuMusic.loop = true; 
     }
     else{
       audioButton.loadTexture('audiooff_button');
@@ -213,5 +220,9 @@ menu.prototype = {
     else{
       this.game.scale.startFullScreen(false);
     }
+  },
+
+  backPressed: function() {
+    //exit game?
   }
 }

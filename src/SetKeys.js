@@ -5,6 +5,12 @@ var setKeys = function(game){
   
 setKeys.prototype = {
   create: function(){
+    if (mobile) {
+      Cocoon.App.exitCallback(function(){
+          this.game.state.states[this.game.state.current].backPressed();
+      });
+    }
+
 		var text = this.game.add.text(w2,120, "configure keys", {
         font: "150px Dosis Extrabold",
         fill: "#ffffff",
@@ -45,7 +51,7 @@ setKeys.prototype = {
   	this.keyText.anchor.setTo(0.5,0.5);
 
 		//Play Button
-		var playButton = this.game.add.button(w2/2,h2+230,"accept_button",this.back,this);
+		var playButton = this.game.add.button(w2/2,h2+230,"accept_button",this.backPressed,this);
 		playButton.anchor.setTo(0.5,0.5);
 		playButton.input.useHandCursor=true;
 
@@ -55,20 +61,11 @@ setKeys.prototype = {
 		backButton.input.useHandCursor=true;*/
 
   	this.game.input.keyboard.addCallbacks(this, this.onPressed);
+  	this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
 
-	update: function(){
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(
-			function(){
-				this.game.state.start("Menu");
-			},this);
-
-	},
-
-	back:function(){
-		this.game.input.keyboard.onDownCallback = null;
+	backPressed:function(){
 		this.game.state.start("Menu");
-		
 	},
 
 	DecSelected: function(){

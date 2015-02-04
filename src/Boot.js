@@ -31,5 +31,7 @@ boot.prototype = {
 		h2 = this.game.world.height/2;
 
 		this.game.state.start("PreloadMenu");
+
+
 	}
 }
