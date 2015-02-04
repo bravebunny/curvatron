@@ -4,6 +4,6 @@ body {
 
 }
 @font-face {
-    font-family: 'Dosis Extrabold';
+    font-family: 'Dosis';
     src: local('dosis'), url('fonts/dosis.ttf') format('truetype');
 }

@@ -80,13 +80,6 @@ menu.prototype = {
       align: "center"
     });
     text.anchor.setTo(0.5,0.5);
-    
-    var text = this.game.add.text(w2,120, "curvatron", {
-      font: "200px dosis",
-      fill: "#ffffff",
-      align: "center"
-    });
-    text.anchor.setTo(0.5,0.5);
 
     //Single Player
 		var spButton = this.game.add.button(w2-w2/4,h2,"singleplayer_button",this.playTheGame,this);
