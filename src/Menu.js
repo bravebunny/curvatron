@@ -1,6 +1,7 @@
 var menu = function(game){
 	this.menuSpace = 160;
 	maxPlayers = 7;
+  maxMods = 3;
 	  keys = [
     Phaser.Keyboard.W,
     Phaser.Keyboard.P,
@@ -11,6 +12,7 @@ var menu = function(game){
     Phaser.Keyboard.R,
     Phaser.Keyboard.U,]
   numberPlayers = 0;
+  mod = 0;
   bestScore = 0;
   ballsScore = 0;
   deathScore = 0;
@@ -82,7 +84,7 @@ menu.prototype = {
     text.anchor.setTo(0.5,0.5);
 
     //Single Player
-		var spButton = this.game.add.button(w2-w2/4,h2,"singleplayer_button",this.playTheGame,this);
+		var spButton = this.game.add.button(w2-w2/4,h2,"singleplayer_button",this.modMenu,this);
 		spButton.anchor.setTo(0.5,0.5);
 		spButton.onInputOver.add(this.spOver, this);
 		spButton.onInputOut.add(this.spOut, this);
@@ -145,10 +147,8 @@ menu.prototype = {
     }
 	},
 
-	playTheGame: function(){
-		numberPlayers = 0;
-    menuMusic.fadeOut(2000);
-		this.game.state.start("PreloadGame",true,false);
+	modMenu: function(){
+		this.game.state.start("ModMenu",true,false);
 	},
 
 	multiplayer: function(){

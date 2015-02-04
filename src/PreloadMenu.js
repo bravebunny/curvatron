@@ -22,6 +22,7 @@ preloadMenu.prototype = {
 		this.game.load.image("back_button","assets/sprites/menu/back.png");
 		this.game.load.image("accept_button","assets/sprites/menu/accept.png");
 		this.game.load.image("number_players","assets/sprites/menu/numberPlayers.png");
+		this.game.load.image("number_mod","assets/sprites/menu/numberMod.png");
 		this.game.load.image("set_players","assets/sprites/menu/setPlayers.png");
 		this.game.load.image("key_button","assets/sprites/menu/key.png");
 		this.game.load.image("player_select","assets/sprites/menu/playerSelect.png");

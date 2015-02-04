@@ -26,18 +26,22 @@ preloadGame.prototype = {
 		for(var i=0; i<=numberSounds; i++) {
 			this.game.load.audio('sfx_collect' + i, 'assets/sfx/collect' + i + '.ogg');	
 		}
-
-		if (numberPlayers == 0) {
-			this.game.load.image('player0', 'assets/playerSingle.png');
-			this.game.load.image('trail0', 'assets/trailSingle.png');
-			this.game.load.image('superPower', 'assets/powerHS.png');
-		} else {
-			this.game.load.image('crown', 'assets/crown.png');
-			for(var i=0; i <= numberPlayers; i++){
-				this.game.load.image('player' + i, 'assets/player' + i +'.png');
-				this.game.load.image('crown' + i, 'assets/crown'+ i +'.png');
-				this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
+		if(mod == 0){
+			if (numberPlayers == 0) {
+				this.game.load.image('player0', 'assets/playerSingle.png');
+				this.game.load.image('trail0', 'assets/trailSingle.png');
+				this.game.load.image('superPower', 'assets/powerHS.png');
+			} else {
+				this.game.load.image('crown', 'assets/crown.png');
+				for(var i=0; i <= numberPlayers; i++){
+					this.game.load.image('player' + i, 'assets/player' + i +'.png');
+					this.game.load.image('crown' + i, 'assets/crown'+ i +'.png');
+					this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
+				}
 			}
+		}
+		else if(mod == 1){
+			//fazer cenas
 		}
 
 	},

@@ -48,7 +48,7 @@ multiplayer.prototype = {
 	},
 
 	playTheGame: function(){
-		this.game.state.start("PreloadGame",true,false,numberPlayers);
+		this.game.state.start("PreloadGame",true,false);
 	},
 
 	backPressed:function(){
