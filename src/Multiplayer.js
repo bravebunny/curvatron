@@ -4,9 +4,10 @@ var multiplayer = function(game){
 multiplayer.prototype = {
 	create: function(){
     if (mobile) {
-      Cocoon.App.exitCallback(function(){
-          this.game.state.states[this.game.state.current].backPressed();
-      });
+	    Cocoon.App.exitCallback(function() {
+	        this.game.state.states[this.game.state.current].backPressed();
+	      }.bind(this)
+	    );
     }
 
   	if (numberPlayers == 0) {
