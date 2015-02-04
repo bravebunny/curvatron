@@ -22,6 +22,9 @@ var Player = function(id, x, y, key, game) {
 	this.textTween = null;
 	this.trailArray = [];
 	this.trail = null
+	this.recentlyPressed = null;
+	this.showKeyTime = 0;
+	this.showOneKey = true;
 };
 
 Player.prototype = {
@@ -47,7 +50,7 @@ Player.prototype = {
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		//this.sprite.body.setSize(16*scale, 16*scale, 0, 0);
 		this.sprite.scale.set(scale);
-    this.lastTrailLength = this.growth;
+    	this.lastTrailLength = this.growth;
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 
@@ -57,6 +60,9 @@ Player.prototype = {
 		else if (numberPlayers == 0){
 			this.game.input.onDown.add(this.keyPressed, this);
 		}
+
+		this.playerKey();
+
 		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
 	},
@@ -70,7 +76,11 @@ Player.prototype = {
 			this.unpause();
 		}
 
-			if (!this.paused) {
+		if(this.showKeyTime <= totalTime){
+			this.playerKey();
+		}
+
+		if (!this.paused) {
 			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
@@ -134,15 +144,6 @@ Player.prototype = {
 				}
 			}
 
-			//Screen border collisions
-			/*if (numberPlayers > 0) {
-				if(((this.sprite.x-16)<=borders[0]) || ((this.sprite.x+16)>=borders[1])){
-					this.kill();
-				}
-				if(((this.sprite.y-16)<=borders[2]) || ((this.sprite.y+16)>=borders[3])){
-					this.kill();
-				}
-			} else {*/
 			if((this.sprite.x+8*scale)<=borders[0]) {
 				this.sprite.x = borders[1];
 			} else if ((this.sprite.x-8*scale)>=borders[1]) {
@@ -154,30 +155,14 @@ Player.prototype = {
 			} else if ((this.sprite.y-8*scale)>=borders[3]) {
 				this.sprite.y = borders[2];
 			}
-			/*}*/
-		}
-		//Show player's key
-		if (!this.keyText) {
-			this.keyText = this.game.add.text(
-			Math.round(Math.cos(this.sprite.rotation + Math.PI/2)*88*scale) + this.x,
-			Math.round(Math.sin(this.sprite.rotation + Math.PI/2)*88*scale) + this.y,
-			String.fromCharCode(this.key), {
-		        font: "80px dosis",
-		        fill: "#ffffff",
-		        align: "center"});
-			this.keyText.scale.set(scale);
-	  		this.keyText.anchor.setTo(0.5,0.5);
-
-		  	if (mobile) {
-		  		this.keyText.setText(bestScore);
-		  	}
 		}
 
 	},
 
 
 	keyPressed: function() {
-
+		this.showOneKey = true;
+		this.showKeyTime = 2 + totalTime;
 		if(gameOver && numberPlayers == 0 && this.game.input.onDown.active){
 			gameOver=false;
 			this.game.state.restart(true,false,numberPlayers);
@@ -294,6 +279,33 @@ Player.prototype = {
 			}
 		}
 
+	},
+
+	playerKey: function(){
+		//Show player's key
+		if(this.showOneKey){
+			this.showOneKey = false;
+			if(this.keyText){
+				this.keyText.alpha = 1;
+				this.keyText.x = Math.round(Math.cos(this.sprite.rotation + Math.PI/2)*88*scale) + this.sprite.x;
+				this.keyText.y = Math.round(Math.sin(this.sprite.rotation + Math.PI/2)*88*scale) + this.sprite.y;
+			}
+			else{
+				this.keyText = this.game.add.text(
+				Math.round(Math.cos(this.sprite.rotation + Math.PI/2)*88*scale) + this.sprite.x,
+				Math.round(Math.sin(this.sprite.rotation + Math.PI/2)*88*scale) + this.sprite.y,
+				String.fromCharCode(this.key), {
+			        font: "80px dosis",
+			        fill: "#ffffff",
+			        align: "center"});
+				this.keyText.scale.set(scale);
+		  		this.keyText.anchor.setTo(0.5,0.5);
+
+			  	if (mobile) {
+			  		this.keyText.setText(bestScore);
+			  	}
+			}
+		}
 	},
 
 	addCrown: function() {
