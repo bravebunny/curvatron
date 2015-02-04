@@ -61,7 +61,7 @@ Player.prototype = {
 			this.game.input.onDown.add(this.keyPressed, this);
 		}
 
-		this.playerKey();
+		this.showKey();
 
 		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
@@ -77,7 +77,7 @@ Player.prototype = {
 		}
 
 		if(this.showKeyTime <= totalTime){
-			this.playerKey();
+			this.showKey();
 		}
 
 		if (!this.paused) {
@@ -281,24 +281,23 @@ Player.prototype = {
 
 	},
 
-	playerKey: function(){
+	showKey: function(){
 		//Show player's key
+		var keyX = Math.round(Math.cos(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.x;
+		var keyY = Math.round(Math.sin(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.y;
 		if(this.showOneKey){
 			this.showOneKey = false;
 			if(this.keyText){
-				this.keyText.alpha = 1;
-				this.keyText.x = Math.round(Math.cos(this.sprite.rotation + Math.PI/2)*88*scale) + this.sprite.x;
-				this.keyText.y = Math.round(Math.sin(this.sprite.rotation + Math.PI/2)*88*scale) + this.sprite.y;
-			}
-			else{
-				this.keyText = this.game.add.text(
-				Math.round(Math.cos(this.sprite.rotation + Math.PI/2)*88*scale) + this.sprite.x,
-				Math.round(Math.sin(this.sprite.rotation + Math.PI/2)*88*scale) + this.sprite.y,
-				String.fromCharCode(this.key), {
-			        font: "80px dosis",
-			        fill: "#ffffff",
-			        align: "center"});
-				this.keyText.scale.set(scale);
+				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
+				this.keyText.x = keyX;
+				this.keyText.y = keyY;
+			} else {
+				this.keyText = this.game.add.text(keyX, keyY, String.fromCharCode(this.key),
+				{
+	        font: "80px dosis",
+	        fill: "#ffffff",
+	        align: "center"});
+					this.keyText.scale.set(scale);
 		  		this.keyText.anchor.setTo(0.5,0.5);
 
 			  	if (mobile) {
