@@ -6,7 +6,7 @@ var setKeys = function(game){
 setKeys.prototype = {
   create: function(){
 		var text = this.game.add.text(w2,120, "configure keys", {
-        font: "150px Dosis Extrabold",
+        font: "150px dosis",
         fill: "#ffffff",
         align: "center"
   	});
@@ -17,7 +17,7 @@ setKeys.prototype = {
 		var playersAuxButton = this.game.add.sprite(w2,h2-80,"player_select");
 		playersAuxButton.anchor.setTo(0.5,0.5);
 		textPlayers = this.game.add.text(w2,h2-20, (this.selectedPlayer+1), {
-	        font: "100px Dosis Extrabold",
+	        font: "100px dosis",
 	        fill: "#ffffff",
 	        align: "center"
   	});
@@ -38,7 +38,7 @@ setKeys.prototype = {
 		var keyButton = this.game.add.sprite(w2,160+h2,"key_button");
 		keyButton.anchor.setTo(0.5,0.5);
 		this.keyText = this.game.add.text(w2,h2+140, String.fromCharCode(keys[this.selectedPlayer]), {
-      font: "150px Dosis Extrabold",
+      font: "150px dosis",
       fill: colorHex,
       align: "center"
   	});
