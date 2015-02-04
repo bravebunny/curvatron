@@ -78,7 +78,7 @@ gameMananger.prototype = {
 	  		textSize = 30
 	  	}
 			powerText = this.game.add.text(this.x, this.y, "1",
-			{ font: "" + textSize + "px Arial Black",
+			{ font: "" + textSize + "px dosis",
 	      fill: "#ffffff",
 	      align: "center"
 	  	});
