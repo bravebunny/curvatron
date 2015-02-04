@@ -22,12 +22,12 @@ var menu = function(game){
 
 menu.prototype = {
   create: function(){
-    if (mobile) {
+    /*if (mobile) {
       Cocoon.App.exitCallback(function() {
           this.game.state.states[this.game.state.current].backPressed();
         }.bind(this)
       );
-    }
+    }*/
 
     if (changeColor) {
       chosenColor = this.game.rnd.integerInRange(0, 3);
