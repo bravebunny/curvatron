@@ -21,6 +21,7 @@ var Player = function(id, x, y, key, game) {
 	this.paused = false;
 	this.textTween = null;
 	this.trailArray = [];
+	this.trail = null
 };
 
 Player.prototype = {
@@ -28,6 +29,9 @@ Player.prototype = {
 	create: function() {
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		this.sprite.anchor.setTo(.5,.5);
+		this.trail = this.game.make.sprite(0, 0, 'player' + this.id);
+		this.trail.anchor.set(0.5);
+		this.trail.scale.set(scale/2);
 
 		//used to do this in a fancier way, but it broke some stuff
 		if(this.y > h2) {
@@ -101,8 +105,7 @@ Player.prototype = {
 			if (this.ready && this.frameCount == 0 && !this.dead) {
 				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 				this.trailArray.push(trailPiece);
-		   		bmd.circle(this.sprite.x, this.sprite.y, 8*scale,
-		   		"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
+				bmd.draw(this.trail, this.sprite.x, this.sprite.y);
 			}
 
 			//erase trail from front
@@ -112,8 +115,7 @@ Player.prototype = {
 				
 				if (this.trailArray.length > 0) {
 					trailPiece = this.trailArray[this.trailArray.length -1];
-					bmd.circle(trailPiece.x, trailPiece.y, 8*scale,
-						"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
+					bmd.draw(this.trail, trailPiece.x, trailPiece.y);
 				}
 			}
 
@@ -128,8 +130,7 @@ Player.prototype = {
 				ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 				
 				if (this.trailArray.length > 0) {
-					bmd.circle(this.trailArray[0].x, this.trailArray[0].y, 8*scale,
-						"rgba(" + this.color.r + "," + this.color.g + ","+ this.color.b + ",1)");
+					bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
 				}
 			}
 
