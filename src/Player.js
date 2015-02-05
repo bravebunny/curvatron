@@ -34,7 +34,7 @@ Player.prototype = {
 		this.sprite.anchor.setTo(.5,.5);
 		this.trail = this.game.make.sprite(0, 0, 'trail' + this.id);
 		this.trail.anchor.set(0.5);
-		this.trail.scale.set(scale);
+		this.trail.scale.set(gameScale);
 
 		//used to do this in a fancier way, but it broke some stuff
 		if(this.y > h2) {
@@ -49,10 +49,10 @@ Player.prototype = {
 		
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		//this.sprite.body.setSize(16*scale, 16*scale, 0, 0);
-		this.sprite.scale.set(scale);
+		this.sprite.scale.set(gameScale);
     	this.lastTrailLength = this.growth;
 
-		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
+		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*gameScale;
 
 		if(mobile){
 			this.game.input.onDown.add(this.click, this);
@@ -81,15 +81,15 @@ Player.prototype = {
 		}
 
 		if (!this.paused) {
-			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
+			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*gameScale, this.sprite.body.velocity);
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
-			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
+			this.frameCount = (this.frameCount + 1) % 1/(this.speed*gameScale);
 
 			if (!this.dead) {
 				//collision detection
-				var collSize = 16*scale;
-				var xx = Math.cos(this.sprite.rotation)*30*scale + this.sprite.x;
-				var yy = Math.sin(this.sprite.rotation)*30*scale + this.sprite.y;
+				var collSize = 16*gameScale;
+				var xx = Math.cos(this.sprite.rotation)*30*gameScale + this.sprite.x;
+				var yy = Math.sin(this.sprite.rotation)*30*gameScale + this.sprite.y;
 
 				for (var i = 0; i < players.length; i++) {
 					for (var j = 0; j < this.trailArray.length; j++) {
@@ -121,7 +121,7 @@ Player.prototype = {
 			//erase trail from front
 			if(this.dead && this.frameCount == 0 && this.trailArray[0]){
 				trailPiece = this.trailArray.pop();;
-		    ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+		    ctx.clearRect(trailPiece.x-10*gameScale, trailPiece.y-10*gameScale, 20*gameScale, 20*gameScale);
 				
 				if (this.trailArray.length > 0) {
 					trailPiece = this.trailArray[this.trailArray.length -1];
@@ -137,22 +137,22 @@ Player.prototype = {
 			//erase trail from behind
 			if(this.killTrail && this.frameCount == 0 && this.trailArray[0]){
 				trailPiece = this.trailArray.shift();
-				ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+				ctx.clearRect(trailPiece.x-10*gameScale, trailPiece.y-10*gameScale, 20*gameScale, 20*gameScale);
 				
 				if (this.trailArray.length > 0) {
 					bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
 				}
 			}
 
-			if((this.sprite.x+8*scale)<=borders[0]) {
+			if((this.sprite.x+8*gameScale)<=borders[0]) {
 				this.sprite.x = borders[1];
-			} else if ((this.sprite.x-8*scale)>=borders[1]) {
+			} else if ((this.sprite.x-8*gameScale)>=borders[1]) {
 				this.sprite.x = borders[0];
 			}
 
-			if((this.sprite.y+8*scale)<=borders[2]) {
+			if((this.sprite.y+8*gameScale)<=borders[2]) {
 				this.sprite.y = borders[3];
-			} else if ((this.sprite.y-8*scale)>=borders[3]) {
+			} else if ((this.sprite.y-8*gameScale)>=borders[3]) {
 				this.sprite.y = borders[2];
 			}
 		}
@@ -283,8 +283,8 @@ Player.prototype = {
 
 	showKey: function(){
 		//Show player's key
-		var keyX = Math.round(Math.cos(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.x;
-		var keyY = Math.round(Math.sin(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.y;
+		var keyX = Math.round(Math.cos(this.sprite.rotation + Math.PI/2*this.direction)*88*gameScale) + this.sprite.x;
+		var keyY = Math.round(Math.sin(this.sprite.rotation + Math.PI/2*this.direction)*88*gameScale) + this.sprite.y;
 		if(this.showOneKey){
 			this.showOneKey = false;
 			if(this.keyText){
@@ -297,7 +297,7 @@ Player.prototype = {
 	        font: "80px dosis",
 	        fill: "#ffffff",
 	        align: "center"});
-					this.keyText.scale.set(scale);
+					this.keyText.scale.set(gameScale);
 		  		this.keyText.anchor.setTo(0.5,0.5);
 
 			  	if (mobile) {
@@ -328,7 +328,7 @@ Player.prototype = {
 		if(this.textTween){
 			this.textTween.resume();
 		}
-		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
+		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*gameScale;
 	},
 
 	render: function(){

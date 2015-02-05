@@ -72,4 +72,8 @@ modMenu.prototype = {
 	    }
 	    this.imageMod.loadTexture(mods[mod]);
 	},
+
+  resize: function (width, height) {
+    this.game.state.states["Boot"].resize(width, height);
+  }
 }

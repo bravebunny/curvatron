@@ -3,6 +3,10 @@ var multiplayer = function(game){
   
 multiplayer.prototype = {
 	create: function(){
+		scale = 1;
+  	w2 = 1366/2;
+    h2 = 768/2;
+		
   	if (numberPlayers == 0) {
   		numberPlayers = 1;
   	}
@@ -45,6 +49,8 @@ multiplayer.prototype = {
 		backButton.anchor.setTo(0.5,0.5);
 		backButton.input.useHandCursor=true;
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
+
+		this.resize(this.game.width, this.game.height);
 	},
 
 	playTheGame: function(){
@@ -74,4 +80,8 @@ multiplayer.prototype = {
 	    }
 	    textPlayers.setText("" + (numberPlayers+1));
 	},
+
+	resize: function (width, height) {
+    this.game.state.states["Boot"].resize(width, height);
+  }
 }

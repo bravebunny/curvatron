@@ -1,6 +1,7 @@
 var setKeys = function(game){
 	this.selectedPlayer = 0;
 	this.keyText = null;
+	this.stateGroup;
 };
   
 setKeys.prototype = {
@@ -12,6 +13,9 @@ setKeys.prototype = {
   	});
   	text.anchor.setTo(0.5,0.5);
 
+    scale = 1;
+  	w2 = 1366/2;
+    h2 = 768/2;
 
   	//select player
 		var playersAuxButton = this.game.add.sprite(w2,h2-80,"player_select");
@@ -56,6 +60,8 @@ setKeys.prototype = {
 
   	this.game.input.keyboard.addCallbacks(this, this.onPressed);
   	this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
+
+  	this.resize(this.game.width, this.game.height);
 	},
 
 	backPressed:function(){
@@ -91,5 +97,9 @@ setKeys.prototype = {
 			this.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
 		}
 
-	}
+	},
+
+	resize: function (width, height) {
+    this.game.state.states["Boot"].resize(width, height);
+  },
 }

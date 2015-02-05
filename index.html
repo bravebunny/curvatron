@@ -25,7 +25,7 @@
 <script type="text/javascript">
 
 (function() {
-    var game = new Phaser.Game(1366, 768, Phaser.CANVAS, "");
+    game = new Phaser.Game("100%", "100%",Phaser.CANVAS, "");
     game.state.add("Boot",boot);
     game.state.add("PreloadMenu",preloadMenu);
     game.state.add("Menu",menu);
