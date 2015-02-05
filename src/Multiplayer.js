@@ -8,7 +8,7 @@ multiplayer.prototype = {
   	}
 
 		var text = this.game.add.text(w2,120, "multiplayer", {
-	    font: "150px Dosis Extrabold",
+	    font: "150px dosis",
 	    fill: "#ffffff",
 	    align: "center"});
 	  	text.anchor.setTo(0.5,0.5);
@@ -18,7 +18,7 @@ multiplayer.prototype = {
 		playersAuxButton.anchor.setTo(0.5,0.5);
 
 		textPlayers = this.game.add.text(w2+100,h2+10, (numberPlayers+1), {
-	    font: "120px Dosis Extrabold",
+	    font: "120px dosis",
 	    fill: colorHex,
 	    align: "center"});
 	    textPlayers.anchor.setTo(0.5,0.5);

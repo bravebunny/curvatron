@@ -7,7 +7,7 @@ modMenu.prototype = {
 	create: function(){
 
 		var text = this.game.add.text(w2,120, "arranja um nome", {
-	    font: "150px Dosis Extrabold",
+	    font: "150px dosis",
 	    fill: "#ffffff",
 	    align: "center"});
 	  	text.anchor.setTo(0.5,0.5);
