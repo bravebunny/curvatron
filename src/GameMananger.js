@@ -8,7 +8,7 @@ gameMananger.prototype = {
 		players = [];
 		this.timeCircle = null;
 		this.gameTime = 60; //sec 
-		this.initialTime = 0;
+		this.initialTime = 0;asdasd
 		lastCrowned = -1;
 		if (numberPlayers > 0) {
 			gameScale = (-1/24)*numberPlayers+7/12;
@@ -30,6 +30,7 @@ gameMananger.prototype = {
 
 		changeColor = true;
 
+		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		scale = 1;
   	w2 = 1366/2;
     h2 = 768/2;
