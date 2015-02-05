@@ -8,10 +8,11 @@ gameMananger.prototype = {
 		players = [];
 		this.timeCircle = null;
 		this.gameTime = 60; //sec 
-		this.initialTime = 0;asdasd
+		this.initialTime = 0;
 		lastCrowned = -1;
+		scale = 1;
 		if (numberPlayers > 0) {
-			gameScale = (-1/24)*numberPlayers+7/12;
+			scale = (-1/24)*numberPlayers+7/12;
 		}
 		w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
@@ -27,13 +28,7 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
-
 		changeColor = true;
-
-		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		scale = 1;
-  	w2 = 1366/2;
-    h2 = 768/2;
 
     //create sound effects
     moveSounds = [];
@@ -141,8 +136,6 @@ gameMananger.prototype = {
 		if (!mute) {
 			menuMusic.volume = 1;
 		}
-
-		this.resize(this.game.width, this.game.height);
 	},
 
 	update: function() {
@@ -381,10 +374,6 @@ gameMananger.prototype = {
 
 	backPressed: function() {
     this.pause();
-  },
-
-  resize: function (width, height) {
-    //this.game.state.states["Boot"].resize(width, height);
   },
 
 	render: function(){

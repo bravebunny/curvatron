@@ -1,8 +1,6 @@
 body {
     background-color: #000000;
     margin: 0px 0px 0px 0px; /* the extra 1px allows the iOS inner/outer check to work */
-    position: fixed; 
-    overflow:hidden;
 
 }
 @font-face {

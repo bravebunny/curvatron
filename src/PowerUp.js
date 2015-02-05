@@ -45,17 +45,17 @@ PowerUp.prototype = {
 	},
 
 	place: function() {
-		this.x = this.game.rnd.integerInRange(32/gameScale, 2*w2-32/gameScale);
-		this.y = this.game.rnd.integerInRange(32/gameScale, 2*h2-32/gameScale);
+		this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
+		this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
 
 		this.sprite = this.game.add.sprite(this.x, this.y, 'power');
 
 		this.sprite.anchor.setTo(.5,.5);
-		this.sprite.scale.set((this.size/2)*gameScale);
+		this.sprite.scale.set((this.size/2)*scale);
 
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 
-		var collSize = 16*gameScale;
+		var collSize = 16*scale;
 		for (var i = 0; i < players.length; i++) {
 			for (var j = 0; j < players[i].trailArray.length; j++) {
 				var curTrail = players[i].trailArray[j];

@@ -3,17 +3,12 @@ var stats = function(game){
   
 stats.prototype = {
 	create: function(){
-
-    scale = 1;
-  	w2 = 1366/2;
-    h2 = 768/2;
-
 		var text = this.game.add.text(w2,120, "singleplayer stats", {
-      font: "150px dosis",
-      fill: "#ffffff",
-      align: "center"
-  	});
-  	text.anchor.setTo(0.5,0.5);
+	      font: "150px dosis",
+	      fill: "#ffffff",
+	      align: "center"
+	  	});
+	  	text.anchor.setTo(0.5,0.5);
 
 		var highScore = this.game.add.sprite(w2/2, h2, 'score-stat');
 		highScore.anchor.setTo(0.5,0.5);
@@ -52,16 +47,10 @@ stats.prototype = {
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 
-		this.resize(this.game.width, this.game.height);
-
 	},
 
 	backPressed:function(){
 		this.game.state.start("Menu");
-	},
-
-	resize: function (width, height) {
-    this.game.state.states["Boot"].resize(width, height);
-  },
+	}
 
 }
