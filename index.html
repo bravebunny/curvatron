@@ -25,8 +25,24 @@
 <script type="text/javascript">
 
 (function() {
-    var width = window.innerWidth * window.devicePixelRatio;
-    var height = window.innerHeight * window.devicePixelRatio;
+    var baseW = 1366;
+    var baseH = 768;
+    var baseRatio = 1366/768;
+
+    var winW = window.innerWidth;
+    var winH = window.innerHeight;
+    var winRatio = winW/winH;
+
+    var width, height;
+    if (winRatio >= baseRatio) {
+        width = (1366/baseRatio)*winRatio;
+        height = 768;
+    } else {
+        width = 1366;
+        height = (768/baseRatio)*winRatio;     
+    }
+
+
     
     var game = new Phaser.Game(width, height, Phaser.CANVAS, "");
     game.state.add("Boot",boot);
