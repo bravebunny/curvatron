@@ -25,7 +25,10 @@
 <script type="text/javascript">
 
 (function() {
-    var game = new Phaser.Game(1366, 768, Phaser.CANVAS, "");
+    var width = window.innerWidth * window.devicePixelRatio;
+    var height = window.innerHeight * window.devicePixelRatio;
+    
+    var game = new Phaser.Game(width, height, Phaser.CANVAS, "");
     game.state.add("Boot",boot);
     game.state.add("PreloadMenu",preloadMenu);
     game.state.add("Menu",menu);

@@ -37,7 +37,8 @@ boot.prototype = {
 	},
   	create: function(){
 		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-	    this.game.scale.pageAlignHorizontally = true;
+	    this.scale.pageAlignHorizontally = true;
+       	this.scale.pageAlignVertically = true;
 	    this.game.scale.refresh();
 
 	    this.game.physics.startSystem(Phaser.Physics.ARCADE);
