@@ -33,10 +33,15 @@
     var winH = window.innerHeight;
     var winRatio = winW/winH;
 
+    if (winRatio >= baseRatio) {
+        var width = (1366/baseRatio)*winRatio;
+        var height = 768
+    } else {
+        winRatio = 1/winRatio;
+        var width = 768;
+        var height = (1366/baseRatio)*winRatio;
+    }
 
-
-    var width = (1366/baseRatio)*winRatio;
-    var height = 768
     
     var game = new Phaser.Game(width, height, Phaser.CANVAS, "");
     game.state.add("Boot",boot);
