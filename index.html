@@ -33,17 +33,21 @@
     var winH = window.innerHeight;
     var winRatio = winW/winH;
 
-    if (winRatio >= baseRatio) {
-        var width = (1366/baseRatio)*winRatio;
-        var height = 768
+    var orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+    mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    //mobile = true;
+
+    if ((winRatio >= baseRatio) || (mobile && (orientation == "landscape"))) {
+        width = (1366/baseRatio)*winRatio;
+        height = 768;
     } else {
         winRatio = 1/winRatio;
-        var width = 768;
-        var height = (1366/baseRatio)*winRatio;
+        width = 768;
+        height = (1366/baseRatio)*winRatio;
     }
 
     
-    var game = new Phaser.Game(width, height, Phaser.CANVAS, "");
+    game = new Phaser.Game(width, height, Phaser.CANVAS, "");
     game.state.add("Boot",boot);
     game.state.add("PreloadMenu",preloadMenu);
     game.state.add("Menu",menu);
