@@ -75,6 +75,9 @@ menu.prototype = {
       align: "center"
   	});
   	text.anchor.setTo(0.5,0.5);
+    if(mobile){
+      text.fontSize = 150;
+    }
 
     var text = this.game.add.text(w2+360,210, "BETA", {
       font: "50px dosis",
@@ -82,9 +85,12 @@ menu.prototype = {
       align: "center"
     });
     text.anchor.setTo(0.5,0.5);
+    if(mobile){
+      text.x = w2+260;
+    }
 
     //Single Player
-		var spButton = this.game.add.button(w2-w2/4,h2,"singleplayer_button",this.modMenu,this);
+		var spButton = this.game.add.button(w2-170,h2,"singleplayer_button",this.modMenu,this);
 		spButton.anchor.setTo(0.5,0.5);
 		spButton.onInputOver.add(this.spOver, this);
 		spButton.onInputOut.add(this.spOut, this);
@@ -92,10 +98,10 @@ menu.prototype = {
 
 		//Score label that shows on hove
     if(bestScore != 0){
-  		this.scoreLabel = this.game.add.sprite(w2-275,h2,"sp_score");
+  		this.scoreLabel = this.game.add.sprite(w2-270,h2,"sp_score");
   		this.scoreLabel.anchor.setTo(0.5,0.5);
   		this.scoreLabel.alpha = 0;
-  		this.scoreText = this.game.add.text(w2-300,h2+10, bestScore, {
+  		this.scoreText = this.game.add.text(w2-315,h2+10, bestScore, {
           font: "120px dosis",
           fill: colorHex,
           align: "center"
@@ -105,7 +111,7 @@ menu.prototype = {
     }
 
     //Multiplayer
-		var mpButton = this.game.add.button(w2+w2/4,h2,"multiplayer_button",this.multiplayer,this);
+		var mpButton = this.game.add.button(w2+170,h2,"multiplayer_button",this.multiplayer,this);
 		mpButton.anchor.setTo(0.5,0.5);
     if (mobile) {
       mpButton.alpha = 0.2;
@@ -128,7 +134,7 @@ menu.prototype = {
 		statsButton.anchor.setTo(0.5,0.5);
     statsButton.input.useHandCursor=true;
     if (mobile) {
-      statsButton.x = w2+w2/6;
+      statsButton.x = w2+120;
     }
 
   	//Audio
@@ -143,7 +149,7 @@ menu.prototype = {
       audioButton.input.useHandCursor=true;
     }
     if (mobile) {
-      audioButton.x = w2-w2/6;
+      audioButton.x = w2-120;
     }
 	},
 
