@@ -77,9 +77,9 @@ menu.prototype = {
       align: "center"
   	});
   	text.anchor.setTo(0.5,0.5);
-/*    if(mobile){
+    if(this.orientation == "portrait" && mobile){
       text.fontSize = 150;
-    }*/
+    }
 
     var text = this.game.add.text(w2+360,210, "BETA", {
       font: "50px dosis",
@@ -87,7 +87,7 @@ menu.prototype = {
       align: "center"
     });
     text.anchor.setTo(0.5,0.5);
-    if(mobile){
+    if(this.orientation == "portrait" && mobile){
       text.x = w2+260;
     }
 
@@ -120,10 +120,6 @@ menu.prototype = {
     }
     mpButton.input.useHandCursor=true;
 
-    //FullScreen
-    /*var fullScreenButton = this.game.add.button(w2+w2/2,h2+230,"fullscreen_button",this.fullScreen,this);
-    fullScreenButton.anchor.setTo(0.5,0.5);
-    fullScreenButton.input.useHandCursor=true;*/
     //SetKeys
     if(!mobile){
       var keysButton = this.game.add.button(w2+w2/2,h2+230,"setkeys_button",this.setKeys,this);
@@ -208,20 +204,11 @@ menu.prototype = {
     }
   },
 
-  fullScreen: function(){
-    if (this.game.scale.isFullScreen){
-      this.game.scale.stopFullScreen();
-    }
-    else{
-      this.game.scale.startFullScreen(false);
-    }
-  },
-
   backPressed: function() {
     //exit game?
   },
 
-  resize: function() {
+  setPositions: function() {
   	this.game.state.restart(true,false);
   }
 }

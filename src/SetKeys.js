@@ -93,7 +93,7 @@ setKeys.prototype = {
 
 	},
 
-  resize: function() {
-  	this.game.state.restart(true,false);
-  }
+  	setPositions: function() {
+  		this.game.state.restart(true,false);
+  	}
 }

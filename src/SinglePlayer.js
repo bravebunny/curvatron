@@ -73,7 +73,7 @@ singlePlayer.prototype = {
 	    this.imageMod.loadTexture(mods[mod]);
 	},
 
-	resize: function() {
-  	this.game.state.restart(true,false);
-  }
+	setPositions: function() {
+  		this.game.state.restart(true,false);
+  	}
 }
