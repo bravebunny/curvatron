@@ -125,7 +125,6 @@ gameMananger.prototype = {
 			players[i].create();
 		}
 
-
 		this.overlay = this.game.add.sprite(0, 0, 'overlay');
 		this.overlay.width = w2*2;
 		this.overlay.height = h2*2;

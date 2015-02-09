@@ -19,6 +19,7 @@ var menu = function(game){
   this.scoreLabel = null;
   this.scoreText = null;
   menuMusic = null;
+  this.ui = {};
 
 }
 
@@ -36,10 +37,6 @@ menu.prototype = {
     bgColor = Phaser.Color.hexToColor(colorHex);
   	this.game.stage.backgroundColor = colorHex;
     document.body.style.background = colorHex;
-  	w2 = this.game.world.width/2;
-		h2 = this.game.world.height/2;
-
-  	this.game.world.scale.set(1);
 
     if (numberPlayers == 0) {
       if (!menuMusic && !mute) {
@@ -75,9 +72,9 @@ menu.prototype = {
       align: "center"
   	});
   	text.anchor.setTo(0.5,0.5);
-    if(mobile){
+/*    if(mobile){
       text.fontSize = 150;
-    }
+    }*/
 
     var text = this.game.add.text(w2+360,210, "BETA", {
       font: "50px dosis",
@@ -90,7 +87,7 @@ menu.prototype = {
     }
 
     //Single Player
-		var spButton = this.game.add.button(w2-170,h2,"singleplayer_button",this.modMenu,this);
+		var spButton = this.game.add.button(w2-170,h2,"singleplayer_button",this.singlePlayer,this);
 		spButton.anchor.setTo(0.5,0.5);
 		spButton.onInputOver.add(this.spOver, this);
 		spButton.onInputOut.add(this.spOut, this);
@@ -153,8 +150,8 @@ menu.prototype = {
     }
 	},
 
-	modMenu: function(){
-		this.game.state.start("ModMenu",true,false);
+	singlePlayer: function(){
+		this.game.state.start("SinglePlayer",true,false);
 	},
 
 	multiplayer: function(){
@@ -217,5 +214,9 @@ menu.prototype = {
 
   backPressed: function() {
     //exit game?
+  },
+
+  resize: function() {
+  	this.game.state.restart(true,false);
   }
 }

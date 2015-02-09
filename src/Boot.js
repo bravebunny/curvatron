@@ -10,21 +10,21 @@ boot.prototype = {
     colorHex = bgColors[chosenColor];
     colorHexDark = bgColorsDark[chosenColor];
     document.body.style.background = colorHex;
-    this.game.stage.backgroundColor = colorHex;
+    this.stage.backgroundColor = colorHex;
     changeColor = false;
     mute = false;
 
    	this.game.load.image("loading","assets/sprites/menu/loading.png");
   	this.game.renderer.roundPixels = false;
-    this.game.stage.smoothed = true;
+    this.stage.smoothed = true;
 
     if (mobile) {
 	    Cocoon.App.exitCallback(
 	    	function() {
-		    	if (this.game.state.states[this.game.state.current].backPressed) {
-		    		this.game.state.states[this.game.state.current].backPressed();
+		    	if (this.state.states[this.game.state.current].backPressed) {
+		    		this.state.states[this.game.state.current].backPressed();
 		    	}
-		    	if (this.game.state.current == "Menu") {
+		    	if (this.state.current == "Menu") {
 		    		return true;
 		    	} else {
 		        return false;
@@ -34,19 +34,52 @@ boot.prototype = {
     }
 
 	},
-  	create: function(){
-		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-	    this.scale.pageAlignHorizontally = true;
-       	this.scale.pageAlignVertically = true;
-	    this.game.scale.refresh();
 
-	    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+  create: function(){
+		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+	  this.scale.setResizeCallback(this.resize, this);
+    this.scale.pageAlignHorizontally = true;
+   	this.scale.pageAlignVertically = true;
+    this.scale.refresh();
 
-	    w2 = this.game.world.width/2;
+    this.physics.startSystem(Phaser.Physics.ARCADE);
+
+	  w2 = this.world.width/2;
+		h2 = this.world.height/2;
+
+		this.state.start("PreloadMenu");
+
+
+	},
+
+  resize: function() {
+    var winW = window.innerWidth;
+    var winH = window.innerHeight;
+    var winRatio = winW/winH;
+    var orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+
+    var height = Math.round(Math.sqrt(baseArea/winRatio));
+    var width =  Math.round(winRatio*height);
+
+    this.game.width = width;
+    this.game.height = height;
+    this.stage.width = width;
+    this.stage.height = height;
+    this.scale.width = width;
+    this.scale.height = height;
+		this.game.canvas.width = width;
+		this.game.canvas.height = height;
+		this.game.world.setBounds(0, 0, width, height);
+		this.game.renderer.resize(width, height);
+		this.game.camera.setSize(width, height);
+		this.game.camera.setBoundsToWorld();
+		this.scale.refresh();
+
+		w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 
-		this.game.state.start("PreloadMenu");
-
-
-	}
+		if (this.state.states[this.game.state.current].setPositions) {
+			this.state.states[this.game.state.current].setPositions();
+		}
+  }
 }

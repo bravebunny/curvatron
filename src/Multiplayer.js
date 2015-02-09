@@ -74,4 +74,8 @@ multiplayer.prototype = {
 	    }
 	    textPlayers.setText("" + (numberPlayers+1));
 	},
+
+	resize: function() {
+  	this.game.state.restart(true,false);
+  }
 }

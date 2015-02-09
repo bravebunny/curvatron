@@ -4,10 +4,10 @@ preloadMenu.prototype = {
 	preload: function(){ 
 		text = this.game.add.text(0,0, "", {font: "40px Dosis Extrabold",});
 
-	    var loadingBar = this.add.sprite(w2,h2,"loading");
-	    loadingBar.anchor.setTo(0.5,0.5);
-	    this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
-	    loadingBar.body.angularVelocity = 200;
+    var loadingBar = this.add.sprite(w2,h2,"loading");
+    loadingBar.anchor.setTo(0.5,0.5);
+    this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
+    loadingBar.body.angularVelocity = 200;
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
 
     	//Load all stuf from menu

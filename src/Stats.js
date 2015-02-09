@@ -51,6 +51,10 @@ stats.prototype = {
 
 	backPressed:function(){
 		this.game.state.start("Menu");
-	}
+	},
+
+	resize: function() {
+  	this.game.state.restart(true,false);
+  }
 
 }

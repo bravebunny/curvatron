@@ -91,5 +91,9 @@ setKeys.prototype = {
 			this.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
 		}
 
-	}
+	},
+
+  resize: function() {
+  	this.game.state.restart(true,false);
+  }
 }
