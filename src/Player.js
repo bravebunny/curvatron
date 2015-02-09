@@ -9,7 +9,7 @@ var Player = function(id, x, y, key, game) {
 	this.key = key;
 	this.killTrail = false;
 	this.dead = false;
-	this.ready = true;
+	this.ready = false;
 	this.speed = 1;
 	this.angularVelocity = 1;
 	this.growth = 30;
@@ -112,7 +112,7 @@ Player.prototype = {
 			var ctx = bmd.context;
 
 			//Create trail
-			if (this.ready && this.frameCount == 0 && !this.dead) {
+			if (this.frameCount == 0 && !this.dead) {
 				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 				this.trailArray.push(trailPiece);
 				bmd.draw(this.trail, this.sprite.x, this.sprite.y);
@@ -135,12 +135,22 @@ Player.prototype = {
 			}
 
 			//erase trail from behind
-			if(this.killTrail && this.frameCount == 0 && this.trailArray[0] && mod == 0){
-				trailPiece = this.trailArray.shift();
-				ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
-				
-				if (this.trailArray.length > 0) {
-					bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
+			if(this.killTrail && this.frameCount == 0 && this.trailArray[0]){
+				if(mod == 0){
+					trailPiece = this.trailArray.shift();
+					ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+					
+					if (this.trailArray.length > 0) {
+						bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
+					}
+				}
+				else if((mod == 1 && !this.ready) || this.dead){
+					trailPiece = this.trailArray.shift();
+					ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+					
+					if (this.trailArray.length > 0) {
+						bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
+					}
 				}
 			}
 
@@ -161,6 +171,7 @@ Player.prototype = {
 
 
 	keyPressed: function() {
+		this.ready = true;
 		this.showOneKey = true;
 		this.showKeyTime = 2 + totalTime;
 		if(gameOver && numberPlayers == 0 && this.game.input.onDown.active){
