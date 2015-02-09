@@ -1,7 +1,7 @@
 var menu = function(game){
 	this.menuSpace = 160;
 	maxPlayers = 7;
-  maxMods = 3;
+  maxMods = 1;
 	  keys = [
     Phaser.Keyboard.W,
     Phaser.Keyboard.P,
@@ -54,6 +54,11 @@ menu.prototype = {
   	if(isNaN(bestScore)) {
   		bestScore = 0;
   	}
+
+    bestSurvScore = parseInt(localStorage.getItem("survivalScore"));
+    if(isNaN(bestSurvScore)) {
+      bestSurvScore = 0;
+    }
 
     ballsScore = parseInt(localStorage.getItem("ballsScore"));
     if(isNaN(ballsScore)) {

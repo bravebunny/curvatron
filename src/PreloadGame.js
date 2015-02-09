@@ -23,10 +23,11 @@ preloadGame.prototype = {
 		this.game.load.audio('kill', 'assets/sfx/kill.ogg');
 
 		numberSounds = 0;
-		for(var i=0; i<=numberSounds; i++) {
-			this.game.load.audio('sfx_collect' + i, 'assets/sfx/collect' + i + '.ogg');	
-		}
 		if(mod == 0){
+			for(var i=0; i<=numberSounds; i++) {
+				this.game.load.audio('sfx_collect' + i, 'assets/sfx/collect' + i + '.ogg');	
+			}
+		
 			if (numberPlayers == 0) {
 				this.game.load.image('player0', 'assets/playerSingle.png');
 				this.game.load.image('trail0', 'assets/trailSingle.png');
@@ -41,7 +42,8 @@ preloadGame.prototype = {
 			}
 		}
 		else if(mod == 1){
-			//fazer cenas
+			this.game.load.image('player0', 'assets/playerSingle.png');
+			this.game.load.image('trail0', 'assets/trailSingle.png');
 		}
 
 	},

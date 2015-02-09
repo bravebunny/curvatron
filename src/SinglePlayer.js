@@ -1,5 +1,5 @@
 var singlePlayer = function(game){
-	mods=['classic','survival','zombies?','king?']
+	mods=['classic','survival']
 	this.imageMod = null;
 };
   

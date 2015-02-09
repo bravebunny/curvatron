@@ -4,6 +4,7 @@ gameMananger.prototype = {
 	init: function(){
 		this.crown = null;
 		highScore = 0;
+		survivalScore = 0;
 		crowned = -1;
 		players = [];
 		this.timeCircle = null;
@@ -88,7 +89,7 @@ gameMananger.prototype = {
 		//Generate powers
 		if (numberPlayers > 0) {
 			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
-		} else {
+		} else if(mod == 0){
 			this.createPower();
 		}
 
@@ -100,11 +101,20 @@ gameMananger.prototype = {
 			tempLabel = this.game.add.sprite(w2, h2, 'score-stat');
 			tempLabel.anchor.setTo(0.5,0.5);
 			tempLabel.alpha = 0.7;
-			tempLabelText = this.game.add.text(w2+50, h2+8, bestScore.toString(), {
-	      font: "100px dosis",
-	      fill: colorHex,
-	      align: "center"
-	  	});
+			if(mod==0){
+				tempLabelText = this.game.add.text(w2+50, h2+8, bestScore.toString(), {
+			      font: "100px dosis",
+			      fill: colorHex,
+			      align: "center"
+			  	});
+			}
+			else if(mod==1){
+				tempLabelText = this.game.add.text(w2+50, h2+8, bestSurvScore.toString(), {
+			      font: "100px dosis",
+			      fill: colorHex,
+			      align: "center"
+			  	});
+			}
 	  	tempLabelText.anchor.setTo(0.5,0.5);
 		}
 
@@ -207,13 +217,13 @@ gameMananger.prototype = {
 				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(function(){this.game.state.restart(true,false,numberPlayers);}, this);
 			}
 
-	  	restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
+	  		restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
 
-		  mainMenu = this.game.add.button(w2-97, h2-97,"exit_button",function(){this.game.state.start("Menu");},this);
-		  mainMenu.scale.set(1,1);
+			mainMenu = this.game.add.button(w2-97, h2-97,"exit_button",function(){this.game.state.start("Menu");},this);
+			mainMenu.scale.set(1,1);
 			mainMenu.anchor.setTo(0.5,0.5);
 			mainMenu.input.useHandCursor=true;
 
@@ -245,10 +255,10 @@ gameMananger.prototype = {
 			  		winnerFill.scale.set(5);
 			  		winnerFill.anchor.setTo(0.5,0.5);
 
-						var winnerLabel = this.game.add.sprite(w2, h2+97,"winner");
-						winnerLabel.scale.set(1,1);
-						winnerLabel.anchor.setTo(0.5,0.5);
-						var textWinner = this.game.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
+					var winnerLabel = this.game.add.sprite(w2, h2+97,"winner");
+					winnerLabel.scale.set(1,1);
+					winnerLabel.anchor.setTo(0.5,0.5);
+					var textWinner = this.game.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
 				      font: "100px dosis",
 				      fill: colorPlayers[crowned],
 				      align: "center"
@@ -257,15 +267,24 @@ gameMananger.prototype = {
 		  		}
 		  		
 		  	} else {
-					spScoreLabel = this.game.add.sprite(w2, h2+97,"score-stat");
-					spScoreLabel.scale.set(1,1);
-					spScoreLabel.anchor.setTo(0.5,0.5);
-					spScoreLabel.alpha = 0.7;
+				spScoreLabel = this.game.add.sprite(w2, h2+97,"score-stat");
+				spScoreLabel.scale.set(1,1);
+				spScoreLabel.anchor.setTo(0.5,0.5);
+				spScoreLabel.alpha = 0.7;
+				if(mod == 0){
 					statsPlayers = this.game.add.text(w2+50, h2+105, bestScore, {
-			      font: "100px dosis",
-			      fill: colorHexDark,
-			      align: "center"
-		    	});
+				      font: "100px dosis",
+				      fill: colorHexDark,
+				      align: "center"
+			    	});
+		    	}
+		    	else if(mod == 1){
+		    		statsPlayers = this.game.add.text(w2+50, h2+105, bestSurvScore, {
+				      font: "100px dosis",
+				      fill: colorHexDark,
+				      align: "center"
+			    	});
+		    	}
 		    	statsPlayers.anchor.setTo(0.5,0.5);
 	    	}
 		  	gameOver = true;
@@ -359,21 +378,21 @@ gameMananger.prototype = {
 	},
 
 	muteSound: function(){
-    if(mute){
-	    audioButton.loadTexture('audio_button');
-	    mute = false;
-    } else {
-      audioButton.loadTexture('audiooff_button');
-      mute = true;
-      if (menuMusic && menuMusic.isPlaying) {
-      	menuMusic.stop();
-    	}
-    }
+	    if(mute){
+		    audioButton.loadTexture('audio_button');
+		    mute = false;
+	    } else {
+	      audioButton.loadTexture('audiooff_button');
+	      mute = true;
+	      if (menuMusic && menuMusic.isPlaying) {
+	      	menuMusic.stop();
+	    	}
+	    }
 	},
 
 	backPressed: function() {
-    this.pause();
-  },
+    	this.pause();
+  	},
 
 	render: function(){
 		players[0].render();

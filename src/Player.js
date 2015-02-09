@@ -135,7 +135,7 @@ Player.prototype = {
 			}
 
 			//erase trail from behind
-			if(this.killTrail && this.frameCount == 0 && this.trailArray[0]){
+			if(this.killTrail && this.frameCount == 0 && this.trailArray[0] && mod == 0){
 				trailPiece = this.trailArray.shift();
 				ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 				
@@ -237,6 +237,14 @@ Player.prototype = {
 			if (crowned != -1 && players[crowned].dead) {
 				crowned = -1;
 				highScore = 0;
+			}
+
+			if(mod == 1){
+				survivalScore = this.trailArray.length;
+				if (survivalScore > bestSurvScore) {
+					bestSurvScore = survivalScore;
+					localStorage.setItem("survivalScore", survivalScore);
+				}
 			}
 		}
 	},
