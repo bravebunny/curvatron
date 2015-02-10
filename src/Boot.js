@@ -64,7 +64,7 @@ boot.prototype = {
 	},
 
 	resize: function() {
-		if(this.game.state.current != 'GameMananger'){
+		if(this.game.state.current != 'GameMananger' && mobile){
 		    var winW = window.innerWidth;
 		    var winH = window.innerHeight;
 		    var winRatio = winW/winH;
