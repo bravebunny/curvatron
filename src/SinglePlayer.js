@@ -80,7 +80,7 @@ singlePlayer.prototype = {
 
   		ui.title.position.set(w2,120);
     	ui.modAuxButton.position.set(w2,h2);
-    	ui.textPlayers.position.set(w2+100,h2+10);
+    	ui.imageMod.position.set(w2+100,h2+10);
 		ui.leftArrow.position.set(w2-150,h2);
 		ui.rightArrow.position.set(w2+150,h2);
 		ui.playButton.position.set(w2+w2/2,h2+230);

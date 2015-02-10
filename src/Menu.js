@@ -216,13 +216,17 @@ menu.prototype = {
 
     ui.spButton.position.set(w2-170,h2);
 
-    ui.scoreLabel.position.set(w2-270,h2);
-
+    if(bestScore != 0){
+      ui.scoreLabel.position.set(w2-270,h2);
+    }
+    
     ui.scoreText.position.set(w2-315,h2+10);
 
     ui.mpButton.position.set(w2+170,h2);
 
-    ui.keysButton.position.set(w2+w2/2,h2+230);
+    if(!mobile){
+      ui.keysButton.position.set(w2+w2/2,h2+230);
+    }
 
     ui.statsButton.position.set(w2,h2+230);
     if (mobile) {

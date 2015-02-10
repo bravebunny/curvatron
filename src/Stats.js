@@ -64,38 +64,46 @@ stats.prototype = {
 	},
 
 	setPositions: function() {
+		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
   		var ui = this.ui;
 
-    	ui.title.position.set(w2,120);
     	if(this.orientation == "portrait" && mobile){
 	  		ui.title.y = 140;
 	  		ui.title.text ="singleplayer\nstats";
 	  		ui.title.fontSize = 120;
 	  	}
+	  	else{
+	  		ui.title.position.y = 120;
+	  		ui.title.text ="singleplayer stats";
+	  		ui.title.fontSize = 150;
+	  	}
 
-    	ui.highScore.position.set(w2/2, h2);
-    	ui.highScoretext.position.set(w2/2+50, h2+8);
     	if(this.orientation == "portrait" && mobile){
-			ui.highScore.x = w2;
-			ui.highScore.y = h2/2+100;
-			ui.highScoretext.x = w2 + 50;
-			ui.highScoretext.y = h2/2 + 108;
+			ui.highScore.position.set(w2,h2/2+100);
+			ui.highScoretext.position.set(w2+50,h2/2 + 108);
+		}
+		else{
+			ui.highScore.position.set(w2/2, h2);
+    		ui.highScoretext.position.set(w2/2+50, h2+8);
 		}
 
 		ui.totalBalls.position.set(w2, h2);
 		ui.totalBallsText.position.set(w2+50,h2+8);
-		ui.statsDeaths.position.set(w2+w2/2, h2);
-		ui.textDeaths.position.set(w2+w2/2+50, h2+8);
+
 		if(this.orientation == "portrait" && mobile){
-    		ui.statsDeaths.x = w2;
-    		ui.statsDeaths.y = h2 + h2/2 -100;
-    		ui.textDeaths.x = w2 + 50;
-    		ui.textDeaths.y = h2 + h2/2 -100;
+    		ui.statsDeaths.position.set(w2,h2+h2/2-100);
+    		ui.textDeaths.position.set(w2+50,h2+h2/2-100);
+    	}
+    	else{
+    		ui.statsDeaths.position.set(w2+w2/2, h2);
+			ui.textDeaths.position.set(w2+w2/2+50, h2+8);
     	}
 
-		ui.backButton.position.set(w2/2,h2+230);
 		if(this.orientation == "portrait" && mobile){
 			ui.backButton.y = h2 + 430;
+		}
+		else{
+			ui.backButton.position.y = h2+230;
 		}
   	}
 
