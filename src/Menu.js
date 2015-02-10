@@ -16,8 +16,6 @@ var menu = function(game){
   bestScore = 0;
   ballsScore = 0;
   deathScore = 0;
-  this.scoreLabel = null;
-  this.scoreText = null;
   menuMusic = null;
   this.ui = {};
 
@@ -165,14 +163,14 @@ menu.prototype = {
   },
 
 	spOver: function() {
-		this.add.tween(this.scoreLabel).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
-		this.add.tween(this.scoreText).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.ui.scoreLabel).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.ui.scoreText).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
 
 	},
 
 	spOut: function() {
-		this.add.tween(this.scoreLabel).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
-		this.add.tween(this.scoreText).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.ui.scoreLabel).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.ui.scoreText).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
 	},
 
   muteSound: function(){
