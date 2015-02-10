@@ -30,17 +30,17 @@ menu.prototype = {
       colorHex = bgColors[chosenColor];
       colorHexDark = bgColorsDark[chosenColor];
       document.body.style.background = colorHex;
-      this.game.stage.backgroundColor = colorHex;
+      this.stage.backgroundColor = colorHex;
       changeColor = false;
     }
 
     bgColor = Phaser.Color.hexToColor(colorHex);
-  	this.game.stage.backgroundColor = colorHex;
+  	this.stage.backgroundColor = colorHex;
     document.body.style.background = colorHex;
 
     if (numberPlayers == 0) {
       if (!menuMusic && !mute) {
-        menuMusic = this.game.add.audio('dream');
+        menuMusic = this.add.audio('dream');
         menuMusic.loop = true;
         menuMusic.play();
       } else if (!menuMusic.isPlaying && !mute){
@@ -70,132 +70,127 @@ menu.prototype = {
       deathScore = 0;
     }
 
+    var ui = this.ui;
+
 		//Game Title
-		var text = this.game.add.text(w2,120, "curvatron", {
+		ui.title = this.add.text(0,0, "curvatron", {
       font: "200px dosis",
       fill: "#ffffff",
       align: "center"
   	});
-  	text.anchor.setTo(0.5,0.5);
-    if(this.orientation == "portrait" && mobile){
-      text.fontSize = 150;
-    }
+  	ui.title.anchor.setTo(0.5,0.5);
 
-    var text = this.game.add.text(w2+360,210, "BETA", {
+    ui.beta = this.add.text(0,0, "BETA", {
       font: "50px dosis",
       fill: "#ffffff",
       align: "center"
     });
-    text.anchor.setTo(0.5,0.5);
-    if(this.orientation == "portrait" && mobile){
-      text.x = w2+260;
-    }
+    ui.beta.anchor.setTo(0.5,0.5);
 
     //Single Player
-		var spButton = this.game.add.button(w2-170,h2,"singleplayer_button",this.singlePlayer,this);
-		spButton.anchor.setTo(0.5,0.5);
-		spButton.onInputOver.add(this.spOver, this);
-		spButton.onInputOut.add(this.spOut, this);
-    spButton.input.useHandCursor=true;
+		ui.spButton = this.add.button(0,0,"singleplayer_button",this.singlePlayer,this);
+		ui.spButton.anchor.setTo(0.5,0.5);
+		ui.spButton.onInputOver.add(this.spOver, this);
+		ui.spButton.onInputOut.add(this.spOut, this);
+    ui.spButton.input.useHandCursor=true;
 
 		//Score label that shows on hove
     if(bestScore != 0){
-  		this.scoreLabel = this.game.add.sprite(w2-270,h2,"sp_score");
-  		this.scoreLabel.anchor.setTo(0.5,0.5);
-  		this.scoreLabel.alpha = 0;
-  		this.scoreText = this.game.add.text(w2-315,h2+10, bestScore, {
+  		ui.scoreLabel = this.add.sprite(0,0,"sp_score");
+  		ui.scoreLabel.anchor.setTo(0.5,0.5);
+  		ui.scoreLabel.alpha = 0;
+  		ui.scoreText = this.add.text(0,0, bestScore, {
           font: "120px dosis",
           fill: colorHex,
           align: "center"
     	});
-    	this.scoreText.anchor.setTo(0.5,0.5);
-    	this.scoreText.alpha = 0;
+    	ui.scoreText.anchor.setTo(0.5,0.5);
+    	ui.scoreText.alpha = 0;
     }
 
     //Multiplayer
-		var mpButton = this.game.add.button(w2+170,h2,"multiplayer_button",this.multiplayer,this);
-		mpButton.anchor.setTo(0.5,0.5);
+		ui.mpButton = this.add.button(0,0,"multiplayer_button",this.multiplayer,this);
+		ui.mpButton.anchor.setTo(0.5,0.5);
     if (mobile) {
-      mpButton.alpha = 0.2;
+      ui.mpButton.alpha = 0.2;
     }
-    mpButton.input.useHandCursor=true;
+    ui.mpButton.input.useHandCursor=true;
 
     //SetKeys
     if(!mobile){
-      var keysButton = this.game.add.button(w2+w2/2,h2+230,"setkeys_button",this.setKeys,this);
-      keysButton.anchor.setTo(0.5,0.5);
-      keysButton.input.useHandCursor=true;
+      ui.keysButton = this.add.button(0,0,"setkeys_button",this.setKeys,this);
+      ui.keysButton.anchor.setTo(0.5,0.5);
+      ui.keysButton.input.useHandCursor=true;
     }
 
   	//Stats
-  	var statsButton = this.game.add.button(w2,h2+230,"stats_button",this.stats,this);
-		statsButton.anchor.setTo(0.5,0.5);
-    statsButton.input.useHandCursor=true;
-    if (mobile) {
-      statsButton.x = w2+120;
-    }
+  	ui.statsButton = this.add.button(0,0,"stats_button",this.stats,this);
+		ui.statsButton.anchor.setTo(0.5,0.5);
+    ui.statsButton.input.useHandCursor=true;
 
   	//Audio
     if(mute){
-    	audioButton = this.game.add.button(w2/2,h2+230,"audiooff_button",this.muteSound,this);
-  		audioButton.anchor.setTo(0.5,0.5);
-      audioButton.input.useHandCursor=true;
+    	ui.audioButton = this.add.button(0,0,"audiooff_button",this.muteSound,this);
+  		ui.audioButton.anchor.setTo(0.5,0.5);
+      ui.audioButton.input.useHandCursor=true;
     }
     else{
-      audioButton = this.game.add.button(w2/2,h2+230,"audio_button",this.muteSound,this);
-      audioButton.anchor.setTo(0.5,0.5);
-      audioButton.input.useHandCursor=true;
+      ui.audioButton = this.add.button(0,0,"audio_button",this.muteSound,this);
+      ui.audioButton.anchor.setTo(0.5,0.5);
+      ui.audioButton.input.useHandCursor=true;
     }
-    if (mobile) {
-      audioButton.x = w2-120;
-    }
+
+    //Place the menu buttons and labels on their correct positions
+    this.setPositions();
 	},
 
 	singlePlayer: function(){
-		this.game.state.start("SinglePlayer",true,false);
+		this.state.start("SinglePlayer",true,false);
 	},
 
 	multiplayer: function(){
     if (!mobile) {
-      this.game.state.start("Multiplayer");
+      this.state.start("Multiplayer");
     }
 	},
 
 	setKeys: function() {
     if (!mobile) {
-      this.game.state.start("SetKeys");
+      this.state.start("SetKeys");
     }
 	},
 
   stats: function() {
-    this.game.state.start("Stats");
+    this.state.start("Stats");
   },
 
 	spOver: function() {
-		this.game.add.tween(this.scoreLabel).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
-		this.game.add.tween(this.scoreText).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.scoreLabel).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.scoreText).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
 
 	},
 
 	spOut: function() {
-		this.game.add.tween(this.scoreLabel).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
-		this.game.add.tween(this.scoreText).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.scoreLabel).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.scoreText).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
 	},
 
   muteSound: function(){
+    var ui = this.ui;
+    
     if(mute){
-      audioButton.loadTexture('audio_button');
+      ui.audioButton.loadTexture('audio_button');
       //this.game.sound.mute = false;
       mute = false;
       if (!menuMusic) {
-        menuMusic = this.game.add.audio('dream');  
+        menuMusic = this.add.audio('dream');  
       }
       menuMusic.loop = true;
       menuMusic.play();
       menuMusic.volume = 1;
     }
     else{
-      audioButton.loadTexture('audiooff_button');
+      ui.audioButton.loadTexture('audiooff_button');
       //this.game.sound.mute = true;
       mute = true;
       if (menuMusic && menuMusic.isPlaying) {
@@ -209,6 +204,37 @@ menu.prototype = {
   },
 
   setPositions: function() {
-  	this.game.state.restart(true,false);
+    var ui = this.ui;
+
+    ui.title.position.set(w2,120);
+    if(this.orientation == "portrait" && mobile){
+      ui.title.fontSize = 150;
+    }
+
+    ui.beta.position.set(w2+360,210);
+    if(this.orientation == "portrait" && mobile){
+      ui.beta.x = w2+260;
+    }
+
+    ui.spButton.position.set(w2-170,h2);
+
+    ui.scoreLabel.position.set(w2-270,h2);
+
+    ui.scoreText.position.set(w2-315,h2+10);
+
+    ui.mpButton.position.set(w2+170,h2);
+
+    ui.keysButton.position.set(w2+w2/2,h2+230);
+
+    ui.statsButton.position.set(w2,h2+230);
+    if (mobile) {
+      ui.statsButton.x = w2+120;
+    }
+
+    ui.audioButton.position.set(w2/2,h2+230);
+    if (mobile) {
+      ui.audioButton.x = w2-120;
+    }
+
   }
 }
