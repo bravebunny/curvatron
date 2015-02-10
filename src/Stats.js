@@ -68,14 +68,14 @@ stats.prototype = {
   		var ui = this.ui;
 
     	if(this.orientation == "portrait" && mobile){
-	  		ui.title.y = 140;
-	  		ui.title.text ="singleplayer\nstats";
-	  		ui.title.fontSize = 120;
+    		ui.title.position.set(w2,140);
+	  		ui.title.text ="single player\nstats";
+	  		ui.title.scale.set(0.7,0.7);
 	  	}
 	  	else{
-	  		ui.title.position.y = 120;
+	  		ui.title.position.set(w2,120);
 	  		ui.title.text ="singleplayer stats";
-	  		ui.title.fontSize = 150;
+	  		ui.title.scale.set(1,1);
 	  	}
 
     	if(this.orientation == "portrait" && mobile){
@@ -100,11 +100,10 @@ stats.prototype = {
     	}
 
 		if(this.orientation == "portrait" && mobile){
-			ui.backButton.y = h2 + 430;
+			ui.backButton.position.set(w2/2,h2+430);
 		}
 		else{
-			ui.backButton.position.y = h2+230;
+			ui.backButton.position.set(w2/2,h2+230);
 		}
   	}
-
 }

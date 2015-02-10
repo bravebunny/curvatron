@@ -18,10 +18,14 @@ var menu = function(game){
   deathScore = 0;
   menuMusic = null;
   this.ui = {};
-
+  this.orientation = null;
 }
 
 menu.prototype = {
+  init: function(){
+    this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+  },
+
   create: function(){
     if (changeColor) {
       chosenColor = this.game.rnd.integerInRange(0, 3);
@@ -202,16 +206,21 @@ menu.prototype = {
   },
 
   setPositions: function() {
+    this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
     var ui = this.ui;
 
-    ui.title.position.set(w2,120);
     if(this.orientation == "portrait" && mobile){
-      ui.title.fontSize = 150;
+      ui.title.position.set(w2,120);
+      ui.title.scale.set(0.7,0.7);
+    }else{
+      ui.title.position.set(w2,120);
+      ui.title.scale.set(1,1);
     }
 
-    ui.beta.position.set(w2+360,210);
     if(this.orientation == "portrait" && mobile){
-      ui.beta.x = w2+260;
+      ui.beta.position.set(w2+160,210);
+    }else{
+      ui.beta.position.set(w2+360,210);
     }
 
     ui.spButton.position.set(w2-170,h2);
@@ -219,7 +228,7 @@ menu.prototype = {
     if(bestScore != 0){
       ui.scoreLabel.position.set(w2-270,h2);
     }
-    
+
     ui.scoreText.position.set(w2-315,h2+10);
 
     ui.mpButton.position.set(w2+170,h2);
