@@ -1,45 +1,47 @@
 var singlePlayer = function(game){
+	this.ui = {};
 	mods=['classic','survival']
-	this.imageMod = null;
 };
   
 singlePlayer.prototype = {
 	create: function(){
 
-		var text = this.game.add.text(w2,120, "single player", {
+		var ui = this.ui;
+
+		ui.title = this.game.add.text(w2,120, "single player", {
 	    font: "150px dosis",
 	    fill: "#ffffff",
 	    align: "center"});
-	  	text.anchor.setTo(0.5,0.5);
+	  	ui.title.anchor.setTo(0.5,0.5);
 
-	    //Number of players
-		var playersAuxButton = this.game.add.sprite(w2,h2,"number_mod");
-		playersAuxButton.anchor.setTo(0.5,0.5);
+	    //Mods
+		ui.modAuxButton = this.game.add.sprite(w2,h2,"number_mod");
+		ui.modAuxButton.anchor.setTo(0.5,0.5);
 
-		this.imageMod = this.game.add.sprite(w2,h2+10, mods[0]);
-	    this.imageMod.anchor.setTo(0.5,0.5);
+		ui.imageMod = this.game.add.sprite(w2,h2+10, mods[0]);
+	    ui.imageMod.anchor.setTo(0.5,0.5);
 
-	    var leftArrow = this.game.add.button(w2-150,h2,"set_players",this.DecNumberOfPlayers,this);
-		leftArrow.anchor.setTo(0.5,0.5);
-		leftArrow.alpha = 0.7;
-		leftArrow.scale.x = -1;
-		leftArrow.input.useHandCursor=true;
+	    ui.leftArrow = this.game.add.button(w2-150,h2,"set_players",this.DecMod,this);
+		ui.leftArrow.anchor.setTo(0.5,0.5);
+		ui.leftArrow.alpha = 0.7;
+		ui.leftArrow.scale.x = -1;
+		ui.leftArrow.input.useHandCursor=true;
 
-		var rightArrow = this.game.add.button(w2+150,h2,"set_players",this.IncNumberOfPlayers,this);
-		rightArrow.anchor.setTo(0.5,0.5);
-		rightArrow.alpha = 0.7;
-		rightArrow.input.useHandCursor=true;
+		ui.rightArrow = this.game.add.button(w2+150,h2,"set_players",this.IncMod,this);
+		ui.rightArrow.anchor.setTo(0.5,0.5);
+		ui.rightArrow.alpha = 0.7;
+		ui.rightArrow.input.useHandCursor=true;
 
 		//Play Button
-		var playButton = this.game.add.button(w2+w2/2,h2+230,"resume_button",this.playTheGame,this);
-		playButton.anchor.setTo(0.5,0.5);
-		playButton.input.useHandCursor=true;
-
+		ui.playButton = this.game.add.button(w2+w2/2,h2+230,"resume_button",this.playTheGame,this);
+		ui.playButton.anchor.setTo(0.5,0.5);
+		ui.playButton.input.useHandCursor=true;
 
 	   //Go back Button
-		var backButton = this.game.add.button(w2/2,h2+230,"back_button",this.backPressed,this);
-		backButton.anchor.setTo(0.5,0.5);
-		backButton.input.useHandCursor=true;
+		ui.backButton = this.game.add.button(w2/2,h2+230,"back_button",this.backPressed,this);
+		ui.backButton.anchor.setTo(0.5,0.5);
+		ui.backButton.input.useHandCursor=true;
+
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
 
@@ -53,27 +55,35 @@ singlePlayer.prototype = {
 		this.game.state.start("Menu");
 	},
 
-	DecNumberOfPlayers: function(){
+	DecMod: function(){
 		if(mod==0){
 			mod=maxMods;
 		}
 		else{
 			mod--;
 		}
-		this.imageMod.loadTexture(mods[mod]);
+		this.ui.imageMod.loadTexture(mods[mod]);
 	},
 
-	IncNumberOfPlayers: function(){
+	IncMod: function(){
 		if(mod==maxMods){
 		    mod=0;
 	    }
 	    else{
 			mod++;
 	    }
-	    this.imageMod.loadTexture(mods[mod]);
+	    this.ui.imageMod.loadTexture(mods[mod]);
 	},
 
 	setPositions: function() {
-  		this.game.state.restart(true,false);
+		var ui = this.ui;
+
+  		ui.title.position.set(w2,120);
+    	ui.modAuxButton.position.set(w2,h2);
+    	ui.textPlayers.position.set(w2+100,h2+10);
+		ui.leftArrow.position.set(w2-150,h2);
+		ui.rightArrow.position.set(w2+150,h2);
+		ui.playButton.position.set(w2+w2/2,h2+230);
+		ui.backButton.position.set(w2/2,h2+230);
   	}
 }
