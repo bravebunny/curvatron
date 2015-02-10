@@ -1,5 +1,6 @@
 var stats = function(game){
 	this.orientation = null;
+	this.ui = {};
 };
   
 stats.prototype = {
@@ -8,67 +9,52 @@ stats.prototype = {
 	},
 
 	create: function(){
-		var text = this.game.add.text(w2,120, "singleplayer stats", {
-	      font: "150px dosis",
-	      fill: "#ffffff",
-	      align: "center"
+		var ui = this.ui;
+
+		ui.title = this.game.add.text(0,0, "singleplayer stats", {
+	        font: "150px dosis",
+	        fill: "#ffffff",
+	        align: "center"
 	  	});
-	  	text.anchor.setTo(0.5,0.5);
-	  	if(this.orientation == "portrait" && mobile){
-	  		text.y = 140;
-	  		text.text ="singleplayer\nstats";
-	  		text.fontSize = 120;
-	  	}
+	  	ui.title.anchor.setTo(0.5,0.5);
 
-		var highScore = this.game.add.sprite(w2/2, h2, 'score-stat');
-		highScore.anchor.setTo(0.5,0.5);
-		highScore.alpha = 0.7;
-		highScoretext = this.game.add.text(w2/2+50, h2+8, bestScore.toString(), {
+		ui.highScore = this.game.add.sprite(0, 0, 'score-stat');
+		ui.highScore.anchor.setTo(0.5,0.5);
+		ui.highScore.alpha = 0.7;
+		ui.highScoretext = this.game.add.text(0, 0, bestScore.toString(), {
 	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"
     	});
-    	highScoretext.anchor.setTo(0.5,0.5);
-    	if(this.orientation == "portrait" && mobile){
-			highScore.x = w2;
-			highScore.y = h2/2+100;
-			highScoretext.x = w2 + 50;
-			highScoretext.y = h2/2 + 108;
-		}
+    	ui.highScoretext.anchor.setTo(0.5,0.5);
 
-		var totalBalls = this.game.add.sprite(w2, h2, 'total-stats');
-		totalBalls.anchor.setTo(0.5,0.5);
-		totalBalls.alpha = 0.7;
-		totalBallsText = this.game.add.text(w2+50,h2+8, ballsScore.toString(), {
+		ui.totalBalls = this.game.add.sprite(0, 0, 'total-stats');
+		ui.totalBalls.anchor.setTo(0.5,0.5);
+		ui.totalBalls.alpha = 0.7;
+		ui.totalBallsText = this.game.add.text(0,0, ballsScore.toString(), {
 	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"
     	});
-    	totalBallsText.anchor.setTo(0.5,0.5);
+    	ui.totalBallsText.anchor.setTo(0.5,0.5);
 
-    	var statsDeaths = this.game.add.sprite(w2+w2/2, h2, 'deaths-stats');
-		statsDeaths.anchor.setTo(0.5,0.5);
-		statsDeaths.alpha = 0.7;
-		textDeaths = this.game.add.text(w2+w2/2+50, h2+8, deathScore.toString(), {
+    	ui.statsDeaths = this.game.add.sprite(0, 0, 'deaths-stats');
+		ui.statsDeaths.anchor.setTo(0.5,0.5);
+		ui.statsDeaths.alpha = 0.7;
+		ui.textDeaths = this.game.add.text(0, 0, deathScore.toString(), {
 	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"
     	});
-    	textDeaths.anchor.setTo(0.5,0.5);
-    	if(this.orientation == "portrait" && mobile){
-    		statsDeaths.x = w2;
-    		statsDeaths.y = h2 + h2/2 -100;
-    		textDeaths.x = w2 + 50;
-    		textDeaths.y = h2 + h2/2 -100;
-    	}
+    	ui.textDeaths.anchor.setTo(0.5,0.5);
 
     	//back button
-		var backButton = this.game.add.button(w2/2,h2+230,"back_button",this.backPressed,this);
-		backButton.anchor.setTo(0.5,0.5);
-		backButton.input.useHandCursor=true;
-		if(this.orientation == "portrait" && mobile){
-			backButton.y = h2 + 430;
-		}
+		ui.backButton = this.game.add.button(0,0,"back_button",this.backPressed,this);
+		ui.backButton.anchor.setTo(0.5,0.5);
+		ui.backButton.input.useHandCursor=true;
+
+		//Place the menu buttons and labels on their correct positions
+    	this.setPositions();
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
@@ -78,7 +64,39 @@ stats.prototype = {
 	},
 
 	setPositions: function() {
-  		this.game.state.restart(true,false);
+  		var ui = this.ui;
+
+    	ui.title.position.set(w2,120);
+    	if(this.orientation == "portrait" && mobile){
+	  		ui.title.y = 140;
+	  		ui.title.text ="singleplayer\nstats";
+	  		ui.title.fontSize = 120;
+	  	}
+
+    	ui.highScore.position.set(w2/2, h2);
+    	ui.highScoretext.position.set(w2/2+50, h2+8);
+    	if(this.orientation == "portrait" && mobile){
+			ui.highScore.x = w2;
+			ui.highScore.y = h2/2+100;
+			ui.highScoretext.x = w2 + 50;
+			ui.highScoretext.y = h2/2 + 108;
+		}
+
+		ui.totalBalls.position.set(w2, h2);
+		ui.totalBallsText.position.set(w2+50,h2+8);
+		ui.statsDeaths.position.set(w2+w2/2, h2);
+		ui.textDeaths.position.set(w2+w2/2+50, h2+8);
+		if(this.orientation == "portrait" && mobile){
+    		ui.statsDeaths.x = w2;
+    		ui.statsDeaths.y = h2 + h2/2 -100;
+    		ui.textDeaths.x = w2 + 50;
+    		ui.textDeaths.y = h2 + h2/2 -100;
+    	}
+
+		ui.backButton.position.set(w2/2,h2+230);
+		if(this.orientation == "portrait" && mobile){
+			ui.backButton.y = h2 + 430;
+		}
   	}
 
 }
