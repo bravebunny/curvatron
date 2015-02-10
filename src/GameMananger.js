@@ -29,8 +29,10 @@ gameMananger.prototype = {
 	},
 
 	create: function() {
-		changeColor = true;
+		this.scale.setResizeCallback(this.state.states["Boot"].resize, this);
+		this.scale.refresh();
 
+		changeColor = true;
     //create sound effects
     moveSounds = [];
     moveSounds[0] = this.game.add.audio('move0');
@@ -400,5 +402,9 @@ gameMananger.prototype = {
 
 	renderGroup: function(member) {
 		//this.game.debug.body(member);
+	}, 
+
+	setPositions: function() {
+		this.scale.setResizeCallback(null);
 	}
 };

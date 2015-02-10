@@ -39,6 +39,8 @@ menu.prototype = {
     bgColor = Phaser.Color.hexToColor(colorHex);
   	this.stage.backgroundColor = colorHex;
     document.body.style.background = colorHex;
+    this.scale.setResizeCallback(this.state.states["Boot"].resize, this);
+    this.scale.refresh();
 
     if (numberPlayers == 0) {
       if (!menuMusic && !mute) {
