@@ -2,7 +2,7 @@ var menu = function(game){
 	this.menuSpace = 160;
 	maxPlayers = 7;
   maxMods = 1;
-	  keys = [
+  keys = [
     Phaser.Keyboard.W,
     Phaser.Keyboard.P,
     Phaser.Keyboard.B,
@@ -23,6 +23,7 @@ var menu = function(game){
 
 menu.prototype = {
   init: function(){
+    Cocoon.Device.setOrientation(Cocoon.Device.Orientations.BOTH);
     this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
   },
 
@@ -39,8 +40,6 @@ menu.prototype = {
     bgColor = Phaser.Color.hexToColor(colorHex);
   	this.stage.backgroundColor = colorHex;
     document.body.style.background = colorHex;
-    this.scale.setResizeCallback(this.state.states["Boot"].resize, this);
-    this.scale.refresh();
 
     if (numberPlayers == 0) {
       if (!menuMusic && !mute) {

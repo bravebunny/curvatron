@@ -2,6 +2,7 @@ var gameMananger = function(game) {}
 
 gameMananger.prototype = {
 	init: function(){
+		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.crown = null;
 		highScore = 0;
 		survivalScore = 0;
@@ -26,23 +27,29 @@ gameMananger.prototype = {
 		pauseTween = null;
 		borders = [0, this.game.world.width, 0,this.game.world.height];
 		bmd = null;
+		this.scale.forceOrientation(true);
 	},
 
 	create: function() {
-		this.scale.setResizeCallback(this.state.states["Boot"].resize, this);
-		this.scale.refresh();
+				
+		if(this.orientation == "portrait"){
+			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
+		}
+		else{
+			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
+		}
 
 		changeColor = true;
-    //create sound effects
-    moveSounds = [];
-    moveSounds[0] = this.game.add.audio('move0');
-    moveSounds[1] = this.game.add.audio('move1');
-    killSound = this.game.add.audio('kill');
-    
-    collectSounds = []
-    for (var i = 0; i <= numberSounds; i++) {
-	  	collectSounds[i] = this.game.add.audio('sfx_collect' + i);
-    }
+		//create sound effects
+		moveSounds = [];
+		moveSounds[0] = this.game.add.audio('move0');
+		moveSounds[1] = this.game.add.audio('move1');
+		killSound = this.game.add.audio('kill');
+
+		collectSounds = []
+		for (var i = 0; i <= numberSounds; i++) {
+		  	collectSounds[i] = this.game.add.audio('sfx_collect' + i);
+		}
 		nextBallHigh = 0;
 
 		if (numberPlayers > 0) {
@@ -402,9 +409,5 @@ gameMananger.prototype = {
 
 	renderGroup: function(member) {
 		//this.game.debug.body(member);
-	}, 
-
-	setPositions: function() {
-		this.scale.setResizeCallback(null);
 	}
 };

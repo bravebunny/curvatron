@@ -4,9 +4,9 @@ var boot = function(game){
   
 boot.prototype = {
 	init: function () {
-		this.stage.disableVisibilityChange = true;
+	this.stage.disableVisibilityChange = true;
 
-		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   	this.scale.pageAlignHorizontally = true;
    	this.scale.pageAlignVertically = true;
    	this.scale.forceOrientation(true, false);
@@ -17,11 +17,11 @@ boot.prototype = {
     this.physics.startSystem(Phaser.Physics.ARCADE);
 
   	w2 = this.world.width/2;
-		h2 = this.world.height/2;
+	h2 = this.world.height/2;
 
-		auxOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-		auxWinW = window.innerWidth;
-	  auxWinH = window.innerHeight;
+	auxOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+	auxWinW = window.innerWidth;
+	auxWinH = window.innerHeight;
 
 	},
 
@@ -59,43 +59,46 @@ boot.prototype = {
 
 	},
 
-  create: function(){
+  	create: function(){
 		this.state.start("PreloadMenu");
 	},
 
 	resize: function() {
-	    var winW = window.innerWidth;
-	    var winH = window.innerHeight;
-	    var winRatio = winW/winH;
-	    var orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+		if(this.game.state.current != 'GameMananger'){
+		    var winW = window.innerWidth;
+		    var winH = window.innerHeight;
+		    var winRatio = winW/winH;
+		    var orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 
-	    var height = Math.round(Math.sqrt(baseArea/winRatio));
-	    var width =  Math.round(winRatio*height);
+		    var height = Math.round(Math.sqrt(baseArea/winRatio));
+		    var width =  Math.round(winRatio*height);
 
-	    this.game.width = width;
-	    this.game.height = height;
-	    this.stage.width = width;
-	    this.stage.height = height;
-	    this.scale.width = width;
-	    this.scale.height = height;
-		this.game.canvas.width = width;
-		this.game.canvas.height = height;
-		this.game.world.setBounds(0, 0, width, height);
-		this.game.renderer.resize(width, height);
-		this.game.camera.setSize(width, height);
-		this.game.camera.setBoundsToWorld();
-		this.scale.refresh();
+		    this.game.width = width;
+		    this.game.height = height;
+		    this.stage.width = width;
+		    this.stage.height = height;
+		    this.scale.width = width;
+		    this.scale.height = height;
+			this.game.canvas.width = width;
+			this.game.canvas.height = height;
+			this.game.world.setBounds(0, 0, width, height);
+			this.game.renderer.resize(width, height);
+			this.game.camera.setSize(width, height);
+			this.game.camera.setBoundsToWorld();
+			this.scale.refresh();
 
-		w2 = this.game.world.width/2;
-		h2 = this.game.world.height/2;
+			w2 = this.game.world.width/2;
+			h2 = this.game.world.height/2;
 
-		if (this.state.states[this.game.state.current].setPositions) {
-			if((auxWinW != winW) || (auxWinH != winH) || (auxOrientation != orientation)){
-				auxOrientation = orientation;
-				auxWinW = winW;
-				auxWinH = winH;
-				this.state.states[this.game.state.current].setPositions();
+			if (this.state.states[this.game.state.current].setPositions) {
+				if((auxWinW != winW) || (auxWinH != winH) || (auxOrientation != orientation)){
+					auxOrientation = orientation;
+					auxWinW = winW;
+					auxWinH = winH;
+					this.state.states[this.game.state.current].setPositions();
+				}
 			}
 		}
-  }
+  	},
+
 }
