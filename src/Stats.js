@@ -108,11 +108,11 @@ stats.prototype = {
 		ui.statsDeaths.scale.set(0.7,0.7);
 		ui.textDeaths.scale.set(0.7,0.7);
 
-		if(this.orientation == "portrait" && mobile){
+		/*if(this.orientation == "portrait" && mobile){
 			ui.backButton.position.set(w2/2,h2+430);
 		}
-		else{
-			ui.backButton.position.set(w2/2,h2+230);
-		}
+		else{*/
+		ui.backButton.position.set(w2/2,1.6*h2);
+		/*}*/
   	}
 }

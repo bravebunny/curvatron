@@ -211,18 +211,17 @@ menu.prototype = {
     this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
     var ui = this.ui;
 
+    ui.title.position.set(w2,h2*0.3);
     if(this.orientation == "portrait" && mobile){
-      ui.title.position.set(w2,120);
       ui.title.scale.set(0.7,0.7);
     }else{
-      ui.title.position.set(w2,120);
       ui.title.scale.set(1,1);
     }
 
     if(this.orientation == "portrait" && mobile){
-      ui.beta.position.set(w2+160,210);
+      ui.beta.position.set(w2+160,h2*0.3+100);
     }else{
-      ui.beta.position.set(w2+360,210);
+      ui.beta.position.set(w2+360,h2*0.3+100);
     }
 
     ui.spButton.position.set(w2-170,h2);
@@ -236,15 +235,15 @@ menu.prototype = {
     ui.mpButton.position.set(w2+170,h2);
 
     if(!mobile){
-      ui.keysButton.position.set(w2+w2/2,h2+230);
+      ui.keysButton.position.set(w2+w2/2,1.6*h2);
     }
 
-    ui.statsButton.position.set(w2,h2+230);
+    ui.statsButton.position.set(w2,1.6*h2);
     if (mobile) {
       ui.statsButton.x = w2+120;
     }
 
-    ui.audioButton.position.set(w2/2,h2+230);
+    ui.audioButton.position.set(w2/2,1.6*h2);
     if (mobile) {
       ui.audioButton.x = w2-120;
     }

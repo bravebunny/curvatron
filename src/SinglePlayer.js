@@ -63,8 +63,8 @@ singlePlayer.prototype = {
 	  		ui.title.scale.set(1,1);
 	  	}
 
-		ui.normalButton.position.set(w2-150,h2);
-		ui.endlessButton.position.set(w2+150,h2);
-		ui.backButton.position.set(w2/2,h2+230);
+		ui.normalButton.position.set(w2-170,h2);
+		ui.endlessButton.position.set(w2+170,h2);
+		ui.backButton.position.set(w2/2,h2*1.6);
   	}
 }

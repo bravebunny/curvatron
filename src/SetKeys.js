@@ -94,16 +94,16 @@ setKeys.prototype = {
 
 	},
 
-  	setPositions: function() {
-  		var ui = this.ui;
+	setPositions: function() {
+		var ui = this.ui;
 
-    	ui.title.position.set(w2,120);
-    	ui.playersAuxButton.position.set(w2,h2-80);
-    	ui.textPlayers.position.set(w2,h2-20);
+  	ui.title.position.set(w2,120);
+  	ui.playersAuxButton.position.set(w2,h2-80);
+  	ui.textPlayers.position.set(w2,h2-20);
 		ui.leftArrow.position.set(w2-90,h2-80);
 		ui.rightArrow.position.set(w2+90,h2-80);
 		ui.keyButton.position.set(w2,160+h2);
 		ui.keyText.position.set(w2,h2+140);
-		ui.playButton.position.set(w2/2,h2+230);
-  	}
+		ui.playButton.position.set(w2/2,1.6*h2);
+	}
 }
