@@ -28,10 +28,13 @@ preloadMenu.prototype = {
 		this.game.load.image("player_select","assets/sprites/menu/playerSelect.png");
 		this.game.load.image("exit_button","assets/sprites/menu/exit.png");
 		this.game.load.image("resume_button","assets/sprites/menu/resume.png");
+		this.game.load.image("collecting_button","assets/sprites/menu/collecting.png");
+		this.game.load.image("endless_button","assets/sprites/menu/endless.png");
 		this.game.load.image("restart_button","assets/sprites/menu/restart.png");
 		this.game.load.image("deaths-stats","assets/sprites/menu/deaths-stats.png");		
 		this.game.load.image("score-stat","assets/sprites/menu/score-stat.png");
 		this.game.load.image("total-stats","assets/sprites/menu/total-stats.png");
+		this.game.load.image("survScore-stat","assets/sprites/menu/endless-stat.png");
 		this.game.load.audio('dream', 'assets/music/dream.ogg');
 
 	},

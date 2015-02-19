@@ -28,6 +28,16 @@ stats.prototype = {
     	});
     	ui.highScoretext.anchor.setTo(0.5,0.5);
 
+    	ui.survivalScore = this.game.add.sprite(0, 0, 'survScore-stat');
+		ui.survivalScore.anchor.setTo(0.5,0.5);
+		ui.survivalScore.alpha = 0.7;
+		ui.survivalScoretext = this.game.add.text(0, 0, bestSurvScore.toString(), {
+	        font: "60px dosis",
+	        fill: colorHex,
+	        align: "center"
+    	});
+    	ui.survivalScoretext.anchor.setTo(0.5,0.5);
+
 		ui.totalBalls = this.game.add.sprite(0, 0, 'total-stats');
 		ui.totalBalls.anchor.setTo(0.5,0.5);
 		ui.totalBalls.alpha = 0.7;
@@ -78,26 +88,25 @@ stats.prototype = {
 	  		ui.title.scale.set(1,1);
 	  	}
 
-    	if(this.orientation == "portrait" && mobile){
-			ui.highScore.position.set(w2,h2/2+100);
-			ui.highScoretext.position.set(w2+50,h2/2 + 108);
-		}
-		else{
-			ui.highScore.position.set(w2/2, h2);
-    		ui.highScoretext.position.set(w2/2+50, h2+8);
-		}
+		ui.highScore.position.set(w2-150, h2-85);
+		ui.highScoretext.position.set(w2-100, h2-83);
+		ui.highScore.scale.set(0.7,0.7)
+		ui.highScoretext.scale.set(0.7,0.7)
 
-		ui.totalBalls.position.set(w2, h2);
-		ui.totalBallsText.position.set(w2+50,h2+8);
+		ui.survivalScore.position.set(w2+150, h2-85);
+		ui.survivalScoretext.position.set(w2+200, h2-83);
+		ui.survivalScore.scale.set(0.7,0.7)
+		ui.survivalScoretext.scale.set(0.7,0.7)
 
-		if(this.orientation == "portrait" && mobile){
-    		ui.statsDeaths.position.set(w2,h2+h2/2-100);
-    		ui.textDeaths.position.set(w2+50,h2+h2/2-100);
-    	}
-    	else{
-    		ui.statsDeaths.position.set(w2+w2/2, h2);
-			ui.textDeaths.position.set(w2+w2/2+50, h2+8);
-    	}
+		ui.totalBalls.position.set(w2-150, h2+85);
+		ui.totalBallsText.position.set(w2-100,h2+83);
+		ui.totalBallsText.scale.set(0.7,0.7);
+		ui.totalBalls.scale.set(0.7,0.7);
+
+		ui.statsDeaths.position.set(w2+150, h2+85);
+		ui.textDeaths.position.set(w2+200, h2+83);
+		ui.statsDeaths.scale.set(0.7,0.7);
+		ui.textDeaths.scale.set(0.7,0.7);
 
 		if(this.orientation == "portrait" && mobile){
 			ui.backButton.position.set(w2/2,h2+430);

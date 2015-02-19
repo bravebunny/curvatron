@@ -104,8 +104,8 @@ gameMananger.prototype = {
 
 		if(mobile){
 			pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
-    	pauseSprite.anchor.setTo(0.5, 0.5);
-    	pauseSprite.input.useHandCursor=true;
+	    	pauseSprite.anchor.setTo(0.5, 0.5);
+	    	pauseSprite.input.useHandCursor=true;
 		} else if (numberPlayers == 0){
 			tempLabel = this.game.add.sprite(w2, h2, 'score-stat');
 			tempLabel.anchor.setTo(0.5,0.5);
