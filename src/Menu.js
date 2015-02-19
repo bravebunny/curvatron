@@ -143,6 +143,7 @@ menu.prototype = {
       ui.audioButton.input.useHandCursor=true;
     }
 
+    this.scale.refresh();
     //Place the menu buttons and labels on their correct positions
     this.setPositions();
 	},
