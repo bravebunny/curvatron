@@ -1,13 +1,26 @@
 var preloadMenu = function(game){}
 
 preloadMenu.prototype = {
-	preload: function(){ 
+	init: function(){
+		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+		this.scale.forceOrientation(true);
+	},
+
+	preload: function(){
+	  	if(this.orientation == "portrait"){
+			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
+		}
+		else{
+			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
+		}
+
+		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		text = this.game.add.text(0,0, "", {font: "40px Dosis Extrabold",});
 
-    var loadingBar = this.add.sprite(w2,h2,"loading");
-    loadingBar.anchor.setTo(0.5,0.5);
-    this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
-    loadingBar.body.angularVelocity = 200;
+	    var loadingBar = this.add.sprite(w2,h2,"loading");
+	    loadingBar.anchor.setTo(0.5,0.5);
+	    this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
+	    loadingBar.body.angularVelocity = 200;
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
 
     	//Load all stuf from menu
@@ -39,8 +52,13 @@ preloadMenu.prototype = {
 
 	},
   	create: function(){
-		this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+  		if(!mobile){
+			this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+				this.game.state.start("Menu");
+			}, this);
+		}
+		else{
 			this.game.state.start("Menu");
-		}, this);
+		}
 	}
 }
