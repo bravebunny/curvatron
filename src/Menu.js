@@ -26,6 +26,7 @@ menu.prototype = {
   init: function(){
     Cocoon.Device.setOrientation(Cocoon.Device.Orientations.BOTH);
     this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+      mod = 0;
   },
 
   create: function(){
