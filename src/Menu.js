@@ -14,6 +14,7 @@ var menu = function(game){
   numberPlayers = 0;
   mod = 0;
   bestScore = 0;
+  bestSurvScore = 0;
   ballsScore = 0;
   deathScore = 0;
   menuMusic = null;
@@ -93,23 +94,7 @@ menu.prototype = {
     //Single Player
 		ui.spButton = this.add.button(0,0,"singleplayer_button",this.singlePlayer,this);
 		ui.spButton.anchor.setTo(0.5,0.5);
-		ui.spButton.onInputOver.add(this.spOver, this);
-		ui.spButton.onInputOut.add(this.spOut, this);
     ui.spButton.input.useHandCursor=true;
-
-		//Score label that shows on hove
-    if(bestScore != 0){
-  		ui.scoreLabel = this.add.sprite(0,0,"sp_score");
-  		ui.scoreLabel.anchor.setTo(0.5,0.5);
-  		ui.scoreLabel.alpha = 0;
-  		ui.scoreText = this.add.text(0,0, bestScore, {
-          font: "120px dosis",
-          fill: colorHex,
-          align: "center"
-    	});
-    	ui.scoreText.anchor.setTo(0.5,0.5);
-    	ui.scoreText.alpha = 0;
-    }
 
     //Multiplayer
 		ui.mpButton = this.add.button(0,0,"multiplayer_button",this.multiplayer,this);
@@ -168,17 +153,6 @@ menu.prototype = {
     this.state.start("Stats");
   },
 
-	spOver: function() {
-		this.add.tween(this.ui.scoreLabel).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
-		this.add.tween(this.ui.scoreText).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
-
-	},
-
-	spOut: function() {
-		this.add.tween(this.ui.scoreLabel).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
-		this.add.tween(this.ui.scoreText).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
-	},
-
   muteSound: function(){
     var ui = this.ui;
     
@@ -226,11 +200,6 @@ menu.prototype = {
 
     ui.spButton.position.set(w2-170,h2);
 
-    if(bestScore != 0){
-      ui.scoreLabel.position.set(w2-270,h2);
-    }
-
-    ui.scoreText.position.set(w2-315,h2+10);
 
     ui.mpButton.position.set(w2+170,h2);
 

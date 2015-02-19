@@ -18,10 +18,43 @@ singlePlayer.prototype = {
 		ui.normalButton = this.game.add.button(0,0,"collecting_button",this.playNormalGame,this);
 		ui.normalButton.anchor.setTo(0.5,0.5);
 		ui.normalButton.input.useHandCursor=true;
+		ui.normalButton.onInputOver.add(this.normalOver, this);
+		ui.normalButton.onInputOut.add(this.normalOut, this);
 
 		ui.endlessButton = this.game.add.button(0,0,"endless_button",this.playEndlessGame,this);
 		ui.endlessButton.anchor.setTo(0.5,0.5);
 		ui.endlessButton.input.useHandCursor=true;
+		ui.endlessButton.onInputOver.add(this.endlessOver, this);
+		ui.endlessButton.onInputOut.add(this.endlessOut, this);
+
+		//Score label that shows on hove
+    if(bestScore != 0){
+  		ui.scoreLabel = this.add.sprite(0,0,"sp_score");
+  		ui.scoreLabel.anchor.setTo(0.5,0.5);
+  		ui.scoreLabel.alpha = 0;
+  		ui.scoreText = this.add.text(0,0, bestScore, {
+          font: "100px dosis",
+          fill: colorHex,
+          align: "center"
+    	});
+    	ui.scoreText.anchor.setTo(0.5,0.5);
+    	ui.scoreText.alpha = 0;
+    }
+
+    if(bestSurvScore != 0){
+  		ui.endlessLabel = this.add.sprite(0,0,"sp_score");
+  		ui.endlessLabel.scale.x = -1;
+  		ui.endlessLabel.anchor.setTo(0.5,0.5);
+  		ui.endlessLabel.alpha = 0;
+  		ui.endlessText = this.add.text(0,0, bestSurvScore, {
+          font: "60px dosis",
+          fill: colorHex,
+          align: "center"
+    	});
+    	ui.endlessText.anchor.setTo(0.5,0.5);
+    	ui.endlessText.alpha = 0;
+    }
+
 
 	   //Go back Button
 		ui.backButton = this.game.add.button(0,0,"back_button",this.backPressed,this);
@@ -51,20 +84,52 @@ singlePlayer.prototype = {
 		this.game.state.start("Menu");
 	},
 
+	normalOver: function() {
+		this.add.tween(this.ui.scoreLabel).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.ui.scoreText).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+
+	},
+
+	normalOut: function() {
+		this.add.tween(this.ui.scoreLabel).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.ui.scoreText).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
+	},
+
+	endlessOver: function() {
+		this.add.tween(this.ui.endlessLabel).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.ui.endlessText).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+	},
+
+	endlessOut: function() {
+		this.add.tween(this.ui.endlessLabel).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.ui.endlessText).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None, true);
+	},
+
 	setPositions: function() {
 		var ui = this.ui;
 
-  		if(this.orientation == "portrait" && mobile){
-    		ui.title.position.set(w2,140);
-	  		ui.title.text ="single\nplayer";
-	  		ui.title.scale.set(0.7,0.7);
-	  	}else{
-	  		ui.title.position.set(w2,120);
-	  		ui.title.scale.set(1,1);
-	  	}
+		if (this.orientation == "portrait" && mobile) {
+  		ui.title.position.set(w2,140);
+  		ui.title.text ="single\nplayer";
+  		ui.title.scale.set(0.7,0.7);
+  	} else {
+  		ui.title.position.set(w2,120);
+  		ui.title.scale.set(1,1);
+  	}
+
+	  if(bestScore != 0){
+      ui.scoreLabel.position.set(w2-270,h2);
+      ui.scoreText.position.set(w2-315,h2+10);
+    }
+
+	  if(bestSurvScore != 0){
+      ui.endlessLabel.position.set(w2+270,h2);
+      ui.endlessText.position.set(w2+330,h2+10);
+    }
 
 		ui.normalButton.position.set(w2-170,h2);
 		ui.endlessButton.position.set(w2+170,h2);
 		ui.backButton.position.set(w2/2,h2*1.6);
-  	}
+
+  }
 }

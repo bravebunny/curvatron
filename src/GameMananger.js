@@ -119,7 +119,7 @@ gameMananger.prototype = {
 			}
 			else if(mod==1){
 				tempLabelText = this.game.add.text(w2+50, h2+8, bestSurvScore.toString(), {
-			      font: "100px dosis",
+			      font: "80px dosis",
 			      fill: colorHex,
 			      align: "center"
 			  	});
@@ -289,7 +289,7 @@ gameMananger.prototype = {
 		    	}
 		    	else if(mod == 1){
 		    		statsPlayers = this.game.add.text(w2+50, h2+105, bestSurvScore, {
-				      font: "100px dosis",
+				      font: "80px dosis",
 				      fill: colorHexDark,
 				      align: "center"
 			    	});
