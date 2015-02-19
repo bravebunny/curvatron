@@ -11,7 +11,7 @@ stats.prototype = {
 	create: function(){
 		var ui = this.ui;
 
-		ui.title = this.game.add.text(0,0, "singleplayer stats", {
+		ui.title = this.game.add.text(0,0, "stats", {
 	        font: "150px dosis",
 	        fill: "#ffffff",
 	        align: "center"
@@ -77,16 +77,13 @@ stats.prototype = {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
   		var ui = this.ui;
 
-    	if(this.orientation == "portrait" && mobile){
-    		ui.title.position.set(w2,140);
-	  		ui.title.text ="single player\nstats";
-	  		ui.title.scale.set(0.7,0.7);
-	  	}
-	  	else{
-	  		ui.title.position.set(w2,120);
-	  		ui.title.text ="singleplayer stats";
-	  		ui.title.scale.set(1,1);
-	  	}
+  	ui.title.position.set(w2,h2*0.3);
+
+  	if (this.orientation == "portrait" && mobile) {
+  		ui.title.scale.set(0.7,0.7);
+  	} else {
+  		ui.title.scale.set(1,1);
+  	}
 
 		ui.highScore.position.set(w2-150, h2-85);
 		ui.highScoretext.position.set(w2-100, h2-83);

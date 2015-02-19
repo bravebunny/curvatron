@@ -18,14 +18,10 @@ singlePlayer.prototype = {
 		ui.normalButton = this.game.add.button(0,0,"collecting_button",this.playNormalGame,this);
 		ui.normalButton.anchor.setTo(0.5,0.5);
 		ui.normalButton.input.useHandCursor=true;
-		ui.normalButton.onInputOver.add(this.normalOver, this);
-		ui.normalButton.onInputOut.add(this.normalOut, this);
 
 		ui.endlessButton = this.game.add.button(0,0,"endless_button",this.playEndlessGame,this);
 		ui.endlessButton.anchor.setTo(0.5,0.5);
 		ui.endlessButton.input.useHandCursor=true;
-		ui.endlessButton.onInputOver.add(this.endlessOver, this);
-		ui.endlessButton.onInputOut.add(this.endlessOut, this);
 
 		//Score label that shows on hove
     if(bestScore != 0){
@@ -39,6 +35,8 @@ singlePlayer.prototype = {
     	});
     	ui.scoreText.anchor.setTo(0.5,0.5);
     	ui.scoreText.alpha = 0;
+    	ui.normalButton.onInputOver.add(this.normalOver, this);
+			ui.normalButton.onInputOut.add(this.normalOut, this);
     }
 
     if(bestSurvScore != 0){
@@ -53,6 +51,8 @@ singlePlayer.prototype = {
     	});
     	ui.endlessText.anchor.setTo(0.5,0.5);
     	ui.endlessText.alpha = 0;
+    	ui.endlessButton.onInputOver.add(this.endlessOver, this);
+			ui.endlessButton.onInputOut.add(this.endlessOut, this);
     }
 
 
@@ -106,14 +106,15 @@ singlePlayer.prototype = {
 	},
 
 	setPositions: function() {
-		var ui = this.ui;
+		var ui 
+		= this.ui;
 
 		if (this.orientation == "portrait" && mobile) {
-  		ui.title.position.set(w2,140);
+  		ui.title.position.set(w2,h2*0.3);
   		ui.title.text ="single\nplayer";
   		ui.title.scale.set(0.7,0.7);
   	} else {
-  		ui.title.position.set(w2,120);
+  		ui.title.position.set(w2,h2*0.3);
   		ui.title.scale.set(1,1);
   	}
 

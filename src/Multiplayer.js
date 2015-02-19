@@ -85,7 +85,7 @@ multiplayer.prototype = {
 	setPositions: function() {
 		var ui = this.ui;
 
-  	ui.title.position.set(w2,120);
+  	ui.title.position.set(w2,h2*0.3);
   	ui.playersAuxButton.position.set(w2,h2);
   	ui.textPlayers.position.set(w2+100,h2+10);
 		ui.leftArrow.position.set(w2-150,h2);
