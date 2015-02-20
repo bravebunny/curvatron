@@ -34,7 +34,8 @@ preloadGame.prototype = {
 				this.game.load.image('player0', 'assets/playerSingle.png');
 				this.game.load.image('trail0', 'assets/trailSingle.png');
 				this.game.load.image('superPower', 'assets/powerHS.png');
-				this.game.load.image('shrink', 'assets/shrink.png');
+				this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100, 9);
+
 			} else {
 				this.game.load.image('crown', 'assets/crown.png');
 				for (var i=0; i <= numberPlayers; i++) {

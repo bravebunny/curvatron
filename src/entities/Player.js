@@ -52,6 +52,7 @@ Player.prototype = {
 		
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		this.sprite.scale.set(scale);
+		this.sprite.body.setSize(16,16,0,0);
     	this.lastTrailLength = this.growth;
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
@@ -87,7 +88,7 @@ Player.prototype = {
 
 			if (!this.dead) {
 				//collision detection
-				var collSize = 16*scale;
+				var collSize = 8*scale;
 				var xx = Math.cos(this.sprite.rotation)*30*scale + this.sprite.x;
 				var yy = Math.sin(this.sprite.rotation)*30*scale + this.sprite.y;
 
@@ -287,10 +288,9 @@ Player.prototype = {
 				var powerup = new PowerUp(this.game, 'point');
 				powerup.create();
 
-				if (mod == 0 && ((highScore % 10) == 0) && (highScore > 0)) {
+				if (mod == 0 && ((highScore % 2) == 0) && (highScore > 0)) {
 					var powerup = new PowerUp(this.game, "shrink");
 					powerup.create();
-					console.log("oi")
 				}
 
 				ballsScore++;
@@ -306,8 +306,8 @@ Player.prototype = {
 				}
 			}
 		} else if (power.name == "shrink") {
-			this.shrinkSize = this.trailArray.length - shrinkAmount;
-			this.lastTrailLength -= shrinkAmount;
+			this.shrinkSize = this.trailArray.length - this.shrinkAmount;
+			this.lastTrailLength -= this.shrinkAmount;
 			this.shrink = true;
 		}
 		power.kill();
@@ -362,6 +362,8 @@ Player.prototype = {
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 	},
 
-	render: function(){}
+	render: function(){
+		game.debug.body(this.sprite);
+	}
 
 };

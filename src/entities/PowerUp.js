@@ -52,11 +52,16 @@ PowerUp.prototype = {
 		this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
 		this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
 
-		this.sprite = this.game.add.sprite(this.x, this.y, 'point');
+		if (this.type == "shrink") {
+			this.sprite = this.game.add.sprite(this.x, this.y, 'shrink');
+			shrinkAnim = this.sprite.animations.add('timed');
+			shrinkAnim.play(10, false, true);
+		} else {
+			this.sprite = this.game.add.sprite(this.x, this.y, 'point');
+		}
 
 		this.sprite.anchor.setTo(.5,.5);
 		this.sprite.scale.set((this.size/2)*scale);
-
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 
 		var collSize = 16*scale;
