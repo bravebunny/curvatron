@@ -1,23 +1,16 @@
-var preloadGame = function(game){}
+var preloadGame = function (game) {};
 
 preloadGame.prototype = {
-	init: function(){
-		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-		this.players = null;
-		this.scale.forceOrientation(true);
-	},
-
-	preload: function(){ 
-		if(this.orientation == "portrait"){
+	preload: function () { 
+		if (orientation == "portrait") {
 			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
-		}
-		else{
+		} else {
 			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
 		}
 		
 	    var loadingBar = this.add.sprite(w2,h2,"loading");
-	    loadingBar.anchor.setTo(0.5,0.5);
 	    this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
+	    loadingBar.anchor.setTo(0.5,0.5);
 	    loadingBar.body.angularVelocity = 200;
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
 
@@ -32,8 +25,8 @@ preloadGame.prototype = {
 		this.game.load.audio('kill', 'assets/sfx/kill.ogg');
 
 		numberSounds = 0;
-		if(mod == 0){
-			for(var i=0; i<=numberSounds; i++) {
+		if (mod == 0) {
+			for (var i=0; i<=numberSounds; i++) {
 				this.game.load.audio('sfx_collect' + i, 'assets/sfx/collect' + i + '.ogg');	
 			}
 		
@@ -43,21 +36,21 @@ preloadGame.prototype = {
 				this.game.load.image('superPower', 'assets/powerHS.png');
 			} else {
 				this.game.load.image('crown', 'assets/crown.png');
-				for(var i=0; i <= numberPlayers; i++){
+				for (var i=0; i <= numberPlayers; i++) {
 					this.game.load.image('player' + i, 'assets/player' + i +'.png');
 					this.game.load.image('crown' + i, 'assets/crown'+ i +'.png');
 					this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
 				}
 			}
 		}
-		else if(mod == 1){
+		else if (mod == 1) {
 			this.game.load.image('player0', 'assets/playerSingle.png');
 			this.game.load.image('trail0', 'assets/trailSingle.png');
 		}
-
 	},
 
-  	create: function(){
+  	create: function () {
 		this.game.state.start("GameMananger");
 	}
-}
+
+};

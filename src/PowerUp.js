@@ -1,4 +1,4 @@
-var PowerUp = function(game) {
+var PowerUp = function (game) {
 	this.game = game;
 	this.sprite = null;
 	this.x;
@@ -7,8 +7,7 @@ var PowerUp = function(game) {
 };
 
 PowerUp.prototype = {
-
-	create: function() {
+	create: function () {
 		if (numberPlayers > 0) {
 			var randNum = this.game.rnd.integerInRange(0, 100);
 			if (randNum < 60) {
@@ -30,7 +29,7 @@ PowerUp.prototype = {
 
 		this.place();
 
-		if(nextBallHigh == 1){
+		if (nextBallHigh == 1) {
 			this.sprite.loadTexture('superPower');
 			nextBallHigh = 2;
 		}
@@ -44,7 +43,7 @@ PowerUp.prototype = {
 		}
 	},
 
-	place: function() {
+	place: function () {
 		this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
 		this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
 
@@ -68,7 +67,7 @@ PowerUp.prototype = {
 		}
 	},
 
-	render: function(){
+	render: function () {
 		//this.game.debug.body(this.sprite);
 	}
 };

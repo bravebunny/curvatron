@@ -1,28 +1,19 @@
-var preloadMenu = function(game){}
+var preloadMenu = function (game) {};
 
 preloadMenu.prototype = {
-	init: function(){
-		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-		this.scale.forceOrientation(true);
-	},
-
-	preload: function(){
-	  	if(this.orientation == "portrait"){
+	preload: function () {
+		if (orientation == "portrait") {
 			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
 		}
-		else{
+		else {
 			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
 		}
 
-		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-		text = this.game.add.text(0,0, "", {font: "40px Dosis Extrabold",});
-
 	    var loadingBar = this.add.sprite(w2,h2,"loading");
-	    loadingBar.anchor.setTo(0.5,0.5);
 	    this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
+	    loadingBar.anchor.setTo(0.5,0.5);
 	    loadingBar.body.angularVelocity = 200;
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
-
     	//Load all stuf from menu
 		this.game.load.image("audio_button","assets/sprites/menu/audio.png");
 		this.game.load.image("audiooff_button","assets/sprites/menu/audiooff.png");
@@ -52,14 +43,15 @@ preloadMenu.prototype = {
 		this.game.load.audio('dream', 'assets/music/dream.ogg');
 
 	},
-  	create: function(){
-  		if(!mobile){
-			this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+
+  	create: function () {
+ 		if (!mobile) {
+			this.game.time.events.add(Phaser.Timer.SECOND * 1, function () {
 				this.game.state.start("Menu");
 			}, this);
-		}
-		else{
+		} else {
 			this.game.state.start("Menu");
 		}
 	}
-}
+
+};
