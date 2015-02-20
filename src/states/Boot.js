@@ -1,19 +1,21 @@
-var boot = function(game){
+var boot = function (game) {
 	orientation = "portrait";
 	w2 = 0;
 	h2 = 0;
 	changeColor = false;
 	mute = false;
-
 };
   
 boot.prototype = {
 
-	preload: function() {
+	preload: function () {
 	   	this.game.load.image("loading","assets/sprites/menu/loading.png");
 	},
 
-  	create: function() {
+  	create: function () {
+  		w2 = this.game.world.width/2;
+		h2 = this.game.world.height/2;
+
 		//Background colors
 		//[green, red, purple, blue]
 		bgColors = ['#76b83d', '#cf5e4f', '#805296', '#4c99b9'];
@@ -41,7 +43,7 @@ boot.prototype = {
 
 		if (mobile) {
 			Cocoon.App.exitCallback(
-				function() {
+				function () {
 					if (this.state.states[this.game.state.current].backPressed) {
 						this.state.states[this.game.state.current].backPressed();
 					}
@@ -57,8 +59,8 @@ boot.prototype = {
 		this.state.start("PreloadMenu");
 	},
 
-	resize: function() {
-		if((this.state.current != 'GameMananger') && (this.state.current != 'PreloadMenu') && (this.state.current != 'PreloadGame')) {
+	resize: function () {
+		if ((this.state.current != 'GameMananger') && (this.state.current != 'PreloadMenu') && (this.state.current != 'PreloadGame')) {
 			
 			orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 
@@ -91,6 +93,6 @@ boot.prototype = {
 				this.state.states[this.game.state.current].setPositions();
 			}
 		}
-  	},
-
-}
+  	}
+  	
+};

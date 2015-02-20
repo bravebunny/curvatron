@@ -1,14 +1,9 @@
-var stats = function(game){
-	this.orientation = null;
+var stats = function (game) {
 	this.ui = {};
 };
   
 stats.prototype = {
-	init: function(){
-		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-	},
-
-	create: function(){
+	create: function () {
 		var ui = this.ui;
 
 		ui.title = this.game.add.text(0,0, "stats", {
@@ -69,15 +64,14 @@ stats.prototype = {
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
 
-	backPressed:function(){
+	backPressed:function () {
 		this.game.state.start("Menu");
 	},
 
-	setPositions: function() {
-		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-  	var ui = this.ui;
+	setPositions: function () {
+	  	var ui = this.ui;
 
-  	ui.title.position.set(w2,h2*0.3);
+	  	ui.title.position.set(w2,h2*0.3);
 
 		ui.highScore.position.set(w2-150, h2-85);
 		ui.highScoretext.position.set(w2-100, h2-85);
@@ -101,4 +95,5 @@ stats.prototype = {
 
 		ui.backButton.position.set(w2/2,1.6*h2);
   	}
-}
+  	
+};

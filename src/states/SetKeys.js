@@ -1,10 +1,10 @@
-var setKeys = function(game){
+var setKeys = function (game) {
 	this.ui = {};
 	this.selectedPlayer = 0;
 };
   
 setKeys.prototype = {
-	create: function(){
+	create: function () {
 
   		var ui = this.ui;
 
@@ -59,51 +59,48 @@ setKeys.prototype = {
 	  	this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
 
-	backPressed:function(){
+	backPressed: function () {
 		this.game.state.start("Menu");
 	},
 
-	DecSelected: function(){
-		if(this.selectedPlayer==0){
-			this.selectedPlayer=maxPlayers;
-		}
-		else{
+	DecSelected: function() {
+		if (this.selectedPlayer == 0) {
+			this.selectedPlayer = maxPlayers;
+		} else {
 			this.selectedPlayer--;
 		}
 		this.ui.textPlayers.setText(this.selectedPlayer+1);
 		this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
 	},
 
-	IncSelected: function(){
-		if(this.selectedPlayer==maxPlayers){
-		    this.selectedPlayer=0;
-	    }
-	    else{
-				this.selectedPlayer++;
+	IncSelected: function () {
+		if (this.selectedPlayer == maxPlayers) {
+		    this.selectedPlayer = 0;
+	    } else {
+			this.selectedPlayer++;
 	    }
 	    this.ui.textPlayers.setText(this.selectedPlayer+1);
 	    this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
-
 	},
 
-	onPressed: function(){
+	onPressed: function () {
 		if (this.game.input.keyboard.lastKey.keyCode >= 48 && this.game.input.keyboard.lastKey.keyCode <= 90) {
 			keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode;
 			this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]));
 		}
-
 	},
 
-	setPositions: function() {
+	setPositions: function () {
 		var ui = this.ui;
 
-  	ui.title.position.set(w2,h2*0.3);
-  	ui.playersAuxButton.position.set(w2,h2-80);
-  	ui.textPlayers.position.set(w2,h2-20);
+	  	ui.title.position.set(w2,h2*0.3);
+		ui.playersAuxButton.position.set(w2,h2-80);
+		ui.textPlayers.position.set(w2,h2-20);
 		ui.leftArrow.position.set(w2-90,h2-80);
 		ui.rightArrow.position.set(w2+90,h2-80);
 		ui.keyButton.position.set(w2,160+h2);
 		ui.keyText.position.set(w2,h2+140);
 		ui.playButton.position.set(w2/2,1.6*h2);
 	}
-}
+	
+};

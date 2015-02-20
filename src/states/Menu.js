@@ -1,7 +1,5 @@
-var menu = function(game){
-	this.menuSpace = 160;
-	maxPlayers = 7;
-  maxMods = 1;
+var menu = function (game) {
+  maxPlayers = 7;
   keys = [
     Phaser.Keyboard.W,
     Phaser.Keyboard.P,
@@ -19,17 +17,13 @@ var menu = function(game){
   deathScore = 0;
   menuMusic = null;
   this.ui = {};
-  this.orientation = null;
-}
+};
 
 menu.prototype = {
-  init: function(){
+  create: function () {
     Cocoon.Device.setOrientation(Cocoon.Device.Orientations.BOTH);
-    this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-      mod = 0;
-  },
+    mod = 0;
 
-  create: function(){
     if (changeColor) {
       chosenColor = this.game.rnd.integerInRange(0, 3);
       colorHex = bgColors[chosenColor];
@@ -48,7 +42,7 @@ menu.prototype = {
         menuMusic = this.add.audio('dream');
         menuMusic.loop = true;
         menuMusic.play();
-      } else if (!menuMusic.isPlaying && !mute){
+      } else if (!menuMusic.isPlaying && !mute) {
         menuMusic.loop = true;
         menuMusic.play();
         menuMusic.volume = 1;
@@ -56,22 +50,22 @@ menu.prototype = {
     }
 
   	bestScore = parseInt(localStorage.getItem("highScore"));
-  	if(isNaN(bestScore)) {
+  	if (isNaN(bestScore)) {
   		bestScore = 0;
   	}
 
     bestSurvScore = parseInt(localStorage.getItem("survivalScore"));
-    if(isNaN(bestSurvScore)) {
+    if (isNaN(bestSurvScore)) {
       bestSurvScore = 0;
     }
 
     ballsScore = parseInt(localStorage.getItem("ballsScore"));
-    if(isNaN(ballsScore)) {
+    if (isNaN(ballsScore)) {
       ballsScore = 0;
     }
 
     deathScore = parseInt(localStorage.getItem("deathScore"));
-    if(isNaN(deathScore)) {
+    if (isNaN(deathScore)) {
       deathScore = 0;
     }
 
@@ -95,7 +89,7 @@ menu.prototype = {
     //Single Player
 		ui.spButton = this.add.button(0,0,"singleplayer_button",this.singlePlayer,this);
 		ui.spButton.anchor.setTo(0.5,0.5);
-    ui.spButton.input.useHandCursor=true;
+    ui.spButton.input.useHandCursor = true;
 
     //Multiplayer
 		ui.mpButton = this.add.button(0,0,"multiplayer_button",this.multiplayer,this);
@@ -103,30 +97,29 @@ menu.prototype = {
     if (mobile) {
       ui.mpButton.alpha = 0.2;
     }
-    ui.mpButton.input.useHandCursor=true;
+    ui.mpButton.input.useHandCursor = true;
 
     //SetKeys
-    if(!mobile){
+    if (!mobile) {
       ui.keysButton = this.add.button(0,0,"setkeys_button",this.setKeys,this);
       ui.keysButton.anchor.setTo(0.5,0.5);
-      ui.keysButton.input.useHandCursor=true;
+      ui.keysButton.input.useHandCursor = true;
     }
 
   	//Stats
   	ui.statsButton = this.add.button(0,0,"stats_button",this.stats,this);
 		ui.statsButton.anchor.setTo(0.5,0.5);
-    ui.statsButton.input.useHandCursor=true;
+    ui.statsButton.input.useHandCursor = true;
 
   	//Audio
-    if(mute){
+    if (mute) {
     	ui.audioButton = this.add.button(0,0,"audiooff_button",this.muteSound,this);
   		ui.audioButton.anchor.setTo(0.5,0.5);
-      ui.audioButton.input.useHandCursor=true;
-    }
-    else{
+      ui.audioButton.input.useHandCursor = true;
+    } else {
       ui.audioButton = this.add.button(0,0,"audio_button",this.muteSound,this);
       ui.audioButton.anchor.setTo(0.5,0.5);
-      ui.audioButton.input.useHandCursor=true;
+      ui.audioButton.input.useHandCursor = true;
     }
 
     this.scale.refresh();
@@ -134,30 +127,30 @@ menu.prototype = {
     this.setPositions();
 	},
 
-	singlePlayer: function(){
+	singlePlayer: function () {
 		this.state.start("SinglePlayer",true,false);
 	},
 
-	multiplayer: function(){
+	multiplayer: function () {
     if (!mobile) {
       this.state.start("Multiplayer");
     }
 	},
 
-	setKeys: function() {
+	setKeys: function () {
     if (!mobile) {
       this.state.start("SetKeys");
     }
 	},
 
-  stats: function() {
+  stats: function () {
     this.state.start("Stats");
   },
 
-  muteSound: function(){
+  muteSound: function () {
     var ui = this.ui;
     
-    if(mute){
+    if (mute){
       ui.audioButton.loadTexture('audio_button');
       //this.game.sound.mute = false;
       mute = false;
@@ -167,8 +160,7 @@ menu.prototype = {
       menuMusic.loop = true;
       menuMusic.play();
       menuMusic.volume = 1;
-    }
-    else{
+    } else {
       ui.audioButton.loadTexture('audiooff_button');
       //this.game.sound.mute = true;
       mute = true;
@@ -178,24 +170,23 @@ menu.prototype = {
     }
   },
 
-  backPressed: function() {
+  backPressed: function () {
     //exit game?
   },
 
-  setPositions: function() {
-    this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+  setPositions: function () {
     var ui = this.ui;
 
     ui.title.position.set(w2,h2*0.3);
-    if(this.orientation == "portrait" && mobile){
+    if (orientation == "portrait" && mobile) {
       ui.title.scale.set(0.7,0.7);
-    }else{
+    } else {
       ui.title.scale.set(1,1);
     }
 
-    if(this.orientation == "portrait" && mobile){
+    if (orientation == "portrait" && mobile) {
       ui.beta.position.set(w2+160,h2*0.3+100);
-    }else{
+    } else {
       ui.beta.position.set(w2+360,h2*0.3+100);
     }
 
@@ -204,7 +195,7 @@ menu.prototype = {
 
     ui.mpButton.position.set(w2+170,h2);
 
-    if(!mobile){
+    if (!mobile){
       ui.keysButton.position.set(w2+w2/2,1.6*h2);
     }
 
@@ -217,6 +208,6 @@ menu.prototype = {
     if (mobile) {
       ui.audioButton.x = w2-120;
     }
-
   }
-}
+  
+};
