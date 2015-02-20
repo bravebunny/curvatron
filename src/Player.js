@@ -28,9 +28,17 @@ var Player = function(id, x, y, key, game) {
 };
 
 Player.prototype = {
+	init: function(){
+		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+	},
 
 	create: function() {
-		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
+		if(numberPlayers==0 && this.orientation == "portrait" && mobile){
+			this.sprite = this.game.add.sprite(w2, h2*0.18, 'player' + this.id);
+		}
+		else{
+			this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
+		}
 		this.sprite.anchor.setTo(.5,.5);
 		this.trail = this.game.make.sprite(0, 0, 'trail' + this.id);
 		this.trail.anchor.set(0.5);
