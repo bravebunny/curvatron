@@ -199,7 +199,7 @@ gameMananger.prototype = {
 	},
 
 	createPower: function () {
-		var powerup = new PowerUp(this.game);
+		var powerup = new PowerUp(this.game, "shrink");
 		powerup.create();
 	},
 
