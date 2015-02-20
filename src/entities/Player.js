@@ -22,6 +22,8 @@ var Player = function (id, x, y, key, game) {
 	this.trail = null
 	this.showKeyTime = 0;
 	this.showOneKey = true;
+	this.shrink = false;
+	this.shrinkAmount = 200;
 };
 
 Player.prototype = {
@@ -134,17 +136,20 @@ Player.prototype = {
 
 			//erase trail from behind
 			if (this.killTrail && this.frameCount == 0 && this.trailArray[0]) {
-				if (mod == 0) {
-					trailPiece = this.trailArray.shift();
-					ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
-					
-					if (this.trailArray.length > 0) {
-						bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
+				if (mod == 0 || (mod == 1 && !this.ready) || this.dead) {
+					var nRemove = 1;
+					if (this.shrink) {
+						if (this.trailArray.length <= this.shrinkSize) {
+							this.shrink = false;
+						} else {
+							nRemove = 4;
+						}
 					}
-				} else if ((mod == 1 && !this.ready) || this.dead) {
-					trailPiece = this.trailArray.shift();
-					ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
-					
+					for (var i = 0; i < nRemove && this.trailArray.length > 0; i++) {
+						trailPiece = this.trailArray.shift();
+						ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+					}
+
 					if (this.trailArray.length > 0) {
 						bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
 					}
@@ -262,38 +267,50 @@ Player.prototype = {
 		if (!mute) {
 			collectSounds[randSound].play();
 		}
+		if (power.name == "point") {
+			this.killTrail = false;
+			this.growth = 60*power.scale.x;
+			this.score = this.score + power.scale.x;
+
+			if (this.score > highScore && numberPlayers != 0) {
+				highScore = this.score;
+				if(crowned > -1){
+					players[crowned].removeCrown();
+				}
+				crowned = this.id;
+				lastCrowned = crowned+1;
+				
+			}
+
+			if (numberPlayers == 0) {
+				highScore++;
+				var powerup = new PowerUp(this.game, 'point');
+				powerup.create();
+
+				if (mod == 0 && ((highScore % 10) == 0) && (highScore > 0)) {
+					var powerup = new PowerUp(this.game, "shrink");
+					powerup.create();
+					console.log("oi")
+				}
+
+				ballsScore++;
+				localStorage.setItem("ballsScore", ballsScore);
+
+				if ((nextBallHigh == 0) && (highScore == bestScore-1)) {
+					nextBallHigh = 1;
+				}
+
+				if (highScore > bestScore) {
+					bestScore = highScore;
+					localStorage.setItem("highScore", highScore);
+				}
+			}
+		} else if (power.name == "shrink") {
+			this.shrinkSize = this.trailArray.length - shrinkAmount;
+			this.lastTrailLength -= shrinkAmount;
+			this.shrink = true;
+		}
 		power.kill();
-		this.killTrail = false;
-		this.growth = 60*power.scale.x;
-		this.score = this.score + power.scale.x;
-
-		if (this.score > highScore && numberPlayers != 0) {
-			highScore = this.score;
-			if(crowned > -1){
-				players[crowned].removeCrown();
-			}
-			crowned = this.id;
-			lastCrowned = crowned+1;
-			
-		}
-
-		if (numberPlayers == 0) {
-			highScore++;
-			var powerup = new PowerUp(this.game);
-			powerup.create();
-
-			ballsScore++;
-			localStorage.setItem("ballsScore", ballsScore);
-
-			if ((nextBallHigh == 0) && (highScore == bestScore-1)) {
-				nextBallHigh = 1;
-			}
-
-			if (highScore > bestScore) {
-				bestScore = highScore;
-				localStorage.setItem("highScore", highScore);
-			}
-		}
 	},
 
 	showKey: function () {

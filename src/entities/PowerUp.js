@@ -31,7 +31,7 @@ PowerUp.prototype = {
 		}
 
 		this.place();
-
+		this.sprite.name = this.type;
 		if (this.type == "shrink") {
 			this.sprite.loadTexture('shrink');
 		} else if (nextBallHigh == 1) {
@@ -41,7 +41,7 @@ PowerUp.prototype = {
 
 		groupPowers.add(this.sprite);
 
-		if (numberPlayers == 0) {
+		if (numberPlayers == 0 && (this.type == 'point')) {
 			powerText.setText(highScore+1);
 			powerText.x = this.sprite.x;
 			powerText.y = this.sprite.y;
@@ -52,7 +52,7 @@ PowerUp.prototype = {
 		this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
 		this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
 
-		this.sprite = this.game.add.sprite(this.x, this.y, 'power');
+		this.sprite = this.game.add.sprite(this.x, this.y, 'point');
 
 		this.sprite.anchor.setTo(.5,.5);
 		this.sprite.scale.set((this.size/2)*scale);

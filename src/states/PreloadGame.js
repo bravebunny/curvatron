@@ -15,7 +15,7 @@ preloadGame.prototype = {
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
 
     	//Load all stuf from game
-		this.game.load.image('power', 'assets/power.png');
+		this.game.load.image('point', 'assets/point.png');
 		this.game.load.image('pauseButton', 'assets/sprites/menu/pause.png');
 		this.game.load.image('winner', 'assets/sprites/menu/winner.png');
 		this.game.load.image('overlay', 'assets/overlay.png');
