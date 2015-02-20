@@ -251,15 +251,6 @@ gameMananger.prototype = {
 			        fill: "#ffffff",
 			        align: "center"});
 		  		} else {
-		  			/*scoreInMenu = this.game.add.text(w2, h2+128,
-		  			"Player " + String.fromCharCode(players[crowned].key) + " wins",
-			  		{
-			        font: "80px dosis",
-			        fill: colorPlayers[crowned],
-			        align: "center"});
-			    		scoreInMenu.anchor.setTo(0.5,0.5);
-				  		scoreInMenu.scale.set(1,1);*/
-
 			  		var winnerFill = this.game.add.sprite(w2-75,h2+97, "player" + players[crowned].id);
 			  		winnerFill.scale.set(5);
 			  		winnerFill.anchor.setTo(0.5,0.5);
@@ -276,24 +267,41 @@ gameMananger.prototype = {
 		  		}
 		  		
 		  	} else {
-				spScoreLabel = this.game.add.sprite(w2, h2+97,"score-stat");
-				spScoreLabel.scale.set(1,1);
+				spAuxLabel = this.game.add.sprite(w2, h2+77,"aux-stat");
+				spAuxLabel.scale.set(0.9,0.9);
+				spAuxLabel.anchor.setTo(0.5,0.5);
+				spAuxLabel.alpha = 0.7;
+
+				spScoreLabel = this.game.add.sprite(w2,1.6*h2,"score-stat");
+				spScoreLabel.scale.set(0.6,0.6);
 				spScoreLabel.anchor.setTo(0.5,0.5);
 				spScoreLabel.alpha = 0.7;
+
 				if(mod == 0){
-					statsPlayers = this.game.add.text(w2+50, h2+105, bestScore, {
-				      font: "100px dosis",
+					var textCurretnScore = this.game.add.text(w2, h2+87, highScore,{
+						font: "80px dosis",
+				      	fill: colorHexDark,
+				      	align: "center"
+					});
+					statsPlayers = this.game.add.text(w2+40, 1.6*h2, bestScore, {
+				      font: "40px dosis",
 				      fill: colorHexDark,
 				      align: "center"
 			    	});
 		    	}
 		    	else if(mod == 1){
-		    		statsPlayers = this.game.add.text(w2+50, h2+105, bestSurvScore, {
-				      font: "80px dosis",
+		    		var textCurretnScore = this.game.add.text(w2, h2+87, survivalScore,{
+						font: "80px dosis",
+				      	fill: colorHexDark,
+				      	align: "center"
+					});
+		    		statsPlayers = this.game.add.text(w2+40, 1.6*h2, bestSurvScore, {
+				      font: "40px dosis",
 				      fill: colorHexDark,
 				      align: "center"
 			    	});
 		    	}
+		    	textCurretnScore.anchor.setTo(0.5,0.5);
 		    	statsPlayers.anchor.setTo(0.5,0.5);
 	    	}
 		  	gameOver = true;

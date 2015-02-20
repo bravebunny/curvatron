@@ -47,6 +47,7 @@ preloadMenu.prototype = {
 		this.game.load.image("deaths-stats","assets/sprites/menu/deaths-stats.png");		
 		this.game.load.image("score-stat","assets/sprites/menu/score-stat.png");
 		this.game.load.image("total-stats","assets/sprites/menu/total-stats.png");
+		this.game.load.image("aux-stat","assets/sprites/menu/aux-stat.png");
 		this.game.load.image("survScore-stat","assets/sprites/menu/endless-stat.png");
 		this.game.load.audio('dream', 'assets/music/dream.ogg');
 

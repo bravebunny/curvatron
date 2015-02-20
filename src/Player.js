@@ -313,10 +313,10 @@ Player.prototype = {
 			} else {
 				this.keyText = this.game.add.text(keyX, keyY, String.fromCharCode(this.key),
 				{
-	        font: "80px dosis",
-	        fill: "#ffffff",
-	        align: "center"});
-					this.keyText.scale.set(scale);
+		        font: "60px dosis",
+		        fill: "#ffffff",
+		        align: "center"});
+				this.keyText.scale.set(scale);
 		  		this.keyText.anchor.setTo(0.5,0.5);
 
 			  	if (mobile) {
