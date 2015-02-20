@@ -2,8 +2,10 @@ var gameMananger = function(game) {}
 
 gameMananger.prototype = {
 	init: function(){
+		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.crown = null;
 		highScore = 0;
+		survivalScore = 0;
 		crowned = -1;
 		players = [];
 		this.timeCircle = null;
@@ -25,21 +27,29 @@ gameMananger.prototype = {
 		pauseTween = null;
 		borders = [0, this.game.world.width, 0,this.game.world.height];
 		bmd = null;
+		this.scale.forceOrientation(true);
 	},
 
 	create: function() {
-		changeColor = true;
+				
+		if(this.orientation == "portrait"){
+			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
+		}
+		else{
+			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
+		}
 
-    //create sound effects
-    moveSounds = [];
-    moveSounds[0] = this.game.add.audio('move0');
-    moveSounds[1] = this.game.add.audio('move1');
-    killSound = this.game.add.audio('kill');
-    
-    collectSounds = []
-    for (var i = 0; i <= numberSounds; i++) {
-	  	collectSounds[i] = this.game.add.audio('sfx_collect' + i);
-    }
+		changeColor = true;
+		//create sound effects
+		moveSounds = [];
+		moveSounds[0] = this.game.add.audio('move0');
+		moveSounds[1] = this.game.add.audio('move1');
+		killSound = this.game.add.audio('kill');
+
+		collectSounds = []
+		for (var i = 0; i <= numberSounds; i++) {
+		  	collectSounds[i] = this.game.add.audio('sfx_collect' + i);
+		}
 		nextBallHigh = 0;
 
 		if (numberPlayers > 0) {
@@ -88,23 +98,32 @@ gameMananger.prototype = {
 		//Generate powers
 		if (numberPlayers > 0) {
 			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
-		} else {
+		} else if(mod == 0){
 			this.createPower();
 		}
 
 		if(mobile){
 			pauseSprite = this.game.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
-    	pauseSprite.anchor.setTo(0.5, 0.5);
-    	pauseSprite.input.useHandCursor=true;
+	    	pauseSprite.anchor.setTo(0.5, 0.5);
+	    	pauseSprite.input.useHandCursor=true;
 		} else if (numberPlayers == 0){
 			tempLabel = this.game.add.sprite(w2, h2, 'score-stat');
 			tempLabel.anchor.setTo(0.5,0.5);
 			tempLabel.alpha = 0.7;
-			tempLabelText = this.game.add.text(w2+50, h2+8, bestScore.toString(), {
-	      font: "100px dosis",
-	      fill: colorHex,
-	      align: "center"
-	  	});
+			if(mod==0){
+				tempLabelText = this.game.add.text(w2+50, h2+8, bestScore.toString(), {
+			      font: "100px dosis",
+			      fill: colorHex,
+			      align: "center"
+			  	});
+			}
+			else if(mod==1){
+				tempLabelText = this.game.add.text(w2+50, h2+8, bestSurvScore.toString(), {
+			      font: "80px dosis",
+			      fill: colorHex,
+			      align: "center"
+			  	});
+			}
 	  	tempLabelText.anchor.setTo(0.5,0.5);
 		}
 
@@ -116,15 +135,14 @@ gameMananger.prototype = {
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
-			Math.cos((2*Math.PI/(numberPlayers+1))*i)*500+w2, 
-			Math.sin((2*Math.PI/(numberPlayers+1))*i)*250+h2, 
+			Math.cos((2*Math.PI/(numberPlayers+1))*i)*(w2-200)+w2, 
+			Math.sin((2*Math.PI/(numberPlayers+1))*i)*(h2-100)+h2, 
 			keys[i], this.game);
 		}
 
 		for(var i=0; i <= numberPlayers; i++){
 			players[i].create();
 		}
-
 
 		this.overlay = this.game.add.sprite(0, 0, 'overlay');
 		this.overlay.width = w2*2;
@@ -208,13 +226,13 @@ gameMananger.prototype = {
 				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(function(){this.game.state.restart(true,false,numberPlayers);}, this);
 			}
 
-	  	restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
+	  		restartButton = this.game.add.button(w2+97, h2-97,"restart_button",function(){this.game.state.restart(true,false,numberPlayers);},this);
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
 
-		  mainMenu = this.game.add.button(w2-97, h2-97,"exit_button",function(){this.game.state.start("Menu");},this);
-		  mainMenu.scale.set(1,1);
+			mainMenu = this.game.add.button(w2-97, h2-97,"exit_button",function(){this.game.state.start("Menu");},this);
+			mainMenu.scale.set(1,1);
 			mainMenu.anchor.setTo(0.5,0.5);
 			mainMenu.input.useHandCursor=true;
 
@@ -233,23 +251,14 @@ gameMananger.prototype = {
 			        fill: "#ffffff",
 			        align: "center"});
 		  		} else {
-		  			/*scoreInMenu = this.game.add.text(w2, h2+128,
-		  			"Player " + String.fromCharCode(players[crowned].key) + " wins",
-			  		{
-			        font: "80px dosis",
-			        fill: colorPlayers[crowned],
-			        align: "center"});
-			    		scoreInMenu.anchor.setTo(0.5,0.5);
-				  		scoreInMenu.scale.set(1,1);*/
-
 			  		var winnerFill = this.game.add.sprite(w2-75,h2+97, "player" + players[crowned].id);
 			  		winnerFill.scale.set(5);
 			  		winnerFill.anchor.setTo(0.5,0.5);
 
-						var winnerLabel = this.game.add.sprite(w2, h2+97,"winner");
-						winnerLabel.scale.set(1,1);
-						winnerLabel.anchor.setTo(0.5,0.5);
-						var textWinner = this.game.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
+					var winnerLabel = this.game.add.sprite(w2, h2+97,"winner");
+					winnerLabel.scale.set(1,1);
+					winnerLabel.anchor.setTo(0.5,0.5);
+					var textWinner = this.game.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
 				      font: "100px dosis",
 				      fill: colorPlayers[crowned],
 				      align: "center"
@@ -258,15 +267,41 @@ gameMananger.prototype = {
 		  		}
 		  		
 		  	} else {
-					spScoreLabel = this.game.add.sprite(w2, h2+97,"score-stat");
-					spScoreLabel.scale.set(1,1);
-					spScoreLabel.anchor.setTo(0.5,0.5);
-					spScoreLabel.alpha = 0.7;
-					statsPlayers = this.game.add.text(w2+50, h2+105, bestScore, {
-			      font: "100px dosis",
-			      fill: colorHexDark,
-			      align: "center"
-		    	});
+				spAuxLabel = this.game.add.sprite(w2, h2+77,"aux-stat");
+				spAuxLabel.scale.set(0.9,0.9);
+				spAuxLabel.anchor.setTo(0.5,0.5);
+				spAuxLabel.alpha = 0.7;
+
+				spScoreLabel = this.game.add.sprite(w2,h2+217,"score-stat");
+				spScoreLabel.scale.set(0.6,0.6);
+				spScoreLabel.anchor.setTo(0.5,0.5);
+				spScoreLabel.alpha = 0.7;
+
+				if(mod == 0){
+					var textCurretnScore = this.game.add.text(w2, h2+77, highScore,{
+						font: "90px dosis",
+				      	fill: colorHexDark,
+				      	align: "center"
+					});
+					statsPlayers = this.game.add.text(w2+35, h2+220, bestScore, {
+				      font: "40px dosis",
+				      fill: colorHexDark,
+				      align: "center"
+			    	});
+		    	}
+		    	else if(mod == 1){
+		    		var textCurretnScore = this.game.add.text(w2, h2+77, survivalScore,{
+						font: "90px dosis",
+				      	fill: colorHexDark,
+				      	align: "center"
+					});
+		    		statsPlayers = this.game.add.text(w2+35, h2+220, bestSurvScore, {
+				      font: "40px dosis",
+				      fill: colorHexDark,
+				      align: "center"
+			    	});
+		    	}
+		    	textCurretnScore.anchor.setTo(0.5,0.5);
 		    	statsPlayers.anchor.setTo(0.5,0.5);
 	    	}
 		  	gameOver = true;
@@ -360,21 +395,21 @@ gameMananger.prototype = {
 	},
 
 	muteSound: function(){
-    if(mute){
-	    audioButton.loadTexture('audio_button');
-	    mute = false;
-    } else {
-      audioButton.loadTexture('audiooff_button');
-      mute = true;
-      if (menuMusic && menuMusic.isPlaying) {
-      	menuMusic.stop();
-    	}
-    }
+	    if(mute){
+		    audioButton.loadTexture('audio_button');
+		    mute = false;
+	    } else {
+	      audioButton.loadTexture('audiooff_button');
+	      mute = true;
+	      if (menuMusic && menuMusic.isPlaying) {
+	      	menuMusic.stop();
+	    	}
+	    }
 	},
 
 	backPressed: function() {
-    this.pause();
-  },
+    	this.pause();
+  	},
 
 	render: function(){
 		players[0].render();

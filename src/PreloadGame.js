@@ -2,10 +2,19 @@ var preloadGame = function(game){}
 
 preloadGame.prototype = {
 	init: function(){
+		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.players = null;
+		this.scale.forceOrientation(true);
 	},
 
 	preload: function(){ 
+		if(this.orientation == "portrait"){
+			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
+		}
+		else{
+			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
+		}
+		
 	    var loadingBar = this.add.sprite(w2,h2,"loading");
 	    loadingBar.anchor.setTo(0.5,0.5);
 	    this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
@@ -23,21 +32,27 @@ preloadGame.prototype = {
 		this.game.load.audio('kill', 'assets/sfx/kill.ogg');
 
 		numberSounds = 0;
-		for(var i=0; i<=numberSounds; i++) {
-			this.game.load.audio('sfx_collect' + i, 'assets/sfx/collect' + i + '.ogg');	
+		if(mod == 0){
+			for(var i=0; i<=numberSounds; i++) {
+				this.game.load.audio('sfx_collect' + i, 'assets/sfx/collect' + i + '.ogg');	
+			}
+		
+			if (numberPlayers == 0) {
+				this.game.load.image('player0', 'assets/playerSingle.png');
+				this.game.load.image('trail0', 'assets/trailSingle.png');
+				this.game.load.image('superPower', 'assets/powerHS.png');
+			} else {
+				this.game.load.image('crown', 'assets/crown.png');
+				for(var i=0; i <= numberPlayers; i++){
+					this.game.load.image('player' + i, 'assets/player' + i +'.png');
+					this.game.load.image('crown' + i, 'assets/crown'+ i +'.png');
+					this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
+				}
+			}
 		}
-
-		if (numberPlayers == 0) {
+		else if(mod == 1){
 			this.game.load.image('player0', 'assets/playerSingle.png');
 			this.game.load.image('trail0', 'assets/trailSingle.png');
-			this.game.load.image('superPower', 'assets/powerHS.png');
-		} else {
-			this.game.load.image('crown', 'assets/crown.png');
-			for(var i=0; i <= numberPlayers; i++){
-				this.game.load.image('player' + i, 'assets/player' + i +'.png');
-				this.game.load.image('crown' + i, 'assets/crown'+ i +'.png');
-				this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
-			}
 		}
 
 	},

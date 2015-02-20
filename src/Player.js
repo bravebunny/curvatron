@@ -9,7 +9,7 @@ var Player = function(id, x, y, key, game) {
 	this.key = key;
 	this.killTrail = false;
 	this.dead = false;
-	this.ready = true;
+	this.ready = false;
 	this.speed = 1;
 	this.angularVelocity = 1;
 	this.growth = 30;
@@ -22,12 +22,23 @@ var Player = function(id, x, y, key, game) {
 	this.textTween = null;
 	this.trailArray = [];
 	this.trail = null
+	this.recentlyPressed = null;
+	this.showKeyTime = 0;
+	this.showOneKey = true;
 };
 
 Player.prototype = {
+	init: function(){
+		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+	},
 
 	create: function() {
-		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
+		if(numberPlayers==0 && this.orientation == "portrait" && mobile){
+			this.sprite = this.game.add.sprite(w2, h2*0.18, 'player' + this.id);
+		}
+		else{
+			this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
+		}
 		this.sprite.anchor.setTo(.5,.5);
 		this.trail = this.game.make.sprite(0, 0, 'trail' + this.id);
 		this.trail.anchor.set(0.5);
@@ -47,7 +58,7 @@ Player.prototype = {
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		//this.sprite.body.setSize(16*scale, 16*scale, 0, 0);
 		this.sprite.scale.set(scale);
-    this.lastTrailLength = this.growth;
+    	this.lastTrailLength = this.growth;
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 
@@ -57,6 +68,9 @@ Player.prototype = {
 		else if (numberPlayers == 0){
 			this.game.input.onDown.add(this.keyPressed, this);
 		}
+
+		this.showKey();
+
 		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
 	},
@@ -70,7 +84,11 @@ Player.prototype = {
 			this.unpause();
 		}
 
-			if (!this.paused) {
+		if(this.showKeyTime <= totalTime){
+			this.showKey();
+		}
+
+		if (!this.paused) {
 			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
@@ -102,7 +120,7 @@ Player.prototype = {
 			var ctx = bmd.context;
 
 			//Create trail
-			if (this.ready && this.frameCount == 0 && !this.dead) {
+			if (this.frameCount == 0 && !this.dead) {
 				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 				this.trailArray.push(trailPiece);
 				bmd.draw(this.trail, this.sprite.x, this.sprite.y);
@@ -126,23 +144,24 @@ Player.prototype = {
 
 			//erase trail from behind
 			if(this.killTrail && this.frameCount == 0 && this.trailArray[0]){
-				trailPiece = this.trailArray.shift();
-				ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
-				
-				if (this.trailArray.length > 0) {
-					bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
+				if(mod == 0){
+					trailPiece = this.trailArray.shift();
+					ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+					
+					if (this.trailArray.length > 0) {
+						bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
+					}
+				}
+				else if((mod == 1 && !this.ready) || this.dead){
+					trailPiece = this.trailArray.shift();
+					ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+					
+					if (this.trailArray.length > 0) {
+						bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
+					}
 				}
 			}
 
-			//Screen border collisions
-			/*if (numberPlayers > 0) {
-				if(((this.sprite.x-16)<=borders[0]) || ((this.sprite.x+16)>=borders[1])){
-					this.kill();
-				}
-				if(((this.sprite.y-16)<=borders[2]) || ((this.sprite.y+16)>=borders[3])){
-					this.kill();
-				}
-			} else {*/
 			if((this.sprite.x+8*scale)<=borders[0]) {
 				this.sprite.x = borders[1];
 			} else if ((this.sprite.x-8*scale)>=borders[1]) {
@@ -154,30 +173,15 @@ Player.prototype = {
 			} else if ((this.sprite.y-8*scale)>=borders[3]) {
 				this.sprite.y = borders[2];
 			}
-			/*}*/
-		}
-		//Show player's key
-		if (!this.keyText) {
-			this.keyText = this.game.add.text(
-			Math.round(Math.cos(this.sprite.rotation + Math.PI/2)*88*scale) + this.x,
-			Math.round(Math.sin(this.sprite.rotation + Math.PI/2)*88*scale) + this.y,
-			String.fromCharCode(this.key), {
-		        font: "80px dosis",
-		        fill: "#ffffff",
-		        align: "center"});
-			this.keyText.scale.set(scale);
-	  		this.keyText.anchor.setTo(0.5,0.5);
-
-		  	if (mobile) {
-		  		this.keyText.setText(bestScore);
-		  	}
 		}
 
 	},
 
 
 	keyPressed: function() {
-
+		this.ready = true;
+		this.showOneKey = true;
+		this.showKeyTime = 2 + totalTime;
 		if(gameOver && numberPlayers == 0 && this.game.input.onDown.active){
 			gameOver=false;
 			this.game.state.restart(true,false,numberPlayers);
@@ -253,6 +257,14 @@ Player.prototype = {
 				crowned = -1;
 				highScore = 0;
 			}
+
+			if(mod == 1){
+				survivalScore = this.trailArray.length;
+				if (survivalScore > bestSurvScore) {
+					bestSurvScore = survivalScore;
+					localStorage.setItem("survivalScore", survivalScore);
+				}
+			}
 		}
 	},
 
@@ -294,6 +306,32 @@ Player.prototype = {
 			}
 		}
 
+	},
+
+	showKey: function(){
+		//Show player's key
+		var keyX = Math.round(Math.cos(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.x;
+		var keyY = Math.round(Math.sin(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.y;
+		if(this.showOneKey){
+			this.showOneKey = false;
+			if(this.keyText){
+				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
+				this.keyText.x = keyX;
+				this.keyText.y = keyY;
+			} else {
+				this.keyText = this.game.add.text(keyX, keyY, String.fromCharCode(this.key),
+				{
+		        font: "60px dosis",
+		        fill: "#ffffff",
+		        align: "center"});
+				this.keyText.scale.set(scale);
+		  		this.keyText.anchor.setTo(0.5,0.5);
+
+			  	if (mobile) {
+			  		this.keyText.setText(bestScore);
+			  	}
+			}
+		}
 	},
 
 	addCrown: function() {

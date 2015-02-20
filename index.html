@@ -5,7 +5,7 @@
     <title>Curvatron</title>
     <link href='style.css' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="favicon.ico"/>
-    <script type="text/javascript" src="js/phaser.js"></script>
+    <script type="text/javascript" src="js/phaser.min.js"></script>
     <script type="text/javascript" src="js/cocoon.min.js"></script>
     <script type="text/javascript" src="src/Boot.js"></script>
     <script type="text/javascript" src="src/PreloadMenu.js"></script>
@@ -13,6 +13,7 @@
     <script type="text/javascript" src="src/Multiplayer.js"></script>
     <script type="text/javascript" src="src/SetKeys.js"></script>
     <script type="text/javascript" src="src/PreloadGame.js"></script>
+    <script type="text/javascript" src="src/SinglePlayer.js"></script>
     <script type="text/javascript" src="src/GameMananger.js"></script>
     <script type="text/javascript" src="src/Player.js"></script>
     <script type="text/javascript" src="src/PowerUp.js"></script>
@@ -24,13 +25,30 @@
 <script type="text/javascript">
 
 (function() {
-    var game = new Phaser.Game(1366, 768, Phaser.CANVAS, "");
+    baseW = 1366;
+    baseH = 768;
+    baseRatio = 1366/768;
+    baseArea = 1024*1024;
+
+    var winW = window.innerWidth;
+    var winH = window.innerHeight;
+    var winRatio = winW/winH;
+
+    var orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+    mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    //mobile = true;
+
+    var height = Math.round(Math.sqrt(baseArea/winRatio));
+    var width =  Math.round(winRatio*height);
+
+    game = new Phaser.Game(width, height, Phaser.CANVAS, "");
     game.state.add("Boot",boot);
     game.state.add("PreloadMenu",preloadMenu);
     game.state.add("Menu",menu);
     game.state.add("Multiplayer",multiplayer);
     game.state.add("SetKeys",setKeys);
     game.state.add("Stats",stats);
+    game.state.add("SinglePlayer",singlePlayer);
     game.state.add("PreloadGame",preloadGame);
     game.state.add("GameMananger",gameMananger);
     game.state.start("Boot");
