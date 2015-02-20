@@ -6,7 +6,7 @@
     <link href='style.css' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="favicon.ico"/>
 
-    <script type="text/javascript" src="js/phaser.js"></script>
+    <script type="text/javascript" src="js/phaser.min.js"></script>
     <script type="text/javascript" src="js/cocoon.min.js"></script>
 
     <script type="text/javascript" src="src/states/Boot.js"></script>
@@ -48,7 +48,7 @@
     var height = Math.round(Math.sqrt(baseArea/winRatio));
     var width =  Math.round(winRatio*height);
 
-    game = new Phaser.Game(width, height, Phaser.CANVAS, "");
+    var game = new Phaser.Game(width, height, Phaser.CANVAS, "");
     game.state.add("Boot",boot);
     game.state.add("PreloadMenu",preloadMenu);
     game.state.add("Menu",menu);

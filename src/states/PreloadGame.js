@@ -35,6 +35,7 @@ preloadGame.prototype = {
 				this.game.load.image('trail0', 'assets/trailSingle.png');
 				this.game.load.image('superPower', 'assets/powerHS.png');
 				this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100);
+				this.game.load.image('touch', 'assets/sprites/menu/touch.png');
 
 			} else {
 				this.game.load.image('crown', 'assets/crown.png');

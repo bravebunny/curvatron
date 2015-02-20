@@ -24,6 +24,7 @@ var Player = function (id, x, y, key, game) {
 	this.showOneKey = true;
 	this.shrink = false;
 	this.shrinkAmount = 200;
+	this.touch = null;
 };
 
 Player.prototype = {
@@ -193,6 +194,12 @@ Player.prototype = {
 			}
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+				
+				if (mobile) {
+					this.game.add.tween(this.touch).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+					this.game.add.tween(this.touch).to( { y: this.touch.y + 100 }, 1000, Phaser.Easing.Circular.In, true);
+				}
+
 				if (numberPlayers == 0 && !mobile) {
 					tempLabel = this.game.add.tween(tempLabel).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 					tempLabelText = this.game.add.tween(tempLabelText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
@@ -288,7 +295,7 @@ Player.prototype = {
 				var powerup = new PowerUp(this.game, 'point');
 				powerup.create();
 
-				if (mod == 0 && ((highScore % 2) == 0) && (highScore > 0)) {
+				if (mod == 0 && ((highScore % 10) == 0) && (highScore > 0)) {
 					var powerup = new PowerUp(this.game, "shrink");
 					powerup.create();
 				}
@@ -315,9 +322,9 @@ Player.prototype = {
 
 	showKey: function () {
 		//Show player's key
-		var keyX = Math.round(Math.cos(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.x;
-		var keyY = Math.round(Math.sin(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.y;
 		if (this.showOneKey) {
+			var keyX = Math.round(Math.cos(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.x;
+			var keyY = Math.round(Math.sin(this.sprite.rotation + Math.PI/2*this.direction)*88*scale) + this.sprite.y;
 			this.showOneKey = false;
 			if (this.keyText) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
@@ -335,7 +342,20 @@ Player.prototype = {
 			  		this.keyText.setText(bestScore);
 			  	}
 			}
+			if (numberPlayers == 0 && mobile) {
+				if (orientation == 'portrait') {
+					this.touch = this.game.add.sprite(w2, h2*1.5+100, 'touch');
+				} else {
+					this.touch = this.game.add.sprite(w2*0.5, h2+100, 'touch');
+				}
+				this.touch.anchor.setTo(.5, .5);
+				this.touch.alpha = 0;
+				this.game.add.tween(this.touch).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+				this.game.add.tween(this.touch).to( { y: this.touch.y - 100 }, 1000, Phaser.Easing.Circular.Out, true);
+
+			}
 		}
+
 	},
 
 	addCrown: function () {
@@ -362,8 +382,8 @@ Player.prototype = {
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 	},
 
-	render: function(){
+	/*render: function(){
 		game.debug.body(this.sprite);
-	}
+	}*/
 
 };

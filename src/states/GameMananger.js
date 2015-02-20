@@ -128,7 +128,7 @@ gameMananger.prototype = {
 		//create BitmapData
 		bmd = this.add.bitmapData(this.game.width, this.game.height);
 		bmd.addToWorld();
-		bmd.smoothed = false;
+		bmd.smoothed = true;
 
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
@@ -404,9 +404,9 @@ gameMananger.prototype = {
     	this.pause();
   	},
 
-	render: function(){
+	/*render: function(){
 		players[0].render();
-	},
+	},*/
 
 	renderGroup: function(member) {
 		//this.game.debug.body(member);

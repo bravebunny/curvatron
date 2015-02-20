@@ -39,8 +39,7 @@ boot.prototype = {
 
 	  	this.physics.startSystem(Phaser.Physics.ARCADE);
 
-	  	this.stage.smoothed = false;
-
+	  	this.stage.smoothed = true;
 		if (mobile) {
 			Cocoon.App.exitCallback(
 				function () {
