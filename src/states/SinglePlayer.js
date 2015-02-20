@@ -104,7 +104,9 @@ singlePlayer.prototype = {
 		var ui = this.ui;
   		ui.title.position.set(w2,h2*0.3);
 
-		if (orientation == "portrait" && mobile) {
+  		var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+
+		if (wOrientation == "portrait" && mobile) {
   			ui.title.text ="single\nplayer";
 	  	} else {
 	  		ui.title.text ="single player";

@@ -178,13 +178,15 @@ menu.prototype = {
     var ui = this.ui;
 
     ui.title.position.set(w2,h2*0.3);
-    if (orientation == "portrait" && mobile) {
+
+    var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+    if (wOrientation == "portrait" && mobile) {
       ui.title.scale.set(0.7,0.7);
     } else {
       ui.title.scale.set(1,1);
     }
 
-    if (orientation == "portrait" && mobile) {
+    if (wOrientation == "portrait" && mobile) {
       ui.beta.position.set(w2+160,h2*0.3+100);
     } else {
       ui.beta.position.set(w2+360,h2*0.3+100);

@@ -1,5 +1,4 @@
 var boot = function (game) {
-	orientation = "portrait";
 	w2 = 0;
 	h2 = 0;
 	changeColor = false;
@@ -13,6 +12,7 @@ boot.prototype = {
 	},
 
   	create: function () {
+  		orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
   		w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 
@@ -40,6 +40,7 @@ boot.prototype = {
 	  	this.physics.startSystem(Phaser.Physics.ARCADE);
 
 	  	this.stage.smoothed = true;
+
 		if (mobile) {
 			Cocoon.App.exitCallback(
 				function () {
@@ -60,9 +61,7 @@ boot.prototype = {
 
 	resize: function () {
 		if ((this.state.current != 'GameMananger') && (this.state.current != 'PreloadMenu') && (this.state.current != 'PreloadGame')) {
-			
 			orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-
 			var winW = window.innerWidth;
 			var winH = window.innerHeight;
 			var winRatio = winW/winH;

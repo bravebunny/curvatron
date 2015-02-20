@@ -13,12 +13,6 @@ gameMananger.prototype = {
 			scale = (-1/24)*numberPlayers+7/12;
 		}
 
-		if (orientation == "portrait") {
-			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
-		} else {
-			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
-		}
-
 		crowned = -1;
 		lastCrowned = -1;
 		players = [];
@@ -320,7 +314,7 @@ gameMananger.prototype = {
 			this.game.input.onDown.active = false;
 
 			if (mobile) {
-				pauseSprite.alpha = 0;
+				ui.pauseSprite.alpha = 0;
 			} else if (numberPlayers == 0) {
 				tempLabel.alpha = 0;
 				tempLabelText.alpha = 0;

@@ -2,10 +2,11 @@ var preloadMenu = function (game) {};
 
 preloadMenu.prototype = {
 	preload: function () {
-		if (orientation == "portrait") {
+		var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+
+		if (wOrientation == "portrait") {
 			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
-		}
-		else {
+		} else {
 			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
 		}
 

@@ -25,11 +25,13 @@ var Player = function (id, x, y, key, game) {
 	this.shrink = false;
 	this.shrinkAmount = 200;
 	this.touch = null;
+	this.orientation = null;
 };
 
 Player.prototype = {
 	create: function () {
-		if (numberPlayers == 0 && orientation == "portrait" && mobile) {
+		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+		if (numberPlayers == 0 && this.orientation == "portrait" && mobile) {
 			this.sprite = this.game.add.sprite(w2, h2*0.18, 'player' + this.id);
 		} else {
 			this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
@@ -342,8 +344,9 @@ Player.prototype = {
 			  		this.keyText.setText(bestScore);
 			  	}
 			}
+
 			if (numberPlayers == 0 && mobile) {
-				if (orientation == 'portrait') {
+				if (this.orientation == 'portrait') {
 					this.touch = this.game.add.sprite(w2, h2*1.5+100, 'touch');
 				} else {
 					this.touch = this.game.add.sprite(w2*0.5, h2+100, 'touch');

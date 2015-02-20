@@ -2,7 +2,9 @@ var preloadGame = function (game) {};
 
 preloadGame.prototype = {
 	preload: function () { 
-		if (orientation == "portrait") {
+		this.scale.forceOrientation(true);
+		var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+		if (wOrientation == "portrait") {
 			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
 		} else {
 			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
