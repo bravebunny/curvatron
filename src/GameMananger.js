@@ -272,30 +272,30 @@ gameMananger.prototype = {
 				spAuxLabel.anchor.setTo(0.5,0.5);
 				spAuxLabel.alpha = 0.7;
 
-				spScoreLabel = this.game.add.sprite(w2,1.6*h2,"score-stat");
+				spScoreLabel = this.game.add.sprite(w2,h2+217,"score-stat");
 				spScoreLabel.scale.set(0.6,0.6);
 				spScoreLabel.anchor.setTo(0.5,0.5);
 				spScoreLabel.alpha = 0.7;
 
 				if(mod == 0){
-					var textCurretnScore = this.game.add.text(w2, h2+87, highScore,{
-						font: "80px dosis",
+					var textCurretnScore = this.game.add.text(w2, h2+77, highScore,{
+						font: "90px dosis",
 				      	fill: colorHexDark,
 				      	align: "center"
 					});
-					statsPlayers = this.game.add.text(w2+40, 1.6*h2, bestScore, {
+					statsPlayers = this.game.add.text(w2+35, h2+220, bestScore, {
 				      font: "40px dosis",
 				      fill: colorHexDark,
 				      align: "center"
 			    	});
 		    	}
 		    	else if(mod == 1){
-		    		var textCurretnScore = this.game.add.text(w2, h2+87, survivalScore,{
-						font: "80px dosis",
+		    		var textCurretnScore = this.game.add.text(w2, h2+77, survivalScore,{
+						font: "90px dosis",
 				      	fill: colorHexDark,
 				      	align: "center"
 					});
-		    		statsPlayers = this.game.add.text(w2+40, 1.6*h2, bestSurvScore, {
+		    		statsPlayers = this.game.add.text(w2+35, h2+220, bestSurvScore, {
 				      font: "40px dosis",
 				      fill: colorHexDark,
 				      align: "center"

@@ -80,30 +80,25 @@ stats.prototype = {
   	ui.title.position.set(w2,h2*0.3);
 
 		ui.highScore.position.set(w2-150, h2-85);
-		ui.highScoretext.position.set(w2-100, h2-83);
+		ui.highScoretext.position.set(w2-100, h2-85);
 		ui.highScore.scale.set(0.7,0.7)
 		ui.highScoretext.scale.set(0.7,0.7)
 
 		ui.survivalScore.position.set(w2+150, h2-85);
-		ui.survivalScoretext.position.set(w2+200, h2-83);
+		ui.survivalScoretext.position.set(w2+200, h2-85);
 		ui.survivalScore.scale.set(0.7,0.7)
 		ui.survivalScoretext.scale.set(0.7,0.7)
 
 		ui.totalBalls.position.set(w2-150, h2+85);
-		ui.totalBallsText.position.set(w2-100,h2+83);
+		ui.totalBallsText.position.set(w2-100,h2+85);
 		ui.totalBallsText.scale.set(0.7,0.7);
 		ui.totalBalls.scale.set(0.7,0.7);
 
 		ui.statsDeaths.position.set(w2+150, h2+85);
-		ui.textDeaths.position.set(w2+200, h2+83);
+		ui.textDeaths.position.set(w2+200, h2+85);
 		ui.statsDeaths.scale.set(0.7,0.7);
 		ui.textDeaths.scale.set(0.7,0.7);
 
-		/*if(this.orientation == "portrait" && mobile){
-			ui.backButton.position.set(w2/2,h2+430);
-		}
-		else{*/
 		ui.backButton.position.set(w2/2,1.6*h2);
-		/*}*/
   	}
 }
