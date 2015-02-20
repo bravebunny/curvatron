@@ -32,9 +32,7 @@ PowerUp.prototype = {
 
 		this.place();
 		this.sprite.name = this.type;
-		if (this.type == "shrink") {
-			this.sprite.loadTexture('shrink');
-		} else if (nextBallHigh == 1) {
+		if (nextBallHigh == 1) {
 			this.sprite.loadTexture('superPower');
 			nextBallHigh = 2;
 		}
@@ -54,8 +52,8 @@ PowerUp.prototype = {
 
 		if (this.type == "shrink") {
 			this.sprite = this.game.add.sprite(this.x, this.y, 'shrink');
-			shrinkAnim = this.sprite.animations.add('timed');
-			shrinkAnim.play(10, false, true);
+			var anim = this.sprite.animations.add('timed');
+			anim.play(1.5,false,true);
 		} else {
 			this.sprite = this.game.add.sprite(this.x, this.y, 'point');
 		}
