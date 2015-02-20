@@ -1,4 +1,5 @@
 var menu = function (game) {
+  maxPlayers = 7;
   keys = [
     Phaser.Keyboard.W,
     Phaser.Keyboard.P,
