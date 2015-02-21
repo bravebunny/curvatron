@@ -95,9 +95,9 @@ gameMananger.prototype = {
 		}
 
 		if(mobile){
-			ui.pauseSprite = this.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
-	    	ui.pauseSprite.anchor.setTo(0.5, 0.5);
-	    	ui.pauseSprite.input.useHandCursor = true;
+			pauseSprite = this.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
+	    	pauseSprite.anchor.setTo(0.5, 0.5);
+	    	pauseSprite.input.useHandCursor = true;
 		} else if (numberPlayers == 0){
 			tempLabel = this.add.sprite(w2, h2, 'score-stat');
 			tempLabel.anchor.setTo(0.5,0.5);
@@ -229,8 +229,8 @@ gameMananger.prototype = {
 			mainMenu.input.useHandCursor=true;
 
 			if (mobile) {
-				ui.pauseSprite.alpha = 0;
-				ui.pauseSprite.input.useHandCursor=false;
+				pauseSprite.alpha = 0;
+				pauseSprite.input.useHandCursor=false;
 			}
 
 		  	if (numberPlayers > 0) {
@@ -314,7 +314,7 @@ gameMananger.prototype = {
 			this.game.input.onDown.active = false;
 
 			if (mobile) {
-				ui.pauseSprite.alpha = 0;
+				pauseSprite.alpha = 0;
 			} else if (numberPlayers == 0) {
 				tempLabel.alpha = 0;
 				tempLabelText.alpha = 0;
@@ -360,8 +360,8 @@ gameMananger.prototype = {
 			this.game.input.onDown.active = true;
 
 			if (mobile) {
-				ui.pauseSprite.alpha = 0.1;
-				ui.pauseSprite.input.useHandCursor=true;
+				pauseSprite.alpha = 0.1;
+				pauseSprite.input.useHandCursor=true;
 			}
 			ui.menu.destroy();
             ui.restart.destroy();
@@ -376,7 +376,7 @@ gameMananger.prototype = {
 		if (!paused) {
 			this.pause();
 			if (mobile) {
-				this.ui.pauseSprite.input.useHandCursor=false;
+				pauseSprite.input.useHandCursor=false;
 			}
 		}	
 	},
