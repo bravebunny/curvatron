@@ -21,6 +21,16 @@ var menu = function (game) {
 
 menu.prototype = {
   create: function () {
+    //Google Play Games integration. Soon...
+    /*if (mobile) {
+      var gp = Cocoon.Social.GooglePlayGames;
+
+      gp.init({clientId: navigator.isCocoonJS ? iosClientId : webClientId,
+        defaultLeaderboard:"CgkIr97_oIgHEAIQBg"});
+
+      var socialService = gp.getSocialInterface();
+    }*/
+
     Cocoon.Device.setOrientation(Cocoon.Device.Orientations.BOTH);
     mod = 0;
 
