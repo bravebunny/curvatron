@@ -4,11 +4,11 @@ var gameMananger = function (game) {
 	this.initialTime = 0;
 	this.powerTimer = null;
 	this.ui = {};
-	scale = 1;
 }
 
 gameMananger.prototype = {
 	create: function () {
+		scale = 1;
 		if (numberPlayers > 0) {
 			scale = (-1/24)*numberPlayers+7/12;
 		}
