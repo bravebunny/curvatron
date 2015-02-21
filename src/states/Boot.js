@@ -12,7 +12,7 @@ boot.prototype = {
 	},
 
   	create: function () {
-  		this.game.add.plugin(Phaser.Plugin.Debug);
+  		//this.game.add.plugin(Phaser.Plugin.Debug);
   		orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
   		w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
