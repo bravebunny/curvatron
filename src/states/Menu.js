@@ -150,27 +150,7 @@ menu.prototype = {
 	},
 
   leaderboard: function () {
-    if (mobile) {
-      if (!this.socialService) {
-        var gp = Cocoon.Social.GooglePlayGames;
-        gp.init({clientId: "testing",
-        defaultLeaderboard:"CgkIr97_oIgHEAIQBg"});
-        this.socialService = gp.getSocialInterface();
-
-        if (!this.socialService.isLoggedIn()) {
-        this.socialService.login(function(loggedIn, error) {
-          if (error) {
-              console.error("login error: " + error.message);
-            } else if (loggedIn) {
-              this.socialService.showLeaderboard();
-            }
-          }.bind(this));
-        }
-      } else if (this.socialService.isLoggedIn()){
-        this.socialService.showLeaderboard();
-      }     
-
-    }
+    this.state.start("Leaderboards");
   },
 
   stats: function () {
