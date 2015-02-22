@@ -158,8 +158,6 @@ menu.prototype = {
   },
 
   muteSound: function () {
-    this.socialService.showLeaderboard();
-
     var ui = this.ui;
     
     if (mute){

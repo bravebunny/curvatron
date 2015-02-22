@@ -80,7 +80,7 @@ Player.prototype = {
 			this.unpause();
 		}
 
-		if (this.showKeyTime <= totalTime) {
+		if (this.showKeyTime <= totalTime && !this.dead) {
 			this.showKey();
 		}
 
@@ -274,14 +274,13 @@ Player.prototype = {
 				bestSurvScore = survivalScore;
 				localStorage.setItem("survivalScore", survivalScore);
 			}
+			params.leaderboardID = modesLB[1];
 			if (mobile && socialService && socialService.isLoggedIn()) {
-				socialService.requestScore(function(score){
-				if (score.score < bestSurvScore){
-					params.leaderboardID = 'CgkIr97_oIgHEAIQBw';
-					console.log(bestSurvScore);
-					socialService.submitScore(bestSurvScore, null, params);
-				}
-				}),'CgkIr97_oIgHEAIQBw');
+				socialService.requestScore(function(score, error){
+					if (!score || score.score < bestSurvScore){
+						socialService.submitScore(bestSurvScore, null, params);
+					}
+				},params);
 			}
 
 		} else if (mod == 0) {
@@ -289,14 +288,13 @@ Player.prototype = {
 				bestScore = highScore;
 				localStorage.setItem("highScore", highScore);
 			}
+			params.leaderboardID = modesLB[0];
 			if (mobile && socialService && socialService.isLoggedIn()) {
-				socialService.requestScore(function(score){
-				if (score.score < bestScore){
-					params.leaderboardID = 'CgkIr97_oIgHEAIQBg';
-					console.log(highScore);
-					socialService.submitScore(bestScore, null, params);
-				}
-				}),'CgkIr97_oIgHEAIQBg');
+				socialService.requestScore(function(score, error){
+					if (!score || score.score < bestScore){
+						socialService.submitScore(bestScore, null, params);
+					}
+				},params);
 			}
 		}
 	},
@@ -365,7 +363,12 @@ Player.prototype = {
 		  		this.keyText.anchor.setTo(0.5,0.5);
 
 			  	if (mobile) {
-			  		this.keyText.setText(bestScore);
+			  		if (mod == 0) {
+			  			this.keyText.setText(bestScore);
+			  		} else {
+			  			this.keyText.setText(bestSurvScore);
+			  		}
+			  		
 			  	}
 			}
 
