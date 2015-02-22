@@ -262,12 +262,32 @@ Player.prototype = {
 				highScore = 0;
 			}
 
-			if (mod == 1) {
-				survivalScore = this.trailArray.length;
-				if (survivalScore > bestSurvScore) {
-					bestSurvScore = survivalScore;
-					localStorage.setItem("survivalScore", survivalScore);
-				}
+			this.submitScore();
+		}
+	},
+
+	submitScore: function () {
+		var params = Cocoon.Social.ScoreParams;
+		if (mod == 1) {
+			survivalScore = this.trailArray.length;
+			if (survivalScore > bestSurvScore) {
+				bestSurvScore = survivalScore;
+				localStorage.setItem("survivalScore", survivalScore);
+			}
+			if (mobile && socialService && socialService.isLoggedIn()) {
+				params.leaderboardID = 'CgkIr97_oIgHEAIQBw';
+				console.log(bestSurvScore);
+				socialService.submitScore(bestSurvScore, null, params);
+			}
+		} else if (mod == 0) {
+			if (highScore > bestScore) {
+				bestScore = highScore;
+				localStorage.setItem("highScore", highScore);
+			}
+			if (mobile && socialService && socialService.isLoggedIn()) {
+				params.leaderboardID = 'CgkIr97_oIgHEAIQBg';
+				console.log(highScore);
+				socialService.submitScore(bestScore, null, params);
 			}
 		}
 	},
@@ -307,11 +327,6 @@ Player.prototype = {
 
 				if ((nextBallHigh == 0) && (highScore == bestScore-1)) {
 					nextBallHigh = 1;
-				}
-
-				if (highScore > bestScore) {
-					bestScore = highScore;
-					localStorage.setItem("highScore", highScore);
 				}
 			}
 		} else if (power.name == "shrink") {
@@ -370,6 +385,7 @@ Player.prototype = {
 	},
 
 	pause: function () {
+		this.submitScore();
 		if (this.textTween) {
 			this.textTween.pause();
 		}

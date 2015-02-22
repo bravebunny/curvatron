@@ -20,6 +20,7 @@ preloadGame.prototype = {
 		this.game.load.image('point', 'assets/point.png');
 		this.game.load.image('pauseButton', 'assets/sprites/menu/pause.png');
 		this.game.load.image('winner', 'assets/sprites/menu/winner.png');
+		this.game.load.image('touch', 'assets/sprites/menu/touch.png');
 		this.game.load.image('overlay', 'assets/overlay.png');
 		this.game.load.audio('move0', 'assets/sfx/move0.ogg');
 		this.game.load.audio('move1', 'assets/sfx/move1.ogg');
@@ -37,7 +38,6 @@ preloadGame.prototype = {
 				this.game.load.image('trail0', 'assets/trailSingle.png');
 				this.game.load.image('superPower', 'assets/powerHS.png');
 				this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100);
-				this.game.load.image('touch', 'assets/sprites/menu/touch.png');
 
 			} else {
 				this.game.load.image('crown', 'assets/crown.png');

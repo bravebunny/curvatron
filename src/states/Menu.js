@@ -17,7 +17,7 @@ var menu = function (game) {
   deathScore = 0;
   menuMusic = null;
   this.ui = {};
-  this.socialService = null;
+  socialService = null;
 };
 
 menu.prototype = {
