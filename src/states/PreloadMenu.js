@@ -20,6 +20,7 @@ preloadMenu.prototype = {
 		this.game.load.image("audiooff_button","assets/sprites/menu/audiooff.png");
 		this.game.load.image("multiplayer_button","assets/sprites/menu/multiplayer.png");
 		this.game.load.image("setkeys_button","assets/sprites/menu/setkeys.png");
+		this.game.load.image("leaderboard_button","assets/sprites/menu/leaderboard.png");
 		this.game.load.image("singleplayer_button","assets/sprites/menu/singleplayer.png");
 		this.game.load.image("stats_button","assets/sprites/menu/stats.png");
 		this.game.load.image("fullscreen_button","assets/sprites/menu/fullscreen.png");

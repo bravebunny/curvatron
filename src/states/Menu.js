@@ -17,19 +17,11 @@ var menu = function (game) {
   deathScore = 0;
   menuMusic = null;
   this.ui = {};
+  this.socialService = null;
 };
 
 menu.prototype = {
   create: function () {
-    //Google Play Games integration. Soon...
-    /*if (mobile) {
-      var gp = Cocoon.Social.GooglePlayGames;
-
-      gp.init({clientId: navigator.isCocoonJS ? iosClientId : webClientId,
-        defaultLeaderboard:"CgkIr97_oIgHEAIQBg"});
-
-      var socialService = gp.getSocialInterface();
-    }*/
 
     Cocoon.Device.setOrientation(Cocoon.Device.Orientations.BOTH);
     mod = 0;
@@ -110,7 +102,11 @@ menu.prototype = {
     ui.mpButton.input.useHandCursor = true;
 
     //SetKeys
-    if (!mobile) {
+    if (mobile) {
+      ui.leaderboard = this.add.button(0,0,"leaderboard_button",this.leaderboard,this);
+      ui.leaderboard.anchor.setTo(0.5,0.5);
+      ui.leaderboard.input.useHandCursor = true;
+    } else {
       ui.keysButton = this.add.button(0,0,"setkeys_button",this.setKeys,this);
       ui.keysButton.anchor.setTo(0.5,0.5);
       ui.keysButton.input.useHandCursor = true;
@@ -153,11 +149,37 @@ menu.prototype = {
     }
 	},
 
+  leaderboard: function () {
+    if (mobile) {
+      if (!this.socialService) {
+        var gp = Cocoon.Social.GooglePlayGames;
+        gp.init({clientId: "testing",
+        defaultLeaderboard:"CgkIr97_oIgHEAIQBg"});
+        this.socialService = gp.getSocialInterface();
+
+        if (!this.socialService.isLoggedIn()) {
+        this.socialService.login(function(loggedIn, error) {
+          if (error) {
+              console.error("login error: " + error.message);
+            } else if (loggedIn) {
+              this.socialService.showLeaderboard();
+            }
+          }.bind(this));
+        }
+      } else if (this.socialService.isLoggedIn()){
+        this.socialService.showLeaderboard();
+      }     
+
+    }
+  },
+
   stats: function () {
     this.state.start("Stats");
   },
 
   muteSound: function () {
+    this.socialService.showLeaderboard();
+
     var ui = this.ui;
     
     if (mute){
@@ -204,22 +226,17 @@ menu.prototype = {
 
     ui.spButton.position.set(w2-170,h2);
 
-
     ui.mpButton.position.set(w2+170,h2);
 
-    if (!mobile){
+    if (mobile) {
+      ui.leaderboard.position.set(w2+w2/2,1.6*h2)
+    } else {
       ui.keysButton.position.set(w2+w2/2,1.6*h2);
     }
 
     ui.statsButton.position.set(w2,1.6*h2);
-    if (mobile) {
-      ui.statsButton.x = w2+120;
-    }
 
     ui.audioButton.position.set(w2/2,1.6*h2);
-    if (mobile) {
-      ui.audioButton.x = w2-120;
-    }
   }
   
 };
