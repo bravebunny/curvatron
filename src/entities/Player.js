@@ -275,19 +275,28 @@ Player.prototype = {
 				localStorage.setItem("survivalScore", survivalScore);
 			}
 			if (mobile && socialService && socialService.isLoggedIn()) {
-				params.leaderboardID = 'CgkIr97_oIgHEAIQBw';
-				console.log(bestSurvScore);
-				socialService.submitScore(bestSurvScore, null, params);
+				socialService.requestScore(function(score){
+				if (score.score < bestSurvScore){
+					params.leaderboardID = 'CgkIr97_oIgHEAIQBw';
+					console.log(bestSurvScore);
+					socialService.submitScore(bestSurvScore, null, params);
+				}
+				}),'CgkIr97_oIgHEAIQBw');
 			}
+
 		} else if (mod == 0) {
 			if (highScore > bestScore) {
 				bestScore = highScore;
 				localStorage.setItem("highScore", highScore);
 			}
 			if (mobile && socialService && socialService.isLoggedIn()) {
-				params.leaderboardID = 'CgkIr97_oIgHEAIQBg';
-				console.log(highScore);
-				socialService.submitScore(bestScore, null, params);
+				socialService.requestScore(function(score){
+				if (score.score < bestScore){
+					params.leaderboardID = 'CgkIr97_oIgHEAIQBg';
+					console.log(highScore);
+					socialService.submitScore(bestScore, null, params);
+				}
+				}),'CgkIr97_oIgHEAIQBg');
 			}
 		}
 	},
