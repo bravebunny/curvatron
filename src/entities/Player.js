@@ -273,7 +273,7 @@ Player.prototype = {
 			}
 			params.leaderboardID = modesLB[1];
 			if (mobile && socialService && socialService.isLoggedIn()) {
-				socialService.submitScore(bestSurvScore, null, params);
+				socialService.submitScore(survivalScore, null, params);
 			}
 
 		} else if (mod == 0) {
@@ -283,7 +283,7 @@ Player.prototype = {
 			}
 			params.leaderboardID = modesLB[0];
 			if (mobile && socialService && socialService.isLoggedIn()) {
-				socialService.submitScore(bestScore, null, params);
+				socialService.submitScore(highScore, null, params);
 			}
 		}
 	},
@@ -313,7 +313,7 @@ Player.prototype = {
 				var powerup = new PowerUp(this.game, 'point');
 				powerup.create();
 
-				if (mod == 0 && ((highScore % 10) == 0) && (highScore > 0)) {
+				if (mod == 0 && ((highScore % 10) == 9) && (highScore > 0)) {
 					var powerup = new PowerUp(this.game, "shrink");
 					powerup.create();
 				}
