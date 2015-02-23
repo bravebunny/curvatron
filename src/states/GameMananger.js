@@ -136,10 +136,13 @@ gameMananger.prototype = {
 			players[i].create();
 		}
 
-		ui.overlay = this.add.sprite(0, 0, 'overlay');
-		ui.overlay.width = w2*2;
-		ui.overlay.height = h2*2;
-		ui.overlay.alpha = 0;
+		ui.overlay = this.add.button(0, 0, 'overlay', function(){
+			if (gameOver) {
+				this.state.restart(true,false,numberPlayers);
+			}
+		},this);
+		ui.overlay.scale.set(0);
+		ui.overlay.alpha = 0.5;
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);
 		
@@ -209,7 +212,8 @@ gameMananger.prototype = {
 				this.game.input.onDown.active = true;
 			}, this);
 
-			ui.overlay.alpha = 0.5;
+			ui.overlay.width = w2*2;
+			ui.overlay.height = h2*2;
 			if (numberPlayers > 0) {
 				this.game.time.events.remove(this.powerTimer);
 				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(
@@ -218,7 +222,7 @@ gameMananger.prototype = {
 					}, this);
 			}
 
-	  		var restartButton = this.add.button(w2+97, h2-97,"restart_button",function(){this.state.restart(true,false,numberPlayers);},this);
+	  	var restartButton = this.add.button(w2+97, h2-97,"restart_button",function(){this.state.restart(true,false,numberPlayers);},this);
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
@@ -233,31 +237,31 @@ gameMananger.prototype = {
 				pauseSprite.input.useHandCursor=false;
 			}
 
-		  	if (numberPlayers > 0) {
-		  		//console.log("right now:" + crowned);
-		  		if (crowned == -1) {
-					var scoreInMenu = this.add.text(w2, h2+128, "It's a tie", {
-				        font: "80px dosis",
-				        fill: "#ffffff",
-				        align: "center"
-				    });
-		  		} else {
-			  		var winnerFill = this.add.sprite(w2-75,h2+97, "player" + players[crowned].id);
-			  		winnerFill.scale.set(5);
-			  		winnerFill.anchor.setTo(0.5,0.5);
+	  	if (numberPlayers > 0) {
+	  		//console.log("right now:" + crowned);
+	  		if (crowned == -1) {
+				var scoreInMenu = this.add.text(w2, h2+128, "It's a tie", {
+			        font: "80px dosis",
+			        fill: "#ffffff",
+			        align: "center"
+			    });
+	  		} else {
+		  		var winnerFill = this.add.sprite(w2-75,h2+97, "player" + players[crowned].id);
+		  		winnerFill.scale.set(5);
+		  		winnerFill.anchor.setTo(0.5,0.5);
 
-					var winnerLabel = this.add.sprite(w2, h2+97,"winner");
-					winnerLabel.scale.set(1,1);
-					winnerLabel.anchor.setTo(0.5,0.5);
-					var textWinner = this.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
-				      font: "100px dosis",
-				      fill: colorPlayers[crowned],
-				      align: "center"
-			    	});
-			    	textWinner.anchor.setTo(0.5,0.5);
-		  		}
-		  		
-		  	} else {
+				var winnerLabel = this.add.sprite(w2, h2+97,"winner");
+				winnerLabel.scale.set(1,1);
+				winnerLabel.anchor.setTo(0.5,0.5);
+				var textWinner = this.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
+			      font: "100px dosis",
+			      fill: colorPlayers[crowned],
+			      align: "center"
+		    	});
+		    	textWinner.anchor.setTo(0.5,0.5);
+	  		}
+	  		
+	  	} else {
 				var spAuxLabel = this.add.sprite(w2, h2+77,"aux-stat");
 				spAuxLabel.scale.set(0.9,0.9);
 				spAuxLabel.anchor.setTo(0.5,0.5);
@@ -267,33 +271,53 @@ gameMananger.prototype = {
 				spScoreLabel.scale.set(0.6,0.6);
 				spScoreLabel.anchor.setTo(0.5,0.5);
 				spScoreLabel.alpha = 0.7;
+	    	if (mobile) {
+    			spScoreLabel.x = w2 - 60;
+  		}
 
 				if(mod == 0){
-					var textCurretnScore = this.add.text(w2, h2+77, highScore,{
+					var textCurrentScore = this.add.text(w2, h2+77, highScore,{
 						font: "90px dosis",
 				      	fill: colorHexDark,
 				      	align: "center"
 					});
-					var statsPlayers = this.add.text(w2+35, h2+220, bestScore, {
+					var textHighScore = this.add.text(w2+35, h2+220, bestScore, {
 				      font: "40px dosis",
 				      fill: colorHexDark,
 				      align: "center"
 			    	});
+
+			    	if (mobile) {
+		    			textHighScore.x = w2+35 - 60;
+		    		}
 		    	}
 		    	else if(mod == 1){
-		    		var textCurretnScore = this.add.text(w2, h2+77, survivalScore,{
+		    		var textCurrentScore = this.add.text(w2, h2+77, survivalScore,{
 						font: "90px dosis",
 				      	fill: colorHexDark,
 				      	align: "center"
 					});
-		    		var statsPlayers = this.add.text(w2+35, h2+220, bestSurvScore, {
+		    		var textHighScore = this.add.text(w2+35, h2+220, bestSurvScore, {
 				      font: "40px dosis",
 				      fill: colorHexDark,
 				      align: "center"
 			    	});
+
+			    	if (mobile) {
+		    			textHighScore.x = w2+35 - 60;
+		    		}
 		    	}
-		    	textCurretnScore.anchor.setTo(0.5,0.5);
-		    	statsPlayers.anchor.setTo(0.5,0.5);
+		    	textCurrentScore.anchor.setTo(0.5,0.5);
+		    	textHighScore.anchor.setTo(0.5,0.5);
+
+		    	if (mobile) {
+		    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button",this.leaderboard,this);
+						leaderboardButton.scale.set(0.6,0.6);
+						leaderboardButton.anchor.setTo(0.5,0.5);
+						leaderboardButton.input.useHandCursor=true;
+		    	}
+
+
 	    	}
 		  	gameOver = true;
 		}
@@ -305,7 +329,8 @@ gameMananger.prototype = {
 			if (gameOver) {
 				this.state.start("Menu");
 			}
-			ui.overlay.alpha = 0.5;
+			ui.overlay.width = w2*2;
+			ui.overlay.height = h2*2;
 
 			if (pauseTween) {
 				pauseTween.stop();
@@ -352,7 +377,7 @@ gameMananger.prototype = {
 		    }
 			
 		} else { //unpause
-			ui.overlay.alpha = 0;
+			ui.overlay.scale.set(0);
 			if (numberPlayers > 0) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
@@ -379,6 +404,38 @@ gameMananger.prototype = {
 				pauseSprite.input.useHandCursor=false;
 			}
 		}	
+	},
+
+	leaderboard: function () {
+    if (mobile) {
+      var params = Cocoon.Social.ScoreParams;
+      params.leaderboardID = modesLB[mod];
+      if (!socialService) {
+        var gp = Cocoon.Social.GooglePlayGames;
+        gp.init({});
+        socialService = gp.getSocialInterface();
+
+        if (!socialService.isLoggedIn()) {
+        socialService.login(function(loggedIn, error) {
+          if (error) {
+              console.error("login error: " + error.message);
+            } else if (loggedIn) {
+            	var scoreToSubmit = 0;
+            	if (mod == 0) {
+            		scoreToSubmit = bestScore;
+            	} else if (mod == 1) {
+            		scoreToSubmit = bestSurvScore;
+            	}
+            	socialService.submitScore(scoreToSubmit, function() {
+            		socialService.showLeaderboard(null, params);
+            	}, params);
+            }
+          }.bind(this));
+        }
+      } else if (socialService.isLoggedIn()){
+        socialService.showLeaderboard(null, params);
+      }     
+    }
 	},
 
 	muteSound: function(){

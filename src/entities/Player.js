@@ -55,7 +55,7 @@ Player.prototype = {
 		
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		this.sprite.scale.set(scale);
-		this.sprite.body.setSize(16,16,0,0);
+		this.sprite.body.setSize(20,20,0,0);
     	this.lastTrailLength = this.growth;
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
@@ -91,7 +91,7 @@ Player.prototype = {
 
 			if (!this.dead) {
 				//collision detection
-				var collSize = 8*scale;
+				var collSize = 12*scale;
 				var xx = Math.cos(this.sprite.rotation)*30*scale + this.sprite.x;
 				var yy = Math.sin(this.sprite.rotation)*30*scale + this.sprite.y;
 
@@ -179,10 +179,7 @@ Player.prototype = {
 		this.ready = true;
 		this.showOneKey = true;
 		this.showKeyTime = 2 + totalTime;
-		if (gameOver && numberPlayers == 0 && this.game.input.onDown.active) {
-			gameOver = false;
-			this.game.state.restart(true,false,numberPlayers);
-		} else if (!this.dead) {
+		if (!this.dead) {
 			if (this.direction == 1 && !gameOver) {
 				this.direction = -1;
 				if (!mute) {
@@ -276,11 +273,7 @@ Player.prototype = {
 			}
 			params.leaderboardID = modesLB[1];
 			if (mobile && socialService && socialService.isLoggedIn()) {
-				socialService.requestScore(function(score, error){
-					if (!score || score.score < bestSurvScore){
-						socialService.submitScore(bestSurvScore, null, params);
-					}
-				},params);
+				socialService.submitScore(bestSurvScore, null, params);
 			}
 
 		} else if (mod == 0) {
@@ -290,11 +283,7 @@ Player.prototype = {
 			}
 			params.leaderboardID = modesLB[0];
 			if (mobile && socialService && socialService.isLoggedIn()) {
-				socialService.requestScore(function(score, error){
-					if (!score || score.score < bestScore){
-						socialService.submitScore(bestScore, null, params);
-					}
-				},params);
+				socialService.submitScore(bestScore, null, params);
 			}
 		}
 	},
