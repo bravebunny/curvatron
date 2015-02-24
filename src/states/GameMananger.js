@@ -438,7 +438,7 @@ gameMananger.prototype = {
     }
 	},
 
-	muteSound: function(){
+	muteSound: function (){
 	    if (mute) {
 		    this.ui.audioButton.loadTexture('audio_button');
 		    mute = false;
@@ -451,7 +451,7 @@ gameMananger.prototype = {
 	    }
 	},
 
-	backPressed: function() {
+	backPressed: function () {
     	this.pause();
   	},
 
@@ -459,7 +459,7 @@ gameMananger.prototype = {
 		players[0].render();
 	},*/
 
-	renderGroup: function(member) {
+	renderGroup: function (member) {
 		//this.game.debug.body(member);
 	}
 };
