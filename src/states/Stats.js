@@ -71,7 +71,14 @@ stats.prototype = {
 	setPositions: function () {
 	  	var ui = this.ui;
 
-	  	ui.title.position.set(w2,h2*0.3);
+  	ui.title.position.set(w2,h2*0.3);
+
+    var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+    if (wOrientation == "portrait" && mobile) {
+      ui.title.scale.set(0.7,0.7);
+    } else {
+      ui.title.scale.set(1,1);
+    }
 
 		ui.highScore.position.set(w2-150, h2-85);
 		ui.highScoretext.position.set(w2-100, h2-85);

@@ -68,15 +68,14 @@ leaderboards.prototype = {
 
 	setPositions: function () {
 		var ui = this.ui;
-  		ui.title.position.set(w2,h2*0.3);
+  	ui.title.position.set(w2,h2*0.3);
 
-  		var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-
-		if (wOrientation == "portrait" && mobile) {
-			ui.title.text ="leader\nboards";
-  	} else {
-  		ui.title.text ="leaderboards";
-		}
+    var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+    if (wOrientation == "portrait" && mobile) {
+      ui.title.scale.set(0.7,0.7);
+    } else {
+      ui.title.scale.set(1,1);
+    }
 
 		ui.normalButton.position.set(w2-170,h2);
 		ui.endlessButton.position.set(w2+170,h2);

@@ -102,14 +102,16 @@ singlePlayer.prototype = {
 
 	setPositions: function () {
 		var ui = this.ui;
-  		ui.title.position.set(w2,h2*0.3);
+  	ui.title.position.set(w2,h2*0.3);
 
-  		var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+  	var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 
 		if (wOrientation == "portrait" && mobile) {
-  			ui.title.text ="single\nplayer";
+  			//ui.title.text ="single\nplayer";
+  			ui.title.scale.set(0.7,0.7);
 	  	} else {
-	  		ui.title.text ="single player";
+	  		//ui.title.text ="single player";
+	  		ui.title.scale.set(1,1);
 	  	}
 
 		if (bestScore != 0) {

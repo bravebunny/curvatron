@@ -191,7 +191,7 @@ menu.prototype = {
 
     var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
     if (wOrientation == "portrait" && mobile) {
-      ui.title.scale.set(0.7,0.7);
+      ui.title.scale.set(0.8,0.8);
     } else {
       ui.title.scale.set(1,1);
     }

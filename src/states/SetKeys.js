@@ -93,7 +93,14 @@ setKeys.prototype = {
 	setPositions: function () {
 		var ui = this.ui;
 
-	  	ui.title.position.set(w2,h2*0.3);
+	  ui.title.position.set(w2,h2*0.3);
+    var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+    if (wOrientation == "portrait" && mobile) {
+      ui.title.scale.set(0.7,0.7);
+    } else {
+      ui.title.scale.set(1,1);
+    }
+
 		ui.playersAuxButton.position.set(w2,h2-80);
 		ui.textPlayers.position.set(w2,h2-20);
 		ui.leftArrow.position.set(w2-90,h2-80);
