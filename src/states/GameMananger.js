@@ -4,7 +4,7 @@ var gameMananger = function (game) {
 	this.initialTime = 0;
 	this.powerTimer = null;
 	this.ui = {};
-	colisionMargin = 8;
+	colisionMargin = 16;
 }
 
 gameMananger.prototype = {
