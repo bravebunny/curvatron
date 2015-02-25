@@ -89,11 +89,19 @@ Player.prototype = {
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
 
-			if (!this.dead) {
+			var xx = Math.cos(this.sprite.rotation)*30*scale + this.sprite.x;
+			var yy = Math.sin(this.sprite.rotation)*30*scale + this.sprite.y;
+
+			if (!this.dead) {		
+				//Create trail
+				if (this.frameCount == 0 && !this.dead) {
+					trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
+					this.trailArray.push(trailPiece);
+					bmd.draw(this.trail, this.sprite.x, this.sprite.y);
+				}
+
 				//collision detection
 				var collSize = 12*scale;
-				var xx = Math.cos(this.sprite.rotation)*30*scale + this.sprite.x;
-				var yy = Math.sin(this.sprite.rotation)*30*scale + this.sprite.y;
 
 				for (var i = 0; i < players.length; i++) {
 					for (var j = 0; j < this.trailArray.length; j++) {
@@ -114,13 +122,6 @@ Player.prototype = {
 
 			var trailPiece = null;
 			var ctx = bmd.context;
-
-			//Create trail
-			if (this.frameCount == 0 && !this.dead) {
-				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
-				this.trailArray.push(trailPiece);
-				bmd.draw(this.trail, this.sprite.x, this.sprite.y);
-			}
 
 			//erase trail from front
 			if (this.dead && this.frameCount == 0 && this.trailArray[0]) {
@@ -160,16 +161,17 @@ Player.prototype = {
 				}
 			}
 
-			if ((this.sprite.x+8*scale) <= borders[0]) {
-				this.sprite.x = borders[1];
-			} else if ((this.sprite.x-8*scale)>=borders[1]) {
-				this.sprite.x = borders[0];
+			//Border's collisions
+			if ((xx+colisionMargin*scale) <= borders[0]) {
+				this.sprite.x = borders[1]-Math.cos(this.sprite.rotation)*30*scale;
+			} else if ((xx-colisionMargin*scale)>=borders[1]) {
+				this.sprite.x = borders[0]-Math.cos(this.sprite.rotation)*30*scale;
 			}
 
-			if ((this.sprite.y+8*scale)<=borders[2]) {
-				this.sprite.y = borders[3];
-			} else if ((this.sprite.y-8*scale)>=borders[3]) {
-				this.sprite.y = borders[2];
+			if ((yy+colisionMargin*scale)<=borders[2]) {
+				this.sprite.y = borders[3]-Math.sin(this.sprite.rotation)*30*scale;
+			} else if ((yy-colisionMargin*scale)>=borders[3]) {
+				this.sprite.y = borders[2]-Math.sin(this.sprite.rotation)*30*scale;
 			}
 		}
 	},
