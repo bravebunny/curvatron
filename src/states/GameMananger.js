@@ -73,6 +73,8 @@ gameMananger.prototype = {
 			ui.graphics.endFill();
 		}
 
+		
+
 		groupPowers = this.add.group();
 		if (numberPlayers == 0) {
 			var textSize = 15;

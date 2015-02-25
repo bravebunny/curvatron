@@ -89,8 +89,8 @@ Player.prototype = {
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
 
-			var xx = Math.cos(this.sprite.rotation)*30*scale + this.sprite.x;
-			var yy = Math.sin(this.sprite.rotation)*30*scale + this.sprite.y;
+			var xx = Math.cos(this.sprite.rotation)*18*scale + this.sprite.x;
+			var yy = Math.sin(this.sprite.rotation)*18*scale + this.sprite.y;
 
 			if (!this.dead) {		
 				//Create trail
@@ -162,15 +162,15 @@ Player.prototype = {
 			}
 
 			//Border's collisions
-			if ((xx+colisionMargin*scale) <= borders[0]-colisionMargin) {
+			if ((xx+colisionMargin*scale) <= borders[0]) {
 				this.sprite.x = borders[1]-Math.cos(this.sprite.rotation)*30*scale;
-			} else if ((xx-colisionMargin*scale)>=borders[1]+colisionMargin) {
+			} else if ((xx-colisionMargin*scale)>=borders[1]) {
 				this.sprite.x = borders[0]-Math.cos(this.sprite.rotation)*30*scale;
 			}
 
-			if ((yy+colisionMargin*scale)<=borders[2]-colisionMargin) {
+			if ((yy+colisionMargin*scale)<=borders[2]) {
 				this.sprite.y = borders[3]-Math.sin(this.sprite.rotation)*30*scale;
-			} else if ((yy-colisionMargin*scale)>=borders[3]+colisionMargin) {
+			} else if ((yy-colisionMargin*scale)>=borders[3]) {
 				this.sprite.y = borders[2]-Math.sin(this.sprite.rotation)*30*scale;
 			}
 		}
