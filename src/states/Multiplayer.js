@@ -5,6 +5,9 @@ var multiplayer = function (game) {
   
 multiplayer.prototype = {
 	create: function () {
+		if(mobile){
+			this.maxPlayers = 1;
+		}
 	  	if (numberPlayers == 0) {
 	  		numberPlayers = 1;
 	  	}
@@ -30,12 +33,18 @@ multiplayer.prototype = {
 	    ui.leftArrow = this.game.add.button(0,0,"set_players",this.DecNumberOfPlayers,this);
 		ui.leftArrow.anchor.setTo(0.5,0.5);
 		ui.leftArrow.alpha = 0.7;
+		if(mobile){
+			ui.leftArrow.alpha = 0.2;	
+		}
 		ui.leftArrow.scale.x = -1;
 		ui.leftArrow.input.useHandCursor = true;
 
 		ui.rightArrow = this.game.add.button(0,0,"set_players",this.IncNumberOfPlayers,this);
 		ui.rightArrow.anchor.setTo(0.5,0.5);
 		ui.rightArrow.alpha = 0.7;
+		if(mobile){
+			ui.rightArrow.alpha = 0.2;	
+		}
 		ui.rightArrow.input.useHandCursor = true;
 
 		//Play Button

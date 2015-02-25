@@ -26,6 +26,7 @@ var Player = function (id, x, y, key, game) {
 	this.shrinkAmount = 200;
 	this.touch = null;
 	this.orientation = null;
+	this.playerMobileButton = null;
 };
 
 Player.prototype = {
@@ -33,7 +34,7 @@ Player.prototype = {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		if (numberPlayers == 0 && this.orientation == "portrait" && mobile) {
 			this.sprite = this.game.add.sprite(w2, h2*0.18, 'player' + this.id);
-		} else {
+		} else if (numberPlayers > 0 && mobile){
 			this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		}
 
@@ -60,9 +61,22 @@ Player.prototype = {
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 
-		if (mobile) {
+		if (mobile && numberPlayers == 0) {
 			this.game.input.onDown.add(this.click, this);
-		} else if (numberPlayers == 0) {
+		} else if (mobile && numberPlayers > 0){
+			if (this.orientation == "portrait") {
+				this.playerMobileButton = this.game.add.button(w2,this.y,"overlay",this.click,this);
+				this.playerMobileButton.width = this.game.width;
+				this.playerMobileButton.height = this.game.height/2;
+			} else {
+				this.playerMobileButton = this.game.add.button(this.x,h2,"overlay",this.click,this);	
+				this.playerMobileButton.width = this.game.width/2;
+				this.playerMobileButton.height = this.game.height;		
+	    	}
+	    		this.playerMobileButton.alpha = 0;
+	    		this.playerMobileButton.anchor.setTo(0.5,0.5);
+	    		this.playerMobileButton.input.useHandCursor = true;
+		} else if (!mobile && numberPlayers == 0) {
 			this.game.input.onDown.add(this.keyPressed, this);
 		}
 
@@ -196,9 +210,22 @@ Player.prototype = {
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 				
-				if (mobile) {
+				if (mobile && numberPlayers == 0) {
 					this.game.add.tween(this.touch).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
 					this.game.add.tween(this.touch).to( { y: this.touch.y + 100 }, 1000, Phaser.Easing.Circular.In, true);
+				} else if(mobile && numberPlayers > 0){
+					if (this.orientation == 'portrait'){
+						this.game.add.tween(this.touch).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+						if (this.touch.angle == 0) {
+							this.game.add.tween(this.touch).to( { y: this.touch.y + 90 }, 1000, Phaser.Easing.Circular.In, true);
+						} else {
+							this.game.add.tween(this.touch).to( { y: this.touch.y - 90 }, 1000, Phaser.Easing.Circular.In, true);
+						}
+					}
+					else{
+						this.game.add.tween(this.touch).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+						this.game.add.tween(this.touch).to( { x: this.touch.x - this.touch.angle }, 1000, Phaser.Easing.Circular.In, true);
+					}
 				}
 
 				if (numberPlayers == 0 && !mobile) {
@@ -214,7 +241,7 @@ Player.prototype = {
 	},
 
 	click: function () {
-		var x1 = w2 - 81 , x2 = w2 + 82,
+		var x1 = w2 - 81 , x2 = w2 + 81,
             y1 = h2 - 81, y2 = h2 + 81;
 
         if (!(this.game.input.position.x > x1 
@@ -373,10 +400,36 @@ Player.prototype = {
 				this.touch.alpha = 0;
 				this.game.add.tween(this.touch).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
 				this.game.add.tween(this.touch).to( { y: this.touch.y - 100 }, 1000, Phaser.Easing.Circular.Out, true);
-
+			} else if (numberPlayers > 0 && mobile) {
+				if (this.orientation == 'portrait') {
+					this.touch = this.game.add.sprite(w2, this.y, 'touch');
+					if(this.y > w2){
+						this.touch.angle = 0;
+					} else{
+						this.touch.angle = 180;
+					}
+					this.touch.anchor.setTo(.5, .5);
+					this.touch.alpha = 0;
+					this.game.add.tween(this.touch).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+					if (this.touch.angle == 0) {
+						this.game.add.tween(this.touch).to( { y: this.touch.y - 100}, 1000, Phaser.Easing.Circular.Out, true);
+					} else {
+						this.game.add.tween(this.touch).to( { y: this.touch.y + 100}, 1000, Phaser.Easing.Circular.Out, true);
+					}
+				} else {
+					this.touch = this.game.add.sprite(this.x, h2, 'touch');
+					if(this.x > w2){
+						this.touch.angle = -90;
+					} else{
+						this.touch.angle = 90;
+					}
+					this.touch.anchor.setTo(.5, .5);
+					this.touch.alpha = 0;
+					this.game.add.tween(this.touch).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+					this.game.add.tween(this.touch).to( { x: this.touch.x + this.touch.angle  }, 1000, Phaser.Easing.Circular.Out, true);
+				}
 			}
 		}
-
 	},
 
 	addCrown: function () {

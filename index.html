@@ -41,8 +41,8 @@
     var winW = window.innerWidth;
     var winH = window.innerHeight;
     var winRatio = winW/winH;
-    mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    //mobile = true;
+    //mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    mobile = true;
 
     var height = Math.round(Math.sqrt(baseArea/winRatio));
     var width =  Math.round(winRatio*height);
