@@ -34,7 +34,7 @@ Player.prototype = {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		if (numberPlayers == 0 && this.orientation == "portrait" && mobile) {
 			this.sprite = this.game.add.sprite(w2, h2*0.18, 'player' + this.id);
-		} else if (numberPlayers > 0 && mobile){
+		} else {
 			this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
 		}
 
@@ -56,8 +56,8 @@ Player.prototype = {
 		
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		this.sprite.scale.set(scale);
-		this.sprite.body.setSize(20,20,0,0);
-    	this.lastTrailLength = this.growth;
+		//this.sprite.body.setSize(20,20,0,0);
+    this.lastTrailLength = this.growth;
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 
@@ -65,13 +65,15 @@ Player.prototype = {
 			this.game.input.onDown.add(this.click, this);
 		} else if (mobile && numberPlayers > 0){
 			if (this.orientation == "portrait") {
-				this.playerMobileButton = this.game.add.button(w2,this.y,"overlay",this.click,this);
+				this.playerMobileButton = this.game.add.button(w2,this.y,"overlay",null,this);
 				this.playerMobileButton.width = this.game.width;
 				this.playerMobileButton.height = this.game.height/2;
+				this.playerMobileButton.onInputDown.add(this.click, this);
 			} else {
-				this.playerMobileButton = this.game.add.button(this.x,h2,"overlay",this.click,this);	
+				this.playerMobileButton = this.game.add.button(this.x,h2,"overlay",null,this);	
 				this.playerMobileButton.width = this.game.width/2;
-				this.playerMobileButton.height = this.game.height;		
+				this.playerMobileButton.height = this.game.height;
+				this.playerMobileButton.onInputDown.add(this.click, this);	
 	    	}
 	    		this.playerMobileButton.alpha = 0;
 	    		this.playerMobileButton.anchor.setTo(0.5,0.5);
@@ -99,6 +101,11 @@ Player.prototype = {
 		}
 
 		if (!this.paused) {
+
+			if (!this.sprite.alive) {
+				this.kill();
+			}
+
 			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
 			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
@@ -188,6 +195,8 @@ Player.prototype = {
 				this.sprite.y = borders[2]-Math.sin(this.sprite.rotation)*30*scale;
 			}
 		}
+
+
 	},
 
 
@@ -252,7 +261,7 @@ Player.prototype = {
         }
 	},
 
-	kill: function () {
+	kill: function (player, other) {
 		this.keyText.destroy();
 		if (!this.dead) {
 			if (numberPlayers == 0) {
@@ -289,6 +298,10 @@ Player.prototype = {
 			}
 
 			this.submitScore();
+		}
+
+		if (other) {
+			other.kill();
 		}
 	},
 
@@ -385,6 +398,10 @@ Player.prototype = {
 			  			this.keyText.setText(bestScore);
 			  		} else {
 			  			this.keyText.setText(bestSurvScore);
+			  		}
+
+			  		if (numberPlayers > 0) {
+			  			this.keyText.visible = false;
 			  		}
 			  		
 			  	}

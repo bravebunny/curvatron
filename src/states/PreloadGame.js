@@ -40,6 +40,7 @@ preloadGame.prototype = {
 				this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100);
 
 			} else {
+				this.game.load.image('tie', 'assets/sprites/menu/tie.png');
 				this.game.load.image('crown', 'assets/crown.png');
 				for (var i=0; i <= numberPlayers; i++) {
 					this.game.load.image('player' + i, 'assets/player' + i +'.png');

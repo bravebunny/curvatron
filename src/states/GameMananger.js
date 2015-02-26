@@ -249,11 +249,15 @@ gameMananger.prototype = {
 	  	if (numberPlayers > 0) {
 	  		//console.log("right now:" + crowned);
 	  		if (crowned == -1) {
-				var scoreInMenu = this.add.text(w2, h2+128, "It's a tie", {
+	  			var tie =  this.add.sprite(w2,h2+150, "tie");
+	  			tie.anchor.setTo(0.5,0.5);
+
+					/*var scoreInMenu = this.add.text(w2, h2+128, "It's a tie", {
 			        font: "80px dosis",
 			        fill: "#ffffff",
 			        align: "center"
 			    });
+					scoreInMenu.anchor.setTo(0.5,0.5);*/
 	  		} else {
 		  		var winnerFill = this.add.sprite(w2-75,h2+97, "player" + players[crowned].id);
 		  		winnerFill.scale.set(5);
