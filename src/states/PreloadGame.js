@@ -3,18 +3,11 @@ var preloadGame = function (game) {};
 preloadGame.prototype = {
 	preload: function () { 
 		this.scale.forceOrientation(true);
-		if(window.orientation == 0){
+		var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+		if (wOrientation == "portrait") {
 			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
-		} else if (window.orientation == 90) {
-			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
-		} else if (window.orientation == -90) {
-	    this.world.pivot.set(2*w2, 2*h2);
-    	this.world.angle = 180;
-			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
 		} else {
-			this.world.pivot.set(2*w2, 2*h2);
-    	this.world.angle = 180;
-			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
+			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
 		}
 		
 	    var loadingBar = this.add.sprite(w2,h2,"loading");
