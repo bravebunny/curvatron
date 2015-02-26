@@ -23,6 +23,9 @@ var menu = function (game) {
 menu.prototype = {
   create: function () {
 
+    this.world.pivot.set(0, 0);
+    this.world.angle = 0;
+
     Cocoon.Device.setOrientation(Cocoon.Device.Orientations.BOTH);
     mod = 0;
 

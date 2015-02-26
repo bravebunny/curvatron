@@ -32,11 +32,8 @@ var Player = function (id, x, y, key, game) {
 Player.prototype = {
 	create: function () {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-		if (numberPlayers == 0 && this.orientation == "portrait" && mobile) {
-			this.sprite = this.game.add.sprite(w2, h2*0.18, 'player' + this.id);
-		} else {
-			this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
-		}
+		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
+
 
 		this.sprite.anchor.setTo(.5,.5);
 		this.trail = this.game.make.sprite(0, 0, 'trail' + this.id);
@@ -96,7 +93,7 @@ Player.prototype = {
 			this.unpause();
 		}
 
-		if (this.showKeyTime <= totalTime && !this.dead) {
+		if (this.showKeyTime <= totalTime && !this.dead && !paused && numberPlayers == 0) {
 			this.showKey();
 		}
 
@@ -422,8 +419,10 @@ Player.prototype = {
 					this.touch = this.game.add.sprite(w2, this.y, 'touch');
 					if(this.y > w2){
 						this.touch.angle = 0;
+						this.touch.x += 200;
 					} else{
 						this.touch.angle = 180;
+						this.touch.x -= 200;
 					}
 					this.touch.anchor.setTo(.5, .5);
 					this.touch.alpha = 0;
@@ -437,9 +436,12 @@ Player.prototype = {
 					this.touch = this.game.add.sprite(this.x, h2, 'touch');
 					if(this.x > w2){
 						this.touch.angle = -90;
+						this.touch.y -= 200;
 					} else{
 						this.touch.angle = 90;
+						this.touch.y += 200;
 					}
+					
 					this.touch.anchor.setTo(.5, .5);
 					this.touch.alpha = 0;
 					this.game.add.tween(this.touch).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);

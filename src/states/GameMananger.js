@@ -136,8 +136,8 @@ gameMananger.prototype = {
 		//Choose snake locations
 		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
-			Math.cos((2*Math.PI/(numberPlayers+1))*i + angle)*(w2-200)+w2, 
-			Math.sin((2*Math.PI/(numberPlayers+1))*i + angle)*(h2-100)+h2, 
+			Math.cos((2*Math.PI/(numberPlayers+1))*i - angle)*(w2-200)+w2, 
+			Math.sin((2*Math.PI/(numberPlayers+1))*i - angle)*(h2-100)+h2, 
 			keys[i], this.game);
 		}
 
