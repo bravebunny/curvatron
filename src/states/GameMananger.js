@@ -167,7 +167,6 @@ gameMananger.prototype = {
 			}
 			totalTime += this.game.time.physicsElapsed;
 
-			
 			if (!gameOver) {
 				//Give crown
 				if (crowned != -1) {
@@ -216,10 +215,12 @@ gameMananger.prototype = {
 				menuMusic.play();
 				menuMusic.volume = 1;
 			}
-			this.game.input.onDown.active = false;
-			this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
-				this.game.input.onDown.active = true;
-			}, this);
+			ui.overlay.inputEnabled = false;
+			if(numberPlayers == 0){
+				this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
+					ui.overlay.inputEnabled = true;
+				}, this);
+			}
 
 			ui.overlay.width = w2*2;
 			ui.overlay.height = h2*2;
@@ -349,7 +350,7 @@ gameMananger.prototype = {
 				pauseTween.stop();
 			}
 			paused = true;
-			this.game.input.onDown.active = false;
+			ui.overlay.inputEnabled = false;
 
 			if (mobile) {
 				pauseSprite.alpha = 0;
@@ -395,7 +396,7 @@ gameMananger.prototype = {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
 
-			this.game.input.onDown.active = true;
+			ui.overlay.inputEnabled = true;
 
 			if (mobile) {
 				pauseSprite.alpha = 0.1;

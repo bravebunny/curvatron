@@ -207,10 +207,10 @@ Player.prototype = {
 		if (!this.dead) {
 			if (this.direction == 1 && !gameOver) {
 				this.direction = -1;
-				if (!mute) {
+				if (!mute && !paused) {
 					moveSounds[0].play();
 				}
-			} else if (!gameOver) {
+			} else if (!gameOver && !paused) {
 				this.direction = 1;
 				if (!mute) {
 					moveSounds[1].play();
