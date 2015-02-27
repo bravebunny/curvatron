@@ -2,6 +2,7 @@ var MPNormal = function(nPlayers, game) {
 	this.game = game;
 	this.nPlayers = nPlayers;
 	this.spawnPowers = true;
+	this.highScore = 0;
 };
 
 MPNormal.prototype = {
@@ -17,9 +18,8 @@ MPNormal.prototype = {
 	},
 
 	create: function () {
-
+		this.highScore = 0;
 		spawnPowers = true;
-
 
 	},
 
@@ -29,6 +29,17 @@ MPNormal.prototype = {
 
 	erasesTrail: function () {
 		return true;
+	},
+
+	collect: function (playerSprite, powerSprite, player) {
+		if (player.score > this.highScore) {
+			this.highScore = player.score;
+			if(crowned > -1){
+				players[crowned].removeCrown();
+			}
+			crowned = player.id;
+			lastCrowned = crowned+1;
+		}
 	},
 
 	kill: function () {
@@ -52,16 +63,16 @@ MPNormal.prototype = {
 
 		if (crowned != -1 && players[crowned].dead) {
 			crowned = -1;
-			highScore = 0;
+			this.highScore = 0;
 		}
 	},
 
 	getHighScore: function () {
-		return highScore;
+		return this.highScore;
 	},
 
 	setHighScore: function (score) {
-		highScore = score;
+		this.highScore = score;
 	}, 
 
 };

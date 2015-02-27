@@ -13,13 +13,12 @@ Normal.prototype = {
 		this.game.load.image('trail0', 'assets/trailSingle.png');
 		this.game.load.image('superPower', 'assets/powerHS.png');
 		this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100);
-		
+
 	},
 
 	create: function() {
-
+		this.score = 0;
 		spawnPowers = true;
-
 
 	},
 
@@ -36,7 +35,12 @@ Normal.prototype = {
 	},
 
 	getHighScore: function () {
-		return parseInt(localStorage.getItem("highScore"));
+		var score = parseInt(localStorage.getItem("highScore"));
+		if (isNaN(score)) {
+			return 0;
+		} else {
+			return score;
+		}
 	},
 
 	setScore: function (score) {
@@ -69,8 +73,11 @@ Normal.prototype = {
 			powerup.create();
 		}
 
-		var ballsScore = parseInt(localStorage.getItem("ballsScore")) + 1;
-		localStorage.setItem("ballsScore", ballsScore);
+		var ballsScore = parseInt(localStorage.getItem("ballsScore"));
+		if (isNaN(ballsScore)) {
+			ballsScore = 0;
+		}
+		localStorage.setItem("ballsScore", ballsScore+1);
 
 		if ((nextBallHigh == 0) && (this.score == highScore-1)) {
 			nextBallHigh = 1;

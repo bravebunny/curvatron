@@ -2,7 +2,7 @@ var Endless = function (game) {
 	this.sp = true;
 	this.game = game;
 	this.player = null;
-	leaderboardID = modesLB[1];
+	this.leaderboardID = modesLB[1];
 };
 
 Endless.prototype = {
@@ -29,7 +29,12 @@ Endless.prototype = {
 	},
 
 	getHighScore: function () {
-		return localStorage.getItem("survivalScore");
+		var score = parseInt(localStorage.getItem("survivalScore"));
+		if (isNaN(score)) {
+			return 0;
+		} else {
+			return score;
+		}
 	},
 
 	setHighScore: function (score) {

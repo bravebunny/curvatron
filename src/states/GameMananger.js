@@ -32,9 +32,6 @@ gameMananger.prototype = {
 		bmd = null;
 		nextBallHigh = 0;
 
-		highScore = 0;
-		survivalScore = 0;
-
 		changeColor = true;
 
 		//create sound effects
@@ -102,10 +99,6 @@ gameMananger.prototype = {
 			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
  		}
 
-		if (this.mode.spawnPowers){
-			this.createPower();
-		}
-
 		if (mobile) {
 			pauseSprite = this.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
     	pauseSprite.anchor.setTo(0.5, 0.5);
@@ -124,7 +117,6 @@ gameMananger.prototype = {
 
 		//Choose snake locations
 		var nPlayers = 0;
-		console.log(this.mode.nPlayers)
 		if (this.mode.nPlayers) {
 			nPlayers = this.mode.nPlayers;
 		}
@@ -136,6 +128,10 @@ gameMananger.prototype = {
 		}
 
 		this.mode.create();
+
+		if (this.mode.spawnPowers){
+			this.createPower();
+		}
 
 		for(var i=0; i <= nPlayers; i++){
 			players[i].create();
@@ -289,12 +285,17 @@ gameMananger.prototype = {
     			spScoreLabel.x = w2 - 60;
 	  		}
 
-				var textCurrentScore = this.add.text(w2, h2+77, this.mode.getScore(),{
+				var textCurrentScore = this.add.text(w2, h2+77, this.mode.getScore().toString(),{
 					font: "90px dosis",
 	      	fill: colorHexDark,
 	      	align: "center"
 				});
-				var textHighScore = this.add.text(w2+35, h2+220, this.mode.getHighScore(), {
+
+				if (this.mode.submitScore) {
+					this.mode.submitScore();
+				}
+
+				var textHighScore = this.add.text(w2+35, h2+220, this.mode.getHighScore().toString(), {
 		      font: "40px dosis",
 		      fill: colorHexDark,
 		      align: "center"
@@ -305,6 +306,8 @@ gameMananger.prototype = {
 	  		}
 	    	textCurrentScore.anchor.setTo(0.5,0.5);
 	    	textHighScore.anchor.setTo(0.5,0.5);
+
+
 
 	    	if (mobile) {
 	    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button",this.leaderboard,this);
@@ -403,7 +406,7 @@ gameMananger.prototype = {
 	leaderboard: function () {
     if (mobile) {
       var params = Cocoon.Social.ScoreParams;
-      params.leaderboardID = this.mode.leaderoardID;
+      params.leaderboardID = this.mode.leaderboardID;
       if (!socialService) {
         var gp = Cocoon.Social.GooglePlayGames;
         gp.init({});
@@ -412,9 +415,9 @@ gameMananger.prototype = {
         if (!socialService.isLoggedIn()) {
         socialService.login(function(loggedIn, error) {
           if (error) {
-              console.error("login error: " + error.message);
             } else if (loggedIn) {
-            	socialService.submitScore(this.mode.getScore(), function() {
+            	var score = this.mode.getScore();
+            	socialService.submitScore(score, function() {
             		socialService.showLeaderboard(null, params);
             	}, params);
             }

@@ -263,8 +263,11 @@ Player.prototype = {
 		this.keyText.destroy();
 		if (!this.dead) {
 			if (this.mode.sp) {
-				var deathScore = parseInt(localStorage.getItem("deathScore")) + 1;
-				localStorage.setItem("deathScore", deathScore);
+				var deathScore = parseInt(localStorage.getItem("deathScore"));
+				if (isNaN(deathScore)) {
+					deathScore = 0;
+				}
+				localStorage.setItem("deathScore", deathScore+1);
 			}
 			this.sprite.kill();
 			if (!mute) {
@@ -274,10 +277,6 @@ Player.prototype = {
 
 			if (this.mode.kill) {
 				this.mode.kill();
-			}
-			
-			if (this.mode.submitScore) {
-				this.mode.submitScore();
 			}
 			
 		}
@@ -295,15 +294,6 @@ Player.prototype = {
 			this.killTrail = false;
 			this.growth = 60*power.scale.x;
 			this.score = this.score + power.scale.x;
-
-			if (this.score > highScore && !this.mode.sp) {
-				highScore = this.score;
-				if(crowned > -1){
-					players[crowned].removeCrown();
-				}
-				crowned = this.id;
-				lastCrowned = crowned+1;
-			}
 		} else if (power.name == "shrink") {
 			this.shrinkSize = this.trailArray.length - this.shrinkAmount;
 			this.lastTrailLength -= this.shrinkAmount;
@@ -311,7 +301,7 @@ Player.prototype = {
 		}
 
 		if (this.mode.collect) {
-			this.mode.collect(player, power);
+			this.mode.collect(player, power, this);
 		}
 		
 		power.kill();
