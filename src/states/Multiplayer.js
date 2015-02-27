@@ -9,29 +9,25 @@ multiplayer.prototype = {
 		if(mobile){
 			this.maxPlayers = 1;
 		}
-	  	if (numberPlayers == 0) {
-	  		numberPlayers = 1;
-	  	}
-
-	  	var ui = this.ui;
+  	var ui = this.ui;
 
 		ui.title = this.game.add.text(0,0, "multiplayer", {
-		    font: "150px dosis",
-		    fill: "#ffffff",
-		    align: "center"});
-	  	ui.title.anchor.setTo(0.5,0.5);
+	    font: "150px dosis",
+	    fill: "#ffffff",
+	    align: "center"});
+  	ui.title.anchor.setTo(0.5,0.5);
 
-	    //Number of players
+    //Number of players
 		ui.playersAuxButton = this.game.add.sprite(0,0,"number_players");
 		ui.playersAuxButton.anchor.setTo(0.5,0.5);
 
-		ui.textPlayers = this.game.add.text(0,0, (numberPlayers+1), {
-		    font: "120px dosis",
-		    fill: colorHex,
-		    align: "center"});
-	    ui.textPlayers.anchor.setTo(0.5,0.5);
+		ui.textPlayers = this.game.add.text(0,0, (this.nPlayers+1), {
+	    font: "120px dosis",
+	    fill: colorHex,
+	    align: "center"});
+    ui.textPlayers.anchor.setTo(0.5,0.5);
 
-	    ui.leftArrow = this.game.add.button(0,0,"set_players",this.DecNumberOfPlayers,this);
+    ui.leftArrow = this.game.add.button(0,0,"set_players",this.DecNumberOfPlayers,this);
 		ui.leftArrow.anchor.setTo(0.5,0.5);
 		ui.leftArrow.alpha = 0.7;
 		if(mobile){
@@ -66,7 +62,7 @@ multiplayer.prototype = {
 	},
 
 	playTheGame: function () {
-		var mode = new MPNormal(numberPlayers, this.game);
+		var mode = new MPNormal(this.nPlayers, this.game);
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
@@ -75,21 +71,21 @@ multiplayer.prototype = {
 	},
 
 	DecNumberOfPlayers: function () {
-		if (numberPlayers == 1) {
-			numberPlayers = this.maxPlayers;
+		if (this.nPlayers == 1) {
+			this.nPlayers = this.maxPlayers;
 		} else {
-			numberPlayers--;
+			this.nPlayers--;
 		}
-		this.ui.textPlayers.setText("" + (numberPlayers+1));
+		this.ui.textPlayers.setText("" + (this.nPlayers+1));
 	},
 
 	IncNumberOfPlayers: function () {
-		if (numberPlayers == this.maxPlayers) {
-		    numberPlayers = 1;
+		if (this.nPlayers == this.maxPlayers) {
+		    this.nPlayers = 1;
 	    } else {
-			numberPlayers++;
+			this.nPlayers++;
 	    }
-	    this.ui.textPlayers.setText("" + (numberPlayers+1));
+	    this.ui.textPlayers.setText("" + (this.nPlayers+1));
 	},
 
 	setPositions: function () {

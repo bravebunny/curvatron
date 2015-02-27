@@ -1,4 +1,5 @@
-var PowerUp = function (game, type) {
+var PowerUp = function (game, type, mode) {
+	this.mode = mode;
 	this.game = game;
 	this.type = type;
 	this.sprite = null;
@@ -10,7 +11,7 @@ var PowerUp = function (game, type) {
 PowerUp.prototype = {
 	create: function () {
 		if (this.type == "point") {
-			if (numberPlayers > 0) {
+			if (!this.mode.sp) {
 				var randNum = this.game.rnd.integerInRange(0, 100);
 				if (randNum < 60) {
 					this.size = 1;
@@ -39,7 +40,7 @@ PowerUp.prototype = {
 
 		groupPowers.add(this.sprite);
 
-		if (numberPlayers == 0 && (this.type == 'point')) {
+		if (this.mode.sp && (this.type == 'point')) {
 			powerText.setText(highScore+1);
 			powerText.x = this.sprite.x;
 			powerText.y = this.sprite.y;

@@ -1,4 +1,5 @@
 var Normal = function(game) {
+	this.sp = true;
 	this.game = game;
 	this.spawnPowers = true;
 	this.leaderboardID = 'CgkIr97_oIgHEAIQCQ';
@@ -59,11 +60,11 @@ Normal.prototype = {
 
 	collect: function (player, power) {
 		highScore++;
-		var powerup = new PowerUp(this.game, 'point');
+		var powerup = new PowerUp(this.game, 'point', this);
 		powerup.create();
 
 		if (((highScore % 10) == 9) && (highScore > 0)) {
-			var powerup = new PowerUp(this.game, "shrink");
+			var powerup = new PowerUp(this.game, "shrink", this);
 			powerup.create();
 		}
 

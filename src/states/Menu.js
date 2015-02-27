@@ -9,7 +9,6 @@ var menu = function (game) {
     Phaser.Keyboard.C,
     Phaser.Keyboard.R,
     Phaser.Keyboard.U,]
-  numberPlayers = 0;
   bestScore = 0;
   bestSurvScore = 0;
   ballsScore = 0;
@@ -40,16 +39,14 @@ menu.prototype = {
   	this.stage.backgroundColor = colorHex;
     document.body.style.background = colorHex;
 
-    if (numberPlayers == 0) {
-      if (!menuMusic && !mute) {
-        menuMusic = this.add.audio('dream');
-        menuMusic.loop = true;
-        menuMusic.play();
-      } else if (!menuMusic.isPlaying && !mute) {
-        menuMusic.loop = true;
-        menuMusic.play();
-        menuMusic.volume = 1;
-      }
+    if (!menuMusic && !mute) {
+      menuMusic = this.add.audio('dream');
+      menuMusic.loop = true;
+      menuMusic.play();
+    } else if (!menuMusic.isPlaying && !mute) {
+      menuMusic.loop = true;
+      menuMusic.play();
+      menuMusic.volume = 1;
     }
 
   	bestScore = parseInt(localStorage.getItem("highScore"));

@@ -46,7 +46,7 @@ Player.prototype = {
 			this.sprite.rotation = Math.PI;
 		}
 
-		if (numberPlayers > 0) {
+		if (!this.mode.sp) {
 			this.color = Phaser.Color.hexToColor(colorPlayers[this.id]);
 		} else {
 			this.color = Phaser.Color.hexToColor("#FFFFFF");
@@ -59,9 +59,9 @@ Player.prototype = {
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 
-		if (mobile && numberPlayers == 0) {
+		if (mobile && this.mode.sp) {
 			this.game.input.onDown.add(this.click, this);
-		} else if (mobile && numberPlayers > 0){
+		} else if (mobile && !this.mode.sp){
 			if (this.orientation == "portrait") {
 				this.playerMobileButton = this.game.add.button(w2,this.y,"overlay",null,this);
 				this.playerMobileButton.width = this.game.width;
@@ -76,7 +76,7 @@ Player.prototype = {
 	    		this.playerMobileButton.alpha = 0;
 	    		this.playerMobileButton.anchor.setTo(0.5,0.5);
 	    		this.playerMobileButton.input.useHandCursor = true;
-		} else if (!mobile && numberPlayers == 0) {
+		} else if (!mobile && this.mode.sp) {
 			this.game.input.onDown.add(this.keyPressed, this);
 		}
 
@@ -94,7 +94,7 @@ Player.prototype = {
 			this.unpause();
 		}
 
-		if (this.showKeyTime <= totalTime && !this.dead && !paused && numberPlayers == 0) {
+		if (this.showKeyTime <= totalTime && !this.dead && !paused && this.mode.sp) {
 			this.showKey();
 		}
 
@@ -217,10 +217,10 @@ Player.prototype = {
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 				
-				if (mobile && numberPlayers == 0) {
+				if (mobile && this.mode.sp) {
 					this.game.add.tween(this.touch).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
 					this.game.add.tween(this.touch).to( { y: this.touch.y + 100 }, 1000, Phaser.Easing.Circular.In, true);
-				} else if(mobile && numberPlayers > 0){
+				} else if(mobile && !this.mode.sp){
 					if (this.orientation == 'portrait'){
 						this.game.add.tween(this.touch).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
 						if (this.touch.angle == 0) {
@@ -235,7 +235,7 @@ Player.prototype = {
 					}
 				}
 
-				if (numberPlayers == 0 && !mobile) {
+				if (this.mode.sp && !mobile) {
 					this.game.add.tween(tempLabel).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 					this.game.add.tween(tempLabelText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 				}
@@ -262,7 +262,7 @@ Player.prototype = {
 	kill: function (player, other) {
 		this.keyText.destroy();
 		if (!this.dead) {
-			if (numberPlayers == 0) {
+			if (this.mode.sp) {
 				deathScore++;
 				localStorage.setItem("deathScore", deathScore);
 			}
@@ -276,7 +276,10 @@ Player.prototype = {
 				this.mode.kill();
 			}
 			
-			this.mode.submitScore();
+			if (this.mode.submitScore) {
+				this.mode.submitScore();
+			}
+			
 		}
 
 		if (other) {
@@ -293,7 +296,7 @@ Player.prototype = {
 			this.growth = 60*power.scale.x;
 			this.score = this.score + power.scale.x;
 
-			if (this.score > highScore && numberPlayers != 0) {
+			if (this.score > highScore && !this.mode.sp) {
 				highScore = this.score;
 				if(crowned > -1){
 					players[crowned].removeCrown();
@@ -334,14 +337,14 @@ Player.prototype = {
 
 			  	if (mobile) {
 			  		this.keyText.setText(this.mode.getHighScore);
-			  		if (numberPlayers > 0) {
+			  		if (!this.mode.sp) {
 			  			this.keyText.visible = false;
 			  		}
 			  		
 			  	}
 			}
 
-			if (numberPlayers == 0 && mobile) {
+			if (this.mode.sp && mobile) {
 				if (this.orientation == 'portrait') {
 					this.touch = this.game.add.sprite(w2, h2*1.5+100, 'touch');
 				} else {
@@ -351,7 +354,7 @@ Player.prototype = {
 				this.touch.alpha = 0;
 				this.game.add.tween(this.touch).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
 				this.game.add.tween(this.touch).to( { y: this.touch.y - 100 }, 1000, Phaser.Easing.Circular.Out, true);
-			} else if (numberPlayers > 0 && mobile) {
+			} else if (!this.mode.sp && mobile) {
 				if (this.orientation == 'portrait') {
 					this.touch = this.game.add.sprite(w2, this.y, 'touch');
 					if(this.y > w2){

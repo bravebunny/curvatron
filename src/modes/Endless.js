@@ -1,4 +1,5 @@
 var Endless = function (game) {
+	this.sp = true;
 	this.game = game;
 	this.player = null;
 	leaderboardID = 'CgkIr97_oIgHEAIQCg';

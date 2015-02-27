@@ -16,8 +16,8 @@ gameMananger.prototype = {
 	create: function () {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		scale = 1;
-		if (numberPlayers > 0) {
-			scale = (-1/24)*numberPlayers+7/12;
+		if (!this.mode.sp) {
+			scale = (-1/24)*this.mode.nPlayers+7/12;
 		}
 
 		crowned = -1;
@@ -45,39 +45,20 @@ gameMananger.prototype = {
 
 		collectSound = this.add.audio('sfx_collect0');
 
-		if (numberPlayers > 0) {
-			this.game.stage.backgroundColor = colorHexDark;
-			bgColor = Phaser.Color.hexToColor(colorHexDark);
-		} else {
-			document.body.style.background = colorHexDark;
-			bgColor = Phaser.Color.hexToColor(colorHex);
-		}
-
-		if (numberPlayers > 0) {
-			this.crown = this.add.sprite(w2, -32, 'crown');
-			this.crown.anchor.setTo(0.5,0.8);
-			this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
-		}
-
 		this.initialTime = this.game.time.totalElapsedSeconds();
 
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.game.physics.arcade.gravity.y = 0;
 
 		var ui = this.ui;
-
 		ui.graphics = this.add.graphics(w2, h2);
-		if(numberPlayers > 0){
-			ui.graphics.lineStyle(0);
-			ui.graphics.beginFill(0x000000, 0.2);
-			ui.timeCircle = ui.graphics.drawCircle(w2,h2,Math.sqrt(w2*w2+h2*h2)*2);
-			ui.timeCircle.pivot.x = w2;
-			ui.timeCircle.pivot.y = h2;
-			ui.graphics.endFill();
-		}
+
 
 		groupPowers = this.add.group();
-		if (numberPlayers == 0) {
+		if (this.mode.sp) {
+			document.body.style.background = colorHexDark;
+			bgColor = Phaser.Color.hexToColor(colorHex);
+
 			var textSize = 15;
 	  	if (mobile) {
 	  		textSize = 30
@@ -88,13 +69,38 @@ gameMananger.prototype = {
 	      	fill: "#ffffff",
 	      	align: "center"
 	  	});
-	  	powerText.anchor.setTo(0.5,0.5);			
-		}
+	  	powerText.anchor.setTo(0.5,0.5);
 
-		//Generate powers
-		if (numberPlayers > 0) {
+			if (!mobile) {
+				tempLabel = this.add.sprite(w2, h2, 'score-stat');
+				tempLabel.anchor.setTo(0.5,0.5);
+				tempLabel.alpha = 0.7;
+				tempLabelText = this.add.text(w2+50, h2+8, this.mode.getHighScore().toString(), {
+		      font: "100px dosis",
+		      fill: colorHex,
+		      align: "center"
+		  	});
+		  	tempLabelText.anchor.setTo(0.5,0.5);
+	  	}
+
+		} else {
+			this.game.stage.backgroundColor = colorHexDark;
+			bgColor = Phaser.Color.hexToColor(colorHexDark);
+
+			this.crown = this.add.sprite(w2, -32, 'crown');
+			this.crown.anchor.setTo(0.5,0.8);
+			this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
+
+			ui.graphics.lineStyle(0);
+			ui.graphics.beginFill(0x000000, 0.2);
+			ui.timeCircle = ui.graphics.drawCircle(w2,h2,Math.sqrt(w2*w2+h2*h2)*2);
+			ui.timeCircle.pivot.x = w2;
+			ui.timeCircle.pivot.y = h2;
+			ui.graphics.endFill();
+
+			//Generate powers
 			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
-		}
+ 		}
 
 		if (this.mode.spawnPowers){
 			this.createPower();
@@ -102,18 +108,8 @@ gameMananger.prototype = {
 
 		if (mobile) {
 			pauseSprite = this.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
-	    	pauseSprite.anchor.setTo(0.5, 0.5);
-	    	pauseSprite.input.useHandCursor = true;
-		} else if (numberPlayers == 0){
-			tempLabel = this.add.sprite(w2, h2, 'score-stat');
-			tempLabel.anchor.setTo(0.5,0.5);
-			tempLabel.alpha = 0.7;
-			tempLabelText = this.add.text(w2+50, h2+8, this.mode.getHighScore().toString(), {
-	      font: "100px dosis",
-	      fill: colorHex,
-	      align: "center"
-	  	});
-	  	tempLabelText.anchor.setTo(0.5,0.5);
+    	pauseSprite.anchor.setTo(0.5, 0.5);
+    	pauseSprite.input.useHandCursor = true;
 		}
 
 		//create BitmapData
@@ -127,20 +123,21 @@ gameMananger.prototype = {
 		}
 
 		//Choose snake locations
-		//var numberPlayers = 0;
+		var nPlayers = 0;
+		console.log(this.mode.nPlayers)
 		if (this.mode.nPlayers) {
-			numberPlayers = this.mode.nPlayers;
+			nPlayers = this.mode.nPlayers;
 		}
-		for(var i=0; i <= numberPlayers; i++){
+		for(var i=0; i <= nPlayers; i++){
 			players[i] = new Player(i,
-			Math.cos((2*Math.PI/(numberPlayers+1))*i - angle)*(w2-200)+w2, 
-			Math.sin((2*Math.PI/(numberPlayers+1))*i - angle)*(h2-100)+h2, 
+			Math.cos((2*Math.PI/(nPlayers+1))*i - angle)*(w2-200)+w2, 
+			Math.sin((2*Math.PI/(nPlayers+1))*i - angle)*(h2-100)+h2, 
 			keys[i], this.mode, this.game);
 		}
 
 		this.mode.create();
 
-		for(var i=0; i <= numberPlayers; i++){
+		for(var i=0; i <= nPlayers; i++){
 			players[i].create();
 		}
 
@@ -171,10 +168,10 @@ gameMananger.prototype = {
 				if (crowned != -1) {
 					players[crowned].addCrown();
 				}
-				if(numberPlayers>0 && this.gameTime >= (totalTime)){
+				if(!this.mode.sp && this.gameTime >= (totalTime)){
 					this.ui.timeCircle.scale.set((-1/this.gameTime)*(totalTime)+1);
 				}
-				else if(numberPlayers>0){
+				else if(!this.mode.sp){
 					this.endGame();
 				}	else if(players[0].dead){
 					this.endGame();
@@ -189,7 +186,7 @@ gameMananger.prototype = {
 						if (numberAlive > 1) break;
 					}
 				}
-				if(numberAlive < 2 && numberPlayers>0) {
+				if(numberAlive < 2 && !this.mode.sp) {
 					lastCrowned = playerAlive;
 					this.endGame();
 				}
@@ -197,13 +194,13 @@ gameMananger.prototype = {
 			}
 		}
 		//Update players
-		for(var i=0; i <= numberPlayers; i++){
+		for(var i=0; i < players.length; i++){
 			players[i].update();
 		}
 	},
 
 	createPower: function () {
-		var powerup = new PowerUp(this.game, "point");
+		var powerup = new PowerUp(this.game, "point", this.mode);
 		powerup.create();
 	},
 
@@ -215,7 +212,7 @@ gameMananger.prototype = {
 				menuMusic.volume = 1;
 			}
 			ui.overlay.inputEnabled = false;
-			if(numberPlayers == 0){
+			if(this.mode.sp){
 				this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
 					ui.overlay.inputEnabled = true;
 				}, this);
@@ -223,7 +220,7 @@ gameMananger.prototype = {
 
 			ui.overlay.width = w2*2;
 			ui.overlay.height = h2*2;
-			if (numberPlayers > 0) {
+			if (!this.mode.sp) {
 				this.game.time.events.remove(this.powerTimer);
 				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(
 					function(){
@@ -250,7 +247,7 @@ gameMananger.prototype = {
 				pauseSprite.input.useHandCursor=false;
 			}
 
-	  	if (numberPlayers > 0) {
+	  	if (!this.mode.sp) {
 	  		//console.log("right now:" + crowned);
 	  		if (crowned == -1) {
 	  			var tie =  this.add.sprite(w2,h2+150, "tie");
@@ -337,12 +334,12 @@ gameMananger.prototype = {
 
 			if (mobile) {
 				pauseSprite.alpha = 0;
-			} else if (numberPlayers == 0) {
+			} else if (this.mode.sp) {
 				tempLabel.alpha = 0;
 				tempLabelText.alpha = 0;
 			}
 
-			if (numberPlayers > 0) {
+			if (!this.mode.sp) {
 				this.game.time.events.remove(this.powerTimer);
 			}
 
@@ -375,7 +372,7 @@ gameMananger.prototype = {
 			
 		} else { //unpause
 			ui.overlay.scale.set(0);
-			if (numberPlayers > 0) {
+			if (!this.mode.sp) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
 
