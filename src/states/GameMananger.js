@@ -187,10 +187,6 @@ gameMananger.prototype = {
 					this.endGame();
 				}
 
-				if (this.mode.update) {
-					this.mode.update();
-				}
-				
 			}
 		}
 		//Update players
