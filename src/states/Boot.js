@@ -8,13 +8,13 @@ var boot = function (game) {
 boot.prototype = {
 
 	preload: function () {
-	   	this.game.load.image("loading","assets/sprites/menu/loading.png");
+	  this.game.load.image("loading","assets/sprites/menu/loading.png");
 	},
 
   	create: function () {
   		//this.game.add.plugin(Phaser.Plugin.Debug);
-  		orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-  		w2 = this.game.world.width/2;
+  	orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+  	w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 
 		//Background colors
@@ -22,7 +22,7 @@ boot.prototype = {
 		bgColors = ['#76b83d', '#cf5e4f', '#805296', '#4c99b9'];
 		bgColorsDark = ['#3b5c1e', '#672f27', '#40294b', '#264c5c'];
 
-		modesLB = ['CgkIr97_oIgHEAIQCQ', 'CgkIr97_oIgHEAIQCg'];
+		modesLB = ['CgkIr97_oIgHEAIQCQ', 'CgkIr97_oIgHEAIQCg', 'CgkIr97_oIgHEAIQCw'];
 
 		chosenColor = this.game.rnd.integerInRange(0, 3);
 		colorHex = bgColors[chosenColor];

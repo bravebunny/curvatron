@@ -11,12 +11,17 @@ var OldSchool = function(game) {
 OldSchool.prototype = {
 
 	preload: function () {	
-		this.game.load.image('player0', 'assets/playerSingle.png');
-		this.game.load.image('trail0', 'assets/trailSingle.png');
+		this.game.load.image('player0', 'assets/trailOld.png');
+		this.game.load.image('trail0', 'assets/trailOld.png');
 		this.game.load.image('superPower', 'assets/powerHS.png');
 	},
 
 	create: function() {
+		colorHex = '#8eb367';
+		colorHexDark = '#475933';
+		this.game.stage.backgroundColor = colorHex;
+		document.body.style.background = colorHexDark;
+
 		var orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		var x, y;
 		if (orientation == 'landscape' || !mobile) {

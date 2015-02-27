@@ -149,7 +149,7 @@ OldPlayer.prototype = {
 			//erase trail from front
 			if (this.dead && this.trailArray[0]) {
 				trailPiece = this.trailArray.pop();
-		    	ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+		    	ctx.clearRect(trailPiece.x-9*scale, trailPiece.y-9*scale, 18*scale, 18*scale);
 				
 				if (this.trailArray.length > 0) {
 					trailPiece = this.trailArray[this.trailArray.length -1];
@@ -174,7 +174,7 @@ OldPlayer.prototype = {
 				}
 				for (var i = 0; i < nRemove && this.trailArray.length > 0; i++) {
 					trailPiece = this.trailArray.shift();
-					ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+					ctx.clearRect(trailPiece.x-9*scale, trailPiece.y-9*scale, 18*scale, 18*scale);
 				}
 
 				if (this.trailArray.length > 0) {
