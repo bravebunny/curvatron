@@ -2,7 +2,8 @@ var Normal = function(game) {
 	this.sp = true;
 	this.game = game;
 	this.spawnPowers = true;
-	this.leaderboardID = 'CgkIr97_oIgHEAIQCQ';
+	this.leaderboardID = modesLB[0];
+	this.score = 0;
 };
 
 Normal.prototype = {
@@ -31,35 +32,35 @@ Normal.prototype = {
 	},
 
 	getScore: function () {
-		return highScore;
+		return this.score;
 	},
 
 	getHighScore: function () {
-		return bestScore;
+		return parseInt(localStorage.getItem("highScore"));
 	},
 
 	setScore: function (score) {
-		highScore = score;
+		this.score = score;
 	},
 
 	setHighScore: function (score) {
-		bestScore = score;
+		localStorage.setItem("highScore", score);
 	},
 
 	submitScore: function () {
 		var params = Cocoon.Social.ScoreParams;
-		if (highScore > bestScore) {
-			bestScore = highScore;
-			localStorage.setItem("highScore", highScore);
+		if (this.score > this.getHighScore()) {
+			this.setHighScore(this.score);
 		}
 		params.leaderboardID = this.leaderboardID;
 		if (mobile && socialService && socialService.isLoggedIn()) {
-			socialService.submitScore(highScore, null, params);
+			socialService.submitScore(this.score, null, params);
 		}
 	},
 
 	collect: function (player, power) {
-		highScore++;
+		this.score++;
+		var highScore = this.getHighScore();
 		var powerup = new PowerUp(this.game, 'point', this);
 		powerup.create();
 
@@ -68,10 +69,10 @@ Normal.prototype = {
 			powerup.create();
 		}
 
-		ballsScore++;
+		var ballsScore = parseInt(localStorage.getItem("ballsScore")) + 1;
 		localStorage.setItem("ballsScore", ballsScore);
 
-		if ((nextBallHigh == 0) && (highScore == bestScore-1)) {
+		if ((nextBallHigh == 0) && (this.score == highScore-1)) {
 			nextBallHigh = 1;
 		}
 	}

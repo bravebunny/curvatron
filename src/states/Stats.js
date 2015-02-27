@@ -16,37 +16,37 @@ stats.prototype = {
 		ui.highScore = this.game.add.sprite(0, 0, 'score-stat');
 		ui.highScore.anchor.setTo(0.5,0.5);
 		ui.highScore.alpha = 0.7;
-		ui.highScoretext = this.game.add.text(0, 0, bestScore.toString(), {
-	        font: "60px dosis",
-	        fill: colorHex,
-	        align: "center"
-    	});
-    	ui.highScoretext.anchor.setTo(0.5,0.5);
+		ui.highScoretext = this.game.add.text(0, 0, localStorage.getItem("highScore"), {
+      font: "60px dosis",
+      fill: colorHex,
+      align: "center"
+  	});
+  	ui.highScoretext.anchor.setTo(0.5,0.5);
 
-    	ui.survivalScore = this.game.add.sprite(0, 0, 'survScore-stat');
+  	ui.survivalScore = this.game.add.sprite(0, 0, 'survScore-stat');
 		ui.survivalScore.anchor.setTo(0.5,0.5);
 		ui.survivalScore.alpha = 0.7;
-		ui.survivalScoretext = this.game.add.text(0, 0, bestSurvScore.toString(), {
-	        font: "60px dosis",
-	        fill: colorHex,
-	        align: "center"
-    	});
-    	ui.survivalScoretext.anchor.setTo(0.5,0.5);
+		ui.survivalScoretext = this.game.add.text(0, 0, localStorage.getItem("survivalScore"), {
+      font: "60px dosis",
+      fill: colorHex,
+      align: "center"
+  	});
+  	ui.survivalScoretext.anchor.setTo(0.5,0.5);
 
 		ui.totalBalls = this.game.add.sprite(0, 0, 'total-stats');
 		ui.totalBalls.anchor.setTo(0.5,0.5);
 		ui.totalBalls.alpha = 0.7;
-		ui.totalBallsText = this.game.add.text(0,0, ballsScore.toString(), {
-	        font: "60px dosis",
-	        fill: colorHex,
-	        align: "center"
-    	});
-    	ui.totalBallsText.anchor.setTo(0.5,0.5);
+		ui.totalBallsText = this.game.add.text(0,0, localStorage.getItem("ballsScore"), {
+      font: "60px dosis",
+      fill: colorHex,
+      align: "center"
+  	});
+  	ui.totalBallsText.anchor.setTo(0.5,0.5);
 
     	ui.statsDeaths = this.game.add.sprite(0, 0, 'deaths-stats');
 		ui.statsDeaths.anchor.setTo(0.5,0.5);
 		ui.statsDeaths.alpha = 0.7;
-		ui.textDeaths = this.game.add.text(0, 0, deathScore.toString(), {
+		ui.textDeaths = this.game.add.text(0, 0, localStorage.getItem("deathScore"), {
 	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"

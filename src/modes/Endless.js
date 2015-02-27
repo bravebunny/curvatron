@@ -2,7 +2,7 @@ var Endless = function (game) {
 	this.sp = true;
 	this.game = game;
 	this.player = null;
-	leaderboardID = 'CgkIr97_oIgHEAIQCg';
+	leaderboardID = modesLB[1];
 };
 
 Endless.prototype = {
@@ -25,31 +25,26 @@ Endless.prototype = {
 	},
 
 	getScore: function () {
-		return survivalScore;
+		return this.player.trailArray.length;
 	},
 
 	getHighScore: function () {
-		return bestSurvScore;
-	},
-
-	setScore: function (score) {
-		survivalScore = score;
+		return localStorage.getItem("survivalScore");
 	},
 
 	setHighScore: function (score) {
-		bestSurvScore = score;
+		localStorage.setItem("survivalScore", score);
 	}, 
 
 	submitScore: function () {
 		var params = Cocoon.Social.ScoreParams;
-		survivalScore = this.player.trailArray.length;
-		if (survivalScore > bestSurvScore) {
-			bestSurvScore = survivalScore;
-			localStorage.setItem("survivalScore", survivalScore);
+		var score = this.getScore();
+		if (score > this.getHighScore()) {
+			this.setHighScore(score);
 		}
 		params.leaderboardID = this.leaderboardID;
 		if (mobile && socialService && socialService.isLoggedIn()) {
-			socialService.submitScore(survivalScore, null, params);
+			socialService.submitScore(score, null, params);
 		}
 	},
 

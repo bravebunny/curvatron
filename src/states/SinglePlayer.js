@@ -1,5 +1,7 @@
 var singlePlayer = function (game) {
 	this.ui = {};
+	this.bestScore = 0;
+	this.bestSurvScore = 0;
 };
   
 singlePlayer.prototype = {
@@ -22,11 +24,12 @@ singlePlayer.prototype = {
 		ui.endlessButton.input.useHandCursor=true;
 
 		//Score label that shows on hove
-		if (bestScore != 0) {
+		this.bestScore = localStorage.getItem("highScore")
+		if (this.bestScore != 0) {
 			ui.scoreLabel = this.add.sprite(0,0,"sp_score");
 			ui.scoreLabel.anchor.setTo(0.5,0.5);
 			ui.scoreLabel.alpha = 0;
-			ui.scoreText = this.add.text(0,0, bestScore, {
+			ui.scoreText = this.add.text(0,0, this.bestScore, {
 		        font: "100px dosis",
 		        fill: colorHex,
 		        align: "center"});
@@ -36,12 +39,13 @@ singlePlayer.prototype = {
 			ui.normalButton.onInputOut.add(this.normalOut, this);
 		}
 
-	    if (bestSurvScore != 0) {
+		this.bestSurvScore = localStorage.getItem("survivalScore")
+	    if (this.bestSurvScore != 0) {
 	  		ui.endlessLabel = this.add.sprite(0,0,"sp_score");
 	  		ui.endlessLabel.scale.x = -1;
 	  		ui.endlessLabel.anchor.setTo(0.5,0.5);
 	  		ui.endlessLabel.alpha = 0;
-	  		ui.endlessText = this.add.text(0,0, bestSurvScore, {
+	  		ui.endlessText = this.add.text(0,0, this.bestSurvScore, {
 	          font: "60px dosis",
 	          fill: colorHex,
 	          align: "center"
@@ -114,12 +118,12 @@ singlePlayer.prototype = {
 	  		ui.title.scale.set(1,1);
 	  	}
 
-		if (bestScore != 0) {
+		if (this.bestScore != 0) {
 		    ui.scoreLabel.position.set(w2-270,h2);
 		    ui.scoreText.position.set(w2-315,h2+10);
     	}
 
-		if (bestSurvScore != 0) {
+		if (this.bestSurvScore != 0) {
 		    ui.endlessLabel.position.set(w2+270,h2);
 		    ui.endlessText.position.set(w2+330,h2+10);
 	    }

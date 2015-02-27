@@ -41,7 +41,7 @@ PowerUp.prototype = {
 		groupPowers.add(this.sprite);
 
 		if (this.mode.sp && (this.type == 'point')) {
-			powerText.setText(highScore+1);
+			powerText.setText(this.mode.score+1);
 			powerText.x = this.sprite.x;
 			powerText.y = this.sprite.y;
 		}

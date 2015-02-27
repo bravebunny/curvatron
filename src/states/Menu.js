@@ -9,10 +9,6 @@ var menu = function (game) {
     Phaser.Keyboard.C,
     Phaser.Keyboard.R,
     Phaser.Keyboard.U,]
-  bestScore = 0;
-  bestSurvScore = 0;
-  ballsScore = 0;
-  deathScore = 0;
   menuMusic = null;
   this.ui = {};
   socialService = null;
@@ -47,26 +43,6 @@ menu.prototype = {
       menuMusic.loop = true;
       menuMusic.play();
       menuMusic.volume = 1;
-    }
-
-  	bestScore = parseInt(localStorage.getItem("highScore"));
-  	if (isNaN(bestScore)) {
-  		bestScore = 0;
-  	}
-
-    bestSurvScore = parseInt(localStorage.getItem("survivalScore"));
-    if (isNaN(bestSurvScore)) {
-      bestSurvScore = 0;
-    }
-
-    ballsScore = parseInt(localStorage.getItem("ballsScore"));
-    if (isNaN(ballsScore)) {
-      ballsScore = 0;
-    }
-
-    deathScore = parseInt(localStorage.getItem("deathScore"));
-    if (isNaN(deathScore)) {
-      deathScore = 0;
     }
 
     var ui = this.ui;

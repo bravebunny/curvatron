@@ -263,7 +263,7 @@ Player.prototype = {
 		this.keyText.destroy();
 		if (!this.dead) {
 			if (this.mode.sp) {
-				deathScore++;
+				var deathScore = parseInt(localStorage.getItem("deathScore")) + 1;
 				localStorage.setItem("deathScore", deathScore);
 			}
 			this.sprite.kill();
@@ -336,7 +336,7 @@ Player.prototype = {
 		  		this.keyText.anchor.setTo(0.5,0.5);
 
 			  	if (mobile) {
-			  		this.keyText.setText(this.mode.getHighScore);
+			  		this.keyText.setText(this.mode.getHighScore());
 			  		if (!this.mode.sp) {
 			  			this.keyText.visible = false;
 			  		}
