@@ -69,7 +69,8 @@ singlePlayer.prototype = {
 	playNormalGame: function () {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
-    var mode = new Normal(this.game);
+    //var mode = new Normal(this.game);
+    var mode = new OldSchool(this.game);
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
