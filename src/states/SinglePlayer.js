@@ -64,16 +64,16 @@ singlePlayer.prototype = {
 
 	playNormalGame: function () {
 		numberPlayers = 0;
-		mod = 0;
-    	menuMusic.fadeOut(2000);
-		this.game.state.start("PreloadGame",true,false);
+    menuMusic.fadeOut(2000);
+    var mode = new Normal(this.game);
+		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
 	playEndlessGame: function () {
 		numberPlayers = 0;
-		mod = 1;
-    	menuMusic.fadeOut(2000);
-		this.game.state.start("PreloadGame",true,false);
+    menuMusic.fadeOut(2000);
+    var mode = new Endless(this.game);
+		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
 	backPressed: function () {

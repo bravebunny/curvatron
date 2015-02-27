@@ -22,8 +22,6 @@ boot.prototype = {
 		bgColors = ['#76b83d', '#cf5e4f', '#805296', '#4c99b9'];
 		bgColorsDark = ['#3b5c1e', '#672f27', '#40294b', '#264c5c'];
 
-		modesLB = ['CgkIr97_oIgHEAIQCQ', 'CgkIr97_oIgHEAIQCg'];
-
 		chosenColor = this.game.rnd.integerInRange(0, 3);
 		colorHex = bgColors[chosenColor];
 		colorHexDark = bgColorsDark[chosenColor];

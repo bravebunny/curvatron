@@ -4,10 +4,15 @@ var gameMananger = function (game) {
 	this.initialTime = 0;
 	this.powerTimer = null;
 	this.ui = {};
+	this.mode = null;
 	colisionMargin = 16;
 }
 
 gameMananger.prototype = {
+	init: function (mode) {
+		this.mode = mode;
+	},
+
 	create: function () {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		scale = 1;
@@ -25,6 +30,7 @@ gameMananger.prototype = {
 		pauseTween = null;
 		borders = [0, this.game.world.width, 0,this.game.world.height];
 		bmd = null;
+		nextBallHigh = 0;
 
 		highScore = 0;
 		survivalScore = 0;
@@ -37,11 +43,7 @@ gameMananger.prototype = {
 		moveSounds[1] = this.add.audio('move1');
 		killSound = this.add.audio('kill');
 
-		collectSounds = []
-		for (var i = 0; i <= numberSounds; i++) {
-		  	collectSounds[i] = this.add.audio('sfx_collect' + i);
-		}
-		nextBallHigh = 0;
+		collectSound = this.add.audio('sfx_collect0');
 
 		if (numberPlayers > 0) {
 			this.game.stage.backgroundColor = colorHexDark;
@@ -74,31 +76,31 @@ gameMananger.prototype = {
 			ui.graphics.endFill();
 		}
 
-		
-
 		groupPowers = this.add.group();
 		if (numberPlayers == 0) {
 			var textSize = 15;
-		  	if (mobile) {
-		  		textSize = 30
-		  	}
+	  	if (mobile) {
+	  		textSize = 30
+	  	}
 
 			powerText = this.add.text(this.x, this.y, "1", {
-				font: "" + textSize + "px dosis",
-		      	fill: "#ffffff",
-		      	align: "center"
-		  	});
-		  	powerText.anchor.setTo(0.5,0.5);			
+			font: "" + textSize + "px dosis",
+	      	fill: "#ffffff",
+	      	align: "center"
+	  	});
+	  	powerText.anchor.setTo(0.5,0.5);			
 		}
 
 		//Generate powers
 		if (numberPlayers > 0) {
 			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
-		} else if(mod == 0){
+		}
+
+		if (this.mode.spawnPowers){
 			this.createPower();
 		}
 
-		if(mobile){
+		if (mobile) {
 			pauseSprite = this.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
 	    	pauseSprite.anchor.setTo(0.5, 0.5);
 	    	pauseSprite.input.useHandCursor = true;
@@ -106,20 +108,11 @@ gameMananger.prototype = {
 			tempLabel = this.add.sprite(w2, h2, 'score-stat');
 			tempLabel.anchor.setTo(0.5,0.5);
 			tempLabel.alpha = 0.7;
-			if(mod==0){
-				tempLabelText = this.add.text(w2+50, h2+8, bestScore.toString(), {
-			      font: "100px dosis",
-			      fill: colorHex,
-			      align: "center"
-			  	});
-			}
-			else if(mod==1){
-				tempLabelText = this.add.text(w2+50, h2+8, bestSurvScore.toString(), {
-			      font: "80px dosis",
-			      fill: colorHex,
-			      align: "center"
-			  	});
-			}
+			tempLabelText = this.add.text(w2+50, h2+8, this.mode.getHighScore().toString(), {
+	      font: "100px dosis",
+	      fill: colorHex,
+	      align: "center"
+	  	});
 	  	tempLabelText.anchor.setTo(0.5,0.5);
 		}
 
@@ -134,12 +127,18 @@ gameMananger.prototype = {
 		}
 
 		//Choose snake locations
+		//var numberPlayers = 0;
+		if (this.mode.nPlayers) {
+			numberPlayers = this.mode.nPlayers;
+		}
 		for(var i=0; i <= numberPlayers; i++){
 			players[i] = new Player(i,
 			Math.cos((2*Math.PI/(numberPlayers+1))*i - angle)*(w2-200)+w2, 
 			Math.sin((2*Math.PI/(numberPlayers+1))*i - angle)*(h2-100)+h2, 
-			keys[i], this.game);
+			keys[i], this.mode, this.game);
 		}
+
+		this.mode.create();
 
 		for(var i=0; i <= numberPlayers; i++){
 			players[i].create();
@@ -147,7 +146,7 @@ gameMananger.prototype = {
 
 		ui.overlay = this.add.button(0, 0, 'overlay', function(){
 			if (gameOver) {
-				this.state.restart(true,false,numberPlayers);
+				this.state.restart(true, false, this.mode);
 			}
 		},this);
 		ui.overlay.scale.set(0);
@@ -228,11 +227,15 @@ gameMananger.prototype = {
 				this.game.time.events.remove(this.powerTimer);
 				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(
 					function(){
-						this.state.restart(true,false,numberPlayers);
+						this.state.restart(true, false, this.mode);
 					}, this);
 			}
 
-	  	var restartButton = this.add.button(w2+97, h2-97,"restart_button",function(){this.state.restart(true,false,numberPlayers);},this);
+	  	var restartButton = this.add.button(w2+97, h2-97,"restart_button",
+	  		function () {
+	  			this.state.restart(true, false, this.mode);
+	  		},this);
+
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
@@ -287,53 +290,33 @@ gameMananger.prototype = {
 				spScoreLabel.alpha = 0.7;
 	    	if (mobile) {
     			spScoreLabel.x = w2 - 60;
-  		}
+	  		}
 
-				if(mod == 0){
-					var textCurrentScore = this.add.text(w2, h2+77, highScore,{
-						font: "90px dosis",
-				      	fill: colorHexDark,
-				      	align: "center"
-					});
-					var textHighScore = this.add.text(w2+35, h2+220, bestScore, {
-				      font: "40px dosis",
-				      fill: colorHexDark,
-				      align: "center"
-			    	});
+				var textCurrentScore = this.add.text(w2, h2+77, this.mode.getScore(),{
+					font: "90px dosis",
+	      	fill: colorHexDark,
+	      	align: "center"
+				});
+				var textHighScore = this.add.text(w2+35, h2+220, this.mode.getHighScore(), {
+		      font: "40px dosis",
+		      fill: colorHexDark,
+		      align: "center"
+	    	});
 
-			    	if (mobile) {
-		    			textHighScore.x = w2+35 - 60;
-		    		}
-		    	}
-		    	else if(mod == 1){
-		    		var textCurrentScore = this.add.text(w2, h2+77, survivalScore,{
-						font: "90px dosis",
-				      	fill: colorHexDark,
-				      	align: "center"
-					});
-		    		var textHighScore = this.add.text(w2+35, h2+220, bestSurvScore, {
-				      font: "40px dosis",
-				      fill: colorHexDark,
-				      align: "center"
-			    	});
+	    	if (mobile) {
+	  			textHighScore.x = w2+35 - 60;
+	  		}
+	    	textCurrentScore.anchor.setTo(0.5,0.5);
+	    	textHighScore.anchor.setTo(0.5,0.5);
 
-			    	if (mobile) {
-		    			textHighScore.x = w2+35 - 60;
-		    		}
-		    	}
-		    	textCurrentScore.anchor.setTo(0.5,0.5);
-		    	textHighScore.anchor.setTo(0.5,0.5);
-
-		    	if (mobile) {
-		    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button",this.leaderboard,this);
-						leaderboardButton.scale.set(0.6,0.6);
-						leaderboardButton.anchor.setTo(0.5,0.5);
-						leaderboardButton.input.useHandCursor=true;
-		    	}
-
-
+	    	if (mobile) {
+	    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button",this.leaderboard,this);
+					leaderboardButton.scale.set(0.6,0.6);
+					leaderboardButton.anchor.setTo(0.5,0.5);
+					leaderboardButton.input.useHandCursor=true;
 	    	}
-		  	gameOver = true;
+    	}
+	  	gameOver = true;
 		}
 	},
 
@@ -368,7 +351,7 @@ gameMananger.prototype = {
 	        ui.menu.scale.set(1,1);
 	        ui.menu.input.useHandCursor=true;
 
-	        ui.restart = this.add.button(w2-150, h2, 'restart_button',function(){this.state.restart();},this);
+	        ui.restart = this.add.button(w2-150, h2, 'restart_button',function(){this.state.restart(true, false, this.mode);},this);
 	        ui.restart.anchor.setTo(0.5, 0.5);
 	        ui.restart.scale.set(1,1);
 	        ui.restart.input.useHandCursor=true;
@@ -423,7 +406,7 @@ gameMananger.prototype = {
 	leaderboard: function () {
     if (mobile) {
       var params = Cocoon.Social.ScoreParams;
-      params.leaderboardID = modesLB[mod];
+      params.leaderboardID = this.mode.leaderoardID;
       if (!socialService) {
         var gp = Cocoon.Social.GooglePlayGames;
         gp.init({});
@@ -434,13 +417,7 @@ gameMananger.prototype = {
           if (error) {
               console.error("login error: " + error.message);
             } else if (loggedIn) {
-            	var scoreToSubmit = 0;
-            	if (mod == 0) {
-            		scoreToSubmit = bestScore;
-            	} else if (mod == 1) {
-            		scoreToSubmit = bestSurvScore;
-            	}
-            	socialService.submitScore(scoreToSubmit, function() {
+            	socialService.submitScore(this.mode.getScore(), function() {
             		socialService.showLeaderboard(null, params);
             	}, params);
             }

@@ -1,31 +1,67 @@
-var MPNormal = function(game) {
-
+var MPNormal = function(nPlayers, game) {
+	this.game = game;
+	this.nPlayers = nPlayers;
+	this.spawnPowers = true;
 };
 
 MPNormal.prototype = {
 
-	init: function(numberPlayers) {
-
+	preload: function () {
+		this.game.load.image('tie', 'assets/sprites/menu/tie.png');
+		this.game.load.image('crown', 'assets/crown.png');
+		for (var i=0; i <= numberPlayers; i++) {
+			this.game.load.image('player' + i, 'assets/player' + i +'.png');
+			this.game.load.image('crown' + i, 'assets/crown'+ i +'.png');
+			this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
+		}
 	},
 
-	create: function() {
+	create: function () {
 
 		spawnPowers = true;
 
-		//Choose snake locations and create them
-		for(var i=0; i <= numberPlayers; i++){
-			players[i] = new Player(i,
-			Math.cos((2*Math.PI/(numberPlayers+1))*i)*(w2-200)+w2, 
-			Math.sin((2*Math.PI/(numberPlayers+1))*i)*(h2-100)+h2, 
-			keys[i], this.game);
-
-			players[i].create();
-		}
 
 	},
 
-	update: function() {
+	update: function () {
 
-	}
+	},
+
+	erasesTrail: function () {
+		return true;
+	},
+
+	kill: function () {
+		var alreadyDead = 0;
+		for (var i = 0; i < players.length; i++) {
+			if (players[i].dead) {
+				alreadyDead++;
+			}
+		}
+
+		var newMax = 0;
+		for (var i = 0; i < players.length; i++) {
+			if (players.length - alreadyDead == 1 && i != this.id && !players[i].dead) {
+				newMax = players[i].score;
+				crowned = i;
+			} else if (i != this.id && players[i].score > newMax && !players[i].dead) {
+				newMax = players[i].score;
+				crowned = i;
+			}
+		}
+
+		if (crowned != -1 && players[crowned].dead) {
+			crowned = -1;
+			highScore = 0;
+		}
+	},
+
+	getHighScore: function () {
+		return highScore;
+	},
+
+	setHighScore: function (score) {
+		highScore = score;
+	}, 
 
 };

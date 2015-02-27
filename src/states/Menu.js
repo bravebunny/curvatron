@@ -10,7 +10,6 @@ var menu = function (game) {
     Phaser.Keyboard.R,
     Phaser.Keyboard.U,]
   numberPlayers = 0;
-  mod = 0;
   bestScore = 0;
   bestSurvScore = 0;
   ballsScore = 0;
@@ -27,7 +26,6 @@ menu.prototype = {
     this.world.angle = 0;
 
     Cocoon.Device.setOrientation(Cocoon.Device.Orientations.BOTH);
-    mod = 0;
 
     if (changeColor) {
       chosenColor = this.game.rnd.integerInRange(0, 3);

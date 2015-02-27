@@ -1,6 +1,7 @@
 var multiplayer = function (game) {
 	this.ui = {};
 	this.maxPlayers = 7;
+	this.nPlayers = 1;
 };
   
 multiplayer.prototype = {
@@ -65,7 +66,8 @@ multiplayer.prototype = {
 	},
 
 	playTheGame: function () {
-		this.game.state.start("PreloadGame",true,false);
+		var mode = new MPNormal(numberPlayers, this.game);
+		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
 	backPressed:function () {

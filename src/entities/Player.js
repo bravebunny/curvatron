@@ -1,5 +1,6 @@
-var Player = function (id, x, y, key, game) {
+var Player = function (id, x, y, key, mode, game) {
 	this.game = game;
+	this.mode = mode;
 	this.sprite = null;
 	this.score = 0;
 	this.direction = 1;
@@ -159,7 +160,7 @@ Player.prototype = {
 
 			//erase trail from behind
 			if (this.killTrail && this.frameCount == 0 && this.trailArray[0]) {
-				if (mod == 0 || (mod == 1 && !this.ready) || this.dead) {
+				if (this.mode.erasesTrail() || this.dead) {
 					var nRemove = 1;
 					if (this.shrink) {
 						if (this.trailArray.length <= this.shrinkSize) {
@@ -235,8 +236,8 @@ Player.prototype = {
 				}
 
 				if (numberPlayers == 0 && !mobile) {
-					tempLabel = this.game.add.tween(tempLabel).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-					tempLabelText = this.game.add.tween(tempLabelText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+					this.game.add.tween(tempLabel).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+					this.game.add.tween(tempLabelText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 				}
 
 				if (mobile && pauseSprite.alpha == 1) {
@@ -271,30 +272,11 @@ Player.prototype = {
 			}
 			this.dead = true;
 
-			var alreadyDead = 0;
-			for (var i = 0; i < players.length; i++) {
-				if (players[i].dead) {
-					alreadyDead++;
-				}
+			if (this.mode.kill) {
+				this.mode.kill();
 			}
-
-			var newMax = 0;
-			for (var i = 0; i < players.length; i++) {
-				if (players.length - alreadyDead == 1 && i != this.id && !players[i].dead) {
-					newMax = players[i].score;
-					crowned = i;
-				} else if (i != this.id && players[i].score > newMax && !players[i].dead) {
-					newMax = players[i].score;
-					crowned = i;
-				}
-			}
-
-			if (crowned != -1 && players[crowned].dead) {
-				crowned = -1;
-				highScore = 0;
-			}
-
-			this.submitScore();
+			
+			this.mode.submitScore();
 		}
 
 		if (other) {
@@ -302,35 +284,9 @@ Player.prototype = {
 		}
 	},
 
-	submitScore: function () {
-		var params = Cocoon.Social.ScoreParams;
-		if (mod == 1) {
-			survivalScore = this.trailArray.length;
-			if (survivalScore > bestSurvScore) {
-				bestSurvScore = survivalScore;
-				localStorage.setItem("survivalScore", survivalScore);
-			}
-			params.leaderboardID = modesLB[1];
-			if (mobile && socialService && socialService.isLoggedIn()) {
-				socialService.submitScore(survivalScore, null, params);
-			}
-
-		} else if (mod == 0) {
-			if (highScore > bestScore) {
-				bestScore = highScore;
-				localStorage.setItem("highScore", highScore);
-			}
-			params.leaderboardID = modesLB[0];
-			if (mobile && socialService && socialService.isLoggedIn()) {
-				socialService.submitScore(highScore, null, params);
-			}
-		}
-	},
-
 	collect: function (player, power) {
-		var randSound = this.game.rnd.integerInRange(0, numberSounds);
 		if (!mute) {
-			collectSounds[randSound].play();
+			collectSound.play();
 		}
 		if (power.name == "point") {
 			this.killTrail = false;
@@ -344,31 +300,17 @@ Player.prototype = {
 				}
 				crowned = this.id;
 				lastCrowned = crowned+1;
-				
-			}
-
-			if (numberPlayers == 0) {
-				highScore++;
-				var powerup = new PowerUp(this.game, 'point');
-				powerup.create();
-
-				if (mod == 0 && ((highScore % 10) == 9) && (highScore > 0)) {
-					var powerup = new PowerUp(this.game, "shrink");
-					powerup.create();
-				}
-
-				ballsScore++;
-				localStorage.setItem("ballsScore", ballsScore);
-
-				if ((nextBallHigh == 0) && (highScore == bestScore-1)) {
-					nextBallHigh = 1;
-				}
 			}
 		} else if (power.name == "shrink") {
 			this.shrinkSize = this.trailArray.length - this.shrinkAmount;
 			this.lastTrailLength -= this.shrinkAmount;
 			this.shrink = true;
 		}
+
+		if (this.mode.collect) {
+			this.mode.collect(player, power);
+		}
+		
 		power.kill();
 	},
 
@@ -391,12 +333,7 @@ Player.prototype = {
 		  		this.keyText.anchor.setTo(0.5,0.5);
 
 			  	if (mobile) {
-			  		if (mod == 0) {
-			  			this.keyText.setText(bestScore);
-			  		} else {
-			  			this.keyText.setText(bestSurvScore);
-			  		}
-
+			  		this.keyText.setText(this.mode.getHighScore);
 			  		if (numberPlayers > 0) {
 			  			this.keyText.visible = false;
 			  		}
@@ -460,7 +397,9 @@ Player.prototype = {
 	},
 
 	pause: function () {
-		this.submitScore();
+		if (this.mode.submitScore) {
+			this.mode.submitScore();
+		}
 		if (this.textTween) {
 			this.textTween.pause();
 		}
