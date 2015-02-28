@@ -6,12 +6,12 @@ var OldPlayer = function (x, y, mode, game) {
 
 	this.direction = 1;
 	this.distance = 0;
-	this.maxDistance = 25;
+	this.maxDistance = 40;
 	this.angle = 0;
+	this.speed = 3;
 
 	this.x = x;
 	this.y = y;
-	this.speed = 5;
 	this.key = keys[0];
 	this.killTrail = false;
 	this.dead = false;
@@ -209,15 +209,9 @@ OldPlayer.prototype = {
 			if (this.direction == 1 && !gameOver) {
 				this.direction = -1;
 				this.distance = this.maxDistance;
-				if (!mute && !paused) {
-					moveSounds[0].play();
-				}
 			} else if (!gameOver && !paused) {
 				this.direction = 1;
 				this.distance = this.maxDistance;
-				if (!mute) {
-					moveSounds[1].play();
-				}
 			}
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
@@ -305,7 +299,7 @@ OldPlayer.prototype = {
 			} else {
 				this.keyText = this.game.add.text(keyX, keyY, String.fromCharCode(this.key),{
 			        font: "60px dosis",
-			        fill: "#ffffff",
+			        fill: colorHexDark,
 			        align: "center"});
 				this.keyText.scale.set(scale);
 	  		this.keyText.anchor.setTo(0.5,0.5);

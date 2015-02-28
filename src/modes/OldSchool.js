@@ -10,17 +10,33 @@ var OldSchool = function(game) {
 
 OldSchool.prototype = {
 
-	preload: function () {	
-		this.game.load.image('player0', 'assets/trailOld.png');
+	preload: function () {
+		this.game.load.image('point', 'assets/pointOld.png');	
+		this.game.load.image('player0', 'assets/playerOld.png');
 		this.game.load.image('trail0', 'assets/trailOld.png');
-		this.game.load.image('superPower', 'assets/powerHS.png');
+		this.game.load.image('superPower', 'assets/powerOld.png');
+		this.game.load.audio('sfx_collectOld', 'assets/sfx/collectOld.ogg');
 	},
 
 	create: function() {
 		colorHex = '#8eb367';
 		colorHexDark = '#475933';
-		this.game.stage.backgroundColor = colorHex;
-		document.body.style.background = colorHexDark;
+
+		tempLabelText.style.fill = colorHex;
+		collectSound = this.game.add.audio('sfx_collectOld');
+		killSound = this.game.add.audio('killOld');
+
+		var textSize = 20;
+  	if (mobile) {
+  		textSize = 30
+  	}
+
+		powerText = this.game.add.text(0, 0, "1", {
+		font: "" + textSize + "px dosis",
+      	fill: colorHex,
+      	align: "center"
+  	});
+  	powerText.anchor.setTo(0.5,0.5);
 
 		var orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		var x, y;

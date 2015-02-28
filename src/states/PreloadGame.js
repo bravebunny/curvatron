@@ -26,8 +26,7 @@ preloadGame.prototype = {
 			this.state.preload();
 		}
 
-    	//Load all stuf from game
-		this.game.load.image('point', 'assets/point.png');
+    //Load all stuf from game
 		this.game.load.image('pauseButton', 'assets/sprites/menu/pause.png');
 		this.game.load.image('winner', 'assets/sprites/menu/winner.png');
 		this.game.load.image('touch', 'assets/sprites/menu/touch.png');

@@ -8,6 +8,7 @@ var MPNormal = function(nPlayers, game) {
 MPNormal.prototype = {
 
 	preload: function () {
+		this.game.load.image('point', 'assets/point.png');
 		this.game.load.image('tie', 'assets/sprites/menu/tie.png');
 		this.game.load.image('crown', 'assets/crown.png');
 		for (var i=0; i <= this.nPlayers; i++) {
@@ -20,7 +21,17 @@ MPNormal.prototype = {
 	create: function () {
 		this.highScore = 0;
 		spawnPowers = true;
+		var textSize = 15;
+  	if (mobile) {
+  		textSize = 30
+  	}
 
+		powerText = this.game.add.text(0, 0, "1", {
+		font: "" + textSize + "px dosis",
+      	fill: "#ffffff",
+      	align: "center"
+  	});
+  	powerText.anchor.setTo(0.5,0.5);
 	},
 
 	update: function () {

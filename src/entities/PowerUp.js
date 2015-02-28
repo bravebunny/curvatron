@@ -43,7 +43,7 @@ PowerUp.prototype = {
 		if (this.mode.sp && (this.type == 'point')) {
 			powerText.setText(this.mode.score+1);
 			powerText.x = this.sprite.x;
-			powerText.y = this.sprite.y;
+			powerText.y = this.sprite.y+2*scale;
 		}
 	},
 

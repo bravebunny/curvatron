@@ -53,21 +53,6 @@ gameMananger.prototype = {
 
 		groupPowers = this.add.group();
 		if (this.mode.sp) {
-			document.body.style.background = colorHexDark;
-			bgColor = Phaser.Color.hexToColor(colorHex);
-
-			var textSize = 15;
-	  	if (mobile) {
-	  		textSize = 30
-	  	}
-
-			powerText = this.add.text(this.x, this.y, "1", {
-			font: "" + textSize + "px dosis",
-	      	fill: "#ffffff",
-	      	align: "center"
-	  	});
-	  	powerText.anchor.setTo(0.5,0.5);
-
 			if (!mobile) {
 				tempLabel = this.add.sprite(w2, h2, 'score-stat');
 				tempLabel.anchor.setTo(0.5,0.5);
@@ -81,9 +66,6 @@ gameMananger.prototype = {
 	  	}
 
 		} else {
-			this.game.stage.backgroundColor = colorHexDark;
-			bgColor = Phaser.Color.hexToColor(colorHexDark);
-
 			this.crown = this.add.sprite(w2, -32, 'crown');
 			this.crown.anchor.setTo(0.5,0.8);
 			this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
@@ -128,6 +110,15 @@ gameMananger.prototype = {
 		}
 
 		this.mode.create();
+
+		if (this.mode.sp) {
+			this.game.stage.backgroundColor = colorHex;
+			document.body.style.background = colorHexDark;
+			bgColor = Phaser.Color.hexToColor(colorHex);
+		} else {
+			this.game.stage.backgroundColor = colorHexDark;
+			bgColor = Phaser.Color.hexToColor(colorHexDark);
+		}
 
 		if (this.mode.spawnPowers){
 			this.createPower();
