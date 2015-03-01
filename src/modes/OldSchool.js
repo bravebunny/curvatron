@@ -16,15 +16,18 @@ OldSchool.prototype = {
 		this.game.load.image('trail0', 'assets/trailOld.png');
 		this.game.load.image('superPower', 'assets/powerOld.png');
 		this.game.load.audio('sfx_collectOld', 'assets/sfx/collectOld.ogg');
+		this.game.load.audio('sfx_killOld', 'assets/sfx/killOld.ogg');
 	},
 
 	create: function() {
 		colorHex = '#8eb367';
 		colorHexDark = '#475933';
 
-		tempLabelText.style.fill = colorHex;
+		if (!mobile) {
+			tempLabelText.style.fill = colorHex;
+		}
 		collectSound = this.game.add.audio('sfx_collectOld');
-		killSound = this.game.add.audio('killOld');
+		killSound = this.game.add.audio('sfx_killOld');
 
 		var textSize = 20;
   	if (mobile) {
@@ -107,6 +110,15 @@ OldSchool.prototype = {
 		if ((nextBallHigh == 0) && (this.score == highScore-1)) {
 			nextBallHigh = 1;
 		}
+	},
+
+	endGame: function () {
+		var betaWarning = this.game.add.text(w2, h2*0.25, "This mode will be free while the game is in Beta.\nWhen version 1.0 is out, you will need to buy the full version.\nWe hope you understand, and thank you for playing!", {
+      font: "25px dosis",
+      fill: "#FFFFFF",
+      align: "center"
+  	});
+  	betaWarning.anchor.setTo(0.5,0.5);
 	}
 
 };

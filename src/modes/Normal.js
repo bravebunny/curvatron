@@ -9,7 +9,7 @@ var Normal = function(game) {
 Normal.prototype = {
 
 	preload: function () {	
-		this.game.load.image('point', 'assets/point.png');
+		this.game.load.image('point', 'assets/pointMP.png');
 		this.game.load.image('player0', 'assets/playerSingle.png');
 		this.game.load.image('trail0', 'assets/trailSingle.png');
 		this.game.load.image('superPower', 'assets/powerHS.png');
@@ -75,12 +75,16 @@ Normal.prototype = {
 	},
 
 	collect: function (player, power) {
-		this.score++;
+		
 		var highScore = this.getHighScore();
-		var powerup = new PowerUp(this.game, 'point', this);
-		powerup.create();
 
-		if (((highScore % 10) == 9) && (highScore > 0)) {
+		if (power.name == 'point') {
+			var powerup = new PowerUp(this.game, 'point', this);
+			powerup.create();
+			this.score++;
+		}
+
+		if (((this.score % 10) == 9) && (this.score > 0)) {
 			var powerup = new PowerUp(this.game, "shrink", this);
 			powerup.create();
 		}

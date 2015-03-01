@@ -38,7 +38,8 @@ preloadMenu.prototype = {
 		this.game.load.image("endless_button","assets/sprites/menu/endless.png");
 		this.game.load.image("oldSchool_button","assets/sprites/menu/oldSchool.png");
 		this.game.load.image("restart_button","assets/sprites/menu/restart.png");
-		this.game.load.image("deaths-stats","assets/sprites/menu/deaths-stats.png");		
+		this.game.load.image("deaths-stats","assets/sprites/menu/deaths-stats.png");	
+		this.game.load.image("old-stats","assets/sprites/menu/old-stats.png");	
 		this.game.load.image("score-stat","assets/sprites/menu/score-stat.png");
 		this.game.load.image("total-stats","assets/sprites/menu/total-stats.png");
 		this.game.load.image("aux-stat","assets/sprites/menu/aux-stat.png");

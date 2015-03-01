@@ -54,10 +54,10 @@ stats.prototype = {
   	ui.textDeaths.anchor.setTo(0.5,0.5);
 
   	if(mobile){
-  		ui.oldSchool = this.game.add.sprite(0, 0, 'deaths-stats');
+  		ui.oldSchool = this.game.add.sprite(0, 0, 'old-stats');
 			ui.oldSchool.anchor.setTo(0.5,0.5);
 			ui.oldSchool.alpha = 0.7;
-			ui.textOldSchool = this.game.add.text(0, 0, localStorage.getItem("deathScore"), {
+			ui.textOldSchool = this.game.add.text(0, 0, localStorage.getItem("odlSchool"), {
 	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"

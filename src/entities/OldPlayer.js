@@ -201,7 +201,6 @@ OldPlayer.prototype = {
 
 
 	keyPressed: function () {
-		console.log("keypressed")
 		this.ready = true;
 		this.showOneKey = true;
 		this.showKeyTime = 2 + totalTime;

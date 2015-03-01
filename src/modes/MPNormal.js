@@ -8,7 +8,7 @@ var MPNormal = function(nPlayers, game) {
 MPNormal.prototype = {
 
 	preload: function () {
-		this.game.load.image('point', 'assets/point.png');
+		this.game.load.image('point', 'assets/pointMP.png');
 		this.game.load.image('tie', 'assets/sprites/menu/tie.png');
 		this.game.load.image('crown', 'assets/crown.png');
 		for (var i=0; i <= this.nPlayers; i++) {

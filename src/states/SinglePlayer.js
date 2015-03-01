@@ -24,7 +24,7 @@ singlePlayer.prototype = {
 		ui.endlessButton.input.useHandCursor=true;
 
 		if (mobile){
-			ui.oldSchoolButton = this.game.add.button(0,0,"oldSchool_button",this.playOldShcoolGame,this);
+			ui.oldSchoolButton = this.game.add.button(0,0,"oldSchool_button",this.playOldSchoolGame,this);
 			ui.oldSchoolButton.anchor.setTo(0.5,0.5);
 			ui.oldSchoolButton.input.useHandCursor=true;
 		}
@@ -92,7 +92,7 @@ singlePlayer.prototype = {
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
-	playOldschoolGame: function () {
+	playOldSchoolGame: function () {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
     var mode = new OldSchool(this.game);
@@ -152,8 +152,8 @@ singlePlayer.prototype = {
 			ui.endlessButton.position.set(w2,h2);
 			ui.oldSchoolButton.position.set(w2+270,h2);
 		} else if (mobile && wOrientation == "portrait") {
-			ui.normalButton.position.set(w2-170,h2-64);
-			ui.endlessButton.position.set(w2+170,h2-64);
+			ui.normalButton.position.set(w2-170,h2-120);
+			ui.endlessButton.position.set(w2+170,h2-120);
 			ui.oldSchoolButton.position.set(w2,h2+170);
 		} else {
 			ui.normalButton.position.set(w2-170,h2);

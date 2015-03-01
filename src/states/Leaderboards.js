@@ -68,7 +68,7 @@ leaderboards.prototype = {
 		this.leaderboard(modesLB[1]);
 	},
 
-	playOldschoolGame: function () {
+	playOldSchoolGame: function () {
 		this.leaderboard(modesLB[2]);
 	},
 

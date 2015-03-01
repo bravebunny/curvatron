@@ -198,6 +198,10 @@ gameMananger.prototype = {
 	endGame: function (){
 		var ui = this.ui;
 		if (!gameOver) {
+			if (this.mode.endGame) {
+				this.mode.endGame();
+			}
+
 			if (!mute) {
 				menuMusic.play();
 				menuMusic.volume = 1;
