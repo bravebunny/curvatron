@@ -57,7 +57,7 @@ stats.prototype = {
   		ui.oldSchool = this.game.add.sprite(0, 0, 'old-stats');
 			ui.oldSchool.anchor.setTo(0.5,0.5);
 			ui.oldSchool.alpha = 0.7;
-			ui.textOldSchool = this.game.add.text(0, 0, localStorage.getItem("odlSchool"), {
+			ui.textOldSchool = this.game.add.text(0, 0, localStorage.getItem("oldSchool"), {
 	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"

@@ -79,15 +79,17 @@ Normal.prototype = {
 		var highScore = this.getHighScore();
 
 		if (power.name == 'point') {
+			this.score++;
 			var powerup = new PowerUp(this.game, 'point', this);
 			powerup.create();
-			this.score++;
+
+			if (((this.score % 10) == 9) && (this.score > 0)) {
+				var powerup = new PowerUp(this.game, "shrink", this);
+				powerup.create();
+			}
 		}
 
-		if (((this.score % 10) == 9) && (this.score > 0)) {
-			var powerup = new PowerUp(this.game, "shrink", this);
-			powerup.create();
-		}
+
 
 		var ballsScore = parseInt(localStorage.getItem("ballsScore"));
 		if (isNaN(ballsScore)) {
