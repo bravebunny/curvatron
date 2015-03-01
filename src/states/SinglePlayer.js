@@ -23,23 +23,33 @@ singlePlayer.prototype = {
 		ui.endlessButton.anchor.setTo(0.5,0.5);
 		ui.endlessButton.input.useHandCursor=true;
 
-		//Score label that shows on hove
-		this.bestScore = localStorage.getItem("highScore")
-		if (this.bestScore != 0) {
-			ui.scoreLabel = this.add.sprite(0,0,"sp_score");
-			ui.scoreLabel.anchor.setTo(0.5,0.5);
-			ui.scoreLabel.alpha = 0;
-			ui.scoreText = this.add.text(0,0, this.bestScore, {
-		        font: "100px dosis",
-		        fill: colorHex,
-		        align: "center"});
-			ui.scoreText.anchor.setTo(0.5,0.5);
-			ui.scoreText.alpha = 0;
-			ui.normalButton.onInputOver.add(this.normalOver, this);
-			ui.normalButton.onInputOut.add(this.normalOut, this);
+		if (mobile){
+			ui.oldSchoolButton = this.game.add.button(0,0,"oldSchool_button",this.playOldShcoolGame,this);
+			ui.oldSchoolButton.anchor.setTo(0.5,0.5);
+			ui.oldSchoolButton.input.useHandCursor=true;
 		}
 
-		this.bestSurvScore = localStorage.getItem("survivalScore")
+		if (!mobile) {
+			//Score label that shows on hove
+			this.bestScore = localStorage.getItem("highScore")
+			if (this.bestScore != 0) {
+				ui.scoreLabel = this.add.sprite(0,0,"sp_score");
+				ui.scoreLabel.anchor.setTo(0.5,0.5);
+				ui.scoreLabel.alpha = 0;
+				ui.scoreText = this.add.text(0,0, this.bestScore, {
+			        font: "100px dosis",
+			        fill: colorHex,
+			        align: "center"});
+				ui.scoreText.anchor.setTo(0.5,0.5);
+				ui.scoreText.alpha = 0;
+				if (!mobile) {
+					ui.normalButton.onInputOver.add(this.normalOver, this);
+					ui.normalButton.onInputOut.add(this.normalOut, this);
+				}
+			}
+
+		
+			this.bestSurvScore = localStorage.getItem("survivalScore")
 	    if (this.bestSurvScore != 0) {
 	  		ui.endlessLabel = this.add.sprite(0,0,"sp_score");
 	  		ui.endlessLabel.scale.x = -1;
@@ -52,9 +62,11 @@ singlePlayer.prototype = {
 	    	});
 	    	ui.endlessText.anchor.setTo(0.5,0.5);
 	    	ui.endlessText.alpha = 0;
-	    	ui.endlessButton.onInputOver.add(this.endlessOver, this);
-			ui.endlessButton.onInputOut.add(this.endlessOut, this);
-	    }
+
+		    	ui.endlessButton.onInputOver.add(this.endlessOver, this);
+					ui.endlessButton.onInputOut.add(this.endlessOut, this);
+			}
+    }
 
 		//Go back Button
 		ui.backButton = this.game.add.button(0,0,"back_button",this.backPressed,this);
@@ -69,15 +81,21 @@ singlePlayer.prototype = {
 	playNormalGame: function () {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
-    //var mode = new Normal(this.game);
-    var mode = new OldSchool(this.game);
+    var mode = new Normal(this.game);
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
 	playEndlessGame: function () {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
-    var mode = new Adventure(this.game);
+    var mode = new Endless(this.game);
+		this.game.state.start("PreloadGame", true, false, mode);
+	},
+
+	playOldschoolGame: function () {
+		numberPlayers = 0;
+    menuMusic.fadeOut(2000);
+    var mode = new OldSchool(this.game);
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
@@ -120,17 +138,28 @@ singlePlayer.prototype = {
 	  	}
 
 		if (this.bestScore != 0) {
-		    ui.scoreLabel.position.set(w2-270,h2);
-		    ui.scoreText.position.set(w2-315,h2+10);
-    	}
+	    ui.scoreLabel.position.set(w2-270,h2);
+	    ui.scoreText.position.set(w2-315,h2+10);
+    }
 
 		if (this.bestSurvScore != 0) {
-		    ui.endlessLabel.position.set(w2+270,h2);
-		    ui.endlessText.position.set(w2+330,h2+10);
-	    }
+	    ui.endlessLabel.position.set(w2+270,h2);
+	    ui.endlessText.position.set(w2+330,h2+10);
+	  }
 
-		ui.normalButton.position.set(w2-170,h2);
-		ui.endlessButton.position.set(w2+170,h2);
+	  if (mobile && wOrientation == "landscape") {
+			ui.normalButton.position.set(w2-270,h2);
+			ui.endlessButton.position.set(w2,h2);
+			ui.oldSchoolButton.position.set(w2+270,h2);
+		} else if (mobile && wOrientation == "portrait") {
+			ui.normalButton.position.set(w2-170,h2-64);
+			ui.endlessButton.position.set(w2+170,h2-64);
+			ui.oldSchoolButton.position.set(w2,h2+170);
+		} else {
+			ui.normalButton.position.set(w2-170,h2);
+			ui.endlessButton.position.set(w2+170,h2);
+		}
+
 		ui.backButton.position.set(w2/2,h2*1.6);
     }
     
