@@ -11,9 +11,6 @@ Timed.prototype = {
 	preload: function () {	
 		this.game.load.image('player0', 'assets/playerSingle.png');
 		this.game.load.image('trail0', 'assets/trailSingle.png');
-		this.game.load.image('superPower', 'assets/powerHS.png');
-		this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100);
-
 	},
 
 	create: function() {
@@ -23,6 +20,9 @@ Timed.prototype = {
 	},
 
 	update: function() {
+		if(this.score == 10){
+			
+		}
 
 	},
 
@@ -52,14 +52,14 @@ Timed.prototype = {
 	},
 
 	submitScore: function () {
-		var params = Cocoon.Social.ScoreParams;
+		/*var params = Cocoon.Social.ScoreParams;
 		if (this.score > this.getHighScore()) {
 			this.setHighScore(this.score);
 		}
 		params.leaderboardID = this.leaderboardID;
 		if (mobile && socialService && socialService.isLoggedIn()) {
 			socialService.submitScore(this.score, null, params);
-		}
+		}*/
 	},
 
 	collect: function (player, power) {

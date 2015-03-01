@@ -20,6 +20,12 @@ leaderboards.prototype = {
 		ui.endlessButton.anchor.setTo(0.5,0.5);
 		ui.endlessButton.input.useHandCursor=true;
 
+		if (mobile){
+			ui.oldSchoolButton = this.game.add.button(0,0,"oldSchool_button",this.playOldSchoolGame,this);
+			ui.oldSchoolButton.anchor.setTo(0.5,0.5);
+			ui.oldSchoolButton.input.useHandCursor=true;
+		}
+
 		//Go back Button
 		ui.backButton = this.game.add.button(0,0,"back_button",this.backPressed,this);
 		ui.backButton.anchor.setTo(0.5,0.5);
@@ -62,6 +68,10 @@ leaderboards.prototype = {
 		this.leaderboard(modesLB[1]);
 	},
 
+	playOldschoolGame: function () {
+		this.leaderboard(modesLB[2]);
+	},
+
 	backPressed: function () {
 		this.game.state.start("Menu");
 	},
@@ -77,9 +87,19 @@ leaderboards.prototype = {
       ui.title.scale.set(1,1);
     }
 
-		ui.normalButton.position.set(w2-170,h2);
-		ui.endlessButton.position.set(w2+170,h2);
+    if (mobile && wOrientation == "landscape") {
+			ui.normalButton.position.set(w2-270,h2);
+			ui.endlessButton.position.set(w2,h2);
+			ui.oldSchoolButton.position.set(w2+270,h2);
+		} else if (mobile && wOrientation == "portrait") {
+			ui.normalButton.position.set(w2-170,h2-120);
+			ui.endlessButton.position.set(w2+170,h2-120);
+			ui.oldSchoolButton.position.set(w2,h2+170);
+		} else {
+			ui.normalButton.position.set(w2-170,h2);
+			ui.endlessButton.position.set(w2+170,h2);
+		}
+
 		ui.backButton.position.set(w2/2,h2*1.6);
-    }
-    
+  }   
 };
