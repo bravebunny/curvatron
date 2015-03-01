@@ -23,21 +23,31 @@ Adventure.prototype = {
 
 	create: function() {
 
-		this.game.physics.startSystem(Phaser.Physics.ARCADE)
+		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-		//this.game.world.setBounds(0, 0, this.width, this.height);
 		this.game.width = this.width;
 		this.game.height = this.height;
 		this.game.canvas.width = this.width;
 		this.game.canvas.height = this.height;
-		this.game.world.width = this.width;
-		this.game.world.height = this.height;
+		this.game.renderer.resize(this.width, this.height);
 		this.game.stage.width = this.width;
 		this.game.stage.height = this.height;
+		this.game.scale.width = this.width;
+		this.game.scale.height = this.height;
+		this.game.world.setBounds(0, 0, this.width, this.height);
+		this.game.camera.setSize(this.width, this.height);
+		this.game.camera.setBoundsToWorld();
 		this.game.scale.refresh();
 
-		console.log(this.game.world.width)
-		console.log(this.game.world.height)
+		borders = [0, this.game.world.width, 0,this.game.world.height];
+		bmd.width = this.game.world.width;
+		bmd.height = this.game.world.height;
+
+		w2 = this.game.world.width/2;
+		h2 = this.game.world.height/2;
+
+		players[0].x = w2;
+		players[0].y = h2;
 
 		this.score = 0;
 		spawnPowers = true;
@@ -45,20 +55,19 @@ Adventure.prototype = {
 		this.map = this.game.add.tilemap('level1'); // Preloaded tilemap
 		this.map.addTilesetImage('Pastel'); // Preloaded tileset
 
-    this.layer = this.map.createLayer('obstacles');  //layer[0]
+    this.layer = this.map.createLayer('obstacles'); //layer[0]
 
-		this.map.setCollisionByExclusion([], true, this.layer);
+		//this.map.setCollisionByExclusion([], true, this.layer);
 
-    //this.layer.resizeWorld();
+		this.layer.resizeWorld();
 
-
+		//players[0].sprite.scale.set((-1/24)*8+7/12);
 	},
 
 	update: function() {
-		console.log("Update")
-		 if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
-		 	console.log("COLIIIIIIIIIIII")
-		 }
+		if(this.game.physics.arcade.overlap(players[0].sprite, this.layer)){
+			players[0].kill();
+		}
 	},
 
 	erasesTrail: function () {
