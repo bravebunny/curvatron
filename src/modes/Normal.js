@@ -12,7 +12,7 @@ var Normal = function(game) {
 Normal.prototype = {
 
 	preload: function () {	
-		this.game.load.image('point', 'assets/pointMP.png');
+		this.game.load.image('point', 'assets/point.png');
 		this.game.load.image('player0', 'assets/playerSingle.png');
 		this.game.load.image('trail0', 'assets/trailSingle.png');
 		this.game.load.image('superPower', 'assets/powerHS.png');
@@ -31,7 +31,7 @@ Normal.prototype = {
   	}
 		powerText = this.game.add.text(0, 0, "1", {
 		font: "" + textSize + "px dosis",
-      	fill: "#ffffff",
+      	fill: colorHex,
       	align: "center"
   	});
   	powerText.anchor.setTo(0.5,0.5);
