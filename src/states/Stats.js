@@ -53,17 +53,15 @@ stats.prototype = {
   	});
   	ui.textDeaths.anchor.setTo(0.5,0.5);
 
-  	if(mobile){
-  		ui.oldSchool = this.game.add.sprite(0, 0, 'old-stats');
-			ui.oldSchool.anchor.setTo(0.5,0.5);
-			ui.oldSchool.alpha = 0.7;
-			ui.textOldSchool = this.game.add.text(0, 0, localStorage.getItem("oldSchool"), {
-	        font: "60px dosis",
-	        fill: colorHex,
-	        align: "center"
-  		});
-  		ui.textOldSchool.anchor.setTo(0.5,0.5);
-  	}
+		ui.oldSchool = this.game.add.sprite(0, 0, 'old-stats');
+		ui.oldSchool.anchor.setTo(0.5,0.5);
+		ui.oldSchool.alpha = 0.7;
+		ui.textOldSchool = this.game.add.text(0, 0, localStorage.getItem("oldSchool"), {
+        font: "60px dosis",
+        fill: colorHex,
+        align: "center"
+		});
+		ui.textOldSchool.anchor.setTo(0.5,0.5);
 
     //back button
 		ui.backButton = this.game.add.button(0,0,"back_button",this.backPressed,this);
@@ -91,7 +89,7 @@ stats.prototype = {
     } else {
       ui.title.scale.set(1,1);
     }
-    if(mobile && wOrientation == "landscape"){
+    if((mobile && wOrientation == "landscape") || (!mobile)){
 			ui.highScore.position.set(w2-300, h2-85);
 			ui.highScoretext.position.set(w2-250, h2-85);
 
@@ -122,18 +120,6 @@ stats.prototype = {
 
 			ui.oldSchool.position.set(w2, h2+175);
 			ui.textOldSchool.position.set(w2+50, h2+175);
-		} else {
-			ui.highScore.position.set(w2-150, h2-85);
-			ui.highScoretext.position.set(w2-100, h2-85);
-
-			ui.survivalScore.position.set(w2+150, h2-85);
-			ui.survivalScoretext.position.set(w2+200, h2-85);
-
-			ui.totalBalls.position.set(w2-150, h2+75);
-			ui.totalBallsText.position.set(w2-100,h2+75);
-
-			ui.statsDeaths.position.set(w2+150, h2+75);
-			ui.textDeaths.position.set(w2+200, h2+75);
 		}
 
 		ui.highScore.scale.set(0.7,0.7);
