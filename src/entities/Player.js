@@ -133,6 +133,13 @@ Player.prototype = {
 				}
 			}
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
+
+			if(this.mode.obstacle){
+				if(this.game.physics.arcade.overlap(this.sprite, this.mode.obstacleGroup, this.kill, null, this)){
+					console.log("dieeeeeeeeeee potato")
+				}
+			}
+
 			for (var i = 0; i < players.length; i++) {
 				if (i != this.id) {
 					this.game.physics.arcade.overlap(this.sprite, players[i].sprite, this.kill, null, this);
@@ -281,7 +288,7 @@ Player.prototype = {
 			
 		}
 
-		if (other) {
+		if (other && !this.mode.sp) {
 			other.kill();
 		}
 	},
@@ -413,8 +420,8 @@ Player.prototype = {
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 	},
 
-	/*render: function(){
-		game.debug.body(this.sprite);
-	}*/
+	render: function(){
+		this.game.debug.body(this.sprite);
+	}
 
 };

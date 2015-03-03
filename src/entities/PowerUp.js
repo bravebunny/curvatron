@@ -63,16 +63,23 @@ PowerUp.prototype = {
 		this.sprite.scale.set((this.size/2)*scale);
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 
-		var collSize = 16*scale;
-		for (var i = 0; i < players.length; i++) {
-			for (var j = 0; j < players[i].trailArray.length; j++) {
-				var curTrail = players[i].trailArray[j];
-				if (curTrail && curTrail.x-collSize < this.sprite.x && curTrail.x+collSize > this.sprite.x &&
-					 	curTrail.y-collSize < this.sprite.y && curTrail.y+collSize > this.sprite.y) {
-					 	this.sprite.kill();
-						this.place();
+		if(this.game.physics.arcade.overlap(this.sprite, this.mode.obstacleGroup)){
+			console.log("bolinha coli");
+			this.sprite.alpha = 0.2;
+			this.place();
+		} else {
+			var collSize = 16*scale;
+			for (var i = 0; i < players.length; i++) {
+				for (var j = 0; j < players[i].trailArray.length; j++) {
+					var curTrail = players[i].trailArray[j];
+					if (curTrail && curTrail.x-collSize < this.sprite.x && curTrail.x+collSize > this.sprite.x &&
+						 	curTrail.y-collSize < this.sprite.y && curTrail.y+collSize > this.sprite.y) {
+						 	this.sprite.kill();
+							this.place();
+					}
 				}
 			}
+			console.log("bolinha criado")
 		}
 	},
 
