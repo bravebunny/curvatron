@@ -24,7 +24,7 @@ var Player = function (id, x, y, key, mode, game) {
 	this.showKeyTime = 0;
 	this.showOneKey = true;
 	this.shrink = false;
-	this.shrinkAmount = 200;
+	this.shrinkAmount = 400;
 	this.touch = null;
 	this.orientation = null;
 	this.playerMobileButton = null;
@@ -292,7 +292,12 @@ Player.prototype = {
 		}
 		if (power.name == "point") {
 			this.killTrail = false;
-			this.growth = 60*power.scale.x;
+			if (this.mode.sp) {
+				this.growth = 60;
+			} else {
+				this.growth = 60*power.scale.x;
+			}
+			
 			this.score = this.score + power.scale.x;
 		} else if (power.name == "shrink") {
 			this.shrinkSize = this.trailArray.length - this.shrinkAmount;

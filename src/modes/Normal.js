@@ -4,6 +4,7 @@ var Normal = function(game) {
 	this.spawnPowers = true;
 	this.leaderboardID = modesLB[0];
 	this.score = 0;
+	this.shrinkFreq = 10;
 };
 
 Normal.prototype = {
@@ -83,7 +84,7 @@ Normal.prototype = {
 			var powerup = new PowerUp(this.game, 'point', this);
 			powerup.create();
 
-			if (((this.score % 10) == 9) && (this.score > 0)) {
+			if (((this.score % this.shrinkFreq) == this.shrinkFreq-1) && (this.score > 0)) {
 				var powerup = new PowerUp(this.game, "shrink", this);
 				powerup.create();
 			}
