@@ -28,6 +28,7 @@ var Player = function (id, x, y, key, mode, game) {
 	this.touch = null;
 	this.orientation = null;
 	this.playerMobileButton = null;
+	this.collectSemaphore = 0;
 };
 
 Player.prototype = {
@@ -294,29 +295,35 @@ Player.prototype = {
 	},
 
 	collect: function (player, power) {
-		if (!mute) {
-			collectSound.play();
-		}
-		if (power.name == "point") {
-			this.killTrail = false;
-			if (this.mode.sp) {
-				this.growth = 60;
-			} else {
-				this.growth = 60*power.scale.x;
+		if (this.collectSemaphore == 0) {
+			this.collectSemaphore = 1;
+			console.log("EIAAAAAAAAAA")
+			if (!mute) {
+				collectSound.play();
 			}
-			
-			this.score = this.score + power.scale.x;
-		} else if (power.name == "shrink") {
-			this.shrinkSize = this.trailArray.length - this.shrinkAmount;
-			this.lastTrailLength -= this.shrinkAmount;
-			this.shrink = true;
-		}
+			if (power.name == "point") {
+				this.killTrail = false;
+				if (this.mode.sp) {
+					this.growth = 60;
+				} else {
+					this.growth = 60*power.scale.x;
+				}
+				
+				this.score = this.score + power.scale.x;
+			} else if (power.name == "shrink") {
+				this.shrinkSize = this.trailArray.length - this.shrinkAmount;
+				this.lastTrailLength -= this.shrinkAmount;
+				this.shrink = true;
+			}
 
-		if (this.mode.collect) {
-			this.mode.collect(player, power, this);
+			if (this.mode.collect) {
+				this.mode.collect(player, power, this);
+			}
+
+			this.game.add.tween(power).to( { alpha: 0 }, 300, Phaser.Easing.Linear.None, true);
+			var powerTween = this.game.add.tween(power.scale).to( {x:2, y:2}, 300, Phaser.Easing.Linear.None, true);
+			powerTween.onComplete.add(function(){power.kill(); this.collectSemaphore = 0;}, this);
 		}
-		
-		power.kill();
 	},
 
 	showKey: function () {
