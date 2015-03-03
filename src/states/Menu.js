@@ -16,7 +16,6 @@ var menu = function (game) {
 
 menu.prototype = {
   create: function () {
-
     this.world.pivot.set(0, 0);
     this.world.angle = 0;
 
@@ -63,41 +62,47 @@ menu.prototype = {
     ui.beta.anchor.setTo(0.5,0.5);
 
     //Single Player
-		ui.spButton = this.add.button(0,0,"singleplayer_button",this.singlePlayer,this);
+		ui.spButton = this.add.button(0,0,"singleplayer_button");
 		ui.spButton.anchor.setTo(0.5,0.5);
     ui.spButton.input.useHandCursor = true;
+    clickButton(ui.spButton, this.singlePlayer, this);
 
     //Multiplayer
-		ui.mpButton = this.add.button(0,0,"multiplayer_button",this.multiplayer,this);
+		ui.mpButton = this.add.button(0,0,"multiplayer_button");
 		ui.mpButton.anchor.setTo(0.5,0.5);
     ui.mpButton.input.useHandCursor = true;
+    clickButton(ui.mpButton, this.multiplayer, this);
 
-    //SetKeys
+    //SetKeys or leaderboards
     if (mobile) {
-      ui.leaderboard = this.add.button(0,0,"leaderboard_button",this.leaderboard,this);
+      ui.leaderboard = this.add.button(0,0,"leaderboard_button");
       ui.leaderboard.anchor.setTo(0.5,0.5);
       ui.leaderboard.input.useHandCursor = true;
+      clickButton(ui.leaderboard, this.leaderboard, this);
     } else {
-      ui.keysButton = this.add.button(0,0,"setkeys_button",this.setKeys,this);
+      ui.keysButton = this.add.button(0,0,"setkeys_button");
       ui.keysButton.anchor.setTo(0.5,0.5);
       ui.keysButton.input.useHandCursor = true;
+      clickButton(ui.keysButton, this.setKeys, this);
     }
 
   	//Stats
-  	ui.statsButton = this.add.button(0,0,"stats_button",this.stats,this);
+  	ui.statsButton = this.add.button(0,0,"stats_button");
 		ui.statsButton.anchor.setTo(0.5,0.5);
     ui.statsButton.input.useHandCursor = true;
+    clickButton(ui.statsButton, this.stats, this);
 
   	//Audio
     if (mute) {
-    	ui.audioButton = this.add.button(0,0,"audiooff_button",this.muteSound,this);
+    	ui.audioButton = this.add.button(0,0,"audiooff_button");
   		ui.audioButton.anchor.setTo(0.5,0.5);
       ui.audioButton.input.useHandCursor = true;
     } else {
-      ui.audioButton = this.add.button(0,0,"audio_button",this.muteSound,this);
+      ui.audioButton = this.add.button(0,0,"audio_button");
       ui.audioButton.anchor.setTo(0.5,0.5);
       ui.audioButton.input.useHandCursor = true;
     }
+    clickButton(ui.audioButton, this.muteSound, this);
 
     this.scale.refresh();
     //Place the menu buttons and labels on their correct positions
@@ -106,12 +111,11 @@ menu.prototype = {
 
 	singlePlayer: function () {
 		this.state.start("SinglePlayer",true,false);
+
 	},
 
 	multiplayer: function () {
-    //if (!mobile) {
-      this.state.start("Multiplayer");
-   // }
+    this.state.start("Multiplayer");
 	},
 
 	setKeys: function () {

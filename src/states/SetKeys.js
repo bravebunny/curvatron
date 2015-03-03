@@ -41,22 +41,23 @@ setKeys.prototype = {
 		ui.keyButton = this.game.add.sprite(0,0,"key_button");
 		ui.keyButton.anchor.setTo(0.5,0.5);
 		ui.keyText = this.game.add.text(0,0, String.fromCharCode(keys[this.selectedPlayer]), {
-	        font: "150px dosis",
-	        fill: colorHex,
-	        align: "center"
-	  	});
-  		ui.keyText.anchor.setTo(0.5,0.5);
+      font: "150px dosis",
+      fill: colorHex,
+      align: "center"
+  	});
+		ui.keyText.anchor.setTo(0.5,0.5);
 
 		//Play Button
-		ui.playButton = this.game.add.button(0,0,"accept_button",this.backPressed,this);
+		ui.playButton = this.game.add.button(0,0,"accept_button");
 		ui.playButton.anchor.setTo(0.5,0.5);
 		ui.playButton.input.useHandCursor=true;
+		clickButton(ui.playButton, this.backPressed, this);
 
 		//Place the menu buttons and labels on their correct positions
-    	this.setPositions();
+  	this.setPositions();
 
-	  	this.game.input.keyboard.addCallbacks(this, this.onPressed);
-	  	this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
+  	this.game.input.keyboard.addCallbacks(this, this.onPressed);
+  	this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
 
 	backPressed: function () {

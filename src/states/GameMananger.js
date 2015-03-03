@@ -82,9 +82,10 @@ gameMananger.prototype = {
  		}
 
 		if (mobile) {
-			pauseSprite = this.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
+			pauseSprite = this.add.button(w2, h2, 'pauseButton');
     	pauseSprite.anchor.setTo(0.5, 0.5);
     	pauseSprite.input.useHandCursor = true;
+    	clickButton(pauseSprite, this.touchPauseButton, this);
 		}
 
 		//create BitmapData
@@ -223,19 +224,21 @@ gameMananger.prototype = {
 					}, this);
 			}
 
-	  	var restartButton = this.add.button(w2+97, h2-97,"restart_button",
-	  		function () {
-	  			this.state.restart(true, false, this.mode);
-	  		},this);
+	  	var restartButton = this.add.button(w2+97, h2-97,"restart_button");
 
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
+			clickButton(restartButton, 
+				function () {
+	  			this.state.restart(true, false, this.mode);
+	  		}, this);
 
-			var mainMenu = this.add.button(w2-97, h2-97,"exit_button",function(){this.state.start("Menu");},this);
+			var mainMenu = this.add.button(w2-97, h2-97,"exit_button");
 			mainMenu.scale.set(1,1);
 			mainMenu.anchor.setTo(0.5,0.5);
 			mainMenu.input.useHandCursor=true;
+			clickButton(mainMenu,function(){this.state.start("Menu");}, this);
 
 			if (mobile) {
 				pauseSprite.alpha = 0;
@@ -313,6 +316,7 @@ gameMananger.prototype = {
 					leaderboardButton.scale.set(0.6,0.6);
 					leaderboardButton.anchor.setTo(0.5,0.5);
 					leaderboardButton.input.useHandCursor=true;
+					clickButton(leaderboardButton, this.leaderboard, this);
 	    	}
     	}
 	  	gameOver = true;
@@ -345,32 +349,36 @@ gameMananger.prototype = {
 				this.game.time.events.remove(this.powerTimer);
 			}
 
-	        ui.menu = this.add.button(w2, h2-150, 'resume_button',function(){this.pause();},this);
-	        ui.menu.anchor.setTo(0.5, 0.5);
-	        ui.menu.scale.set(1,1);
-	        ui.menu.input.useHandCursor=true;
+        ui.menu = this.add.button(w2, h2-150, 'resume_button');
+        ui.menu.anchor.setTo(0.5, 0.5);
+        ui.menu.scale.set(1,1);
+        ui.menu.input.useHandCursor=true;
+        clickButton(ui.menu,this.pause, this);
 
-	        ui.restart = this.add.button(w2-150, h2, 'restart_button',function(){this.state.restart(true, false, this.mode);},this);
-	        ui.restart.anchor.setTo(0.5, 0.5);
-	        ui.restart.scale.set(1,1);
-	        ui.restart.input.useHandCursor=true;
+        ui.restart = this.add.button(w2-150, h2, 'restart_button');
+        ui.restart.anchor.setTo(0.5, 0.5);
+        ui.restart.scale.set(1,1);
+        ui.restart.input.useHandCursor=true;
+        clickButton(ui.restart,function(){this.state.restart(true, false, this.mode);}, this);
 
-	        ui.exit = this.add.button(w2, h2+150, 'exit_button',function(){this.state.start("Menu");},this);
-	        ui.exit.anchor.setTo(0.5, 0.5);
-	        ui.exit.scale.set(1,1);
-	        ui.exit.input.useHandCursor=true;
+        ui.exit = this.add.button(w2, h2+150, 'exit_button');
+        ui.exit.anchor.setTo(0.5, 0.5);
+        ui.exit.scale.set(1,1);
+        ui.exit.input.useHandCursor=true;
+        clickButton(ui.exit,function(){this.state.start("Menu");}, this);
 
-	        if (mute) {
-		    	ui.audioButton = this.add.button(w2+150, h2,"audiooff_button",this.muteSound,this);
-		  		ui.audioButton.anchor.setTo(0.5,0.5);
-		  		ui.audioButton.scale.set(1,1);
-		  		ui.audioButton.input.useHandCursor=true;
+        if (mute) {
+	    	ui.audioButton = this.add.button(w2+150, h2,"audiooff_button");
+	  		ui.audioButton.anchor.setTo(0.5,0.5);
+	  		ui.audioButton.scale.set(1,1);
+	  		ui.audioButton.input.useHandCursor=true;
 		    } else {
-		        ui.audioButton = this.add.button(w2+150, h2,"audio_button",this.muteSound,this);
-		        ui.audioButton.anchor.setTo(0.5,0.5);
-		        ui.audioButton.scale.set(1,1);
-		        ui.audioButton.input.useHandCursor=true;
+	        ui.audioButton = this.add.button(w2+150, h2,"audio_button");
+	        ui.audioButton.anchor.setTo(0.5,0.5);
+	        ui.audioButton.scale.set(1,1);
+	        ui.audioButton.input.useHandCursor=true;
 		    }
+	    	clickButton(ui.audioButton,this.muteSound, this);
 			
 		} else { //unpause
 			ui.overlay.scale.set(0);
