@@ -113,12 +113,14 @@ OldSchool.prototype = {
 	},
 
 	endGame: function () {
-		var betaWarning = this.game.add.text(w2, h2*0.25, "This mode will be free while the game is in Beta.\nWhen version 1.0 is out, you will need to buy the full version.\nWe hope you understand, and thank you for playing!", {
-      font: "25px dosis",
-      fill: "#FFFFFF",
-      align: "center"
-  	});
-  	betaWarning.anchor.setTo(0.5,0.5);
+		if(mobile){
+			var betaWarning = this.game.add.text(w2, h2*0.25, "This mode will be free while the game is in Beta.\nWhen version 1.0 is out, you will need to buy the full version.\nWe hope you understand, and thank you for playing!", {
+	      font: "25px dosis",
+	      fill: "#FFFFFF",
+	      align: "center"
+	  	});
+	  	betaWarning.anchor.setTo(0.5,0.5);
+	  }
 	}
 
 };
