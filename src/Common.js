@@ -8,8 +8,8 @@ function buttonUp() {
 }
 
 function clickButton(button, callback, state) {
-	var tweenIn = button.game.add.tween(button.scale).to( { x: 0.85, y: 0.85 }, 100, Phaser.Easing.Linear.None, false);
-  var tweenOut = button.game.add.tween(button.scale).to( { x: 1, y: 1 }, 100, Phaser.Easing.Linear.None, false);
+	var tweenIn = button.game.add.tween(button.scale).to( { x: 0.85, y: 0.85 }, 80, Phaser.Easing.Linear.None, false);
+  var tweenOut = button.game.add.tween(button.scale).to( { x: 1, y: 1 }, 80, Phaser.Easing.Linear.None, false);
 
   tweenOut.onComplete.add(callback, state);
 
