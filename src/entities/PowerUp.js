@@ -3,6 +3,7 @@ var PowerUp = function (game, type, mode) {
 	this.game = game;
 	this.type = type;
 	this.sprite = null;
+	this.spriteTween = null;
 	this.x;
 	this.y;
 	this.size = 1;
@@ -32,6 +33,8 @@ PowerUp.prototype = {
 		}
 
 		this.place();
+		this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+		this.game.add.tween(this.spriteTween.scale).to( {x:4, y:4}, 1000, Phaser.Easing.Linear.None, true);
 		this.sprite.name = this.type;
 		if (nextBallHigh == 1) {
 			this.sprite.loadTexture('superPower');
@@ -53,14 +56,18 @@ PowerUp.prototype = {
 
 		if (this.type == "shrink") {
 			this.sprite = this.game.add.sprite(this.x, this.y, 'shrink');
+			this.spriteTween = this.game.add.sprite(this.x, this.y, 'shrink');
 			var anim = this.sprite.animations.add('timed');
 			anim.play(1.5,false,true);
 		} else {
 			this.sprite = this.game.add.sprite(this.x, this.y, 'point');
+			this.spriteTween = this.game.add.sprite(this.x, this.y, 'point');
 		}
 
 		this.sprite.anchor.setTo(.5,.5);
+		this.spriteTween.anchor.setTo(.5,.5);
 		this.sprite.scale.set((this.size/2)*scale);
+		this.spriteTween.scale.set((this.size/2)*scale);
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 
 		if(this.game.physics.arcade.overlap(this.sprite, this.mode.obstacleGroup)){
