@@ -104,6 +104,11 @@ Normal.prototype = {
 		if (this.lastPoint) {
 			this.pointsPow.push(this.lastPoint);
 			this.pointsPow = shuffleArray(this.pointsPow);
+			
+			if (this.lastPoint.x % 2 == 0 && this.lastPoint.y % 2 == 0) {
+				this.pointsObs.push(this.lastPoint);
+				this.pointsObs = shuffleArray(this.pointsObs);
+			}
 		}
 		
 		var highScore = this.getHighScore();
@@ -139,8 +144,10 @@ Normal.prototype = {
 	},
 
 	createPower: function (type) {
-		this.lastPoint = this.pointsPow.pop();
-
+		this.lastPoint = null;
+		while (!this.lastPoint) {
+			this.lastPoint = this.pointsPow.pop();
+		}
 		var x = (this.lastPoint.x+1)*this.cellSize;
 		var y = (this.lastPoint.y+1)*this.cellSize;
 
@@ -151,12 +158,22 @@ Normal.prototype = {
 			this.grid[this.lastPoint.x] = [];
 		}
 		this.grid[this.lastPoint.x][this.lastPoint.y] = powerup;
+		
+		for (var i = 0; i < this.pointsObs.length; i++) {
+			if (JSON.stringify(this.pointsObs[i]) === JSON.stringify(this.lastPoint)) {
+				this.pointsObs[i] = null;
+				break;
+			}
+		}
 
 	},
 
 	createObstacle: function (){
-
-		var points = this.pointsObs.pop();
+		var points = null;
+		while (!points) {
+			points = this.pointsObs.pop();
+		}
+		
 		var x = points.x*this.cellSize + this.cellSize;
 		var y = points.y*this.cellSize + this.cellSize;
 
@@ -174,6 +191,13 @@ Normal.prototype = {
 			this.grid[points.x] = [];
 		}
 		this.grid[points.x][points.y] = obstacle;
+		
+		for (var i = 0; i < this.pointsPow.length; i++) {
+			if (JSON.stringify(this.pointsPow[i]) === JSON.stringify(points)) {
+				this.pointsPow[i] = null;
+				break;
+			}
+		}
 
 		
 	},
