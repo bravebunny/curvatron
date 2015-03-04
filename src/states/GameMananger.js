@@ -335,6 +335,7 @@ gameMananger.prototype = {
 	pause: function() {
 		var ui = this.ui;
 		if (!paused) { //pause
+			this.game.tweens.pauseAll();
 			if (gameOver) {
 				this.state.start("Menu");
 			}
@@ -390,6 +391,7 @@ gameMananger.prototype = {
 	    	clickButton(ui.audioButton,this.muteSound, this);
 			
 		} else { //unpause
+			this.game.tweens.resumeAll();
 			ui.overlay.scale.set(0);
 			if (!this.mode.sp) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
