@@ -5,8 +5,14 @@ var Normal = function(game) {
 	this.leaderboardID = modesLB[0];
 	this.score = 0;
 	this.shrinkFreq = 1;
-	this.obstacle = null;
 	this.obstacleGroup = null;
+	this.cellSize = 64;
+	this.rows = Math.floor(h2*2/this.cellSize);
+	this.columns = Math.floor(w2*2/this.cellSize);
+	this.grid = [[]];
+	this.pointsPow = [];
+	this.pointsObs = [];
+	this.lastPoint = null;
 };
 
 Normal.prototype = {
@@ -17,7 +23,6 @@ Normal.prototype = {
 		this.game.load.image('trail0', 'assets/trailSingle.png');
 		this.game.load.image('superPower', 'assets/powerHS.png');
 		this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100);
-
 	},
 
 	create: function() {
@@ -35,6 +40,23 @@ Normal.prototype = {
       	align: "center"
   	});
   	powerText.anchor.setTo(0.5,0.5);
+
+  	//create grid points
+  	for (var i = 0; i < this.columns; i++) {
+			for (var j = 0; j < this.rows; j++) {
+				this.pointsPow.push({x: i, y: j});
+			}
+		}
+		this.pointsPow = shuffleArray(this.pointsPow);
+
+  	//create grid points
+  	for (var i = 0; i < this.columns*0.5; i++) {
+			for (var j = 0; j < this.rows*0.5; j++) {
+				this.pointsObs.push({x: i*2, y: j*2});
+			}
+		}
+		this.pointsObs = shuffleArray(this.pointsObs);
+
 	},
 
 	update: function() {
@@ -78,23 +100,21 @@ Normal.prototype = {
 	},
 
 	collect: function (player, power) {
+
+		if (this.lastPoint) {
+			this.pointsPow.push(this.lastPoint);
+			this.pointsPow = shuffleArray(this.pointsPow);
+		}
 		
 		var highScore = this.getHighScore();
 
-		if(power.name == 'shrink'){
-			this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){this.createObstacle();}, this);
-
-		}
-
 		if (power.name == 'point') {
 			this.score++;
-			var powerup = new PowerUp(this.game, 'point', this);
-			powerup.create();
+			this.createPower('point');
 
 			//if (((this.score % this.shrinkFreq) == this.shrinkFreq-1) && (this.score > 0)) {
 			if (((this.score % this.shrinkFreq) == this.shrinkFreq-1) && (this.score > 0)) {
-				var powerup = new PowerUp(this.game, "shrink", this);
-				powerup.create();
+				this.createPower('shrink')
 			}
 		}
 
@@ -107,41 +127,55 @@ Normal.prototype = {
 		if ((nextBallHigh == 0) && (this.score == highScore-1)) {
 			nextBallHigh = 1;
 		}
+
+		if(power.name == 'shrink' && !this.gridIsFull()){
+			this.createObstacle();
+		}
+
 	},
 
-	createObstacle: function(){
-		var x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
-		var y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
+	gridIsFull: function () {
+		return (this.pointsObs.length == 0);
+	},
 
-		var xd = players[0].x - x;
-		var yd = players[0].y - y;
+	createPower: function (type) {
+		this.lastPoint = this.pointsPow.pop();
 
-		if (Math.sqrt((xd*xd)+(yd*yd)) < 200){
-			console.log("ao pe da cobra")
-			this.createObstacle();
-		} else {
-			this.obstacle = this.game.add.sprite(x, y, 'overlay');
-			this.obstacle.scale.set(10);
-			this.obstacle.alpha = 0.8;
-			this.obstacle.anchor.setTo(.5,.5);
+		var x = (this.lastPoint.x+1)*this.cellSize;
+		var y = (this.lastPoint.y+1)*this.cellSize;
 
-			this.game.physics.enable(this.obstacle, Phaser.Physics.ARCADE);
+		var powerup = new PowerUp(this.game, type, this, x, y);
+		powerup.create();
 
-			if (this.game.physics.arcade.overlap(this.obstacle, this.obstacleGroup)) {
-				console.log("obst")
-				this.obstacle.alpha = 0.2;
-				//this.obstacle.kill();
-				this.createObstacle();
-			} else if (this.game.physics.arcade.overlap(this.obstacle, groupPowers)){
-				console.log("power")
-				this.obstacle.alpha = 0.2;
-				//this.obstacle.kill();
-				this.createObstacle();
-			}	else{
-				console.log("obs criado")
-				this.obstacleGroup.add(this.obstacle);
-			}
+		if (!this.grid[this.lastPoint.x]) {
+			this.grid[this.lastPoint.x] = [];
 		}
+		this.grid[this.lastPoint.x][this.lastPoint.y] = powerup;
+
+	},
+
+	createObstacle: function (){
+
+		var points = this.pointsObs.pop();
+		var x = points.x*this.cellSize + this.cellSize;
+		var y = points.y*this.cellSize + this.cellSize;
+
+		/*var x = rx*this.cellSize*2-w2*0.05;
+		var y = ry*this.cellSize*2-h2*0.05;*/
+
+		var obstacle = this.game.add.sprite(x, y, 'overlay');
+		obstacle.scale.set(2);
+		obstacle.alpha = 0.5;
+		obstacle.anchor.setTo(.5,.5);
+		this.game.physics.enable(obstacle, Phaser.Physics.ARCADE);
+		this.obstacleGroup.add(obstacle);
+
+		if (!this.grid[points.x]) {
+			this.grid[points.x] = [];
+		}
+		this.grid[points.x][points.y] = obstacle;
+
+		
 	},
 
 	render: function() {

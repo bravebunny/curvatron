@@ -1,17 +1,17 @@
-var PowerUp = function (game, type, mode) {
+var PowerUp = function (game, type, mode, x, y) {
 	this.mode = mode;
 	this.game = game;
 	this.type = type;
 	this.sprite = null;
 	this.spriteTween = null;
-	this.x;
-	this.y;
+	this.x = x;
+	this.y = y;
 	this.size = 1;
 };
 
 PowerUp.prototype = {
 	create: function () {
-		if (this.type == "point") {
+		if (this.type == 'point') {
 			if (!this.mode.sp) {
 				var randNum = this.game.rnd.integerInRange(0, 100);
 				if (randNum < 60) {
@@ -32,7 +32,8 @@ PowerUp.prototype = {
 			}
 		}
 
-		this.place();
+		this.place(this.x, this.y);
+		
 		this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
 		this.game.add.tween(this.spriteTween.scale).to( {x:4, y:4}, 1000, Phaser.Easing.Linear.None, true);
 		this.sprite.name = this.type;
@@ -50,9 +51,12 @@ PowerUp.prototype = {
 		}
 	},
 
-	place: function () {
-		this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
-		this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
+	place: function (x, y) {
+		if (!this.x) {
+			this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
+			this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
+		}
+		
 
 		if (this.type == "shrink") {
 			this.sprite = this.game.add.sprite(this.x, this.y, 'shrink');
@@ -70,24 +74,17 @@ PowerUp.prototype = {
 		this.spriteTween.scale.set((this.size/2)*scale);
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 
-		if(this.game.physics.arcade.overlap(this.sprite, this.mode.obstacleGroup)){
-			console.log("bolinha coli");
-			this.sprite.alpha = 0.2;
-			this.place();
-		} else {
-			var collSize = 16*scale;
-			for (var i = 0; i < players.length; i++) {
-				for (var j = 0; j < players[i].trailArray.length; j++) {
-					var curTrail = players[i].trailArray[j];
-					if (curTrail && curTrail.x-collSize < this.sprite.x && curTrail.x+collSize > this.sprite.x &&
-						 	curTrail.y-collSize < this.sprite.y && curTrail.y+collSize > this.sprite.y) {
-						 	this.sprite.kill();
-							this.place();
-					}
+		/*var collSize = 16*scale;
+		for (var i = 0; i < players.length; i++) {
+			for (var j = 0; j < players[i].trailArray.length; j++) {
+				var curTrail = players[i].trailArray[j];
+				if (curTrail && curTrail.x-collSize < this.sprite.x && curTrail.x+collSize > this.sprite.x &&
+					 	curTrail.y-collSize < this.sprite.y && curTrail.y+collSize > this.sprite.y) {
+					 	this.sprite.kill();
+						this.place();
 				}
 			}
-			console.log("bolinha criado")
-		}
+		}*/
 	},
 
 	render: function () {

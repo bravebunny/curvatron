@@ -29,5 +29,11 @@ function clickButton(button, callback, state) {
   button.onInputUp.add(buttonUp, {
     tween: tweenOut
   });
-
 }
+
+//+ Jonas Raoni Soares Silva
+//@ http://jsfromhell.com/array/shuffle [v1.0]
+function shuffleArray(o){ //v1.0
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};

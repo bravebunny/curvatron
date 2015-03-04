@@ -146,6 +146,10 @@ gameMananger.prototype = {
 
 	update: function () {
 		if(!paused){
+			if (!this.mode.gridIsFull()) {
+				this.mode.createObstacle();
+			}
+			
 			if (menuMusic.isPlaying && (menuMusic.volume == 1) && !gameOver && !mute) {
 				menuMusic.fadeOut(2000);
 			}
@@ -192,8 +196,12 @@ gameMananger.prototype = {
 	},
 
 	createPower: function () {
-		var powerup = new PowerUp(this.game, "point", this.mode);
-		powerup.create();
+		if (this.mode.createPower) {
+			this.mode.createPower('point');
+		} else {
+			var powerup = new PowerUp(this.game, 'point', this.mode);
+			powerup.create();
+		}
 	},
 
 	endGame: function (){
