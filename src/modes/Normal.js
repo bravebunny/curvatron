@@ -4,7 +4,7 @@ var Normal = function(game) {
 	this.spawnPowers = true;
 	this.leaderboardID = modesLB[0];
 	this.score = 0;
-	this.shrinkFreq = 5;
+	this.shrinkFreq = 1;
 	this.obstacleGroup = null;
 	this.cellSize = 64;
 	this.rows = Math.floor(h2*2/this.cellSize);
@@ -174,10 +174,20 @@ Normal.prototype = {
 		var y = ry*this.cellSize*2-h2*0.05;*/
 
 		var obstacle = this.game.add.sprite(x, y, 'overlay');
-		obstacle.scale.set(2);
-		obstacle.alpha = 0.5;
+		var tweenObstacle = this.game.add.sprite(x, y, 'overlay');
+		obstacle.scale.set(6);
+		obstacle.alpha = 0;
 		obstacle.anchor.setTo(.5,.5);
-		this.game.physics.enable(obstacle, Phaser.Physics.ARCADE);
+		tweenObstacle.anchor.setTo(.5,.5);
+		tweenObstacle.scale.set(2);
+		tweenObstacle.alpha = 0.0;
+
+		var obstacleTween1 = this.game.add.tween(obstacle.scale).to( {x:2, y:2}, 4000, Phaser.Easing.Quadratic.In, true);
+		var obstacleTween2 = this.game.add.tween(obstacle).to( { alpha: 0.5 }, 4000, Phaser.Easing.Linear.None, true);
+		var obstacleTween3 = this.game.add.tween(tweenObstacle.scale).to( {x:4, y:4}, 1000, Phaser.Easing.Linear.None, false);
+		var obstacleTween4 = this.game.add.tween(tweenObstacle).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, false);
+		obstacleTween1.onComplete.add(function(){obstacle.alpha = 0.5; tweenObstacle.alpha = 0.5; obstacleTween3.start(); obstacleTween4.start();}, this);	
+		obstacleTween2.onComplete.add(function(){this.game.physics.enable(obstacle, Phaser.Physics.ARCADE);}, this);
 		this.obstacleGroup.add(obstacle);
 		
 		for (var i = 0; i < this.pointsPow.length; i++) {

@@ -34,8 +34,6 @@ PowerUp.prototype = {
 
 		this.place(this.x, this.y);
 		
-		this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-		this.game.add.tween(this.spriteTween.scale).to( {x:4, y:4}, 1000, Phaser.Easing.Linear.None, true);
 		this.sprite.name = this.type;
 		if (nextBallHigh == 1) {
 			this.sprite.loadTexture('superPower');
@@ -45,9 +43,14 @@ PowerUp.prototype = {
 		groupPowers.add(this.sprite);
 
 		if (this.mode.sp && (this.type == 'point')) {
+			this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+			this.game.add.tween(this.spriteTween.scale).to( {x:4, y:4}, 1000, Phaser.Easing.Linear.None, true);
 			powerText.setText(this.mode.score+1);
 			powerText.x = this.sprite.x;
 			powerText.y = this.sprite.y+2*scale;
+		} else if(this.mode.sp && (this.type == 'shrink')) {
+			this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+			this.game.add.tween(this.spriteTween.scale).to( {x:2, y:2}, 1000, Phaser.Easing.Linear.None, true);
 		}
 	},
 
@@ -74,7 +77,7 @@ PowerUp.prototype = {
 		this.spriteTween.scale.set((this.size/2)*scale);
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 
-		/*var collSize = 16*scale;
+		var collSize = 16*scale;
 		for (var i = 0; i < players.length; i++) {
 			for (var j = 0; j < players[i].trailArray.length; j++) {
 				var curTrail = players[i].trailArray[j];
@@ -84,7 +87,7 @@ PowerUp.prototype = {
 						this.place();
 				}
 			}
-		}*/
+		}
 	},
 
 	render: function () {
