@@ -9,7 +9,6 @@ var Normal = function(game) {
 	this.cellSize = 64;
 	this.rows = Math.floor(h2*2/this.cellSize);
 	this.columns = Math.floor(w2*2/this.cellSize);
-	this.grid = [[]];
 	this.pointsPow = [];
 	this.pointsObs = [];
 	this.lastPoint = null;
@@ -29,6 +28,9 @@ Normal.prototype = {
 		this.score = 0;
 		spawnPowers = true;
 		this.obstacleGroup = this.game.add.group();
+		this.pointsPow = [];
+		this.pointsObs = [];
+		this.lastPoint = null;
 
 		var textSize = 15;
   	if (mobile) {
@@ -101,12 +103,13 @@ Normal.prototype = {
 
 	collect: function (player, power) {
 
-		if (this.lastPoint) {
-			this.pointsPow.push(this.lastPoint);
+		var point = this.lastPoint;
+		if (point) {
+			this.pointsPow.push(point);
 			this.pointsPow = shuffleArray(this.pointsPow);
 			
-			if (this.lastPoint.x % 2 == 0 && this.lastPoint.y % 2 == 0) {
-				this.pointsObs.push(this.lastPoint);
+			if (point.x % 2 == 0 && point.y % 2 == 0) {
+				this.pointsObs.push(point);
 				this.pointsObs = shuffleArray(this.pointsObs);
 			}
 		}
@@ -140,28 +143,21 @@ Normal.prototype = {
 	},
 
 	gridIsFull: function () {
-		return (this.pointsObs.length == 0);
+		return (!this.pointsObs[0]);
 	},
 
 	createPower: function (type) {
-		this.lastPoint = null;
-		while (!this.lastPoint) {
-			this.lastPoint = this.pointsPow.pop();
-		}
+		this.lastPoint = this.pointsPow.pop();
+
 		var x = (this.lastPoint.x+1)*this.cellSize;
 		var y = (this.lastPoint.y+1)*this.cellSize;
 
 		var powerup = new PowerUp(this.game, type, this, x, y);
 		powerup.create();
-
-		if (!this.grid[this.lastPoint.x]) {
-			this.grid[this.lastPoint.x] = [];
-		}
-		this.grid[this.lastPoint.x][this.lastPoint.y] = powerup;
 		
 		for (var i = 0; i < this.pointsObs.length; i++) {
 			if (JSON.stringify(this.pointsObs[i]) === JSON.stringify(this.lastPoint)) {
-				this.pointsObs[i] = null;
+				this.pointsObs.splice(i, 1);
 				break;
 			}
 		}
@@ -169,11 +165,8 @@ Normal.prototype = {
 	},
 
 	createObstacle: function (){
-		var points = null;
-		while (!points) {
-			points = this.pointsObs.pop();
-		}
-		
+		points = this.pointsObs.pop();
+
 		var x = points.x*this.cellSize + this.cellSize;
 		var y = points.y*this.cellSize + this.cellSize;
 
@@ -186,15 +179,10 @@ Normal.prototype = {
 		obstacle.anchor.setTo(.5,.5);
 		this.game.physics.enable(obstacle, Phaser.Physics.ARCADE);
 		this.obstacleGroup.add(obstacle);
-
-		if (!this.grid[points.x]) {
-			this.grid[points.x] = [];
-		}
-		this.grid[points.x][points.y] = obstacle;
 		
 		for (var i = 0; i < this.pointsPow.length; i++) {
 			if (JSON.stringify(this.pointsPow[i]) === JSON.stringify(points)) {
-				this.pointsPow[i] = null;
+				this.pointsPow.splice(i, 1);
 				break;
 			}
 		}

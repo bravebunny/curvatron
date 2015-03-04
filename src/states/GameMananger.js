@@ -146,10 +146,6 @@ gameMananger.prototype = {
 
 	update: function () {
 		if(!paused){
-			if (!this.mode.gridIsFull()) {
-				this.mode.createObstacle();
-			}
-			
 			if (menuMusic.isPlaying && (menuMusic.volume == 1) && !gameOver && !mute) {
 				menuMusic.fadeOut(2000);
 			}

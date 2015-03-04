@@ -135,7 +135,7 @@ Player.prototype = {
 			}
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
 
-			if(this.mode.obstacle){
+			if(this.mode.obstacleGroup){
 				if(this.game.physics.arcade.overlap(this.sprite, this.mode.obstacleGroup, this.kill, null, this)){
 					console.log("dieeeeeeeeeee potato")
 				}
