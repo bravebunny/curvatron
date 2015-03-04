@@ -77,7 +77,7 @@ PowerUp.prototype = {
 		this.spriteTween.scale.set((this.size/2)*scale);
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 
-		var collSize = 16*scale;
+		/*var collSize = 16*scale;
 		for (var i = 0; i < players.length; i++) {
 			for (var j = 0; j < players[i].trailArray.length; j++) {
 				var curTrail = players[i].trailArray[j];
@@ -87,7 +87,7 @@ PowerUp.prototype = {
 						this.place();
 				}
 			}
-		}
+		}*/
 	},
 
 	render: function () {

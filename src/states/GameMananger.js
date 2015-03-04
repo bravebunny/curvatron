@@ -151,6 +151,11 @@ gameMananger.prototype = {
 			}
 			totalTime += this.game.time.physicsElapsed;
 
+		/*if(!this.mode.gridIsFull()){
+			this.mode.createObstacle();
+			//this.mode.createObstacle();
+		}*/
+
 			if (!gameOver) {
 				//Give crown
 				if (crowned != -1) {

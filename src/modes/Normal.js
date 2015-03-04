@@ -21,6 +21,7 @@ Normal.prototype = {
 		this.game.load.image('player0', 'assets/playerSingle.png');
 		this.game.load.image('trail0', 'assets/trailSingle.png');
 		this.game.load.image('superPower', 'assets/powerHS.png');
+		this.game.load.image('obstacle', 'assets/obstacle.png');
 		this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100);
 	},
 
@@ -136,8 +137,14 @@ Normal.prototype = {
 			nextBallHigh = 1;
 		}
 
-		if(power.name == 'shrink' && !this.gridIsFull()){
-			this.createObstacle();
+		if(power.name == 'shrink'){
+
+			if (!this.gridIsFull()) {
+				this.createObstacle();
+			}
+			if (!this.gridIsFull()) {
+				this.createObstacle();
+			}
 		}
 
 	},
@@ -173,21 +180,26 @@ Normal.prototype = {
 		/*var x = rx*this.cellSize*2-w2*0.05;
 		var y = ry*this.cellSize*2-h2*0.05;*/
 
-		var obstacle = this.game.add.sprite(x, y, 'overlay');
-		var tweenObstacle = this.game.add.sprite(x, y, 'overlay');
-		obstacle.scale.set(6);
+		var obstacle = this.game.add.sprite(x, y, 'obstacle');
+		var tweenObstacle = this.game.add.sprite(x, y, 'obstacle');
+		obstacle.scale.set(1.5);
 		obstacle.alpha = 0;
 		obstacle.anchor.setTo(.5,.5);
 		tweenObstacle.anchor.setTo(.5,.5);
-		tweenObstacle.scale.set(2);
+		tweenObstacle.scale.set(0.5);
 		tweenObstacle.alpha = 0.0;
 
-		var obstacleTween1 = this.game.add.tween(obstacle.scale).to( {x:2, y:2}, 4000, Phaser.Easing.Quadratic.In, true);
+		var obstacleTween1 = this.game.add.tween(obstacle.scale).to( {x:0.5, y:0.5}, 4000, Phaser.Easing.Quadratic.In, true);
 		var obstacleTween2 = this.game.add.tween(obstacle).to( { alpha: 0.25 }, 2000, Phaser.Easing.Linear.None, true);
-		var obstacleTween3 = this.game.add.tween(tweenObstacle.scale).to( {x:4, y:4}, 1000, Phaser.Easing.Linear.None, false);
+		var obstacleTween3 = this.game.add.tween(tweenObstacle.scale).to( {x:1, y:1}, 1000, Phaser.Easing.Linear.None, false);
 		var obstacleTween4 = this.game.add.tween(tweenObstacle).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, false);
-		obstacleTween1.onComplete.add(function(){obstacle.alpha = 0.5; tweenObstacle.alpha = 0.5; obstacleTween3.start(); obstacleTween4.start();}, this);	
-		obstacleTween2.onComplete.add(function(){this.game.physics.enable(obstacle, Phaser.Physics.ARCADE);}, this);
+		obstacleTween1.onComplete.add( function () {
+			obstacle.alpha = 0.5;
+			tweenObstacle.alpha = 0.5;
+			obstacleTween3.start();
+			obstacleTween4.start();
+			this.game.physics.enable(obstacle, Phaser.Physics.ARCADE);
+		}, this);	
 		this.obstacleGroup.add(obstacle);
 		
 		for (var i = 0; i < this.pointsPow.length; i++) {
