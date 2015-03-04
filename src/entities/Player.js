@@ -24,7 +24,7 @@ var Player = function (id, x, y, key, mode, game) {
 	this.showKeyTime = 0;
 	this.showOneKey = true;
 	this.shrink = false;
-	this.shrinkAmount = 400;
+	this.shrinkAmount = 200;
 	this.touch = null;
 	this.orientation = null;
 	this.playerMobileButton = null;
@@ -137,7 +137,6 @@ Player.prototype = {
 
 			if(this.mode.obstacleGroup){
 				if(this.game.physics.arcade.overlap(this.sprite, this.mode.obstacleGroup, this.kill, null, this)){
-					console.log("dieeeeeeeeeee potato")
 				}
 			}
 
@@ -297,7 +296,6 @@ Player.prototype = {
 	collect: function (player, power) {
 		if (this.collectSemaphore == 0) {
 			this.collectSemaphore = 1;
-			console.log("EIAAAAAAAAAA")
 			if (!mute) {
 				collectSound.play();
 			}
