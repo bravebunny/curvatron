@@ -103,7 +103,6 @@ Normal.prototype = {
 	},
 
 	collect: function (player, power) {
-
 		var point = this.lastPoint;
 		if (point) {
 			this.pointsPow.push(point);

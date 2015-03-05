@@ -32,7 +32,20 @@ PowerUp.prototype = {
 			}
 		}
 
-		this.place(this.x, this.y);
+		if (!this.x) {
+			this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
+			this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
+		}
+		
+		this.sprite = this.game.add.sprite(this.x, this.y, this.type);
+		if (this.type == "shrink") {
+			var anim = this.sprite.animations.add('timed');
+			anim.play(1.5,false,true);
+		}
+
+		this.sprite.anchor.setTo(.5,.5);
+		this.sprite.scale.set((this.size/2)*scale);
+		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		
 		this.sprite.name = this.type;
 		if (nextBallHigh == 1) {
@@ -41,53 +54,21 @@ PowerUp.prototype = {
 		}
 
 		groupPowers.add(this.sprite);
-
-		if (this.mode.sp && (this.type == 'point')) {
-			this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-			this.game.add.tween(this.spriteTween.scale).to( {x:4, y:4}, 1000, Phaser.Easing.Linear.None, true);
-			powerText.setText(this.mode.score+1);
-			powerText.x = this.sprite.x;
-			powerText.y = this.sprite.y+2*scale;
-		} else if(this.mode.sp && (this.type == 'shrink')) {
-			this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-			this.game.add.tween(this.spriteTween.scale).to( {x:2, y:2}, 1000, Phaser.Easing.Linear.None, true);
-		}
-	},
-
-	place: function (x, y) {
-		if (!this.x) {
-			this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
-			this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
-		}
-		
-
-		if (this.type == "shrink") {
-			this.sprite = this.game.add.sprite(this.x, this.y, 'shrink');
-			this.spriteTween = this.game.add.sprite(this.x, this.y, 'shrink');
-			var anim = this.sprite.animations.add('timed');
-			anim.play(1.5,false,true);
-		} else {
-			this.sprite = this.game.add.sprite(this.x, this.y, 'point');
-			this.spriteTween = this.game.add.sprite(this.x, this.y, 'point');
-		}
-
-		this.sprite.anchor.setTo(.5,.5);
-		this.spriteTween.anchor.setTo(.5,.5);
-		this.sprite.scale.set((this.size/2)*scale);
-		this.spriteTween.scale.set((this.size/2)*scale);
-		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-
-		/*var collSize = 16*scale;
-		for (var i = 0; i < players.length; i++) {
-			for (var j = 0; j < players[i].trailArray.length; j++) {
-				var curTrail = players[i].trailArray[j];
-				if (curTrail && curTrail.x-collSize < this.sprite.x && curTrail.x+collSize > this.sprite.x &&
-					 	curTrail.y-collSize < this.sprite.y && curTrail.y+collSize > this.sprite.y) {
-					 	this.sprite.kill();
-						this.place();
-				}
+		if(this.mode.sp){
+			this.spriteTween = this.game.add.sprite(this.x, this.y, this.type);
+			this.spriteTween.anchor.setTo(.5,.5);
+			this.spriteTween.scale.set((this.size/2)*scale);
+			if (this.type == 'point') {
+				this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+				this.game.add.tween(this.spriteTween.scale).to( {x:4, y:4}, 1000, Phaser.Easing.Linear.None, true);
+				powerText.setText(this.mode.score+1);
+				powerText.x = this.sprite.x;
+				powerText.y = this.sprite.y+2*scale;
+			} else if(this.mode.sp && (this.type == 'shrink')) {
+				this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+				this.game.add.tween(this.spriteTween.scale).to( {x:2, y:2}, 1000, Phaser.Easing.Linear.None, true);
 			}
-		}*/
+		}
 	},
 
 	render: function () {

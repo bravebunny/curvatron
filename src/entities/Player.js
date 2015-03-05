@@ -399,7 +399,6 @@ Player.prototype = {
 	},
 
 	pause: function () {
-		console.log(this.trailArray.length);
 		if (this.mode.submitScore) {
 			this.mode.submitScore();
 		}
