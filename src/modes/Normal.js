@@ -154,10 +154,28 @@ Normal.prototype = {
 	},
 
 	createPower: function (type) {
-		this.lastPoint = this.pointsPow.pop();
+		var collidesWithPlayer = true;
 
-		var x = (this.lastPoint.x+1)*this.cellSize;
-		var y = (this.lastPoint.y+1)*this.cellSize;
+		while (collidesWithPlayer) {
+			collidesWithPlayer = false;
+
+			this.lastPoint = this.pointsPow.pop();
+			var x = (this.lastPoint.x+1)*this.cellSize;
+			var y = (this.lastPoint.y+1)*this.cellSize;
+
+			var collSize = 16*scale;
+			for (var j = 0; j < players[0].trailArray.length; j++) {
+				var curTrail = players[0].trailArray[j];
+				if (curTrail && curTrail.x-collSize < x && curTrail.x+collSize > x &&
+				 	curTrail.y-collSize < y && curTrail.y+collSize > y) {
+					collidesWithPlayer = true;
+					var point = this.lastPoint;
+					this.pointsPow.push(point);
+					this.pointsPow = shuffleArray(this.pointsPow);
+					break;
+				}
+			}
+		}
 
 		var powerup = new PowerUp(this.game, type, this, x, y);
 		powerup.create();

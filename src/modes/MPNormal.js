@@ -51,6 +51,7 @@ MPNormal.prototype = {
 			crowned = player.id;
 			lastCrowned = crowned+1;
 		}
+		player.growth = 60*powerSprite.scale.x;
 	},
 
 	kill: function () {

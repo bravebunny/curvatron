@@ -82,11 +82,7 @@ Player.prototype = {
 
 		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
-		if (this.mode.sp) {
-			this.growth = 60;
-		} else {
-			this.growth = 60*power.scale.x;
-		}
+		this.growth = 60;
 	},
 
 	update: function () {
@@ -154,7 +150,7 @@ Player.prototype = {
 
 
 			//erase trail from behind
-			if (this.trailArray.length >= this.size && this.frameCount == 0 && this.trailArray[0]) {
+			if (this.trailArray.length >= this.size && this.frameCount == 0 && this.trailArray[0] || this.dead) {
 				if (this.mode.erasesTrail() || this.dead) {
 					var nRemove = 1;
 					if (this.shrink) {
@@ -314,8 +310,8 @@ Player.prototype = {
 				this.mode.collect(player, power, this);
 			}
 
-			this.game.add.tween(power).to( { alpha: 0 }, 300, Phaser.Easing.Linear.None, true);
-			var powerTween = this.game.add.tween(power.scale).to( {x:2, y:2}, 300, Phaser.Easing.Linear.None, true);
+			this.game.add.tween(power).to( { alpha:0 }, 300, Phaser.Easing.Linear.None, true);
+			var powerTween = this.game.add.tween(power.scale).to( {x:0, y:0}, 300, Phaser.Easing.Back.In, true);
 			powerTween.onComplete.add(function(){power.kill(); this.collectSemaphore = 0;}, this);
 		}
 	},
