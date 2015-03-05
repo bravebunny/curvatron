@@ -312,7 +312,7 @@ Player.prototype = {
 
 			this.game.add.tween(power).to( { alpha:0 }, 300, Phaser.Easing.Linear.None, true);
 			var powerTween = this.game.add.tween(power.scale).to( {x:0, y:0}, 300, Phaser.Easing.Back.In, true);
-			powerTween.onComplete.add(function(){power.kill(); this.collectSemaphore = 0;}, this);
+			powerTween.onComplete.add(function(){power.destroy(); this.collectSemaphore = 0;}, this);
 		}
 	},
 
