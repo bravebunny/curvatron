@@ -54,7 +54,7 @@ gameMananger.prototype = {
 		groupPowers = this.add.group();
 		if (this.mode.sp) {
 			if (!mobile) {
-				tempLabel = this.add.sprite(w2, h2, 'score-stat');
+				tempLabel = this.add.sprite(w2, h2, 'score');
 				tempLabel.anchor.setTo(0.5,0.5);
 				tempLabel.alpha = 0.7;
 				tempLabelText = this.add.text(w2+50, h2+8, this.mode.getHighScore().toString(), {
