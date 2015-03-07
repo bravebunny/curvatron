@@ -6,6 +6,7 @@ var gameMananger = function (game) {
 	this.ui = {};
 	this.mode = null;
 	this.angle = 0;
+	this.initAngle = 0;
 	colisionMargin = 16;
 	this.bmdGroup = null;
 }
@@ -145,7 +146,7 @@ gameMananger.prototype = {
 			menuMusic.volume = 1;
 		}
 
-		this.updateAngle();
+		this.setAngle();
 
 	},
 
@@ -469,50 +470,38 @@ gameMananger.prototype = {
     this.pause();
   },
 
-  updateAngle: function () {
-		switch (this.scale.screenOrientation) {
-	    case 'portrait-primary':
-        this.angle = 0;
-        break;
-	    case 'landscape-primary':
-        this.angle = 90;
-        break;
-	    case 'portrait-secondary':
-        this.angle = 180;
-        break;
-	    case 'landscape-secondary':
-        this.angle = 270;
-        break;
-		}
+  setAngle: function () {
+		this.initAngle = window.orientation;
+		this.angle = 0;
   },
+
 
   setPositions: function () {
 		var oldAngle = this.angle;
-		var rotateRight, rotateLeft;
-		this.updateAngle();
-		var angleDiff = this.angle - oldAngle;
-		if (angleDiff > 0) {
-			rotateRight = 0;
-			rotateLeft = 1;
-		} else {
-			rotateRight = 1;
-			rotateLeft = 0;
-		}
+		this.angle = window.orientation - this.initAngle;
+		console.log("old: " + oldAngle + ", new: " + this.angle)
 
-		if (angleDiff != 0) {
+		switch (this.angle) {
+			case 0:
+				this.bmdGroup.pivot.set(0, 0);
+				this.bmdGroup.angle = 0;
+				break;
 
-			this.bmdGroup.pivot.set(0, 0);
-			this.bmdGroup.y += 2*h2*rotateLeft;
-			this.bmdGroup.x += 2*w2*rotateRight;
-			if ((this.bmdGroup.angle - angleDiff) < 0) {
-				this.bmdGroup.angle = 360 - angleDiff;
-			} else {
-				this.bmdGroup.angle -= angleDiff;
-			}
+			case 90:
+				this.bmdGroup.pivot.set(2*h2, 0);
+				this.bmdGroup.angle = 270;
+				break;
 
-			
+			case -90:
+				this.bmdGroup.pivot.set(0, 2*w2);
+				this.bmdGroup.angle = 90;
+				break;
 
-			console.log(this.bmdGroup.angle)
+			case 180:
+			case -180:
+				this.bmdGroup.pivot.set(2*w2, 2*h2);
+				this.bmdGroup.angle = 180;
+			break;
 		}
 		globalGroup = this.bmdGroup;
   },
