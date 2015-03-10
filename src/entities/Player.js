@@ -12,8 +12,9 @@ var Player = function (id, x, y, key, mode, game) {
 	this.ready = false;
 	this.speed = 1;
 	this.angularVelocity = 1;
-	this.growth = 60;
-	this.size = this.growth;
+	this.growth = 30;
+	this.initialSize = 60;
+	this.size = this.initialSize;
 	this.frameCount = 0;
 	this.keyText = null;
 	this.paused = false;
@@ -82,11 +83,11 @@ Player.prototype = {
 
 		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
-		this.growth = 60;
 	},
 
 	update: function () {
 		if (!this.paused && paused) {
+			console.log(this.size);
 			this.paused = true;
 			this.pause();
 		} else if (this.paused && !paused) {
@@ -300,10 +301,15 @@ Player.prototype = {
 				this.size += this.growth;
 				
 				this.score = this.score + power.scale.x;
+
+				if (this.mode.getScore() % 5 == 4) {
+					this.growth += 10;
+				}
+
 			} else if (power.name == "shrink") {
-				this.shrinkSize = this.trailArray.length - this.shrinkAmount;
 				this.shrink = true;
-				this.size -= this.shrinkAmount;
+				this.size = this.initialSize;
+
 			}
 
 			if (this.mode.collect) {
