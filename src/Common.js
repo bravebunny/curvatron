@@ -8,10 +8,16 @@ function buttonUp() {
 }
 
 function clickButton(button, callback, state) {
-  var tweenIn = button.game.add.tween(button.scale).to( { x: 0.85, y: 0.85 }, 80, Phaser.Easing.Linear.None, false);
-  var tweenOut = button.game.add.tween(button.scale).to( { x: 1, y: 1 }, 80, Phaser.Easing.Linear.None, false);
+  var s = button.scale;
+  var tweenIn = button.game.add.tween(s).to( { x: s.x*0.85, y: s.y*0.85 }, 80, Phaser.Easing.Linear.None, false);
+  var tweenOut = button.game.add.tween(s).to( { x: s.x, y: s.y }, 80, Phaser.Easing.Linear.None, false);
 
-  tweenOut.onComplete.add(callback, state);
+  tweenOut.onComplete.add(function () {
+    if (!tweenOut.isRunning && !tweenIn.isRunning) {
+      callback.call(this);
+    }
+  }
+  , state);
 
   button.onInputOver.add(function () {
     tweenOut.onComplete.active = true;

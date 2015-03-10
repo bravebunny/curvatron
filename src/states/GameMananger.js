@@ -320,7 +320,7 @@ gameMananger.prototype = {
 
 
 	    	if (mobile) {
-	    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button",this.leaderboard,this);
+	    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button");
 					leaderboardButton.scale.set(0.6,0.6);
 					leaderboardButton.anchor.setTo(0.5,0.5);
 					leaderboardButton.input.useHandCursor=true;
