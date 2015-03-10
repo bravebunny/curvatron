@@ -5,10 +5,7 @@ var gameMananger = function (game) {
 	this.powerTimer = null;
 	this.ui = {};
 	this.mode = null;
-	this.angle = 0;
-	this.initAngle = 0;
 	colisionMargin = 16;
-	this.bmdGroup = null;
 }
 
 gameMananger.prototype = {
@@ -91,9 +88,8 @@ gameMananger.prototype = {
 		}
 
 		//create BitmapData
-		this.bmdGroup = this.add.group();
 		bmd = this.add.bitmapData(this.game.width, this.game.height);
-		this.bmdGroup.add(bmd.addToWorld());
+		bmd.addToWorld();
 		bmd.smoothed = true;
 
 		var angle = 0;
@@ -145,9 +141,6 @@ gameMananger.prototype = {
 		if (!mute) {
 			menuMusic.volume = 1;
 		}
-
-		this.setAngle();
-
 	},
 
 	update: function () {
@@ -467,44 +460,8 @@ gameMananger.prototype = {
 	},
 
 	backPressed: function () {
-    this.pause();
-  },
-
-  setAngle: function () {
-		this.initAngle = window.orientation;
-		this.angle = 0;
-  },
-
-
-  setPositions: function () {
-		var oldAngle = this.angle;
-		this.angle = window.orientation - this.initAngle;
-		console.log("old: " + oldAngle + ", new: " + this.angle)
-
-		switch (this.angle) {
-			case 0:
-				this.bmdGroup.pivot.set(0, 0);
-				this.bmdGroup.angle = 0;
-				break;
-
-			case 90:
-				this.bmdGroup.pivot.set(2*h2, 0);
-				this.bmdGroup.angle = 270;
-				break;
-
-			case -90:
-				this.bmdGroup.pivot.set(0, 2*w2);
-				this.bmdGroup.angle = 90;
-				break;
-
-			case 180:
-			case -180:
-				this.bmdGroup.pivot.set(2*w2, 2*h2);
-				this.bmdGroup.angle = 180;
-			break;
-		}
-		globalGroup = this.bmdGroup;
-  },
+    	this.pause();
+  	},
 
 	/*render: function(){
 		players[0].render();

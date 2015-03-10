@@ -37,7 +37,7 @@ boot.prototype = {
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.scale.pageAlignHorizontally = true;
 	 	this.scale.pageAlignVertically = true;
-	 	//this.scale.forceOrientation(true, false);
+	 	this.scale.forceOrientation(true, false);
 	 	this.scale.setResizeCallback(this.resize, this);
 
 	  	this.physics.startSystem(Phaser.Physics.ARCADE);
@@ -63,7 +63,7 @@ boot.prototype = {
 	},
 
 	resize: function () {
-		if ((this.state.current != 'PreloadMenu') && (this.state.current != 'PreloadGame')) {
+		if ((this.state.current != 'GameMananger') && (this.state.current != 'PreloadMenu') && (this.state.current != 'PreloadGame')) {
 			orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 			var winW = window.innerWidth;
 			var winH = window.innerHeight;
@@ -94,6 +94,6 @@ boot.prototype = {
 				this.state.states[this.game.state.current].setPositions();
 			}
 		}
-	}	
-
+  	}
+  	
 };
