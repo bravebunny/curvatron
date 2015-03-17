@@ -7,8 +7,10 @@ var Normal = function(game) {
 	this.shrinkFreq = 5;
 	this.obstacleGroup = null;
 	this.cellSize = 64;
-	this.rows = Math.floor(h2*2/this.cellSize);
-	this.columns = Math.floor(w2*2/this.cellSize);
+	this.rows = Math.floor(h2*1.9/this.cellSize);
+	this.columns = Math.floor(w2*1.9/this.cellSize);
+	this.marginX = (2*w2 - this.columns*this.cellSize + this.cellSize)*0.5;
+	this.marginY = (2*h2 - this.rows*this.cellSize + this.cellSize)*0.5;
 	this.pointsPow = [];
 	this.pointsObs = [];
 	this.lastPoint = null;
@@ -165,8 +167,8 @@ Normal.prototype = {
 			collidesWithPlayer = false;
 
 			this.lastPoint = this.pointsPow.pop();
-			var x = (this.lastPoint.x+1)*this.cellSize;
-			var y = (this.lastPoint.y+1)*this.cellSize;
+			var x = (this.lastPoint.x)*this.cellSize + this.marginX;
+			var y = (this.lastPoint.y)*this.cellSize + this.marginY;
 
 			var collSize = 16*scale;
 			for (var j = 0; j < this.player.trailArray.length; j++) {
@@ -237,14 +239,14 @@ Normal.prototype = {
 	},
 
 	pause: function() {
-		if (this.shrink) {
+		if (this.shrink && this.shrink.alive) {
 			this.shrink.sprite.animations.paused = true;
 		}
 		
 	},
 
 	unPause: function() {
-		if (this.shrink) {
+		if (this.shrink && this.shrink.alive) {
 			this.shrink.sprite.animations.paused = false;
 		}
 		

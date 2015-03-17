@@ -32,7 +32,7 @@ PowerUp.prototype = {
 			}
 		}
 
-		if (!this.x) {
+		if (!this.x && !this.mode.sp) {
 			this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
 			this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
 		}

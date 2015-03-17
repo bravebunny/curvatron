@@ -152,7 +152,7 @@ gameMananger.prototype = {
 			totalTime += this.game.time.physicsElapsed;
 
 		/*if(!this.mode.gridIsFull()){
-			this.mode.createObstacle();
+			this.mode.createPower("point");
 			//this.mode.createObstacle();
 		}*/
 
