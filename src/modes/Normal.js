@@ -239,14 +239,14 @@ Normal.prototype = {
 	},
 
 	pause: function() {
-		if (this.shrink && this.shrink.alive) {
+		if (this.shrink) {
 			this.shrink.sprite.animations.paused = true;
 		}
 		
 	},
 
 	unPause: function() {
-		if (this.shrink && this.shrink.alive) {
+		if (this.shrink) {
 			this.shrink.sprite.animations.paused = false;
 		}
 		
