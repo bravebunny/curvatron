@@ -153,7 +153,7 @@ gameMananger.prototype = {
 
 		/*if(!this.mode.gridIsFull()){
 			this.mode.createPower("point");
-			//this.mode.createObstacle();
+			this.mode.createObstacle();
 		}*/
 
 			if (!gameOver) {
@@ -409,7 +409,7 @@ gameMananger.prototype = {
 			ui.overlay.inputEnabled = true;
 
 			if (mobile) {
-				pauseSprite.alpha = 0.1;
+				pauseSprite.alpha = 0.2;
 				pauseSprite.input.useHandCursor=true;
 			}
 			ui.menu.destroy();

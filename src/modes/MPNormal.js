@@ -3,6 +3,7 @@ var MPNormal = function(nPlayers, game) {
 	this.nPlayers = nPlayers;
 	this.spawnPowers = true;
 	this.highScore = 0;
+	this.gridded = true;
 };
 
 MPNormal.prototype = {

@@ -246,7 +246,7 @@ Player.prototype = {
 				}
 
 				if (mobile && pauseSprite.alpha == 1) {
-					pauseTween = this.game.add.tween(pauseSprite).to( { alpha: 0.1 }, 2000, Phaser.Easing.Linear.None, true);
+					pauseTween = this.game.add.tween(pauseSprite).to( { alpha: 0.2 }, 2000, Phaser.Easing.Linear.None, true);
 				}
 			}
 		}

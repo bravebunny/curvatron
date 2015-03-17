@@ -3,7 +3,6 @@ var Normal = function(game) {
 	this.game = game;
 	this.spawnPowers = true;
 	this.leaderboardID = modesLB[0];
-	this.score = 0;
 	this.shrinkFreq = 5;
 	this.obstacleGroup = null;
 	this.cellSize = 64;
@@ -11,10 +10,6 @@ var Normal = function(game) {
 	this.columns = Math.floor(w2*1.9/this.cellSize);
 	this.marginX = (2*w2 - this.columns*this.cellSize + this.cellSize)*0.5;
 	this.marginY = (2*h2 - this.rows*this.cellSize + this.cellSize)*0.5;
-	this.pointsPow = [];
-	this.pointsObs = [];
-	this.lastPoint = null;
-	this.shrink = null;
 };
 
 Normal.prototype = {
@@ -30,12 +25,12 @@ Normal.prototype = {
 
 	create: function() {
 		this.score = 0;
-		spawnPowers = true;
 		this.obstacleGroup = this.game.add.group();
 		this.pointsPow = [];
 		this.pointsObs = [];
 		this.lastPoint = null;
 		this.player = players[0];
+		this.shrink = null;
 
 		var textSize = 15;
   	if (mobile) {
@@ -118,7 +113,7 @@ Normal.prototype = {
 			}
 
 			if (this.getScore() % 5 == 4) {
-				this.player.growth += 5;
+				this.player.growth += 2;
 			}
 		}
 		
@@ -152,6 +147,8 @@ Normal.prototype = {
 			if (!this.gridIsFull()) {
 				this.createObstacle();
 			}
+
+			this.shrink = null;
 		}
 
 	},
@@ -196,14 +193,13 @@ Normal.prototype = {
 				break;
 			}
 		}
-
 	},
 
 	createObstacle: function (){
 		points = this.pointsObs.pop();
 
-		var x = points.x*this.cellSize + this.cellSize;
-		var y = points.y*this.cellSize + this.cellSize;
+		var x = points.x*this.cellSize + this.marginX;
+		var y = points.y*this.cellSize + this.marginY;
 
 		/*var x = rx*this.cellSize*2-w2*0.05;
 		var y = ry*this.cellSize*2-h2*0.05;*/
@@ -239,14 +235,14 @@ Normal.prototype = {
 	},
 
 	pause: function() {
-		if (this.shrink) {
+		if (this.shrink && this.shrink.sprite && this.shrink.sprite.animations) {
 			this.shrink.sprite.animations.paused = true;
 		}
 		
 	},
 
 	unPause: function() {
-		if (this.shrink) {
+		if (this.shrink && this.shrink.sprite && this.shrink.sprite.animations) {
 			this.shrink.sprite.animations.paused = false;
 		}
 		
