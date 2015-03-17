@@ -112,6 +112,10 @@ Normal.prototype = {
 				this.pointsObs.push(point);
 				this.pointsObs = shuffleArray(this.pointsObs);
 			}
+
+			if (this.getScore() % 5 == 4) {
+				this.growth += 10;
+			}
 		}
 		
 		var highScore = this.getHighScore();

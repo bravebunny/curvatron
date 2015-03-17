@@ -302,10 +302,6 @@ Player.prototype = {
 				
 				this.score = this.score + power.scale.x;
 
-				if (this.mode.getScore() % 5 == 4) {
-					this.growth += 10;
-				}
-
 			} else if (power.name == "shrink") {
 				this.shrink = true;
 				this.size = this.initialSize;
