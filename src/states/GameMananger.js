@@ -335,6 +335,10 @@ gameMananger.prototype = {
 		var ui = this.ui;
 		if (!paused) { //pause
 			this.game.tweens.pauseAll();
+			if (this.mode.pause) {
+				this.mode.pause();
+			}
+
 			if (gameOver) {
 				this.state.start("Menu");
 			}
@@ -392,6 +396,11 @@ gameMananger.prototype = {
 		} else { //unpause
 			this.game.tweens.resumeAll();
 			ui.overlay.scale.set(0);
+
+			if (this.mode.unPause) {
+				this.mode.unPause();
+			}
+
 			if (!this.mode.sp) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}

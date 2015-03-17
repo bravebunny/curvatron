@@ -12,6 +12,7 @@ var Normal = function(game) {
 	this.pointsPow = [];
 	this.pointsObs = [];
 	this.lastPoint = null;
+	this.shrink = null;
 };
 
 Normal.prototype = {
@@ -32,6 +33,7 @@ Normal.prototype = {
 		this.pointsPow = [];
 		this.pointsObs = [];
 		this.lastPoint = null;
+		this.player = players[0];
 
 		var textSize = 15;
   	if (mobile) {
@@ -114,7 +116,7 @@ Normal.prototype = {
 			}
 
 			if (this.getScore() % 5 == 4) {
-				this.growth += 10;
+				this.player.growth += 5;
 			}
 		}
 		
@@ -167,8 +169,8 @@ Normal.prototype = {
 			var y = (this.lastPoint.y+1)*this.cellSize;
 
 			var collSize = 16*scale;
-			for (var j = 0; j < players[0].trailArray.length; j++) {
-				var curTrail = players[0].trailArray[j];
+			for (var j = 0; j < this.player.trailArray.length; j++) {
+				var curTrail = this.player.trailArray[j];
 				if (curTrail && curTrail.x-collSize < x && curTrail.x+collSize > x &&
 				 	curTrail.y-collSize < y && curTrail.y+collSize > y) {
 					collidesWithPlayer = true;
@@ -181,6 +183,9 @@ Normal.prototype = {
 		}
 
 		var powerup = new PowerUp(this.game, type, this, x, y);
+		if(type == "shrink"){
+			this.shrink = powerup;
+		}
 		powerup.create();
 		
 		for (var i = 0; i < this.pointsObs.length; i++) {
@@ -233,13 +238,21 @@ Normal.prototype = {
 		
 	},
 
+	pause: function() {
+		this.shrink.sprite.animations.paused = true;
+	},
+
+	unPause: function() {
+		this.shrink.sprite.animations.paused = false;
+	},
+
 	render: function() {
     // call renderGroup on each of the alive members
     this.obstacleGroup.forEachAlive(this.renderGroup, this);
-},
+	},
 
-renderGroup: function(member) {
+	renderGroup: function(member) {
     this.game.debug.body(member);
-}
+	}
 
 };
