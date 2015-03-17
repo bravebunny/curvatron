@@ -234,16 +234,20 @@ Normal.prototype = {
 				break;
 			}
 		}
-
-		
 	},
 
 	pause: function() {
-		this.shrink.sprite.animations.paused = true;
+		if (this.shrink) {
+			this.shrink.sprite.animations.paused = true;
+		}
+		
 	},
 
 	unPause: function() {
-		this.shrink.sprite.animations.paused = false;
+		if (this.shrink) {
+			this.shrink.sprite.animations.paused = false;
+		}
+		
 	},
 
 	render: function() {
