@@ -82,9 +82,10 @@ gameMananger.prototype = {
  		}
 
 		if (mobile) {
-			pauseSprite = this.add.button(w2, h2, 'pauseButton', this.touchPauseButton, this);
+			pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this);
     	pauseSprite.anchor.setTo(0.5, 0.5);
     	pauseSprite.input.useHandCursor = true;
+    	pauseSprite.scale.set(0.5);
 		}
 
 		//create BitmapData
