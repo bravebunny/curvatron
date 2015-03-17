@@ -35,6 +35,7 @@ Player.prototype = {
 	create: function () {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
+		this.sprite.name = "" + this.id; 
 
 		this.sprite.anchor.setTo(.5,.5);
 		this.trail = this.game.make.sprite(0, 0, 'trail' + this.id);
@@ -87,7 +88,6 @@ Player.prototype = {
 
 	update: function () {
 		if (!this.paused && paused) {
-			console.log(this.size);
 			this.paused = true;
 			this.pause();
 		} else if (this.paused && !paused) {
@@ -274,12 +274,15 @@ Player.prototype = {
 				}
 				localStorage.setItem("deathScore", deathScore+1);
 			}
-			this.sprite.kill();
+			if (this.mode.sp || (!player && !other)) {
+				this.sprite.kill();
+				this.dead = true;
+			}
+
 			if (!mute) {
 				killSound.play();
 			}
-			this.dead = true;
-
+			
 			if (this.mode.kill) {
 				this.mode.kill();
 			}
@@ -287,7 +290,14 @@ Player.prototype = {
 		}
 
 		if (other && !this.mode.sp) {
-			other.kill();
+			var thisPlayer = players[parseInt(player.name)];
+			var otherPlayer = players[parseInt(other.name)];
+			if(thisPlayer.score >= otherPlayer.score){
+				otherPlayer.kill();
+			} 
+			if(thisPlayer.score <= otherPlayer.score){
+				thisPlayer.kill();
+			}
 		}
 	},
 
