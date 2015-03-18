@@ -107,7 +107,27 @@ menu.prototype = {
     this.scale.refresh();
     //Place the menu buttons and labels on their correct positions
     this.setPositions();
+
+    //this.gpLogin();
 	},
+
+  gpLogin: function (board) {
+    if (mobile) {
+      if (!socialService) {
+        var gp = Cocoon.Social.GooglePlayGames;
+        gp.init({});
+        socialService = gp.getSocialInterface();
+
+        if (!socialService.isLoggedIn()) {
+        socialService.login(function(loggedIn, error) {
+          if (error) {
+              console.error("login error: " + error.message);
+            }
+          }.bind(this));
+        }
+      }
+    }
+  },
 
 	singlePlayer: function () {
 		this.state.start("SinglePlayer",true,false);

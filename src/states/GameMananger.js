@@ -86,7 +86,13 @@ gameMananger.prototype = {
     	pauseSprite.anchor.setTo(0.5, 0.5);
     	pauseSprite.input.useHandCursor = true;
     	pauseSprite.scale.set(0.5);
+
+    	if (!this.mode.sp) {
+				pauseSprite.position.set(w2, h2);
+				pauseSprite.scale.set(0.8);
+			}
 		}
+
 
 		//create BitmapData
 		bmd = this.add.bitmapData(this.game.width, this.game.height);
@@ -326,6 +332,12 @@ gameMananger.prototype = {
 					leaderboardButton.anchor.setTo(0.5,0.5);
 					leaderboardButton.input.useHandCursor=true;
 					clickButton(leaderboardButton, this.leaderboard, this);
+					var scoreWarning = this.game.add.text(w2+150, h2+217, "Touch the crown icon\nto submit your score.", {
+			      font: "25px dosis",
+			      fill: "#FFFFFF",
+			      align: "center"
+			  	});
+			  	scoreWarning.anchor.setTo(0,0.5);
 	    	}
     	}
 	  	gameOver = true;
