@@ -312,6 +312,11 @@ Player.prototype = {
 			if (!mute) {
 				collectSound.play();
 			}
+
+			if (this.mode.collect) {
+				this.mode.collect(player, power, this);
+			}
+			
 			if (power.name == "point") {
 				this.size += this.growth;
 				
@@ -321,10 +326,6 @@ Player.prototype = {
 				this.shrink = true;
 				this.size = this.initialSize;
 
-			}
-
-			if (this.mode.collect) {
-				this.mode.collect(player, power, this);
 			}
 
 			this.game.add.tween(power).to( { alpha:0 }, 300, Phaser.Easing.Linear.None, true);

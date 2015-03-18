@@ -9,8 +9,13 @@ function buttonUp() {
 
 function clickButton(button, callback, state) {
   var s = button.scale;
-  var tweenIn = button.game.add.tween(s).to( { x: s.x*0.85, y: s.y*0.85 }, 80, Phaser.Easing.Linear.None, false);
-  var tweenOut = button.game.add.tween(s).to( { x: s.x, y: s.y }, 80, Phaser.Easing.Linear.None, false);
+  if (mobile){
+    var tweenTime = 80; 
+  } else {
+    var tweenTime = 30;
+  }
+  var tweenIn = button.game.add.tween(s).to( { x: s.x*0.85, y: s.y*0.85 }, tweenTime, Phaser.Easing.Linear.None, false);
+  var tweenOut = button.game.add.tween(s).to( { x: s.x, y: s.y }, tweenTime, Phaser.Easing.Linear.None, false);
 
   tweenOut.onComplete.add(function () {
     if (!tweenOut.isRunning && !tweenIn.isRunning) {
