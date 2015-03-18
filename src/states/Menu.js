@@ -73,12 +73,25 @@ menu.prototype = {
     ui.mpButton.input.useHandCursor = true;
     clickButton(ui.mpButton, this.multiplayer, this);
 
+    
+
     //SetKeys or leaderboards
     if (mobile) {
       ui.leaderboard = this.add.button(0,0,"leaderboard_button");
       ui.leaderboard.anchor.setTo(0.5,0.5);
       ui.leaderboard.input.useHandCursor = true;
       clickButton(ui.leaderboard, this.leaderboard, this);
+
+      /*ui.login = this.add.button(0,0,"login_button");
+      ui.login.anchor.setTo(1,1);
+      ui.login.input.useHandCursor = true;
+      clickButton(ui.login, this.login, this);
+
+      ui.loginText = this.add.text(0,0, "login", {
+      font: "40px dosis",
+      fill: colorHex,
+      align: "center"});
+      ui.loginText.anchor.set(1, 1);*/
     } else {
       ui.keysButton = this.add.button(0,0,"setkeys_button");
       ui.keysButton.anchor.setTo(0.5,0.5);
@@ -108,23 +121,71 @@ menu.prototype = {
     //Place the menu buttons and labels on their correct positions
     this.setPositions();
 
-    //this.gpLogin();
+    if (mobile && firstTime) {
+      firstTime = false;
+      this.login();
+
+    }
+
+    /*if (mobile && socialService && socialService.isLoggedIn()) {
+      this.getAvatar();
+    }*/
 	},
 
-  gpLogin: function (board) {
-    if (mobile) {
-      if (!socialService) {
-        var gp = Cocoon.Social.GooglePlayGames;
-        gp.init({});
-        socialService = gp.getSocialInterface();
+  /*getAvatar: function () {
+    var loader = new Phaser.Loader(this.game);
+    loader.image('avatar',"http://placekitten.com/g/300/300");
+    loader.onLoadComplete.addOnce(function () {
+      console.log('avatar');
+      var ui = this.ui; 
+      ui.avatar = this.add.image(0, 0, 'avatar');
+      ui.avatar.width = 40;
+      ui.avatar.height = 40;
+      ui.avatar.anchor.set(0.5);
+      ui.loginText.setText("logout");
+    }.bind(this));
+    loader.start();
+  },*/
 
+ /* login: function (board) {
+    if (!socialService) {
+      var gp = Cocoon.Social.GooglePlayGames;
+      gp.init({});
+      socialService = gp.getSocialInterface();
+    } else {
+      if (socialService.isLoggedIn()) {
+        this.ui.loginText.setText("login");
+        if (this.ui.avatar) {
+          this.ui.avatar.destroy();
+        }
+        socialService.logout();
+        this.state.restart();
+      } else {
         if (!socialService.isLoggedIn()) {
         socialService.login(function(loggedIn, error) {
           if (error) {
               console.error("login error: " + error.message);
+            } else {
+              this.getAvatar();
             }
           }.bind(this));
         }
+      }
+    }
+  },*/
+
+
+  login: function (board) {
+    if (!socialService) {
+      var gp = Cocoon.Social.GooglePlayGames;
+      gp.init({});
+      socialService = gp.getSocialInterface();
+      if (!socialService.isLoggedIn()) {
+      socialService.login(function(loggedIn, error) {
+        if (error) {
+            console.error("login error: " + error.message);
+          }
+        }.bind(this));
       }
     }
   },
@@ -203,6 +264,13 @@ menu.prototype = {
 
     if (mobile) {
       ui.leaderboard.position.set(w2+w2/2,1.6*h2)
+
+      /*ui.login.position.set(w2*2, h2*2);
+      ui.loginText.position.set(w2*2-30, h2*2);
+      if (ui.avatar) {
+        ui.avatar.position.set(w2*2-160, h2*2-ui.login.height*0.5);
+      }*/
+      
     } else {
       ui.keysButton.position.set(w2+w2/2,1.6*h2);
     }

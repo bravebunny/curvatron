@@ -16,6 +16,7 @@ preloadMenu.prototype = {
 	    loadingBar.body.angularVelocity = 200;
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
     	//Load all stuf from menu
+  	this.game.load.image("login_button","assets/sprites/menu/login.png");
 		this.game.load.image("audio_button","assets/sprites/menu/audio.png");
 		this.game.load.image("audiooff_button","assets/sprites/menu/audiooff.png");
 		this.game.load.image("multiplayer_button","assets/sprites/menu/multiplayer.png");

@@ -3,6 +3,7 @@ var boot = function (game) {
 	h2 = 0;
 	changeColor = false;
 	mute = false;
+	firstTime = true;
 };
   
 boot.prototype = {
