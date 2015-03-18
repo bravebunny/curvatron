@@ -253,7 +253,7 @@ OldPlayer.prototype = {
 			}
 			localStorage.setItem("deathScore", deathScore+1);
 
-			this.sprite.kill();
+			this.sprite.destroy();
 			if (!mute) {
 				killSound.play();
 			}
@@ -262,7 +262,7 @@ OldPlayer.prototype = {
 		}
 
 		if (other) {
-			other.kill();
+			other.destroy();
 		}
 	},
 
@@ -282,7 +282,7 @@ OldPlayer.prototype = {
 
 		this.mode.collect(player, power, this);
 		
-		power.kill();
+		power.destroy();
 	},
 
 	showKey: function () {

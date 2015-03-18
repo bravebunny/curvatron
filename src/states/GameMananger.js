@@ -54,7 +54,7 @@ gameMananger.prototype = {
 		groupPowers = this.add.group();
 		if (this.mode.sp) {
 			if (!mobile) {
-				tempLabel = this.add.sprite(w2, h2, 'score-stat');
+				tempLabel = this.add.sprite(w2, h2, 'score');
 				tempLabel.anchor.setTo(0.5,0.5);
 				tempLabel.alpha = 0.7;
 				tempLabelText = this.add.text(w2+50, h2+8, this.mode.getHighScore().toString(), {
@@ -82,10 +82,17 @@ gameMananger.prototype = {
  		}
 
 		if (mobile) {
-			pauseSprite = this.add.button(w2, h2, 'pauseButton',this.touchPauseButton,this);
+			pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this);
     	pauseSprite.anchor.setTo(0.5, 0.5);
     	pauseSprite.input.useHandCursor = true;
+    	pauseSprite.scale.set(0.5);
+
+    	if (!this.mode.sp) {
+				pauseSprite.position.set(w2, h2);
+				pauseSprite.scale.set(0.8);
+			}
 		}
+
 
 		//create BitmapData
 		bmd = this.add.bitmapData(this.game.width, this.game.height);
@@ -150,6 +157,11 @@ gameMananger.prototype = {
 			}
 			totalTime += this.game.time.physicsElapsed;
 
+		/*if(!this.mode.gridIsFull()){
+			this.mode.createPower("point");
+			this.mode.createObstacle();
+		}*/
+
 			if (!gameOver) {
 				//Give crown
 				if (crowned != -1) {
@@ -191,8 +203,12 @@ gameMananger.prototype = {
 	},
 
 	createPower: function () {
-		var powerup = new PowerUp(this.game, "point", this.mode);
-		powerup.create();
+		if (this.mode.createPower) {
+			this.mode.createPower('point');
+		} else {
+			var powerup = new PowerUp(this.game, 'point', this.mode);
+			powerup.create();
+		}
 	},
 
 	endGame: function (){
@@ -223,19 +239,21 @@ gameMananger.prototype = {
 					}, this);
 			}
 
-	  	var restartButton = this.add.button(w2+97, h2-97,"restart_button",
-	  		function () {
-	  			this.state.restart(true, false, this.mode);
-	  		},this);
+	  	var restartButton = this.add.button(w2+97, h2-97,"restart_button");
 
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
+			clickButton(restartButton, 
+				function () {
+	  			this.state.restart(true, false, this.mode);
+	  		}, this);
 
-			var mainMenu = this.add.button(w2-97, h2-97,"exit_button",function(){this.state.start("Menu");},this);
+			var mainMenu = this.add.button(w2-97, h2-97,"exit_button");
 			mainMenu.scale.set(1,1);
 			mainMenu.anchor.setTo(0.5,0.5);
 			mainMenu.input.useHandCursor=true;
+			clickButton(mainMenu,function(){this.state.start("Menu");}, this);
 
 			if (mobile) {
 				pauseSprite.alpha = 0;
@@ -309,10 +327,17 @@ gameMananger.prototype = {
 
 
 	    	if (mobile) {
-	    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button",this.leaderboard,this);
+	    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button");
 					leaderboardButton.scale.set(0.6,0.6);
 					leaderboardButton.anchor.setTo(0.5,0.5);
 					leaderboardButton.input.useHandCursor=true;
+					clickButton(leaderboardButton, this.leaderboard, this);
+					var scoreWarning = this.game.add.text(w2+150, h2+217, "Touch the crown icon\nto submit your score.", {
+			      font: "25px dosis",
+			      fill: "#FFFFFF",
+			      align: "center"
+			  	});
+			  	scoreWarning.anchor.setTo(0,0.5);
 	    	}
     	}
 	  	gameOver = true;
@@ -322,6 +347,11 @@ gameMananger.prototype = {
 	pause: function() {
 		var ui = this.ui;
 		if (!paused) { //pause
+			this.game.tweens.pauseAll();
+			if (this.mode.pause) {
+				this.mode.pause();
+			}
+
 			if (gameOver) {
 				this.state.start("Menu");
 			}
@@ -345,35 +375,45 @@ gameMananger.prototype = {
 				this.game.time.events.remove(this.powerTimer);
 			}
 
-	        ui.menu = this.add.button(w2, h2-150, 'resume_button',function(){this.pause();},this);
-	        ui.menu.anchor.setTo(0.5, 0.5);
-	        ui.menu.scale.set(1,1);
-	        ui.menu.input.useHandCursor=true;
+        ui.menu = this.add.button(w2, h2-150, 'resume_button');
+        ui.menu.anchor.setTo(0.5, 0.5);
+        ui.menu.scale.set(1,1);
+        ui.menu.input.useHandCursor=true;
+        clickButton(ui.menu,this.pause, this);
 
-	        ui.restart = this.add.button(w2-150, h2, 'restart_button',function(){this.state.restart(true, false, this.mode);},this);
-	        ui.restart.anchor.setTo(0.5, 0.5);
-	        ui.restart.scale.set(1,1);
-	        ui.restart.input.useHandCursor=true;
+        ui.restart = this.add.button(w2-150, h2, 'restart_button');
+        ui.restart.anchor.setTo(0.5, 0.5);
+        ui.restart.scale.set(1,1);
+        ui.restart.input.useHandCursor=true;
+        clickButton(ui.restart,function(){this.state.restart(true, false, this.mode);}, this);
 
-	        ui.exit = this.add.button(w2, h2+150, 'exit_button',function(){this.state.start("Menu");},this);
-	        ui.exit.anchor.setTo(0.5, 0.5);
-	        ui.exit.scale.set(1,1);
-	        ui.exit.input.useHandCursor=true;
+        ui.exit = this.add.button(w2, h2+150, 'exit_button');
+        ui.exit.anchor.setTo(0.5, 0.5);
+        ui.exit.scale.set(1,1);
+        ui.exit.input.useHandCursor=true;
+        clickButton(ui.exit,function(){this.state.start("Menu");}, this);
 
-	        if (mute) {
-		    	ui.audioButton = this.add.button(w2+150, h2,"audiooff_button",this.muteSound,this);
-		  		ui.audioButton.anchor.setTo(0.5,0.5);
-		  		ui.audioButton.scale.set(1,1);
-		  		ui.audioButton.input.useHandCursor=true;
+        if (mute) {
+	    	ui.audioButton = this.add.button(w2+150, h2,"audiooff_button");
+	  		ui.audioButton.anchor.setTo(0.5,0.5);
+	  		ui.audioButton.scale.set(1,1);
+	  		ui.audioButton.input.useHandCursor=true;
 		    } else {
-		        ui.audioButton = this.add.button(w2+150, h2,"audio_button",this.muteSound,this);
-		        ui.audioButton.anchor.setTo(0.5,0.5);
-		        ui.audioButton.scale.set(1,1);
-		        ui.audioButton.input.useHandCursor=true;
+	        ui.audioButton = this.add.button(w2+150, h2,"audio_button");
+	        ui.audioButton.anchor.setTo(0.5,0.5);
+	        ui.audioButton.scale.set(1,1);
+	        ui.audioButton.input.useHandCursor=true;
 		    }
+	    	clickButton(ui.audioButton,this.muteSound, this);
 			
 		} else { //unpause
+			this.game.tweens.resumeAll();
 			ui.overlay.scale.set(0);
+
+			if (this.mode.unPause) {
+				this.mode.unPause();
+			}
+
 			if (!this.mode.sp) {
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
@@ -381,7 +421,7 @@ gameMananger.prototype = {
 			ui.overlay.inputEnabled = true;
 
 			if (mobile) {
-				pauseSprite.alpha = 0.1;
+				pauseSprite.alpha = 0.2;
 				pauseSprite.input.useHandCursor=true;
 			}
 			ui.menu.destroy();

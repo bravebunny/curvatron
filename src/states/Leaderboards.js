@@ -12,24 +12,26 @@ leaderboards.prototype = {
 		    align: "center"});
 	  	ui.title.anchor.setTo(0.5,0.5);
 
-		ui.normalButton = this.game.add.button(0,0,"collecting_button",this.normalScores,this);
+		ui.normalButton = this.game.add.button(0,0,"collecting_button");
 		ui.normalButton.anchor.setTo(0.5,0.5);
 		ui.normalButton.input.useHandCursor=true;
+		clickButton(ui.normalButton, this.normalScores, this);
 
-		ui.endlessButton = this.game.add.button(0,0,"endless_button",this.endlessScores,this);
+		ui.endlessButton = this.game.add.button(0,0,"endless_button");
 		ui.endlessButton.anchor.setTo(0.5,0.5);
 		ui.endlessButton.input.useHandCursor=true;
+		clickButton(ui.endlessButton, this.endlessScores, this);
 
-		if (mobile){
-			ui.oldSchoolButton = this.game.add.button(0,0,"oldSchool_button",this.playOldSchoolGame,this);
-			ui.oldSchoolButton.anchor.setTo(0.5,0.5);
-			ui.oldSchoolButton.input.useHandCursor=true;
-		}
+		ui.oldSchoolButton = this.game.add.button(0,0,"oldSchool_button");
+		ui.oldSchoolButton.anchor.setTo(0.5,0.5);
+		ui.oldSchoolButton.input.useHandCursor=true;
+		clickButton(ui.oldSchoolButton, this.playOldSchoolGame, this);
 
 		//Go back Button
-		ui.backButton = this.game.add.button(0,0,"back_button",this.backPressed,this);
+		ui.backButton = this.game.add.button(0,0,"back_button");
 		ui.backButton.anchor.setTo(0.5,0.5);
 		ui.backButton.input.useHandCursor=true;
+		clickButton(ui.backButton, this.backPressed, this);
 
 		this.setPositions();
 
@@ -56,7 +58,7 @@ leaderboards.prototype = {
         }
       } else if (socialService.isLoggedIn()){
         socialService.showLeaderboard(null, params);
-      }     
+      }
     }
 	},
 

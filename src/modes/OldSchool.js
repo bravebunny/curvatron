@@ -6,6 +6,7 @@ var OldSchool = function(game) {
 	this.spawnPowers = true;
 	this.score = 0;
 	this.leaderboardID = modesLB[2];
+	this.gridded = true;
 };
 
 OldSchool.prototype = {

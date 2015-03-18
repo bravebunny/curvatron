@@ -8,14 +8,14 @@ var Player = function (id, x, y, key, mode, game) {
 	this.x = x;
 	this.y = y;
 	this.key = key;
-	this.killTrail = false;
 	this.dead = false;
 	this.ready = false;
 	this.speed = 1;
 	this.angularVelocity = 1;
 	this.growth = 30;
+	this.initialSize = 60;
+	this.size = this.initialSize;
 	this.frameCount = 0;
-	this.lastTrailLength = 0;
 	this.keyText = null;
 	this.paused = false;
 	this.textTween = null;
@@ -28,13 +28,14 @@ var Player = function (id, x, y, key, mode, game) {
 	this.touch = null;
 	this.orientation = null;
 	this.playerMobileButton = null;
+	this.collectSemaphore = 0;
 };
 
 Player.prototype = {
 	create: function () {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
-
+		this.sprite.name = "" + this.id; 
 
 		this.sprite.anchor.setTo(.5,.5);
 		this.trail = this.game.make.sprite(0, 0, 'trail' + this.id);
@@ -55,7 +56,6 @@ Player.prototype = {
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		this.sprite.scale.set(scale);
 		//this.sprite.body.setSize(20,20,0,0);
-    this.lastTrailLength = this.growth;
 
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 
@@ -83,6 +83,7 @@ Player.prototype = {
 		this.showKey();
 
 		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
+
 	},
 
 	update: function () {
@@ -133,6 +134,12 @@ Player.prototype = {
 				}
 			}
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
+
+			if(this.mode.obstacleGroup){
+				if(this.game.physics.arcade.overlap(this.sprite, this.mode.obstacleGroup, this.kill, null, this)){
+				}
+			}
+
 			for (var i = 0; i < players.length; i++) {
 				if (i != this.id) {
 					this.game.physics.arcade.overlap(this.sprite, players[i].sprite, this.kill, null, this);
@@ -142,28 +149,13 @@ Player.prototype = {
 			var trailPiece = null;
 			var ctx = bmd.context;
 
-			//erase trail from front
-			if (this.dead && this.frameCount == 0 && this.trailArray[0]) {
-				trailPiece = this.trailArray.pop();
-		    	ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
-				
-				if (this.trailArray.length > 0) {
-					trailPiece = this.trailArray[this.trailArray.length -1];
-					bmd.draw(this.trail, trailPiece.x, trailPiece.y);
-				}
-			}
-
-			if (!this.killTrail && (this.trailArray.length >= (this.lastTrailLength + this.growth))) {
-				this.killTrail = true;
-				this.lastTrailLength = this.trailArray.length;
-			}
 
 			//erase trail from behind
-			if (this.killTrail && this.frameCount == 0 && this.trailArray[0]) {
+			if (this.trailArray.length >= this.size && this.frameCount == 0 && this.trailArray[0] || this.dead) {
 				if (this.mode.erasesTrail() || this.dead) {
 					var nRemove = 1;
 					if (this.shrink) {
-						if (this.trailArray.length <= this.shrinkSize) {
+						if (this.trailArray.length <= this.size) {
 							this.shrink = false;
 						} else {
 							nRemove = 4;
@@ -179,6 +171,19 @@ Player.prototype = {
 					}
 				}
 			}
+
+
+			//erase trail from front
+			if (this.dead && this.frameCount == 0 && this.trailArray[0]) {
+				trailPiece = this.trailArray.pop();
+		    	ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+				
+				if (this.trailArray.length > 0) {
+					trailPiece = this.trailArray[this.trailArray.length -1];
+					bmd.draw(this.trail, trailPiece.x, trailPiece.y);
+				}
+			}
+
 
 			//Border's collisions
 			if ((xx+colisionMargin*scale) <= borders[0]) {
@@ -203,7 +208,7 @@ Player.prototype = {
 		this.showOneKey = true;
 		this.showKeyTime = 2 + totalTime;
 		if (!this.dead) {
-			if (this.direction == 1 && !gameOver) {
+			if (this.direction == 1 && !gameOver && !paused) {
 				this.direction = -1;
 				if (!mute && !paused) {
 					moveSounds[0].play();
@@ -241,22 +246,27 @@ Player.prototype = {
 				}
 
 				if (mobile && pauseSprite.alpha == 1) {
-					pauseTween = this.game.add.tween(pauseSprite).to( { alpha: 0.1 }, 2000, Phaser.Easing.Linear.None, true);
+					pauseTween = this.game.add.tween(pauseSprite).to( { alpha: 0.2 }, 2000, Phaser.Easing.Linear.None, true);
 				}
 			}
 		}
 	},
 
 	click: function () {
-		var x1 = w2 - 81 , x2 = w2 + 81,
-            y1 = h2 - 81, y2 = h2 + 81;
+		if(this.mode.sp){
+			var x1 = 2*w2 - 100 - 61 , x2 = 2*w2 - 100 + 61,
+          y1 = 100 - 61, y2 = 100 + 61;
+		} else {
+			var x1 = w2 - 65 , x2 = w2 + 65,
+          y1 = h2 - 65, y2 = h2 + 65;
+		}
 
-        if (!(this.game.input.position.x > x1 
-        	&& this.game.input.position.x < x2 
-        	&& this.game.input.position.y > y1 
-        	&& this.game.input.position.y < y2 )) {
-        		this.keyPressed();
-        }
+      if (!(this.game.input.position.x > x1 
+      	&& this.game.input.position.x < x2 
+      	&& this.game.input.position.y > y1 
+      	&& this.game.input.position.y < y2 )) {
+      		this.keyPressed();
+      }
 	},
 
 	kill: function (player, other) {
@@ -269,42 +279,59 @@ Player.prototype = {
 				}
 				localStorage.setItem("deathScore", deathScore+1);
 			}
-			this.sprite.kill();
+			if (this.mode.sp || (!player && !other)) {
+				this.sprite.kill();
+				this.dead = true;
+			}
+
 			if (!mute) {
 				killSound.play();
 			}
-			this.dead = true;
-
+			
 			if (this.mode.kill) {
 				this.mode.kill();
 			}
 			
 		}
 
-		if (other) {
-			other.kill();
+		if (other && !this.mode.sp) {
+			var thisPlayer = players[parseInt(player.name)];
+			var otherPlayer = players[parseInt(other.name)];
+			if(thisPlayer.score >= otherPlayer.score){
+				otherPlayer.kill();
+			} 
+			if(thisPlayer.score <= otherPlayer.score){
+				thisPlayer.kill();
+			}
 		}
 	},
 
 	collect: function (player, power) {
-		if (!mute) {
-			collectSound.play();
-		}
-		if (power.name == "point") {
-			this.killTrail = false;
-			this.growth = 60*power.scale.x;
-			this.score = this.score + power.scale.x;
-		} else if (power.name == "shrink") {
-			this.shrinkSize = this.trailArray.length - this.shrinkAmount;
-			this.lastTrailLength -= this.shrinkAmount;
-			this.shrink = true;
-		}
+		if (this.collectSemaphore == 0) {
+			this.collectSemaphore = 1;
+			if (!mute) {
+				collectSound.play();
+			}
 
-		if (this.mode.collect) {
-			this.mode.collect(player, power, this);
+			if (this.mode.collect) {
+				this.mode.collect(player, power, this);
+			}
+			
+			if (power.name == "point") {
+				this.size += this.growth;
+				
+				this.score = this.score + power.scale.x;
+
+			} else if (power.name == "shrink") {
+				this.shrink = true;
+				this.size = this.initialSize;
+
+			}
+
+			this.game.add.tween(power).to( { alpha:0 }, 300, Phaser.Easing.Linear.None, true);
+			var powerTween = this.game.add.tween(power.scale).to( {x:0, y:0}, 300, Phaser.Easing.Back.In, true);
+			powerTween.onComplete.add(function(){power.destroy(); this.collectSemaphore = 0;}, this);
 		}
-		
-		power.kill();
 	},
 
 	showKey: function () {
@@ -408,8 +435,8 @@ Player.prototype = {
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
 	},
 
-	/*render: function(){
-		game.debug.body(this.sprite);
-	}*/
+	render: function(){
+		this.game.debug.body(this.sprite);
+	}
 
 };

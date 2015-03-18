@@ -45,15 +45,17 @@ multiplayer.prototype = {
 		ui.rightArrow.input.useHandCursor = true;
 
 		//Play Button
-		ui.playButton = this.game.add.button(0,0,"resume_button",this.playTheGame,this);
+		ui.playButton = this.game.add.button(0,0,"resume_button");
 		ui.playButton.anchor.setTo(0.5,0.5);
 		ui.playButton.input.useHandCursor = true;
+		clickButton(ui.playButton, this.playTheGame, this);
 
 
 	   	//Go back Button
-		ui.backButton = this.game.add.button(0,0,"back_button",this.backPressed,this);
+		ui.backButton = this.game.add.button(0,0,"back_button");
 		ui.backButton.anchor.setTo(0.5,0.5);
 		ui.backButton.input.useHandCursor = true;
+		clickButton(ui.backButton, this.backPressed, this);
 
 		//Place the menu buttons and labels on their correct positions
     	this.setPositions();
