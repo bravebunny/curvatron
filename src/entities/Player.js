@@ -253,15 +253,20 @@ Player.prototype = {
 	},
 
 	click: function () {
-		var x1 = w2 - 81 , x2 = w2 + 81,
-            y1 = h2 - 81, y2 = h2 + 81;
+		if(this.mode.sp){
+			var x1 = 2*w2 - 100 - 61 , x2 = 2*w2 - 100 + 61,
+          y1 = 100 - 61, y2 = 100 + 61;
+		} else {
+			var x1 = w2 - 65 , x2 = w2 + 65,
+          y1 = h2 - 65, y2 = h2 + 65;
+		}
 
-        if (!(this.game.input.position.x > x1 
-        	&& this.game.input.position.x < x2 
-        	&& this.game.input.position.y > y1 
-        	&& this.game.input.position.y < y2 )) {
-        		this.keyPressed();
-        }
+      if (!(this.game.input.position.x > x1 
+      	&& this.game.input.position.x < x2 
+      	&& this.game.input.position.y > y1 
+      	&& this.game.input.position.y < y2 )) {
+      		this.keyPressed();
+      }
 	},
 
 	kill: function (player, other) {
