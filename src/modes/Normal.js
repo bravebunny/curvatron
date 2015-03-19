@@ -99,7 +99,7 @@ Normal.prototype = {
 		if (mobile && socialService && socialService.isLoggedIn()) {
 			socialService.submitScore(this.score, null, params);
 		} else if (mobile) {
-			var betaWarning = this.game.add.text(w2, h2*0.25, "Score not submitted. Touch here to submit your score.", {
+			var betaWarning = this.game.add.text(w2, h2*0.25, "Score not submitted. Touch the crown icon to submit your score.", {
 	      font: "25px dosis",
 	      fill: "#FFFFFF",
 	      align: "center"

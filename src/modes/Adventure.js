@@ -96,14 +96,21 @@ Adventure.prototype = {
 	},
 
 	submitScore: function () {
-		/*var params = Cocoon.Social.ScoreParams;
+		var params = Cocoon.Social.ScoreParams;
 		if (this.score > this.getHighScore()) {
 			this.setHighScore(this.score);
 		}
 		params.leaderboardID = this.leaderboardID;
 		if (mobile && socialService && socialService.isLoggedIn()) {
 			socialService.submitScore(this.score, null, params);
-		}*/
+		} else if (mobile) {
+			var betaWarning = this.game.add.text(w2, h2*0.25, "Score not submitted. Touch the crown icon to submit your score.", {
+	      font: "25px dosis",
+	      fill: "#FFFFFF",
+	      align: "center"
+	  	});
+	  	betaWarning.anchor.setTo(0.5,0.5);
+	  }
 	},
 
 	collect: function (player, power) {

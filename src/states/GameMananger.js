@@ -266,12 +266,6 @@ gameMananger.prototype = {
 	  			var tie =  this.add.sprite(w2,h2+150, "tie");
 	  			tie.anchor.setTo(0.5,0.5);
 
-					/*var scoreInMenu = this.add.text(w2, h2+128, "It's a tie", {
-			        font: "80px dosis",
-			        fill: "#ffffff",
-			        align: "center"
-			    });
-					scoreInMenu.anchor.setTo(0.5,0.5);*/
 	  		} else {
 		  		var winnerFill = this.add.sprite(w2-75,h2+97, "player" + players[crowned].id);
 		  		winnerFill.scale.set(5);
@@ -332,12 +326,6 @@ gameMananger.prototype = {
 					leaderboardButton.anchor.setTo(0.5,0.5);
 					leaderboardButton.input.useHandCursor=true;
 					clickButton(leaderboardButton, this.leaderboard, this);
-					var scoreWarning = this.game.add.text(w2+150, h2+217, "Touch the crown icon\nto submit your score.", {
-			      font: "25px dosis",
-			      fill: "#FFFFFF",
-			      align: "center"
-			  	});
-			  	scoreWarning.anchor.setTo(0,0.5);
 	    	}
     	}
 	  	gameOver = true;

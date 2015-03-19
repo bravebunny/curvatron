@@ -50,7 +50,14 @@ Endless.prototype = {
 		params.leaderboardID = this.leaderboardID;
 		if (mobile && socialService && socialService.isLoggedIn()) {
 			socialService.submitScore(score, null, params);
-		}
+		} else if (mobile) {
+			var betaWarning = this.game.add.text(w2, h2*0.25, "Score not submitted. Touch the crown icon to submit your score.", {
+	      font: "25px dosis",
+	      fill: "#FFFFFF",
+	      align: "center"
+	  	});
+	  	betaWarning.anchor.setTo(0.5,0.5);
+	  }
 	},
 
 };
