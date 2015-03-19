@@ -47,4 +47,22 @@ function clickButton(button, callback, state) {
 function shuffleArray(o){ //v1.0
     for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
-};
+}
+
+function iap () {
+  if (Cocoon.Store.canPurchase()) {
+    Cocoon.Store.purchase("curvatron_unlock");
+  }
+}
+
+function initIAP () {
+  if (Cocoon.Store.canPurchase()) {
+    Cocoon.Store.initialize();
+    Cocoon.Store.on("load", {
+      success: function(products) {
+        Cocoon.Store.addProduct("curvatron_unlock");
+      }
+    });
+    Cocoon.Store.loadProducts(["curvatron_unlock"]);
+  }
+}

@@ -124,7 +124,7 @@ menu.prototype = {
     if (mobile && firstTime) {
       firstTime = false;
       this.login();
-
+      initIAP();
     }
 
     /*if (mobile && socialService && socialService.isLoggedIn()) {
@@ -196,7 +196,8 @@ menu.prototype = {
 	},
 
 	multiplayer: function () {
-    this.state.start("Multiplayer");
+    iap();
+    //this.state.start("Multiplayer");
 	},
 
 	setKeys: function () {
