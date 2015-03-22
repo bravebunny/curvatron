@@ -115,6 +115,15 @@ menu.prototype = {
       ui.audioButton.anchor.setTo(0.5,0.5);
       ui.audioButton.input.useHandCursor = true;
     }
+
+    if (mobile) {
+      //Donate
+      ui.donateButton = this.add.button(0,0,"donate_button");
+      ui.donateButton.anchor.setTo(1,1);
+      ui.donateButton.input.useHandCursor = true;
+      clickButton(ui.donateButton, this.doante, this);
+    }
+
     clickButton(ui.audioButton, this.muteSound, this);
 
     this.scale.refresh();
@@ -123,7 +132,7 @@ menu.prototype = {
 
     if (mobile && firstTime) {
       firstTime = false;
-      this.login();
+      //this.login();
       initIAP();
     }
 
@@ -196,8 +205,7 @@ menu.prototype = {
 	},
 
 	multiplayer: function () {
-    iap();
-    //this.state.start("Multiplayer");
+    this.state.start("Multiplayer");
 	},
 
 	setKeys: function () {
@@ -212,6 +220,10 @@ menu.prototype = {
 
   stats: function () {
     this.state.start("Stats");
+  },
+
+  donate: function () {
+    iap();
   },
 
   muteSound: function () {
@@ -272,6 +284,7 @@ menu.prototype = {
         ui.avatar.position.set(w2*2-160, h2*2-ui.login.height*0.5);
       }*/
       
+      ui.donateButton.position.set(2*w2,2*h2);
     } else {
       ui.keysButton.position.set(w2+w2/2,1.6*h2);
     }

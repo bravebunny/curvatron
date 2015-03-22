@@ -34,6 +34,7 @@ preloadMenu.prototype = {
 		this.game.load.image("key_button","assets/sprites/menu/key.png");
 		this.game.load.image("player_select","assets/sprites/menu/playerSelect.png");
 		this.game.load.image("exit_button","assets/sprites/menu/exit.png");
+		this.game.load.image("donate_button","assets/sprites/menu/donate.png");
 		this.game.load.image("resume_button","assets/sprites/menu/resume.png");
 		this.game.load.image("collecting_button","assets/sprites/menu/collecting.png");
 		this.game.load.image("endless_button","assets/sprites/menu/endless.png");
