@@ -132,7 +132,7 @@ menu.prototype = {
 
     if (mobile && firstTime) {
       firstTime = false;
-      //this.login();
+      this.login();
       initIAP();
     }
 
