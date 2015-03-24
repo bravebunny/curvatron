@@ -121,7 +121,7 @@ menu.prototype = {
       ui.donateButton = this.add.button(0,0,"donate_button");
       ui.donateButton.anchor.setTo(1,1);
       ui.donateButton.input.useHandCursor = true;
-      clickButton(ui.donateButton, this.doante, this);
+      clickButton(ui.donateButton, this.donate, this);
     }
 
     clickButton(ui.audioButton, this.muteSound, this);
@@ -185,7 +185,26 @@ menu.prototype = {
 
 
   login: function (board) {
-    if (!socialService) {
+
+    // This example shows how to integrate ads in your game
+    Cocoon.Ad.interstitial.on("shown" , function(){
+        console.log("Banner shown!");
+    });
+    Cocoon.Ad.interstitial.on("ready" , function(){
+        //Cocoon.Ad.setBannerLayout(Cocoon.Ad.BannerLayout.BOTTOM_CENTER);
+        console.log("Banner ready!");
+        Cocoon.Ad.showInterstitial();
+    });
+    Cocoon.Ad.interstitial.on("hidden" , function(){
+        console.log("Banner hidden!");
+    });
+    // Fetch a banner, the above callbacks will handle it.
+    console.log("Banner load!");
+    Cocoon.Ad.loadInterstitial();
+
+
+
+    /*if (!socialService) {
       var gp = Cocoon.Social.GooglePlayGames;
       gp.init({});
       socialService = gp.getSocialInterface();
@@ -196,7 +215,7 @@ menu.prototype = {
           }
         }.bind(this));
       }
-    }
+    }*/
   },
 
 	singlePlayer: function () {
