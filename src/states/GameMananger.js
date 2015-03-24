@@ -335,6 +335,9 @@ gameMananger.prototype = {
 	pause: function() {
 		var ui = this.ui;
 		if (!paused) { //pause
+
+console.log(Cocoon.Utils.captureScreen("myScreenshot.png"));
+
 			this.game.tweens.pauseAll();
 			if (this.mode.pause) {
 				this.mode.pause();

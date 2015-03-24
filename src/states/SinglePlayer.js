@@ -51,7 +51,8 @@ singlePlayer.prototype = {
 	playEndlessGame: function () {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
-    var mode = new Endless(this.game);
+    var mode = new Creative(this.game);
+    //var mode = new Endless(this.game);
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 

@@ -22,7 +22,6 @@ Adventure.prototype = {
 	},
 
 	create: function() {
-
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
 		this.game.width = this.width;

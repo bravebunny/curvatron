@@ -121,17 +121,19 @@ Player.prototype = {
 				}
 
 				//collision detection
-				var collSize = 12*scale;
-
-				for (var i = 0; i < players.length; i++) {
-					for (var j = 0; j < this.trailArray.length; j++) {
-						var curTrail = players[i].trailArray[j];
-						if (curTrail && curTrail.x-collSize < xx && curTrail.x+collSize > xx &&
-							 	curTrail.y-collSize < yy && curTrail.y+collSize > yy) {
-							 	this.kill();
+				if (!this.mode.noCollisions) {
+					var collSize = 12*scale;
+					for (var i = 0; i < players.length; i++) {
+						for (var j = 0; j < this.trailArray.length; j++) {
+							var curTrail = players[i].trailArray[j];
+							if (curTrail && curTrail.x-collSize < xx && curTrail.x+collSize > xx &&
+								 	curTrail.y-collSize < yy && curTrail.y+collSize > yy) {
+								 	this.kill();
+							}
 						}
 					}
 				}
+
 			}
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
 
@@ -352,7 +354,7 @@ Player.prototype = {
 				this.keyText.scale.set(scale);
 		  		this.keyText.anchor.setTo(0.5,0.5);
 
-			  	if (mobile) {
+			  	if (mobile && this.mode.getHighScore) {
 			  		this.keyText.setText(this.mode.getHighScore());
 			  		if (!this.mode.sp) {
 			  			this.keyText.visible = false;
