@@ -242,7 +242,7 @@ Player.prototype = {
 					}
 				}
 
-				if (this.mode.sp && !mobile) {
+				if (this.mode.sp && !mobile && this.mode.leaderboardID) {
 					this.game.add.tween(tempLabel).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 					this.game.add.tween(tempLabelText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 				}
@@ -256,19 +256,35 @@ Player.prototype = {
 
 	click: function () {
 		if(this.mode.sp){
+			//pause button
 			var x1 = 2*w2 - 100 - 61 , x2 = 2*w2 - 100 + 61,
           y1 = 100 - 61, y2 = 100 + 61;
+
 		} else {
 			var x1 = w2 - 65 , x2 = w2 + 65,
-          y1 = h2 - 65, y2 = h2 + 65;
+         	y1 = h2 - 65, y2 = h2 + 65;
 		}
+    if (!(this.game.input.position.x > x1 
+    	&& this.game.input.position.x < x2 
+    	&& this.game.input.position.y > y1 
+    	&& this.game.input.position.y < y2 )){
+    		this.keyPressed();
+    }
 
-      if (!(this.game.input.position.x > x1 
-      	&& this.game.input.position.x < x2 
-      	&& this.game.input.position.y > y1 
-      	&& this.game.input.position.y < y2 )) {
-      		this.keyPressed();
-      }
+    //do not work :(
+/*
+    else if(this.mode.leaderboardID == null){
+    	var x11 = w2*0.5 - 100 - 61, x22 = w2*0.5 - 100 + 61;
+
+	   	if (!(this.game.input.position.x > x11 
+	    	&& this.game.input.position.x < x22 
+	    	&& this.game.input.position.y > y1 
+	    	&& this.game.input.position.y < y2 )){
+	   		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+	    	this.keyPressed();
+	   	}
+   	}
+   */
 	},
 
 	kill: function (player, other) {
