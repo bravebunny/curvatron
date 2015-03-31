@@ -2,7 +2,7 @@ var Creative = function (game) {
 	this.sp = true;
 	this.game = game;
 	this.player = null;
-	this.leaderboardID = modesLB[1];
+	this.leaderboardID = null;
 	this.noCollisions = true;
 };
 

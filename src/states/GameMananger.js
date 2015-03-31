@@ -52,7 +52,7 @@ gameMananger.prototype = {
 
 
 		groupPowers = this.add.group();
-		if (this.mode.sp) {
+		if (this.mode.sp && this.mode.leaderboardID) {
 			if (!mobile) {
 				tempLabel = this.add.sprite(w2, h2, 'score');
 				tempLabel.anchor.setTo(0.5,0.5);
@@ -77,8 +77,10 @@ gameMananger.prototype = {
 			ui.timeCircle.pivot.y = h2;
 			ui.graphics.endFill();
 
-			//Generate powers
-			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
+			if(this.leaderboardID){
+				//Generate powers
+				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
+			}
  		}
 
 		if (mobile) {
@@ -87,12 +89,19 @@ gameMananger.prototype = {
     	pauseSprite.input.useHandCursor = true;
     	pauseSprite.scale.set(0.5);
 
+    	if(this.mode.leaderboardID == null){
+    		screenShotSprite = this.add.button(w2*0.5 - 100, 100, 'pauseButton', this.takeScreenShot, this);
+    		screenShotSprite.anchor.setTo(0.5, 0.5);
+    		screenShotSprite.input.useHandCursor = true;
+    		screenShotSprite.scale.set(0.5);
+    		screenShotSprite.alpha = 0.2;
+    	}
+
     	if (!this.mode.sp) {
 				pauseSprite.position.set(w2, h2);
 				pauseSprite.scale.set(0.8);
 			}
 		}
-
 
 		//create BitmapData
 		bmd = this.add.bitmapData(this.game.width, this.game.height);
@@ -318,8 +327,6 @@ gameMananger.prototype = {
 	    	textCurrentScore.anchor.setTo(0.5,0.5);
 	    	textHighScore.anchor.setTo(0.5,0.5);
 
-
-
 	    	if (mobile) {
 	    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button");
 					leaderboardButton.scale.set(0.6,0.6);
@@ -335,8 +342,6 @@ gameMananger.prototype = {
 	pause: function() {
 		var ui = this.ui;
 		if (!paused) { //pause
-
-console.log(Cocoon.Utils.captureScreen("myScreenshot.png"));
 
 			this.game.tweens.pauseAll();
 			if (this.mode.pause) {
@@ -357,7 +362,7 @@ console.log(Cocoon.Utils.captureScreen("myScreenshot.png"));
 
 			if (mobile) {
 				pauseSprite.alpha = 0;
-			} else if (this.mode.sp) {
+			} else if (this.mode.sp && this.mode.leaderboardID) {
 				tempLabel.alpha = 0;
 				tempLabelText.alpha = 0;
 			}
@@ -471,6 +476,10 @@ console.log(Cocoon.Utils.captureScreen("myScreenshot.png"));
 	      	menuMusic.stop();
 	    	}
 	    }
+	},
+
+	takeScreenShot: function() {
+		console.log(Cocoon.Utils.captureScreen("myScreenshot.png"));
 	},
 
 	backPressed: function () {
