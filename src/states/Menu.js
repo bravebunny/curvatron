@@ -188,7 +188,7 @@ menu.prototype = {
     if (!socialService) {
       socialInit();
 
-      if (!socialService.isLoggedIn()) {
+      if (socialService && !socialService.isLoggedIn()) {
         socialService.login(function(loggedIn, error) {
         if (error) {
             console.error("login error: " + error.message);

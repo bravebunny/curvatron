@@ -90,7 +90,7 @@ gameMananger.prototype = {
     	pauseSprite.scale.set(0.5);
 
     	if(this.mode.leaderboardID == null){
-    		screenShotSprite = this.add.button(w2*0.5 - 100, 100, 'pauseButton', this.takeScreenShot, this);
+    		screenShotSprite = this.add.button(100, 100, 'screenshotButton', this.takeScreenShot, this);
     		screenShotSprite.anchor.setTo(0.5, 0.5);
     		screenShotSprite.input.useHandCursor = true;
     		screenShotSprite.scale.set(0.5);
