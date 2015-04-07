@@ -15,6 +15,17 @@ boot.prototype = {
   	create: function () {
   		//this.game.add.plugin(Phaser.Plugin.Debug);
   	orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+
+  	if (Cocoon.Social.GameCenter.nativeAvailable) {
+  		platform = "ios";
+  	} else if (Cocoon.Social.GooglePlayGames.nativeAvailable) {
+			platform = "android";
+  	} else {
+  		platform = "desktop";
+  	}
+  	
+    console.log(JSON.stringify(platform));
+
   	w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 
@@ -44,7 +55,7 @@ boot.prototype = {
 
 	  	this.physics.startSystem(Phaser.Physics.ARCADE);
 
-	  	this.stage.smoothed = true;
+	  	this.stage.smoothed = false;
 
 		if (mobile) {
 			Cocoon.App.exitCallback(

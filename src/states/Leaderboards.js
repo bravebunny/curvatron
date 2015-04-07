@@ -43,9 +43,7 @@ leaderboards.prototype = {
       var params = Cocoon.Social.ScoreParams;
       params.leaderboardID = board;
       if (!socialService) {
-        var gp = Cocoon.Social.GooglePlayGames;
-        gp.init({});
-        socialService = gp.getSocialInterface();
+        socialInit();
       } else {
       	if (socialService.isLoggedIn()){
         	socialService.showLeaderboard(null, params);

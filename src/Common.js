@@ -66,3 +66,17 @@ function initIAP () {
     Cocoon.Store.loadProducts(["curvatron_unlock"]);
   }
 }
+
+function socialInit() {
+  switch (platform) {
+    case "android":
+      var gp = Cocoon.Social.GooglePlayGames;
+      gp.init({});
+      socialService = gp.getSocialInterface();
+    break;
+    case "ios":
+      var gc = Cocoon.Social.GameCenter;
+      socialService = gc.getSocialInterface();
+    break;
+  }
+}

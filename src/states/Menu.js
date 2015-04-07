@@ -185,37 +185,17 @@ menu.prototype = {
 
 
   login: function (board) {
+    if (!socialService) {
+      socialInit();
 
-    // This example shows how to integrate ads in your game
-    Cocoon.Ad.interstitial.on("shown" , function(){
-        console.log("Banner shown!");
-    });
-    Cocoon.Ad.interstitial.on("ready" , function(){
-        //Cocoon.Ad.setBannerLayout(Cocoon.Ad.BannerLayout.BOTTOM_CENTER);
-        console.log("Banner ready!");
-        Cocoon.Ad.showInterstitial();
-    });
-    Cocoon.Ad.interstitial.on("hidden" , function(){
-        console.log("Banner hidden!");
-    });
-    // Fetch a banner, the above callbacks will handle it.
-    console.log("Banner load!");
-    Cocoon.Ad.loadInterstitial();
-
-
-
-    /*if (!socialService) {
-      var gp = Cocoon.Social.GooglePlayGames;
-      gp.init({});
-      socialService = gp.getSocialInterface();
       if (!socialService.isLoggedIn()) {
-      socialService.login(function(loggedIn, error) {
+        socialService.login(function(loggedIn, error) {
         if (error) {
             console.error("login error: " + error.message);
           }
         }.bind(this));
       }
-    }*/
+    }
   },
 
 	singlePlayer: function () {

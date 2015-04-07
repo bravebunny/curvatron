@@ -106,7 +106,7 @@ gameMananger.prototype = {
 		//create BitmapData
 		bmd = this.add.bitmapData(this.game.width, this.game.height);
 		bmd.addToWorld();
-		bmd.smoothed = true;
+		bmd.smoothed = false;
 
 		var angle = 0;
 		if (mobile && this.orientation == "portrait") {
@@ -443,9 +443,7 @@ gameMananger.prototype = {
       var params = Cocoon.Social.ScoreParams;
       params.leaderboardID = this.mode.leaderboardID;
       if (!socialService) {
-        var gp = Cocoon.Social.GooglePlayGames;
-        gp.init({});
-        socialService = gp.getSocialInterface();
+        socialInit();
       } else {
       	if (socialService.isLoggedIn()){
         	socialService.showLeaderboard(null, params);
