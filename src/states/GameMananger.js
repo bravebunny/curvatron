@@ -89,14 +89,6 @@ gameMananger.prototype = {
     	pauseSprite.input.useHandCursor = true;
     	pauseSprite.scale.set(0.5);
 
-    	if(this.mode.leaderboardID == null){
-    		screenShotSprite = this.add.button(100, 100, 'screenshotButton', this.takeScreenShot, this);
-    		screenShotSprite.anchor.setTo(0.5, 0.5);
-    		screenShotSprite.input.useHandCursor = true;
-    		screenShotSprite.scale.set(0.5);
-    		screenShotSprite.alpha = 0.2;
-    	}
-
     	if (!this.mode.sp) {
 				pauseSprite.position.set(w2, h2);
 				pauseSprite.scale.set(0.8);
@@ -474,10 +466,6 @@ gameMananger.prototype = {
 	      	menuMusic.stop();
 	    	}
 	    }
-	},
-
-	takeScreenShot: function() {
-		console.log(Cocoon.Utils.captureScreen("myScreenshot.png"));
 	},
 
 	backPressed: function () {

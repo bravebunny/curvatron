@@ -16,7 +16,19 @@ Creative.prototype = {
 	create: function () {
 		this.player = players[0];
 		scale = 0.3;
+		var screenShotSprite = this.game.add.button(100, 100, 'screenshotButton', this.takeScreenShot, this);
+		screenShotSprite.anchor.setTo(0.5, 0.5);
+		screenShotSprite.input.useHandCursor = true;
+		screenShotSprite.scale.set(0.5);
+		screenShotSprite.alpha = 0.2;
 		
+	},
+	
+	takeScreenShot: function() {
+		//console.log(Cocoon.Utils.captureScreen("myScreenshot.png"));
+		Cocoon.Utils.captureScreenAsync("myScreenshot.png", Cocoon.App.StorageType.EXTERNAL_STORAGE, true, Cocoon.Utils.CaptureType.EVERYTHING, function(callback){
+			console.log("Done:" + JSON.stringify(callback));
+		});
 	},
 
 	update: function () {

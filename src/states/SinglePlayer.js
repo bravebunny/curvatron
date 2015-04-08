@@ -30,12 +30,6 @@ singlePlayer.prototype = {
 		ui.oldSchoolButton.input.useHandCursor=true;
 		clickButton(ui.oldSchoolButton, this.playOldSchoolGame, this);
 
-		/*TODO creative button here*/
-		ui.creativeButton = this.game.add.button(0,0,"oldSchool_button");
-		ui.creativeButton.anchor.setTo(0.5,0.5);
-		ui.creativeButton.input.useHandCursor=true;
-		clickButton(ui.creativeButton, this.playCreativeGame, this);
-
 		//Go back Button
 		ui.backButton = this.game.add.button(0,0,"back_button");
 		ui.backButton.anchor.setTo(0.5,0.5);
@@ -57,7 +51,8 @@ singlePlayer.prototype = {
 	playEndlessGame: function () {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
-    var mode = new Endless(this.game);
+    var mode = new Creative(this.game);
+    //var mode = new Endless(this.game);
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
@@ -65,13 +60,6 @@ singlePlayer.prototype = {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
     var mode = new OldSchool(this.game);
-		this.game.state.start("PreloadGame", true, false, mode);
-	},
-
-	playCreativeGame: function () {
-		numberPlayers = 0;
-    menuMusic.fadeOut(2000);
-    var mode = new Creative(this.game);
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
@@ -104,18 +92,16 @@ singlePlayer.prototype = {
 	  }
 
 	  if ((mobile && wOrientation == "landscape") || !mobile) {
-			ui.normalButton.position.set(w2-360,h2);
-			ui.endlessButton.position.set(w2-120,h2);
-			ui.oldSchoolButton.position.set(w2+120,h2);
-			ui.creativeButton.position.set(w2+360,h2);
+			ui.normalButton.position.set(w2-270,h2);
+			ui.endlessButton.position.set(w2,h2);
+			ui.oldSchoolButton.position.set(w2+270,h2);
 		} else if (mobile && wOrientation == "portrait") {
-			ui.normalButton.position.set(w2-170,h2-140);
-			ui.endlessButton.position.set(w2+170,h2-140);
-			ui.oldSchoolButton.position.set(w2-170,h2+150);
-			ui.creativeButton.position.set(w2+170,h2+150)
+			ui.normalButton.position.set(w2-170,h2-120);
+			ui.endlessButton.position.set(w2+170,h2-120);
+			ui.oldSchoolButton.position.set(w2,h2+170);
 		}
 
-		ui.backButton.position.set(w2/2,h2*1.65);
+		ui.backButton.position.set(w2/2,h2*1.6);
     }
     
 };
