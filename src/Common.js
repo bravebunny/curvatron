@@ -51,25 +51,23 @@ function shuffleArray(o){ //v1.0
 
 function iap () {
   if (Cocoon.Store.canPurchase()) {
-    Cocoon.Store.purchase("curvatronunlock");
+    Cocoon.Store.purchase("curvatron_unlock");
   }
 }
 
 function initIAP () {
-    console.log('INIT APPP')
-    //if (Cocoon.Store.canPurchase()) {
+  if (Cocoon.Store.canPurchase()) {
     Cocoon.Store.initialize();
     Cocoon.Store.on("load", {
       success: function(products) {
-        console.log('STORE LOAD', arguments)
-        Cocoon.Store.addProduct("curvatronunlock");
+        Cocoon.Store.addProduct("curvatron_unlock");
       },
-      error: function(products) {
-        console.log('STORE ERROR', arguments)
+      error: function() {
+        console.log("Error loading store", arguments)
       },
     });
-    Cocoon.Store.loadProducts(["curvatronunlock"]);
-  //}
+    Cocoon.Store.loadProducts(["curvatron_unlock"]);
+  }
 }
 
 function socialInit() {
