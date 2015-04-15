@@ -10,7 +10,7 @@ function buttonUp() {
 function clickButton(button, callback, state) {
   var s = button.scale;
   if (mobile){
-    var tweenTime = 80; 
+    var tweenTime = 80;
   } else {
     var tweenTime = 30;
   }
@@ -32,7 +32,7 @@ function clickButton(button, callback, state) {
     tweenOut.onComplete.active = false;
   });
 
-  button.onInputDown.add(buttonDown, { 
+  button.onInputDown.add(buttonDown, {
     tween: tweenIn,
     tweenOut: tweenOut
   });
@@ -51,20 +51,25 @@ function shuffleArray(o){ //v1.0
 
 function iap () {
   if (Cocoon.Store.canPurchase()) {
-    Cocoon.Store.purchase("curvatron_unlock");
+    Cocoon.Store.purchase("curvatronunlock");
   }
 }
 
 function initIAP () {
-  if (Cocoon.Store.canPurchase()) {
+    console.log('INIT APPP')
+    //if (Cocoon.Store.canPurchase()) {
     Cocoon.Store.initialize();
     Cocoon.Store.on("load", {
       success: function(products) {
-        Cocoon.Store.addProduct("curvatron_unlock");
-      }
+        console.log('STORE LOAD', arguments)
+        Cocoon.Store.addProduct("curvatronunlock");
+      },
+      error: function(products) {
+        console.log('STORE ERROR', arguments)
+      },
     });
-    Cocoon.Store.loadProducts(["curvatron_unlock"]);
-  }
+    Cocoon.Store.loadProducts(["curvatronunlock"]);
+  //}
 }
 
 function socialInit() {

@@ -73,7 +73,7 @@ menu.prototype = {
     ui.mpButton.input.useHandCursor = true;
     clickButton(ui.mpButton, this.multiplayer, this);
 
-    
+
 
     //SetKeys or leaderboards
     if (mobile) {
@@ -116,7 +116,7 @@ menu.prototype = {
       ui.audioButton.input.useHandCursor = true;
     }
 
-    if (mobile) {
+    if (mobile && platform === "android") {
       //Donate
       ui.donateButton = this.add.button(0,0,"donate_button");
       ui.donateButton.anchor.setTo(1,1);
@@ -133,7 +133,10 @@ menu.prototype = {
     if (mobile && firstTime) {
       firstTime = false;
       this.login();
-      initIAP();
+
+      if(platform === "android") {
+        initIAP();
+      }
     }
 
     /*if (mobile && socialService && socialService.isLoggedIn()) {
@@ -146,7 +149,7 @@ menu.prototype = {
     loader.image('avatar',"http://placekitten.com/g/300/300");
     loader.onLoadComplete.addOnce(function () {
       console.log('avatar');
-      var ui = this.ui; 
+      var ui = this.ui;
       ui.avatar = this.add.image(0, 0, 'avatar');
       ui.avatar.width = 40;
       ui.avatar.height = 40;
@@ -227,13 +230,13 @@ menu.prototype = {
 
   muteSound: function () {
     var ui = this.ui;
-    
+
     if (mute){
       ui.audioButton.loadTexture('audio_button');
       //this.game.sound.mute = false;
       mute = false;
       if (!menuMusic) {
-        menuMusic = this.add.audio('dream');  
+        menuMusic = this.add.audio('dream');
       }
       menuMusic.loop = true;
       menuMusic.play();
@@ -282,8 +285,10 @@ menu.prototype = {
       if (ui.avatar) {
         ui.avatar.position.set(w2*2-160, h2*2-ui.login.height*0.5);
       }*/
-      
-      ui.donateButton.position.set(2*w2,2*h2);
+
+      if(platform == 'android') {
+        ui.donateButton.position.set(2*w2,2*h2);
+      }
     } else {
       ui.keysButton.position.set(w2+w2/2,1.6*h2);
     }
@@ -292,5 +297,5 @@ menu.prototype = {
 
     ui.audioButton.position.set(w2/2,1.6*h2);
   }
-  
+
 };
