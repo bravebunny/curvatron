@@ -4,6 +4,7 @@ var MPNormal = function(nPlayers, game) {
 	this.spawnPowers = true;
 	this.highScore = 0;
 	this.gridded = true;
+	this.highScoreAux = true;
 };
 
 MPNormal.prototype = {
@@ -20,6 +21,7 @@ MPNormal.prototype = {
 	},
 
 	create: function () {
+		this.highScoreAux = true;
 		this.highScore = 0;
 		spawnPowers = true;
 		var textSize = 15;
@@ -44,7 +46,9 @@ MPNormal.prototype = {
 	},
 
 	collect: function (playerSprite, powerSprite, player) {
-		if (player.score > this.highScore) {
+		
+		if (player.score > this.highScore || this.highScoreAux) {
+			this.highScoreAux = false;
 			this.highScore = player.score;
 			if(crowned > -1){
 				players[crowned].removeCrown();
@@ -52,7 +56,9 @@ MPNormal.prototype = {
 			crowned = player.id;
 			lastCrowned = crowned+1;
 		}
+
 		player.growth = 60*powerSprite.scale.x;
+		
 	},
 
 	kill: function () {
