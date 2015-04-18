@@ -77,7 +77,7 @@ gameMananger.prototype = {
 			ui.timeCircle.pivot.y = h2;
 			ui.graphics.endFill();
 
-			if(this.leaderboardID){
+			if(!this.mode.sp){
 				//Generate powers
 				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
 			}
