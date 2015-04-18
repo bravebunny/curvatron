@@ -61,12 +61,22 @@ function initIAP () {
     Cocoon.Store.on("load", {
       success: function(products) {
         Cocoon.Store.addProduct("curvatron_unlock");
+        iapDone = true;
       },
       error: function() {
         console.log("Error loading store", arguments)
+        iapDone = false;
       },
     });
     Cocoon.Store.loadProducts(["curvatron_unlock"]);
+  }
+}
+
+function purchased () {
+  if (Cocoon.Store.canPurchase() && iapDone) {
+    return Cocoon.Store.isProductPurchased("curvatron_unlock");
+  } else {
+    return false;
   }
 }
 

@@ -5,6 +5,7 @@ var boot = function (game) {
 	changeColor = false;
 	mute = false;
 	firstTime = true;
+	iapDone = false;
 };
   
 boot.prototype = {

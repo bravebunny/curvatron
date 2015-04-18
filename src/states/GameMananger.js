@@ -152,7 +152,9 @@ gameMananger.prototype = {
 
 
 		//Ad stuff
-		playCounter++;
+		if (!purchased()) {
+			playCounter++;
+		}
 		console.log("playConter = " + playCounter)
 		if (playCounter >= 4) {
 			this.loadAd();
@@ -178,7 +180,7 @@ gameMananger.prototype = {
 					this.mode.update();
 				}
 				if(this.mode.sp && players[0].dead){
-					this.manager.endGame();
+					this.endGame();
 				}
 
 			}

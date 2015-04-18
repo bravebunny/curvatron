@@ -116,7 +116,7 @@ menu.prototype = {
       ui.audioButton.input.useHandCursor = true;
     }
 
-    if (mobile && platform === "android") {
+    if (mobile && !purchased() && platform === "android") {
       //Donate
       ui.donateButton = this.add.button(0,0,"donate_button");
       ui.donateButton.anchor.setTo(1,1);
@@ -207,7 +207,13 @@ menu.prototype = {
 	},
 
 	multiplayer: function () {
-    this.state.start("Multiplayer");
+    if (mobile) {
+      var mode = new MPNormal(1, this.game);
+      this.game.state.start("PreloadGame", true, false, mode);
+    } else {
+      this.state.start("Multiplayer");
+    }
+    
 	},
 
 	setKeys: function () {
@@ -286,7 +292,7 @@ menu.prototype = {
         ui.avatar.position.set(w2*2-160, h2*2-ui.login.height*0.5);
       }*/
 
-      if(platform == 'android') {
+      if(platform == 'android' && !purchased()) {
         ui.donateButton.position.set(2*w2,2*h2);
       }
     } else {
