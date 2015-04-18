@@ -102,6 +102,14 @@ Normal.prototype = {
 	},
 
 	collect: function (player, power) {
+		if (power.name == "point") {
+			this.size += this.growth;
+
+		} else if (power.name == "shrink") {
+			this.shrink = true;
+			this.size = this.initialSize;
+		}
+
 		var point = this.lastPoint;
 		if (point) {
 			this.pointsPow.push(point);

@@ -205,10 +205,12 @@ OldPlayer.prototype = {
 		this.showOneKey = true;
 		this.showKeyTime = 2 + totalTime;
 		if (!this.dead) {
-			if (this.direction == 1 && !gameOver) {
+			if (this.direction == 1 && !gameOver && !paused) {
 				this.direction = -1;
+				this.sprite.height *= -1;
 				this.distance = this.maxDistance;
 			} else if (!gameOver && !paused) {
+				this.sprite.height *= -1;
 				this.direction = 1;
 				this.distance = this.maxDistance;
 			}

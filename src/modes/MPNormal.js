@@ -4,7 +4,6 @@ var MPNormal = function(nPlayers, game) {
 	this.spawnPowers = true;
 	this.highScore = 0;
 	this.gridded = true;
-	this.highScoreAux = true;
 };
 
 MPNormal.prototype = {
@@ -20,8 +19,10 @@ MPNormal.prototype = {
 		}
 	},
 
-	create: function () {
-		this.highScoreAux = true;
+	create: function (manager) {
+		this.crowned = -1;
+		this.lastCrowned = -1;
+		this.manager = manager;
 		this.highScore = 0;
 		spawnPowers = true;
 		var textSize = 15;
@@ -38,7 +39,28 @@ MPNormal.prototype = {
 	},
 
 	update: function () {
+		if (this.crowned != -1) {
+			players[this.crowned].addCrown();
+		}
+		if(this.manager.gameTime >= (totalTime)){
+			this.manager.ui.timeCircle.scale.set((-1/this.manager.gameTime)*(totalTime)+1);
+		} else {
+			this.manager.endGame();
+		}
 
+		var numberAlive = 0;
+		var playerAlive = -1;
+		for (var i = 0; i < players.length; i++) {
+			if (!players[i].dead) {
+				playerAlive = i;
+				numberAlive++;
+				if (numberAlive > 1) break;
+			}
+		}
+		if(numberAlive < 2) {
+			this.lastCrowned = playerAlive;
+			this.manager.endGame();
+		}
 	},
 
 	erasesTrail: function () {
@@ -46,19 +68,19 @@ MPNormal.prototype = {
 	},
 
 	collect: function (playerSprite, powerSprite, player) {
+		player.growth = 60*powerSprite.scale.x;
+		player.size += player.growth;
 		
-		if (player.score > this.highScore || this.highScoreAux) {
-			this.highScoreAux = false;
-			this.highScore = player.score;
-			if(crowned > -1){
-				players[crowned].removeCrown();
+		if (player.size > this.highScore) {
+			this.highScore = player.size;
+			if(this.crowned > -1){
+				players[this.crowned].removeCrown();
 			}
-			crowned = player.id;
-			lastCrowned = crowned+1;
+			this.lastCrowned = this.crowned;
+			this.crowned = player.id;
+			
 		}
 
-		player.growth = 60*powerSprite.scale.x;
-		
 	},
 
 	kill: function () {
@@ -72,17 +94,39 @@ MPNormal.prototype = {
 		var newMax = 0;
 		for (var i = 0; i < players.length; i++) {
 			if (players.length - alreadyDead == 1 && i != this.id && !players[i].dead) {
-				newMax = players[i].score;
-				crowned = i;
-			} else if (i != this.id && players[i].score > newMax && !players[i].dead) {
-				newMax = players[i].score;
-				crowned = i;
+				newMax = players[i].size;
+				this.crowned = i;
+			} else if (i != this.id && players[i].size > newMax && !players[i].dead) {
+				newMax = players[i].size;
+				this.crowned = i;
 			}
 		}
 
-		if (crowned != -1 && players[crowned].dead) {
-			crowned = -1;
+		if (this.crowned != -1 && players[this.crowned].dead) {
+			this.crowned = -1;
 			this.highScore = 0;
+		}
+	},
+
+	endgame: function() {
+		if (this.crowned == -1) {
+			var tie =  this.game.add.sprite(w2,h2+150, "tie");
+			tie.anchor.setTo(0.5,0.5);
+
+		} else {
+  		var winnerFill = this.game.add.sprite(w2-75,h2+97, "player" + players[this.crowned].id);
+  		winnerFill.scale.set(5);
+  		winnerFill.anchor.setTo(0.5,0.5);
+
+		var winnerLabel = this.game.add.sprite(w2, h2+97,"winner");
+		winnerLabel.scale.set(1,1);
+		winnerLabel.anchor.setTo(0.5,0.5);
+		var textWinner = this.game.add.text(w2+50, h2+105, String.fromCharCode(players[this.crowned].key), {
+	      font: "100px dosis",
+	      fill: colorPlayers[this.crowned],
+	      align: "center"
+    	});
+    	textWinner.anchor.setTo(0.5,0.5);
 		}
 	},
 

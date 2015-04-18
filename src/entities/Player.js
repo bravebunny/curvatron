@@ -334,17 +334,6 @@ Player.prototype = {
 			if (this.mode.collect) {
 				this.mode.collect(player, power, this);
 			}
-			
-			if (power.name == "point") {
-				this.size += this.growth;
-				
-				this.score = this.score + power.scale.x;
-
-			} else if (power.name == "shrink") {
-				this.shrink = true;
-				this.size = this.initialSize;
-
-			}
 
 			this.game.add.tween(power).to( { alpha:0 }, 300, Phaser.Easing.Linear.None, true);
 			var powerTween = this.game.add.tween(power.scale).to( {x:0, y:0}, 300, Phaser.Easing.Back.In, true);

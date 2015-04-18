@@ -20,8 +20,6 @@ gameMananger.prototype = {
 			scale = (-1/24)*this.mode.nPlayers+7/12;
 		}
 
-		crowned = -1;
-		lastCrowned = -1;
 		players = [];
 		gameOver = false;
 		muteAudio = false;
@@ -117,8 +115,10 @@ gameMananger.prototype = {
 			keys[i], this.mode, this.game);
 		}
 
-		this.mode.create();
-
+		if (this.mode.create) {
+			this.mode.create(this);
+		}
+		
 		if (this.mode.sp) {
 			this.game.stage.backgroundColor = colorHex;
 			document.body.style.background = colorHexDark;
@@ -138,7 +138,7 @@ gameMananger.prototype = {
 
 		ui.overlay = this.add.button(0, 0, 'overlay', function(){
 			if (gameOver) {
-				this.state.restart(true, false, this.mode);
+				this.restart();
 			}
 		},this);
 		ui.overlay.scale.set(0);
@@ -149,6 +149,15 @@ gameMananger.prototype = {
 		if (!mute) {
 			menuMusic.volume = 1;
 		}
+
+
+		//Ad stuff
+		playCounter++;
+		console.log("playConter = " + playCounter)
+		if (playCounter >= 4) {
+			this.loadAd();
+		}
+
 	},
 
 	update: function () {
@@ -165,34 +174,11 @@ gameMananger.prototype = {
 
 			if (!gameOver) {
 				//Give crown
-				if (crowned != -1) {
-					players[crowned].addCrown();
-				}
-				if(!this.mode.sp && this.gameTime >= (totalTime)){
-					this.ui.timeCircle.scale.set((-1/this.gameTime)*(totalTime)+1);
-				}
-				else if(!this.mode.sp){
-					this.endGame();
-				}	else if(players[0].dead){
-					this.endGame();
-				}
-
-				var numberAlive = 0;
-				var playerAlive = -1;
-				for (var i = 0; i < players.length; i++) {
-					if (!players[i].dead) {
-						playerAlive = i;
-						numberAlive++;
-						if (numberAlive > 1) break;
-					}
-				}
-				if(numberAlive < 2 && !this.mode.sp) {
-					lastCrowned = playerAlive;
-					this.endGame();
-				}
-
 				if (this.mode.update) {
 					this.mode.update();
+				}
+				if(this.mode.sp && players[0].dead){
+					this.manager.endGame();
 				}
 
 			}
@@ -234,10 +220,7 @@ gameMananger.prototype = {
 			ui.overlay.height = h2*2;
 			if (!this.mode.sp) {
 				this.game.time.events.remove(this.powerTimer);
-				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(
-					function(){
-						this.state.restart(true, false, this.mode);
-					}, this);
+				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(this.restart, this);
 			}
 
 	  	var restartButton = this.add.button(w2+97, h2-97,"restart_button");
@@ -245,10 +228,7 @@ gameMananger.prototype = {
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
-			clickButton(restartButton, 
-				function () {
-	  			this.state.restart(true, false, this.mode);
-	  		}, this);
+			clickButton(restartButton,this.restart, this);
 
 			var mainMenu = this.add.button(w2-97, h2-97,"exit_button");
 			mainMenu.scale.set(1,1);
@@ -261,29 +241,7 @@ gameMananger.prototype = {
 				pauseSprite.input.useHandCursor=false;
 			}
 
-	  	if (!this.mode.sp) {
-	  		//console.log("right now:" + crowned);
-	  		if (crowned == -1) {
-	  			var tie =  this.add.sprite(w2,h2+150, "tie");
-	  			tie.anchor.setTo(0.5,0.5);
-
-	  		} else {
-		  		var winnerFill = this.add.sprite(w2-75,h2+97, "player" + players[crowned].id);
-		  		winnerFill.scale.set(5);
-		  		winnerFill.anchor.setTo(0.5,0.5);
-
-				var winnerLabel = this.add.sprite(w2, h2+97,"winner");
-				winnerLabel.scale.set(1,1);
-				winnerLabel.anchor.setTo(0.5,0.5);
-				var textWinner = this.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
-			      font: "100px dosis",
-			      fill: colorPlayers[crowned],
-			      align: "center"
-		    	});
-		    	textWinner.anchor.setTo(0.5,0.5);
-	  		}
-	  		
-	  	} else {
+	  	if (this.mode.sp) {
 				var spAuxLabel = this.add.sprite(w2, h2+77,"aux-stat");
 				spAuxLabel.scale.set(0.9,0.9);
 				spAuxLabel.anchor.setTo(0.5,0.5);
@@ -373,7 +331,7 @@ gameMananger.prototype = {
         ui.restart.anchor.setTo(0.5, 0.5);
         ui.restart.scale.set(1,1);
         ui.restart.input.useHandCursor=true;
-        clickButton(ui.restart,function(){this.state.restart(true, false, this.mode);}, this);
+        clickButton(ui.restart,this.restart, this);
 
         ui.exit = this.add.button(w2, h2+150, 'exit_button');
         ui.exit.anchor.setTo(0.5, 0.5);
@@ -419,6 +377,14 @@ gameMananger.prototype = {
             paused = false;
 		}
 
+	},
+
+	restart: function() {
+		if (playCounter >= 5) {
+			playCounter = 0;
+			Cocoon.Ad.showInterstitial();
+		}
+		this.state.restart(true, false, this.mode);
 	},
 
 	touchPauseButton: function(){
@@ -469,8 +435,16 @@ gameMananger.prototype = {
 	},
 
 	backPressed: function () {
-    	this.pause();
-  	},
+    this.pause();
+  },
+
+  loadAd: function(){
+     Cocoon.Ad.loadInterstitial();
+ 	},
+
+ 	showAd: function(){
+ 		Cocoon.Ad.showInterstitial();
+ 	},
 
 	/*render: function(){
 		players[0].render();
@@ -479,4 +453,6 @@ gameMananger.prototype = {
 	renderGroup: function (member) {
 		//this.game.debug.body(member);
 	}
+
 };
+

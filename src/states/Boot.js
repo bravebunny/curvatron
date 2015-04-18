@@ -1,4 +1,5 @@
 var boot = function (game) {
+	playCounter = 0;
 	w2 = 0;
 	h2 = 0;
 	changeColor = false;
