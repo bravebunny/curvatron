@@ -74,7 +74,9 @@ function initIAP () {
 
 function restoreIAP () {
   Cocoon.Store.on("restore",{
-    success: function(){ iapDone = true; },
+    success: function(){
+      console.log("----SUCESSO NA RESTAURACAO------");
+      iapDone = true; },
     error: function(){ Console.log("Purchase restore error: ", arguments) }
   });
   Cocoon.Store.restore();

@@ -152,12 +152,18 @@ gameMananger.prototype = {
 
 
 		//Ad stuff
-		if (!purchased()) {
+		if (!iapDone) {
 			playCounter++;
 		}
+
 		console.log("playConter = " + playCounter)
 		if (playCounter >= 4) {
 			this.loadAd();
+		}
+
+		if (playCounter >= 5) {
+			playCounter = 0;
+			Cocoon.Ad.showInterstitial();
 		}
 
 	},
@@ -382,10 +388,6 @@ gameMananger.prototype = {
 	},
 
 	restart: function() {
-		if (playCounter >= 5) {
-			playCounter = 0;
-			Cocoon.Ad.showInterstitial();
-		}
 		this.state.restart(true, false, this.mode);
 	},
 

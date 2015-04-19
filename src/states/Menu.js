@@ -116,7 +116,7 @@ menu.prototype = {
       ui.audioButton.input.useHandCursor = true;
     }
 
-    if (mobile && !purchased() && platform === "android") {
+    if (mobile && !iapDone && platform === "android") {
       //Donate
       ui.donateButton = this.add.button(0,0,"donate_button");
       ui.donateButton.anchor.setTo(1,1);
@@ -208,7 +208,7 @@ menu.prototype = {
 
 	multiplayer: function () {
     //TODO: TEST, REMOVE THIS
-    console.log("purchased:" + purchased());
+    console.log("purchased:" + iapDone);
     
     if (mobile) {
       var mode = new MPNormal(1, this.game);
