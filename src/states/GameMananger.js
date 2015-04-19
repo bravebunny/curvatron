@@ -157,13 +157,13 @@ gameMananger.prototype = {
 		}
 
 		console.log("playConter = " + playCounter)
-		if (playCounter >= 4) {
+		if (playCounter == 4) {
 			this.loadAd();
 		}
 
 		if (playCounter >= 5) {
-			playCounter = 0;
 			Cocoon.Ad.showInterstitial();
+			playCounter = 0;
 		}
 
 	},

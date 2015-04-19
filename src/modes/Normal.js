@@ -101,7 +101,7 @@ Normal.prototype = {
 		} 
 	},
 
-	collect: function (playerSprite, powerSprite, player) {
+	collect: function (playerSprite, powerSprite) {
 		var point = this.lastPoint;
 		if (point) {
 			this.pointsPow.push(point);
@@ -156,10 +156,8 @@ Normal.prototype = {
 
 		} else if (powerSprite.name == 'shrink') {
 			this.player.shrink = true;
-			this.player.size = this.initialSize;
+			this.player.size = this.player.initialSize;
 		}
-		console.log("growth: "+ this.player.growth)
-				console.log("size: "+ this.player.size)
 
 	},
 
