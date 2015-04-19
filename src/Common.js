@@ -61,6 +61,7 @@ function initIAP () {
     Cocoon.Store.on("load", {
       success: function(products) {
         Cocoon.Store.addProduct("curvatron_unlock");
+        console.log("ayy lmao:" + Cocoon.Store.isProductPurchased("curvatron_unlock"));
         iapDone = true;
       },
       error: function() {
@@ -74,7 +75,9 @@ function initIAP () {
 
 function purchased () {
   if (Cocoon.Store.canPurchase() && iapDone) {
-    return Cocoon.Store.isProductPurchased("curvatron_unlock");
+    val = Cocoon.Store.isProductPurchased("curvatron_unlock");
+    console.log(val);
+    return val;
   } else {
     return false;
   }

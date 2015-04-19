@@ -207,6 +207,9 @@ menu.prototype = {
 	},
 
 	multiplayer: function () {
+    //TODO: TEST, REMOVE THIS
+    console.log("purchased:" + purchased());
+    
     if (mobile) {
       var mode = new MPNormal(1, this.game);
       this.game.state.start("PreloadGame", true, false, mode);

@@ -101,15 +101,7 @@ Normal.prototype = {
 		} 
 	},
 
-	collect: function (player, power) {
-		if (power.name == "point") {
-			this.size += this.growth;
-
-		} else if (power.name == "shrink") {
-			this.shrink = true;
-			this.size = this.initialSize;
-		}
-
+	collect: function (playerSprite, powerSprite, player) {
 		var point = this.lastPoint;
 		if (point) {
 			this.pointsPow.push(point);
@@ -127,7 +119,7 @@ Normal.prototype = {
 		
 		var highScore = this.getHighScore();
 
-		if (power.name == 'point') {
+		if (powerSprite.name == 'point') {
 			this.score++;
 			this.createPower('point');
 
@@ -147,7 +139,7 @@ Normal.prototype = {
 			nextBallHigh = 1;
 		}
 
-		if(power.name == 'shrink'){
+		if(powerSprite.name == 'shrink'){
 
 			if (!this.gridIsFull()) {
 				this.createObstacle();
@@ -158,6 +150,16 @@ Normal.prototype = {
 
 			this.shrink = null;
 		}
+
+		if (powerSprite.name == 'point') {
+			this.player.size += this.player.growth;
+
+		} else if (powerSprite.name == 'shrink') {
+			this.player.shrink = true;
+			this.player.size = this.initialSize;
+		}
+		console.log("growth: "+ this.player.growth)
+				console.log("size: "+ this.player.size)
 
 	},
 
