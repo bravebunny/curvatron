@@ -73,10 +73,24 @@ function initIAP () {
 }
 
 function restoreIAP () {
+  Cocoon.Store.on("purchase",{
+   started: function(productId){
+    console.log("purchase start", productId)
+  },
+   success: function(purchaseInfo){
+    iapDone = true;
+    console.log("purchase success", purchaseInfo)
+  },
+   error: function(productId, err){
+    console.log("purchase error", productId)
+  }
+  });
+
+
   Cocoon.Store.on("restore",{
     success: function(){
       console.log("----SUCESSO NA RESTAURACAO------");
-      iapDone = true; },
+      },
     error: function(){ Console.log("Purchase restore error: ", arguments) }
   });
   Cocoon.Store.restore();
