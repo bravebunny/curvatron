@@ -62,25 +62,22 @@ function initIAP () {
       success: function(products) {
         Cocoon.Store.addProduct("curvatron_unlock");
         console.log("ayy lmao:" + Cocoon.Store.isProductPurchased("curvatron_unlock"));
-        iapDone = true;
+        restoreIAP();
       },
       error: function() {
         console.log("Error loading store", arguments)
-        iapDone = false;
       },
     });
     Cocoon.Store.loadProducts(["curvatron_unlock"]);
   }
 }
 
-function purchased () {
-  if (Cocoon.Store.canPurchase() && iapDone) {
-    val = Cocoon.Store.isProductPurchased("curvatron_unlock");
-    console.log(val);
-    return val;
-  } else {
-    return false;
-  }
+function restoreIAP () {
+  Cocoon.Store.on("restore",{
+    success: function(){ iapDone = true; },
+    error: function(){ Console.log("Purchase restore error: ", arguments) }
+  });
+  Cocoon.Store.restore();
 }
 
 function socialInit() {

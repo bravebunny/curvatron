@@ -295,7 +295,7 @@ menu.prototype = {
         ui.avatar.position.set(w2*2-160, h2*2-ui.login.height*0.5);
       }*/
 
-      if(platform == 'android' && !purchased()) {
+      if(platform == 'android' && !iapDone) {
         ui.donateButton.position.set(2*w2,2*h2);
       }
     } else {
