@@ -108,7 +108,7 @@ MPNormal.prototype = {
 		}
 	},
 
-	endgame: function() {
+	endGame: function() {
 		if (this.crowned == -1) {
 			var tie =  this.game.add.sprite(w2,h2+150, "tie");
 			tie.anchor.setTo(0.5,0.5);

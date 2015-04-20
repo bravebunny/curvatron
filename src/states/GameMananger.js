@@ -156,7 +156,6 @@ gameMananger.prototype = {
 			playCounter++;
 		}
 
-		console.log("playConter = " + playCounter)
 		if (playCounter == 4) {
 			this.loadAd();
 		}
