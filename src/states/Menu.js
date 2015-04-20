@@ -54,12 +54,12 @@ menu.prototype = {
   	});
   	ui.title.anchor.setTo(0.5,0.5);
 
-    ui.beta = this.add.text(0,0, "BETA", {
+    /*ui.beta = this.add.text(0,0, "BETA", {
       font: "50px dosis",
       fill: "#ffffff",
       align: "center"
     });
-    ui.beta.anchor.setTo(0.5,0.5);
+    ui.beta.anchor.setTo(0.5,0.5);*/
 
     //Single Player
 		ui.spButton = this.add.button(0,0,"singleplayer_button");
@@ -207,9 +207,6 @@ menu.prototype = {
 	},
 
 	multiplayer: function () {
-    //TODO: TEST, REMOVE THIS
-    console.log("purchased:" + iapDone);
-    
     if (mobile) {
       var mode = new MPNormal(1, this.game);
       this.game.state.start("PreloadGame", true, false, mode);
@@ -276,11 +273,11 @@ menu.prototype = {
       ui.title.scale.set(1,1);
     }
 
-    if (wOrientation == "portrait" && mobile) {
+    /*if (wOrientation == "portrait" && mobile) {
       ui.beta.position.set(w2+160,h2*0.3+100);
     } else {
       ui.beta.position.set(w2+360,h2*0.3+100);
-    }
+    }*/
 
     ui.spButton.position.set(w2-170,h2);
 
