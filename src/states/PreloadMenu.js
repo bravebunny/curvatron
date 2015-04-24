@@ -16,6 +16,7 @@ preloadMenu.prototype = {
 	    loadingBar.body.angularVelocity = 200;
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
     	//Load all stuf from menu
+  	this.game.load.image("login_button","assets/sprites/menu/login.png");
 		this.game.load.image("audio_button","assets/sprites/menu/audio.png");
 		this.game.load.image("audiooff_button","assets/sprites/menu/audiooff.png");
 		this.game.load.image("multiplayer_button","assets/sprites/menu/multiplayer.png");
@@ -33,6 +34,7 @@ preloadMenu.prototype = {
 		this.game.load.image("key_button","assets/sprites/menu/key.png");
 		this.game.load.image("player_select","assets/sprites/menu/playerSelect.png");
 		this.game.load.image("exit_button","assets/sprites/menu/exit.png");
+		this.game.load.image("donate_button","assets/sprites/menu/donate.png");
 		this.game.load.image("resume_button","assets/sprites/menu/resume.png");
 		this.game.load.image("collecting_button","assets/sprites/menu/collecting.png");
 		this.game.load.image("endless_button","assets/sprites/menu/endless.png");

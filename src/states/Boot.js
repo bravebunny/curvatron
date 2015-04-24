@@ -1,8 +1,11 @@
 var boot = function (game) {
+	playCounter = 0;
 	w2 = 0;
 	h2 = 0;
 	changeColor = false;
 	mute = false;
+	firstTime = true;
+	iapDone = false;
 };
   
 boot.prototype = {
@@ -14,6 +17,17 @@ boot.prototype = {
   	create: function () {
   		//this.game.add.plugin(Phaser.Plugin.Debug);
   	orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+
+  	if (Cocoon.Social.GameCenter.nativeAvailable) {
+  		platform = "ios";
+  	} else if (Cocoon.Social.GooglePlayGames.nativeAvailable) {
+			platform = "android";
+  	} else {
+  		platform = "desktop";
+  	}
+  	
+    console.log(JSON.stringify(platform));
+
   	w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 
@@ -34,6 +48,7 @@ boot.prototype = {
 		//[red, blue, pink, green, brown, cyan, purple, yellow]
 		colorPlayers = ['#eb1c1c','#4368e0','#f07dc1','#44c83a','#9e432e','#3dd6e0','#9339e0','#ebd90f'];
 
+		this.game.forcesSingleUpdate = true;
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.scale.pageAlignHorizontally = true;
 	 	this.scale.pageAlignVertically = true;
@@ -42,7 +57,7 @@ boot.prototype = {
 
 	  	this.physics.startSystem(Phaser.Physics.ARCADE);
 
-	  	this.stage.smoothed = true;
+	  	this.stage.smoothed = false;
 
 		if (mobile) {
 			Cocoon.App.exitCallback(

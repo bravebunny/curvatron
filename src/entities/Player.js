@@ -121,17 +121,19 @@ Player.prototype = {
 				}
 
 				//collision detection
-				var collSize = 12*scale;
-
-				for (var i = 0; i < players.length; i++) {
-					for (var j = 0; j < this.trailArray.length; j++) {
-						var curTrail = players[i].trailArray[j];
-						if (curTrail && curTrail.x-collSize < xx && curTrail.x+collSize > xx &&
-							 	curTrail.y-collSize < yy && curTrail.y+collSize > yy) {
-							 	this.kill();
+				if (!this.mode.noCollisions) {
+					var collSize = 12*scale;
+					for (var i = 0; i < players.length; i++) {
+						for (var j = 0; j < this.trailArray.length; j++) {
+							var curTrail = players[i].trailArray[j];
+							if (curTrail && curTrail.x-collSize < xx && curTrail.x+collSize > xx &&
+								 	curTrail.y-collSize < yy && curTrail.y+collSize > yy) {
+								 	this.kill();
+							}
 						}
 					}
 				}
+
 			}
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
 
@@ -240,7 +242,7 @@ Player.prototype = {
 					}
 				}
 
-				if (this.mode.sp && !mobile) {
+				if (this.mode.sp && !mobile && this.mode.leaderboardID) {
 					this.game.add.tween(tempLabel).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 					this.game.add.tween(tempLabelText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 				}
@@ -254,19 +256,35 @@ Player.prototype = {
 
 	click: function () {
 		if(this.mode.sp){
+			//pause button
 			var x1 = 2*w2 - 100 - 61 , x2 = 2*w2 - 100 + 61,
           y1 = 100 - 61, y2 = 100 + 61;
+
 		} else {
 			var x1 = w2 - 65 , x2 = w2 + 65,
-          y1 = h2 - 65, y2 = h2 + 65;
+         	y1 = h2 - 65, y2 = h2 + 65;
 		}
+    if (!(this.game.input.position.x > x1 
+    	&& this.game.input.position.x < x2 
+    	&& this.game.input.position.y > y1 
+    	&& this.game.input.position.y < y2 )){
+    		this.keyPressed();
+    }
 
-      if (!(this.game.input.position.x > x1 
-      	&& this.game.input.position.x < x2 
-      	&& this.game.input.position.y > y1 
-      	&& this.game.input.position.y < y2 )) {
-      		this.keyPressed();
-      }
+    //do not work :(
+/*
+    else if(this.mode.leaderboardID == null){
+    	var x11 = w2*0.5 - 100 - 61, x22 = w2*0.5 - 100 + 61;
+
+	   	if (!(this.game.input.position.x > x11 
+	    	&& this.game.input.position.x < x22 
+	    	&& this.game.input.position.y > y1 
+	    	&& this.game.input.position.y < y2 )){
+	   		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+	    	this.keyPressed();
+	   	}
+   	}
+   */
 	},
 
 	kill: function (player, other) {
@@ -316,17 +334,6 @@ Player.prototype = {
 			if (this.mode.collect) {
 				this.mode.collect(player, power, this);
 			}
-			
-			if (power.name == "point") {
-				this.size += this.growth;
-				
-				this.score = this.score + power.scale.x;
-
-			} else if (power.name == "shrink") {
-				this.shrink = true;
-				this.size = this.initialSize;
-
-			}
 
 			this.game.add.tween(power).to( { alpha:0 }, 300, Phaser.Easing.Linear.None, true);
 			var powerTween = this.game.add.tween(power.scale).to( {x:0, y:0}, 300, Phaser.Easing.Back.In, true);
@@ -352,7 +359,7 @@ Player.prototype = {
 				this.keyText.scale.set(scale);
 		  		this.keyText.anchor.setTo(0.5,0.5);
 
-			  	if (mobile) {
+			  	if (mobile && this.mode.getHighScore) {
 			  		this.keyText.setText(this.mode.getHighScore());
 			  		if (!this.mode.sp) {
 			  			this.keyText.visible = false;

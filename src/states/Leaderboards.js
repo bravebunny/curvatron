@@ -43,21 +43,19 @@ leaderboards.prototype = {
       var params = Cocoon.Social.ScoreParams;
       params.leaderboardID = board;
       if (!socialService) {
-        var gp = Cocoon.Social.GooglePlayGames;
-        gp.init({});
-        socialService = gp.getSocialInterface();
-
-        if (!socialService.isLoggedIn()) {
-        socialService.login(function(loggedIn, error) {
+        socialInit();
+      } else {
+      	if (socialService.isLoggedIn()){
+        	socialService.showLeaderboard(null, params);
+      	} else {
+	        socialService.login(function(loggedIn, error) {
           if (error) {
               console.error("login error: " + error.message);
             } else if (loggedIn) {
               socialService.showLeaderboard(null, params);
             }
           }.bind(this));
-        }
-      } else if (socialService.isLoggedIn()){
-        socialService.showLeaderboard(null, params);
+      	}
       }
     }
 	},

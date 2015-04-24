@@ -22,6 +22,9 @@ stats.prototype = {
       align: "center"
   	});
   	ui.highScoretext.anchor.setTo(0.5,0.5);
+  	if(localStorage.getItem("highScore") == null){
+  		ui.highScoretext.text = "0";
+  	}
 
   	ui.survivalScore = this.game.add.sprite(0, 0, 'survScore-stat');
 		ui.survivalScore.anchor.setTo(0.5,0.5);
@@ -32,6 +35,9 @@ stats.prototype = {
       align: "center"
   	});
   	ui.survivalScoretext.anchor.setTo(0.5,0.5);
+  	if(localStorage.getItem("survivalScore") == null){
+  		ui.survivalScoretext.text = "0";
+  	}
 
 		ui.totalBalls = this.game.add.sprite(0, 0, 'total-stats');
 		ui.totalBalls.anchor.setTo(0.5,0.5);
@@ -42,6 +48,9 @@ stats.prototype = {
       align: "center"
   	});
   	ui.totalBallsText.anchor.setTo(0.5,0.5);
+  	if(localStorage.getItem("ballsScore") == null){
+  		ui.totalBallsText.text = "0";
+  	}
 
     ui.statsDeaths = this.game.add.sprite(0, 0, 'deaths-stats');
 		ui.statsDeaths.anchor.setTo(0.5,0.5);
@@ -52,6 +61,9 @@ stats.prototype = {
 	        align: "center"
   	});
   	ui.textDeaths.anchor.setTo(0.5,0.5);
+  	if(localStorage.getItem("deathScore") == null){
+  		ui.textDeaths.text = "0";
+  	}
 
 		ui.oldSchool = this.game.add.sprite(0, 0, 'old-stats');
 		ui.oldSchool.anchor.setTo(0.5,0.5);
@@ -62,6 +74,9 @@ stats.prototype = {
         align: "center"
 		});
 		ui.textOldSchool.anchor.setTo(0.5,0.5);
+		if(localStorage.getItem("oldSchool") == null){
+  		ui.textOldSchool.text = "0";
+  	}
 
     //back button
 		ui.backButton = this.game.add.button(0,0,"back_button");

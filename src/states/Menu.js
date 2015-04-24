@@ -54,12 +54,12 @@ menu.prototype = {
   	});
   	ui.title.anchor.setTo(0.5,0.5);
 
-    ui.beta = this.add.text(0,0, "BETA", {
+    /*ui.beta = this.add.text(0,0, "BETA", {
       font: "50px dosis",
       fill: "#ffffff",
       align: "center"
     });
-    ui.beta.anchor.setTo(0.5,0.5);
+    ui.beta.anchor.setTo(0.5,0.5);*/
 
     //Single Player
 		ui.spButton = this.add.button(0,0,"singleplayer_button");
@@ -73,12 +73,25 @@ menu.prototype = {
     ui.mpButton.input.useHandCursor = true;
     clickButton(ui.mpButton, this.multiplayer, this);
 
+
+
     //SetKeys or leaderboards
     if (mobile) {
       ui.leaderboard = this.add.button(0,0,"leaderboard_button");
       ui.leaderboard.anchor.setTo(0.5,0.5);
       ui.leaderboard.input.useHandCursor = true;
       clickButton(ui.leaderboard, this.leaderboard, this);
+
+      /*ui.login = this.add.button(0,0,"login_button");
+      ui.login.anchor.setTo(1,1);
+      ui.login.input.useHandCursor = true;
+      clickButton(ui.login, this.login, this);
+
+      ui.loginText = this.add.text(0,0, "login", {
+      font: "40px dosis",
+      fill: colorHex,
+      align: "center"});
+      ui.loginText.anchor.set(1, 1);*/
     } else {
       ui.keysButton = this.add.button(0,0,"setkeys_button");
       ui.keysButton.anchor.setTo(0.5,0.5);
@@ -102,29 +115,88 @@ menu.prototype = {
       ui.audioButton.anchor.setTo(0.5,0.5);
       ui.audioButton.input.useHandCursor = true;
     }
+
+    if (mobile && !iapDone && platform === "android") {
+      //Donate
+      ui.donateButton = this.add.button(0,0,"donate_button");
+      ui.donateButton.anchor.setTo(1,1);
+      ui.donateButton.input.useHandCursor = true;
+      clickButton(ui.donateButton, this.donate, this);
+    }
+
     clickButton(ui.audioButton, this.muteSound, this);
 
     this.scale.refresh();
     //Place the menu buttons and labels on their correct positions
     this.setPositions();
 
-    //this.gpLogin();
+    if (mobile && firstTime) {
+      firstTime = false;
+      this.login();
+
+      if(platform === "android") {
+        initIAP();
+      }
+    }
+
+    /*if (mobile && socialService && socialService.isLoggedIn()) {
+      this.getAvatar();
+    }*/
 	},
 
-  gpLogin: function (board) {
-    if (mobile) {
-      if (!socialService) {
-        var gp = Cocoon.Social.GooglePlayGames;
-        gp.init({});
-        socialService = gp.getSocialInterface();
+  /*getAvatar: function () {
+    var loader = new Phaser.Loader(this.game);
+    loader.image('avatar',"http://placekitten.com/g/300/300");
+    loader.onLoadComplete.addOnce(function () {
+      console.log('avatar');
+      var ui = this.ui;
+      ui.avatar = this.add.image(0, 0, 'avatar');
+      ui.avatar.width = 40;
+      ui.avatar.height = 40;
+      ui.avatar.anchor.set(0.5);
+      ui.loginText.setText("logout");
+    }.bind(this));
+    loader.start();
+  },*/
 
+ /* login: function (board) {
+    if (!socialService) {
+      var gp = Cocoon.Social.GooglePlayGames;
+      gp.init({});
+      socialService = gp.getSocialInterface();
+    } else {
+      if (socialService.isLoggedIn()) {
+        this.ui.loginText.setText("login");
+        if (this.ui.avatar) {
+          this.ui.avatar.destroy();
+        }
+        socialService.logout();
+        this.state.restart();
+      } else {
         if (!socialService.isLoggedIn()) {
         socialService.login(function(loggedIn, error) {
           if (error) {
               console.error("login error: " + error.message);
+            } else {
+              this.getAvatar();
             }
           }.bind(this));
         }
+      }
+    }
+  },*/
+
+
+  login: function (board) {
+    if (!socialService) {
+      socialInit();
+
+      if (socialService && !socialService.isLoggedIn()) {
+        socialService.login(function(loggedIn, error) {
+        if (error) {
+            console.error("login error: " + error.message);
+          }
+        }.bind(this));
       }
     }
   },
@@ -135,7 +207,13 @@ menu.prototype = {
 	},
 
 	multiplayer: function () {
-    this.state.start("Multiplayer");
+    if (mobile) {
+      var mode = new MPNormal(1, this.game);
+      this.game.state.start("PreloadGame", true, false, mode);
+    } else {
+      this.state.start("Multiplayer");
+    }
+    
 	},
 
 	setKeys: function () {
@@ -152,15 +230,19 @@ menu.prototype = {
     this.state.start("Stats");
   },
 
+  donate: function () {
+    iap();
+  },
+
   muteSound: function () {
     var ui = this.ui;
-    
+
     if (mute){
       ui.audioButton.loadTexture('audio_button');
       //this.game.sound.mute = false;
       mute = false;
       if (!menuMusic) {
-        menuMusic = this.add.audio('dream');  
+        menuMusic = this.add.audio('dream');
       }
       menuMusic.loop = true;
       menuMusic.play();
@@ -191,11 +273,11 @@ menu.prototype = {
       ui.title.scale.set(1,1);
     }
 
-    if (wOrientation == "portrait" && mobile) {
+    /*if (wOrientation == "portrait" && mobile) {
       ui.beta.position.set(w2+160,h2*0.3+100);
     } else {
       ui.beta.position.set(w2+360,h2*0.3+100);
-    }
+    }*/
 
     ui.spButton.position.set(w2-170,h2);
 
@@ -203,6 +285,16 @@ menu.prototype = {
 
     if (mobile) {
       ui.leaderboard.position.set(w2+w2/2,1.6*h2)
+
+      /*ui.login.position.set(w2*2, h2*2);
+      ui.loginText.position.set(w2*2-30, h2*2);
+      if (ui.avatar) {
+        ui.avatar.position.set(w2*2-160, h2*2-ui.login.height*0.5);
+      }*/
+
+      if(platform == 'android' && !iapDone) {
+        ui.donateButton.position.set(2*w2,2*h2);
+      }
     } else {
       ui.keysButton.position.set(w2+w2/2,1.6*h2);
     }
@@ -211,5 +303,5 @@ menu.prototype = {
 
     ui.audioButton.position.set(w2/2,1.6*h2);
   }
-  
+
 };

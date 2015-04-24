@@ -3,7 +3,7 @@ var singlePlayer = function (game) {
 	this.bestScore = 0;
 	this.bestSurvScore = 0;
 };
-  
+
 singlePlayer.prototype = {
 	create: function () {
 		var ui = this.ui;
@@ -51,6 +51,7 @@ singlePlayer.prototype = {
 	playEndlessGame: function () {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
+    // var mode = new Creative(this.game);
     var mode = new Endless(this.game);
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
@@ -102,5 +103,5 @@ singlePlayer.prototype = {
 
 		ui.backButton.position.set(w2/2,h2*1.6);
     }
-    
+
 };

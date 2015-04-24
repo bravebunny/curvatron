@@ -20,8 +20,6 @@ gameMananger.prototype = {
 			scale = (-1/24)*this.mode.nPlayers+7/12;
 		}
 
-		crowned = -1;
-		lastCrowned = -1;
 		players = [];
 		gameOver = false;
 		muteAudio = false;
@@ -52,7 +50,7 @@ gameMananger.prototype = {
 
 
 		groupPowers = this.add.group();
-		if (this.mode.sp) {
+		if (this.mode.sp && this.mode.leaderboardID) {
 			if (!mobile) {
 				tempLabel = this.add.sprite(w2, h2, 'score');
 				tempLabel.anchor.setTo(0.5,0.5);
@@ -77,8 +75,10 @@ gameMananger.prototype = {
 			ui.timeCircle.pivot.y = h2;
 			ui.graphics.endFill();
 
-			//Generate powers
-			this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
+			if(!this.mode.sp){
+				//Generate powers
+				this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this);
+			}
  		}
 
 		if (mobile) {
@@ -93,11 +93,10 @@ gameMananger.prototype = {
 			}
 		}
 
-
 		//create BitmapData
 		bmd = this.add.bitmapData(this.game.width, this.game.height);
 		bmd.addToWorld();
-		bmd.smoothed = true;
+		bmd.smoothed = false;
 
 		var angle = 0;
 		if (mobile && this.orientation == "portrait") {
@@ -116,8 +115,10 @@ gameMananger.prototype = {
 			keys[i], this.mode, this.game);
 		}
 
-		this.mode.create();
-
+		if (this.mode.create) {
+			this.mode.create(this);
+		}
+		
 		if (this.mode.sp) {
 			this.game.stage.backgroundColor = colorHex;
 			document.body.style.background = colorHexDark;
@@ -137,7 +138,7 @@ gameMananger.prototype = {
 
 		ui.overlay = this.add.button(0, 0, 'overlay', function(){
 			if (gameOver) {
-				this.state.restart(true, false, this.mode);
+				this.restart();
 			}
 		},this);
 		ui.overlay.scale.set(0);
@@ -148,6 +149,22 @@ gameMananger.prototype = {
 		if (!mute) {
 			menuMusic.volume = 1;
 		}
+
+
+		//Ad stuff
+		if (!iapDone) {
+			playCounter++;
+		}
+
+		if (playCounter == 4) {
+			this.loadAd();
+		}
+
+		if (playCounter >= 5) {
+			Cocoon.Ad.showInterstitial();
+			playCounter = 0;
+		}
+
 	},
 
 	update: function () {
@@ -164,34 +181,11 @@ gameMananger.prototype = {
 
 			if (!gameOver) {
 				//Give crown
-				if (crowned != -1) {
-					players[crowned].addCrown();
-				}
-				if(!this.mode.sp && this.gameTime >= (totalTime)){
-					this.ui.timeCircle.scale.set((-1/this.gameTime)*(totalTime)+1);
-				}
-				else if(!this.mode.sp){
-					this.endGame();
-				}	else if(players[0].dead){
-					this.endGame();
-				}
-
-				var numberAlive = 0;
-				var playerAlive = -1;
-				for (var i = 0; i < players.length; i++) {
-					if (!players[i].dead) {
-						playerAlive = i;
-						numberAlive++;
-						if (numberAlive > 1) break;
-					}
-				}
-				if(numberAlive < 2 && !this.mode.sp) {
-					lastCrowned = playerAlive;
-					this.endGame();
-				}
-
 				if (this.mode.update) {
 					this.mode.update();
+				}
+				if(this.mode.sp && players[0].dead){
+					this.endGame();
 				}
 
 			}
@@ -233,10 +227,7 @@ gameMananger.prototype = {
 			ui.overlay.height = h2*2;
 			if (!this.mode.sp) {
 				this.game.time.events.remove(this.powerTimer);
-				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(
-					function(){
-						this.state.restart(true, false, this.mode);
-					}, this);
+				this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(this.restart, this);
 			}
 
 	  	var restartButton = this.add.button(w2+97, h2-97,"restart_button");
@@ -244,10 +235,7 @@ gameMananger.prototype = {
 			restartButton.scale.set(1,1);
 			restartButton.anchor.setTo(0.5,0.5);
 			restartButton.input.useHandCursor=true;
-			clickButton(restartButton, 
-				function () {
-	  			this.state.restart(true, false, this.mode);
-	  		}, this);
+			clickButton(restartButton,this.restart, this);
 
 			var mainMenu = this.add.button(w2-97, h2-97,"exit_button");
 			mainMenu.scale.set(1,1);
@@ -260,35 +248,7 @@ gameMananger.prototype = {
 				pauseSprite.input.useHandCursor=false;
 			}
 
-	  	if (!this.mode.sp) {
-	  		//console.log("right now:" + crowned);
-	  		if (crowned == -1) {
-	  			var tie =  this.add.sprite(w2,h2+150, "tie");
-	  			tie.anchor.setTo(0.5,0.5);
-
-					/*var scoreInMenu = this.add.text(w2, h2+128, "It's a tie", {
-			        font: "80px dosis",
-			        fill: "#ffffff",
-			        align: "center"
-			    });
-					scoreInMenu.anchor.setTo(0.5,0.5);*/
-	  		} else {
-		  		var winnerFill = this.add.sprite(w2-75,h2+97, "player" + players[crowned].id);
-		  		winnerFill.scale.set(5);
-		  		winnerFill.anchor.setTo(0.5,0.5);
-
-				var winnerLabel = this.add.sprite(w2, h2+97,"winner");
-				winnerLabel.scale.set(1,1);
-				winnerLabel.anchor.setTo(0.5,0.5);
-				var textWinner = this.add.text(w2+50, h2+105, String.fromCharCode(players[crowned].key), {
-			      font: "100px dosis",
-			      fill: colorPlayers[crowned],
-			      align: "center"
-		    	});
-		    	textWinner.anchor.setTo(0.5,0.5);
-	  		}
-	  		
-	  	} else {
+	  	if (this.mode.sp) {
 				var spAuxLabel = this.add.sprite(w2, h2+77,"aux-stat");
 				spAuxLabel.scale.set(0.9,0.9);
 				spAuxLabel.anchor.setTo(0.5,0.5);
@@ -324,20 +284,12 @@ gameMananger.prototype = {
 	    	textCurrentScore.anchor.setTo(0.5,0.5);
 	    	textHighScore.anchor.setTo(0.5,0.5);
 
-
-
 	    	if (mobile) {
 	    		leaderboardButton = this.add.button(w2+105, h2+217,"leaderboard_button");
 					leaderboardButton.scale.set(0.6,0.6);
 					leaderboardButton.anchor.setTo(0.5,0.5);
 					leaderboardButton.input.useHandCursor=true;
 					clickButton(leaderboardButton, this.leaderboard, this);
-					var scoreWarning = this.game.add.text(w2+150, h2+217, "Touch the crown icon\nto submit your score.", {
-			      font: "25px dosis",
-			      fill: "#FFFFFF",
-			      align: "center"
-			  	});
-			  	scoreWarning.anchor.setTo(0,0.5);
 	    	}
     	}
 	  	gameOver = true;
@@ -347,6 +299,7 @@ gameMananger.prototype = {
 	pause: function() {
 		var ui = this.ui;
 		if (!paused) { //pause
+
 			this.game.tweens.pauseAll();
 			if (this.mode.pause) {
 				this.mode.pause();
@@ -366,7 +319,7 @@ gameMananger.prototype = {
 
 			if (mobile) {
 				pauseSprite.alpha = 0;
-			} else if (this.mode.sp) {
+			} else if (this.mode.sp && this.mode.leaderboardID) {
 				tempLabel.alpha = 0;
 				tempLabelText.alpha = 0;
 			}
@@ -385,7 +338,7 @@ gameMananger.prototype = {
         ui.restart.anchor.setTo(0.5, 0.5);
         ui.restart.scale.set(1,1);
         ui.restart.input.useHandCursor=true;
-        clickButton(ui.restart,function(){this.state.restart(true, false, this.mode);}, this);
+        clickButton(ui.restart,this.restart, this);
 
         ui.exit = this.add.button(w2, h2+150, 'exit_button');
         ui.exit.anchor.setTo(0.5, 0.5);
@@ -433,6 +386,10 @@ gameMananger.prototype = {
 
 	},
 
+	restart: function() {
+		this.state.restart(true, false, this.mode);
+	},
+
 	touchPauseButton: function(){
 		if (!paused) {
 			this.pause();
@@ -447,13 +404,14 @@ gameMananger.prototype = {
       var params = Cocoon.Social.ScoreParams;
       params.leaderboardID = this.mode.leaderboardID;
       if (!socialService) {
-        var gp = Cocoon.Social.GooglePlayGames;
-        gp.init({});
-        socialService = gp.getSocialInterface();
-
-        if (!socialService.isLoggedIn()) {
-        socialService.login(function(loggedIn, error) {
+        socialInit();
+      } else {
+      	if (socialService.isLoggedIn()){
+        	socialService.showLeaderboard(null, params);
+      	} else {
+	        socialService.login(function(loggedIn, error) {
           if (error) {
+              console.error("login error: " + error.message);
             } else if (loggedIn) {
             	var score = this.mode.getScore();
             	socialService.submitScore(score, function() {
@@ -461,10 +419,8 @@ gameMananger.prototype = {
             	}, params);
             }
           }.bind(this));
-        }
-      } else if (socialService.isLoggedIn()){
-        socialService.showLeaderboard(null, params);
-      }     
+      	}
+      }
     }
 	},
 
@@ -482,8 +438,16 @@ gameMananger.prototype = {
 	},
 
 	backPressed: function () {
-    	this.pause();
-  	},
+    this.pause();
+  },
+
+  loadAd: function(){
+     Cocoon.Ad.loadInterstitial();
+ 	},
+
+ 	showAd: function(){
+ 		Cocoon.Ad.showInterstitial();
+ 	},
 
 	/*render: function(){
 		players[0].render();
@@ -492,4 +456,6 @@ gameMananger.prototype = {
 	renderGroup: function (member) {
 		//this.game.debug.body(member);
 	}
+
 };
+

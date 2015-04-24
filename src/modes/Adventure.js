@@ -22,7 +22,6 @@ Adventure.prototype = {
 	},
 
 	create: function() {
-
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
 		this.game.width = this.width;
@@ -96,14 +95,14 @@ Adventure.prototype = {
 	},
 
 	submitScore: function () {
-		/*var params = Cocoon.Social.ScoreParams;
+		var params = Cocoon.Social.ScoreParams;
 		if (this.score > this.getHighScore()) {
 			this.setHighScore(this.score);
 		}
 		params.leaderboardID = this.leaderboardID;
 		if (mobile && socialService && socialService.isLoggedIn()) {
 			socialService.submitScore(this.score, null, params);
-		}*/
+		}
 	},
 
 	collect: function (player, power) {
