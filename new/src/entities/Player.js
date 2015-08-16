@@ -131,7 +131,7 @@ Player.prototype = {
 						var x = this.trailArray[i].x;
 						var y = this.trailArray[i].y;
 
-						if (x < -10 || y < -10 || y > 2*h2+10 || x > 2*w2+10) {
+						if (x < -4 || y < -4 || y > 2*h2+4 || x > 2*w2+4) {
 							ctx.stroke();
 							ctx.beginPath();
 						} else {
