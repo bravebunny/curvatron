@@ -102,20 +102,38 @@ Player.prototype = {
 		}
 
 		if (!this.paused) {
-			this.graphics.clear();
 
-			this.graphics.lineStyle(8*scale, this.color, 1)
+			//Draw trail graphics
+			if (graphicsMode) {
+				this.graphics.clear();
+				this.graphics.lineStyle(16*scale, 0xffffff, 1)
+				if (this.trailArray[0]) {
+					this.graphics.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
+					for (var i = 1; i < this.trailArray.length; i++) {
+						this.graphics.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
+					}
+				}
+			} else {
+				//Draw trail bmd
+				if (this.trailArray[0]) {
+					var ctx = bmd.ctx;
+					bmd.dirty = true;
+					ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
 
-			if (this.trailArray[0]) {
-				this.graphics.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
+					ctx.strokeStyle = 'rgb(255, 255, 255)';
+					ctx.lineWidth   = 16*scale;
+					ctx.lineCap     = 'round';
 
-				for (var i = 1; i < this.trailArray.length; i++) {
-					this.graphics.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
+					ctx.beginPath();
+
+					ctx.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
+					for (var i = 1; i < this.trailArray.length; i++) {
+						ctx.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
+					}
+
+					ctx.stroke();
 				}
 			}
-
-
-
 
 			if (!this.sprite.alive) {
 				this.kill();
@@ -123,13 +141,13 @@ Player.prototype = {
 
 			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
-			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
+			this.frameCount = (this.frameCount + 1) % 2/(this.speed*scale);
 
 			var xx = Math.cos(this.sprite.rotation)*18*scale + this.sprite.x;
 			var yy = Math.sin(this.sprite.rotation)*18*scale + this.sprite.y;
 
 			if (!this.dead) {
-				//Create trail
+				//Add to trail
 				if (this.frameCount == 0 && !this.dead) {
 					trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 					this.trailArray.push(trailPiece);

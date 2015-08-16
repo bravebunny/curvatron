@@ -11,6 +11,7 @@ var menu = function (game) {
     Phaser.Keyboard.U,]
   menuMusic = null;
   this.ui = {};
+  graphicsMode = false;
 };
 
 menu.prototype = {
@@ -134,6 +135,7 @@ menu.prototype = {
 
 	setKeys: function () {
     this.state.start("SetKeys");
+    graphicsMode = true;
 	},
 
   leaderboard: function () {
