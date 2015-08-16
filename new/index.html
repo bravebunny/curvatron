@@ -55,7 +55,7 @@
     var height = Math.round(Math.sqrt(baseArea/winRatio));
     var width =  Math.round(winRatio*height);
 
-    var game = new Phaser.Game(width, height, Phaser.AUTO, "Curvatron");
+    var game = new Phaser.Game(width, height, Phaser.CANVAS, "Curvatron");
     game.state.add("Boot",boot);
     game.state.add("PreloadMenu",preloadMenu);
     game.state.add("Menu",menu);
