@@ -128,7 +128,17 @@ Player.prototype = {
 
 					ctx.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
 					for (var i = 1; i < this.trailArray.length; i++) {
-						ctx.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
+						var x = this.trailArray[i].x;
+						var y = this.trailArray[i].y;
+
+						if (x < -10 || y < -10 || y > 2*h2+10 || x > 2*w2+10) {
+							ctx.stroke();
+							ctx.beginPath();
+						} else {
+							ctx.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
+						}
+
+
 					}
 
 					ctx.stroke();
@@ -141,7 +151,7 @@ Player.prototype = {
 
 			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
 			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
-			this.frameCount = (this.frameCount + 1) % 2/(this.speed*scale);
+			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
 
 			var xx = Math.cos(this.sprite.rotation)*18*scale + this.sprite.x;
 			var yy = Math.sin(this.sprite.rotation)*18*scale + this.sprite.y;
