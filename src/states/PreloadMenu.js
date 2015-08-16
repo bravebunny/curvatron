@@ -2,21 +2,14 @@ var preloadMenu = function (game) {};
 
 preloadMenu.prototype = {
 	preload: function () {
-		var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 
-		if (wOrientation == "portrait") {
-			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
-		} else {
-			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
-		}
-
-	    var loadingBar = this.add.sprite(w2,h2,"loading");
-	    this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
-	    loadingBar.anchor.setTo(0.5,0.5);
-	    loadingBar.body.angularVelocity = 200;
+		var loadingBar = this.add.sprite(w2,h2,"loading");
+		this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
+		loadingBar.anchor.setTo(0.5,0.5);
+		loadingBar.body.angularVelocity = 200;
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
-    	//Load all stuf from menu
-  	this.game.load.image("login_button","assets/sprites/menu/login.png");
+		//Load all stuf from menu
+		this.game.load.image("login_button","assets/sprites/menu/login.png");
 		this.game.load.image("audio_button","assets/sprites/menu/audio.png");
 		this.game.load.image("audiooff_button","assets/sprites/menu/audiooff.png");
 		this.game.load.image("multiplayer_button","assets/sprites/menu/multiplayer.png");
@@ -40,8 +33,8 @@ preloadMenu.prototype = {
 		this.game.load.image("endless_button","assets/sprites/menu/endless.png");
 		this.game.load.image("oldSchool_button","assets/sprites/menu/oldSchool.png");
 		this.game.load.image("restart_button","assets/sprites/menu/restart.png");
-		this.game.load.image("deaths-stats","assets/sprites/menu/deaths-stats.png");	
-		this.game.load.image("old-stats","assets/sprites/menu/old-stats.png");	
+		this.game.load.image("deaths-stats","assets/sprites/menu/deaths-stats.png");
+		this.game.load.image("old-stats","assets/sprites/menu/old-stats.png");
 		this.game.load.image("score-stat","assets/sprites/menu/score-stat.png");
 		this.game.load.image("total-stats","assets/sprites/menu/total-stats.png");
 		this.game.load.image("aux-stat","assets/sprites/menu/aux-stat.png");
@@ -50,14 +43,11 @@ preloadMenu.prototype = {
 
 	},
 
-  	create: function () {
- 		if (!mobile) {
-			this.game.time.events.add(Phaser.Timer.SECOND * 1, function () {
-				this.game.state.start("Menu");
-			}, this);
-		} else {
+	create: function () {
+		//TODO stupid 1 second
+		this.game.time.events.add(Phaser.Timer.SECOND * 1, function () {
 			this.game.state.start("Menu");
-		}
+		}, this);
 	}
 
 };

@@ -39,17 +39,12 @@ Endless.prototype = {
 
 	setHighScore: function (score) {
 		localStorage.setItem("survivalScore", score);
-	}, 
+	},
 
 	submitScore: function () {
-		var params = Cocoon.Social.ScoreParams;
 		var score = this.getScore();
 		if (score > this.getHighScore()) {
 			this.setHighScore(score);
-		}
-		params.leaderboardID = this.leaderboardID;
-		if (mobile && socialService && socialService.isLoggedIn()) {
-			socialService.submitScore(score, null, params);
 		}
 	},
 

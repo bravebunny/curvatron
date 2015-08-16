@@ -5,30 +5,17 @@ var boot = function (game) {
 	changeColor = false;
 	mute = false;
 	firstTime = true;
-	iapDone = false;
 };
-  
+
 boot.prototype = {
 
 	preload: function () {
-	  this.game.load.image("loading","assets/sprites/menu/loading.png");
+		this.game.load.image("loading","assets/sprites/menu/loading.png");
 	},
 
-  	create: function () {
-  		//this.game.add.plugin(Phaser.Plugin.Debug);
-  	orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
+	create: function () {
 
-  	if (Cocoon.Social.GameCenter.nativeAvailable) {
-  		platform = "ios";
-  	} else if (Cocoon.Social.GooglePlayGames.nativeAvailable) {
-			platform = "android";
-  	} else {
-  		platform = "desktop";
-  	}
-  	
-    console.log(JSON.stringify(platform));
-
-  	w2 = this.game.world.width/2;
+		w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 
 		//Background colors
@@ -51,28 +38,13 @@ boot.prototype = {
 		this.game.forcesSingleUpdate = true;
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.scale.pageAlignHorizontally = true;
-	 	this.scale.pageAlignVertically = true;
-	 	this.scale.forceOrientation(true, false);
-	 	this.scale.setResizeCallback(this.resize, this);
+		this.scale.pageAlignVertically = true;
+		this.scale.forceOrientation(true, false);
+		this.scale.setResizeCallback(this.resize, this);
 
-	  	this.physics.startSystem(Phaser.Physics.ARCADE);
+		this.physics.startSystem(Phaser.Physics.ARCADE);
 
-	  	this.stage.smoothed = false;
-
-		if (mobile) {
-			Cocoon.App.exitCallback(
-				function () {
-					if (this.state.states[this.game.state.current].backPressed) {
-						this.state.states[this.game.state.current].backPressed();
-					}
-					if (this.state.current == "Menu") {
-						return true;
-					} else {
-						return false;
-					}
-				}.bind(this)
-			);
-		}
+		this.stage.smoothed = true;
 
 		this.state.start("PreloadMenu");
 	},
@@ -109,6 +81,6 @@ boot.prototype = {
 				this.state.states[this.game.state.current].setPositions();
 			}
 		}
-  	}
-  	
+	}
+
 };

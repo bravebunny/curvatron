@@ -1,6 +1,6 @@
 var gameMananger = function (game) {
 	this.crown = null;
-	this.gameTime = 60; //sec 
+	this.gameTime = 60; //sec
 	this.initialTime = 0;
 	this.powerTimer = null;
 	this.ui = {};
@@ -81,16 +81,14 @@ gameMananger.prototype = {
 			}
  		}
 
-		if (mobile) {
-			pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this);
-    	pauseSprite.anchor.setTo(0.5, 0.5);
-    	pauseSprite.input.useHandCursor = true;
-    	pauseSprite.scale.set(0.5);
+		pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this);
+  	pauseSprite.anchor.setTo(0.5, 0.5);
+  	pauseSprite.input.useHandCursor = true;
+  	pauseSprite.scale.set(0.5);
 
-    	if (!this.mode.sp) {
-				pauseSprite.position.set(w2, h2);
-				pauseSprite.scale.set(0.8);
-			}
+  	if (!this.mode.sp) {
+			pauseSprite.position.set(w2, h2);
+			pauseSprite.scale.set(0.8);
 		}
 
 		//create BitmapData
@@ -110,15 +108,15 @@ gameMananger.prototype = {
 		}
 		for(var i=0; i <= nPlayers; i++){
 			players[i] = new Player(i,
-			Math.cos((2*Math.PI/(nPlayers+1))*i - angle)*(w2-200)+w2, 
-			Math.sin((2*Math.PI/(nPlayers+1))*i - angle)*(h2-100)+h2, 
+			Math.cos((2*Math.PI/(nPlayers+1))*i - angle)*(w2-200)+w2,
+			Math.sin((2*Math.PI/(nPlayers+1))*i - angle)*(h2-100)+h2,
 			keys[i], this.mode, this.game);
 		}
 
 		if (this.mode.create) {
 			this.mode.create(this);
 		}
-		
+
 		if (this.mode.sp) {
 			this.game.stage.backgroundColor = colorHex;
 			document.body.style.background = colorHexDark;
@@ -145,24 +143,9 @@ gameMananger.prototype = {
 		ui.overlay.alpha = 0.5;
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);
-		
+
 		if (!mute) {
 			menuMusic.volume = 1;
-		}
-
-
-		//Ad stuff
-		if (!iapDone) {
-			playCounter++;
-		}
-
-		if (playCounter == 4) {
-			this.loadAd();
-		}
-
-		if (playCounter >= 5) {
-			Cocoon.Ad.showInterstitial();
-			playCounter = 0;
 		}
 
 	},
@@ -358,7 +341,7 @@ gameMananger.prototype = {
 	        ui.audioButton.input.useHandCursor=true;
 		    }
 	    	clickButton(ui.audioButton,this.muteSound, this);
-			
+
 		} else { //unpause
 			this.game.tweens.resumeAll();
 			ui.overlay.scale.set(0);
@@ -396,32 +379,11 @@ gameMananger.prototype = {
 			if (mobile) {
 				pauseSprite.input.useHandCursor=false;
 			}
-		}	
+		}
 	},
 
 	leaderboard: function () {
-    if (mobile) {
-      var params = Cocoon.Social.ScoreParams;
-      params.leaderboardID = this.mode.leaderboardID;
-      if (!socialService) {
-        socialInit();
-      } else {
-      	if (socialService.isLoggedIn()){
-        	socialService.showLeaderboard(null, params);
-      	} else {
-	        socialService.login(function(loggedIn, error) {
-          if (error) {
-              console.error("login error: " + error.message);
-            } else if (loggedIn) {
-            	var score = this.mode.getScore();
-            	socialService.submitScore(score, function() {
-            		socialService.showLeaderboard(null, params);
-            	}, params);
-            }
-          }.bind(this));
-      	}
-      }
-    }
+    //TODO leaderboard
 	},
 
 	muteSound: function (){
@@ -441,14 +403,6 @@ gameMananger.prototype = {
     this.pause();
   },
 
-  loadAd: function(){
-     Cocoon.Ad.loadInterstitial();
- 	},
-
- 	showAd: function(){
- 		Cocoon.Ad.showInterstitial();
- 	},
-
 	/*render: function(){
 		players[0].render();
 	},*/
@@ -458,4 +412,3 @@ gameMananger.prototype = {
 	}
 
 };
-

@@ -7,15 +7,8 @@ preloadGame.prototype = {
 		this.mode = mode;
 	},
 
-	preload: function () { 
-		this.scale.forceOrientation(true);
-		var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-		if (wOrientation == "portrait") {
-			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.PORTRAIT);
-		} else {
-			Cocoon.Device.setOrientation(Cocoon.Device.Orientations.LANDSCAPE);
-		}
-		
+	preload: function () {
+
     var loadingBar = this.add.sprite(w2,h2,"loading");
     this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);
     loadingBar.anchor.setTo(0.5,0.5);
