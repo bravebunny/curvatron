@@ -16,6 +16,7 @@ var menu = function (game) {
 
 menu.prototype = {
   create: function () {
+
     this.world.pivot.set(0, 0);
     this.world.angle = 0;
 
@@ -130,7 +131,9 @@ menu.prototype = {
 	},
 
 	multiplayer: function () {
-    this.state.start("Multiplayer");
+    //this.state.start("Multiplayer");
+    var mode = new Adventure(this.game);
+		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
 	setKeys: function () {

@@ -33,9 +33,6 @@ Normal.prototype = {
 		this.shrink = null;
 
 		var textSize = 15;
-  	if (mobile) {
-  		textSize = 30
-  	}
 		powerText = this.game.add.text(0, 0, "1", {
 		font: "" + textSize + "px dosis",
       	fill: colorHex,
