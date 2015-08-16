@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-pt">
+<head>
+    <meta charset="iso-8859-1" />
+    <title>Curvatron</title>
+    <link href='style.css' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="favicon.ico"/>
+
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+
+    <script type="text/javascript" src="src/states/Boot.js"></script>
+    <script type="text/javascript" src="src/states/PreloadMenu.js"></script>
+    <script type="text/javascript" src="src/states/Menu.js"></script>
+    <script type="text/javascript" src="src/states/Multiplayer.js"></script>
+    <script type="text/javascript" src="src/states/SetKeys.js"></script>
+    <script type="text/javascript" src="src/states/Leaderboards.js"></script>
+    <script type="text/javascript" src="src/states/PreloadGame.js"></script>
+    <script type="text/javascript" src="src/states/SinglePlayer.js"></script>
+    <script type="text/javascript" src="src/states/GameMananger.js"></script>
+    <script type="text/javascript" src="src/states/Stats.js"></script>
+
+    <script type="text/javascript" src="src/modes/Normal.js"></script>
+    <script type="text/javascript" src="src/modes/Endless.js"></script>
+    <script type="text/javascript" src="src/modes/Creative.js"></script>
+    <script type="text/javascript" src="src/modes/Adventure.js"></script>
+    <script type="text/javascript" src="src/modes/OldSchool.js"></script>
+    <script type="text/javascript" src="src/modes/MPNormal.js"></script>
+
+    <script type="text/javascript" src="src/entities/Player.js"></script>
+    <script type="text/javascript" src="src/entities/OldPlayer.js"></script>
+    <script type="text/javascript" src="src/entities/PowerUp.js"></script>
+
+    <script type="text/javascript" src="src/Common.js"></script>
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+(function() {
+
+
+    baseW = 1366;
+    baseH = 768;
+    baseRatio = 1366/768;
+    baseArea = 1024*1024;
+
+    var winW = window.innerWidth;
+    var winH = window.innerHeight;
+    var winRatio = winW/winH;
+    mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    //mobile = true;
+
+    var height = Math.round(Math.sqrt(baseArea/winRatio));
+    var width =  Math.round(winRatio*height);
+
+    var game = new Phaser.Game(width, height, Phaser.AUTO, "Curvatron");
+    game.state.add("Boot",boot);
+    game.state.add("PreloadMenu",preloadMenu);
+    game.state.add("Menu",menu);
+    game.state.add("Multiplayer",multiplayer);
+    game.state.add("SetKeys",setKeys);
+    game.state.add("Leaderboards",leaderboards);
+    game.state.add("Stats",stats);
+    game.state.add("SinglePlayer",singlePlayer);
+    game.state.add("PreloadGame",preloadGame);
+    game.state.add("GameMananger",gameMananger);
+    game.state.start("Boot");
+})();
+
+</script>
+
+</body>
+</html>
