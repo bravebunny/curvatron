@@ -115,7 +115,7 @@ Player.prototype = {
 				}
 			} else {
 				//Draw trail bmd
-				if (this.trailArray[0]) {
+				/*if (this.trailArray[0]) {
 					var ctx = bmd.ctx;
 					bmd.dirty = true;
 					ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
@@ -142,7 +142,24 @@ Player.prototype = {
 					}
 
 					ctx.stroke();
+				}*/
+
+
+				//Draw trail bmd
+				if (this.trailArray[0]) {
+					bmd.dirty = true;
+					//bmd.clear();
+					bmd.ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
+
+					for (var i = 0; i < this.trailArray.length; i++) {
+						var x = this.trailArray[i].x;
+						var y = this.trailArray[i].y;
+						//bmd.draw(this.trail, x, y);
+						bmd.circle(x, y, 8*scale, "rgba(255,255,255,1)");
+					}
+
 				}
+
 			}
 
 			if (!this.sprite.alive) {
