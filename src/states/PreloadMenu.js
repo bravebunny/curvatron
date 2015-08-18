@@ -9,36 +9,40 @@ preloadMenu.prototype = {
 		loadingBar.body.angularVelocity = 200;
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
 		//Load all stuf from menu
-		this.game.load.image("login_button","assets/sprites/menu/login.png");
-		this.game.load.image("audio_button","assets/sprites/menu/audio.png");
-		this.game.load.image("audiooff_button","assets/sprites/menu/audiooff.png");
-		this.game.load.image("multiplayer_button","assets/sprites/menu/multiplayer.png");
-		this.game.load.image("setkeys_button","assets/sprites/menu/setkeys.png");
-		this.game.load.image("leaderboard_button","assets/sprites/menu/leaderboard.png");
-		this.game.load.image("singleplayer_button","assets/sprites/menu/singleplayer.png");
-		this.game.load.image("stats_button","assets/sprites/menu/stats.png");
-		this.game.load.image("fullscreen_button","assets/sprites/menu/fullscreen.png");
-		this.game.load.image("sp_score","assets/sprites/menu/score.png");
-		this.game.load.image("back_button","assets/sprites/menu/back.png");
-		this.game.load.image("accept_button","assets/sprites/menu/accept.png");
+		this.game.load.image("audio_button","assets/sprites/menu/settings/audio.png");
+		this.game.load.image("audiooff_button","assets/sprites/menu/settings/audiooff.png");
+		this.game.load.image("setkeys_button","assets/sprites/menu/settings/setkeys.png");
+		this.game.load.image("leaderboard_button","assets/sprites/menu/settings/leaderboard.png");
+		this.game.load.image("fullscreen_button","assets/sprites/menu/settings/fullscreen.png");
+		this.game.load.image("stats_button","assets/sprites/menu/settings/stats.png");
+		this.game.load.image("player_select","assets/sprites/menu/settings/playerSelect.png");
+		this.game.load.image("key_button","assets/sprites/menu/settings/key.png");
+
+		this.game.load.image("multiplayer_button","assets/sprites/menu/modes/multiplayer.png");
+		this.game.load.image("singleplayer_button","assets/sprites/menu/modes/singleplayer.png");
+		this.game.load.image("endless_button","assets/sprites/menu/modes/endless.png");
+		this.game.load.image("oldSchool_button","assets/sprites/menu/modes/oldSchool.png");
+		this.game.load.image("collecting_button","assets/sprites/menu/modes/collecting.png");
+		this.game.load.image("adventure_button","assets/sprites/menu/modes/adventure.png");
+		this.game.load.image("creative_button","assets/sprites/menu/modes/creative.png");
+
+		this.game.load.image("back_button","assets/sprites/menu/navigation/back.png");
+		this.game.load.image("accept_button","assets/sprites/menu/navigation/accept.png");
+		this.game.load.image("exit_button","assets/sprites/menu/navigation/exit.png");
+
+		this.game.load.image("deaths-stats","assets/sprites/menu/stats/deaths-stats.png");
+		this.game.load.image("old-stats","assets/sprites/menu/stats/old-stats.png");
+		this.game.load.image("score-stat","assets/sprites/menu/stats/score-stat.png");
+		this.game.load.image("total-stats","assets/sprites/menu/stats/total-stats.png");
+		this.game.load.image("aux-stat","assets/sprites/menu/stats/aux-stat.png");
+		this.game.load.image("survScore-stat","assets/sprites/menu/stats/endless-stat.png");
+
 		this.game.load.image("number_players","assets/sprites/menu/numberPlayers.png");
 		this.game.load.image("number_mod","assets/sprites/menu/numberMod.png");
 		this.game.load.image("set_players","assets/sprites/menu/setPlayers.png");
-		this.game.load.image("key_button","assets/sprites/menu/key.png");
-		this.game.load.image("player_select","assets/sprites/menu/playerSelect.png");
-		this.game.load.image("exit_button","assets/sprites/menu/exit.png");
-		this.game.load.image("donate_button","assets/sprites/menu/donate.png");
 		this.game.load.image("resume_button","assets/sprites/menu/resume.png");
-		this.game.load.image("collecting_button","assets/sprites/menu/collecting.png");
-		this.game.load.image("endless_button","assets/sprites/menu/endless.png");
-		this.game.load.image("oldSchool_button","assets/sprites/menu/oldSchool.png");
-		this.game.load.image("restart_button","assets/sprites/menu/restart.png");
-		this.game.load.image("deaths-stats","assets/sprites/menu/deaths-stats.png");
-		this.game.load.image("old-stats","assets/sprites/menu/old-stats.png");
-		this.game.load.image("score-stat","assets/sprites/menu/score-stat.png");
-		this.game.load.image("total-stats","assets/sprites/menu/total-stats.png");
-		this.game.load.image("aux-stat","assets/sprites/menu/aux-stat.png");
-		this.game.load.image("survScore-stat","assets/sprites/menu/endless-stat.png");
+
+
 		this.game.load.audio('dream', 'assets/music/dream.ogg');
 
 	},

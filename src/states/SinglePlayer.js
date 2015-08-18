@@ -1,5 +1,6 @@
 var singlePlayer = function (game) {
 	this.ui = {};
+	this.ui.buttons = {};
 	this.bestScore = 0;
 	this.bestSurvScore = 0;
 };
@@ -14,21 +15,17 @@ singlePlayer.prototype = {
 	    align: "center"});
   	ui.title.anchor.setTo(0.5,0.5);
 
-		//Play Buttons
-		ui.normalButton = this.game.add.button(0,0,"collecting_button");
-		ui.normalButton.anchor.setTo(0.5,0.5);
-		ui.normalButton.input.useHandCursor=true;
-		clickButton(ui.normalButton, this.playNormalGame, this);
+		ui.buttons.normal = new Button(-270, 0, 0.5, 0.5, 105, 'collecting_button', this.playNormalGame, this, this.game);
+		ui.buttons.normal.create();
+		ui.buttons.normal.setMouseMove();
 
-		ui.endlessButton = this.game.add.button(0,0,"endless_button");
-		ui.endlessButton.anchor.setTo(0.5,0.5);
-		ui.endlessButton.input.useHandCursor=true;
-		clickButton(ui.endlessButton, this.playEndlessGame, this);
+		ui.buttons.endless = new Button(0, 0, 0.5, 0.5, 105, 'endless_button', this.playEndlessGame, this, this.game);
+		ui.buttons.endless.create();
+		ui.buttons.endless.setMouseMove();
 
-		ui.oldSchoolButton = this.game.add.button(0,0,"oldSchool_button");
-		ui.oldSchoolButton.anchor.setTo(0.5,0.5);
-		ui.oldSchoolButton.input.useHandCursor=true;
-		clickButton(ui.oldSchoolButton, this.playOldSchoolGame, this);
+		ui.buttons.oldSchool = new Button(270, 0, 0.5, 0.5, 105, 'oldSchool_button', this.playOldSchoolGame, this, this.game);
+		ui.buttons.oldSchool.create();
+		ui.buttons.oldSchool.setMouseMove();
 
 		//Go back Button
 		ui.backButton = this.game.add.button(0,0,"back_button");
@@ -68,6 +65,8 @@ singlePlayer.prototype = {
 	},
 
 	setPositions: function () {
+		var xo = -((this.game.input.mousePointer.x/window.innerWidth)*w2*2 - w2)*0.2;
+
 		var ui = this.ui;
   	ui.title.position.set(w2,h2*0.3);
 
@@ -91,17 +90,18 @@ singlePlayer.prototype = {
 	    ui.endlessText.position.set(w2+330,h2+10);
 	  }
 
-	  if ((mobile && wOrientation == "landscape") || !mobile) {
-			ui.normalButton.position.set(w2-270,h2);
-			ui.endlessButton.position.set(w2,h2);
-			ui.oldSchoolButton.position.set(w2+270,h2);
-		} else if (mobile && wOrientation == "portrait") {
-			ui.normalButton.position.set(w2-170,h2-120);
-			ui.endlessButton.position.set(w2+170,h2-120);
-			ui.oldSchoolButton.position.set(w2,h2+170);
-		}
 
 		ui.backButton.position.set(w2/2,h2*1.6);
-    }
+
+		for (var key in ui.buttons) {
+			 if (ui.buttons.hasOwnProperty(key)) {
+					ui.buttons[key].reposition();
+			 }
+		}
+  },
+
+  update: function() {
+    this.setPositions();
+  }
 
 };

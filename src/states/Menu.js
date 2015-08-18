@@ -11,6 +11,7 @@ var menu = function (game) {
     Phaser.Keyboard.U,]
   menuMusic = null;
   this.ui = {};
+  this.ui.buttons={};
   graphicsMode = false;
 };
 
@@ -60,19 +61,6 @@ menu.prototype = {
     });
     ui.beta.anchor.setTo(0.5,0.5);*/
 
-    //Single Player
-		ui.spButton = this.add.button(0,0,"singleplayer_button");
-		ui.spButton.anchor.setTo(0.5,0.5);
-    ui.spButton.input.useHandCursor = true;
-    clickButton(ui.spButton, this.singlePlayer, this);
-
-    //Multiplayer
-		ui.mpButton = this.add.button(0,0,"multiplayer_button");
-		ui.mpButton.anchor.setTo(0.5,0.5);
-    ui.mpButton.input.useHandCursor = true;
-    clickButton(ui.mpButton, this.multiplayer, this);
-
-
     //TODO PC leaderboards
     /*ui.leaderboard = this.add.button(0,0,"leaderboard_button");
     ui.leaderboard.anchor.setTo(0.5,0.5);
@@ -103,6 +91,15 @@ menu.prototype = {
     }
 
     clickButton(ui.audioButton, this.muteSound, this);
+
+    ui.buttons.sp = new Button(-170, 0, 0.5, 0.5, 105, 'singleplayer_button', this.singlePlayer, this, this.game);
+    ui.buttons.sp.create();
+
+    ui.buttons.mp = new Button(170, 0, 0.5, 0.5, 105, 'multiplayer_button', this.multiplayer, this, this.game);
+    ui.buttons.mp.create();
+
+
+;
 
     this.scale.refresh();
     //Place the menu buttons and labels on their correct positions
@@ -179,17 +176,21 @@ menu.prototype = {
   setPositions: function () {
     var ui = this.ui;
 
+    for (var key in ui.buttons) {
+       if (ui.buttons.hasOwnProperty(key)) {
+          ui.buttons[key].reposition();
+       }
+    }
+
     ui.title.position.set(w2,h2*0.3);
 
-    ui.spButton.position.set(w2-170,h2);
-    ui.mpButton.position.set(w2+170,h2);
+    ui.keysButton.position.set(w2+w2/2,1.6*h2);
+    ui.statsButton.position.set(w2,1.6*h2);
+    ui.audioButton.position.set(w2/2,1.6*h2)
 
     //TODO leaderboard position
     //ui.leaderboard.position.set(w2+w2/2,1.6*h2)
 
-    ui.keysButton.position.set(w2+w2/2,1.6*h2);
-    ui.statsButton.position.set(w2,1.6*h2);
-    ui.audioButton.position.set(w2/2,1.6*h2);
   }
 
 };
