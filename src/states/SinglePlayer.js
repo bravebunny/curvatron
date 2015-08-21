@@ -19,17 +19,20 @@ singlePlayer.prototype = {
 		ui.buttons.normal = new Button(w2, 300, 'collecting_button', 'normal', this.playNormalGame, this, this.game);
 		ui.buttons.normal.create();
 
-		ui.buttons.endless = new Button(w2, 500, 'endless_button', 'endless', this.playEndlessGame, this, this.game);
+		ui.buttons.endless = new Button(w2, 450, 'endless_button', 'endless', this.playEndlessGame, this, this.game);
 		ui.buttons.endless.create();
 
-		ui.buttons.oldSchool = new Button(w2, 700, 'oldSchool_button', 'old school', this.playOldSchoolGame, this, this.game);
+		ui.buttons.oldSchool = new Button(w2, 600, 'oldSchool_button', 'old school', this.playOldSchoolGame, this, this.game);
 		ui.buttons.oldSchool.create();
 
-		//Go back Button
-		ui.backButton = this.game.add.button(0,0,"back_button");
-		ui.backButton.anchor.setTo(0.5,0.5);
-		ui.backButton.input.useHandCursor=true;
-		clickButton(ui.backButton, this.backPressed, this);
+		ui.buttons.adventure = new Button(w2, 750, 'adventure_button', 'adventure', this.adventure, this, this.game);
+		ui.buttons.adventure.create();
+
+		ui.buttons.creative = new Button(w2, 900, 'creative_button', 'creative', this.creative, this, this.game);
+		ui.buttons.creative.create();
+
+		ui.buttons.creative = new Button(w2, 1050, 'back_button', 'back', this.backPressed, this, this.game);
+		ui.buttons.creative.create();
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
@@ -53,6 +56,20 @@ singlePlayer.prototype = {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
     var mode = new OldSchool(this.game);
+		this.game.state.start("PreloadGame", true, false, mode);
+	},
+
+	adventure: function() {
+		numberPlayers = 0;
+		menuMusic.fadeOut(2000);
+		var mode = new Adventure(this.game);
+		this.game.state.start("PreloadGame", true, false, mode);
+	},
+
+	creative: function() {
+		numberPlayers = 0;
+		menuMusic.fadeOut(2000);
+		var mode = new Creative(this.game);
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 

@@ -94,16 +94,16 @@ menu.prototype = {
 
     clickButton(ui.audioButton, this.muteSound, this);*/
 
-    ui.buttons.sp = new Button(w2, 300, 'singleplayer_button', 'single player', this.singlePlayer, this, this.game);
+    ui.buttons.sp = new Button(w2, 350, 'singleplayer_button', 'single player', this.singlePlayer, this, this.game);
     ui.buttons.sp.create();
 
     ui.buttons.mp = new Button(w2, 500, 'multiplayer_button', 'multiplayer', this.multiplayer, this, this.game);
     ui.buttons.mp.create();
 
-    ui.buttons.stats = new Button(w2, 700, 'stats_button', 'statistics', this.stats, this, this.game);
+    ui.buttons.stats = new Button(w2, 650, 'stats_button', 'statistics', this.stats, this, this.game);
     ui.buttons.stats.create();
 
-    ui.buttons.settings = new Button(w2, 900, 'settings_button', 'settings', this.stats, this, this.game);
+    ui.buttons.settings = new Button(w2, 800, 'settings_button', 'settings', this.stats, this, this.game);
     ui.buttons.settings.create();
 
 
@@ -136,14 +136,11 @@ menu.prototype = {
 	},
 
 	multiplayer: function () {
-    //this.state.start("Multiplayer");
-    var mode = new Adventure(this.game);
-		this.game.state.start("PreloadGame", true, false, mode);
+    this.state.start("Multiplayer");
 	},
 
 	setKeys: function () {
     this.state.start("SetKeys");
-    graphicsMode = true;
 	},
 
   leaderboard: function () {

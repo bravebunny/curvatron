@@ -15,7 +15,7 @@ var Button = function (x, y, iconName, text, callback, context, game) {
 	this.icon = null;
 
 	this.w = 520;
-	this.h = 150;
+	this.h = 130;
 };
 
 Button.prototype = {
@@ -36,7 +36,7 @@ Button.prototype = {
 		//Button icon
 		this.icon = this.game.add.button(x-w/2 + 80, y, this.iconName);
 		this.icon.anchor.setTo(0.5,0.5);
-		this.icon.scale.set(0.8, 0.8);
+		this.icon.scale.set(0.7, 0.7);
 		this.icon.tint = parseInt(colorHex.substring(1), 16);
 		//this.icon.hitArea = new Phaser.Circle(0, 0,2*this.radius);
 		this.icon.input.useHandCursor = true;

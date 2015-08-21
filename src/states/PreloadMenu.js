@@ -14,7 +14,11 @@ preloadMenu.prototype = {
 		this.game.load.image("singleplayer_button","assets/sprites/menu/main/singleplayer.png");
 		this.game.load.image("settings_button","assets/sprites/menu/main/settings.png");
 
-
+		this.game.load.image("endless_button","assets/sprites/menu/singleplayer/endless.png");
+		this.game.load.image("oldSchool_button","assets/sprites/menu/singleplayer/oldSchool.png");
+		this.game.load.image("collecting_button","assets/sprites/menu/singleplayer/collecting.png");
+		this.game.load.image("adventure_button","assets/sprites/menu/singleplayer/adventure.png");
+		this.game.load.image("creative_button","assets/sprites/menu/singleplayer/creative.png");
 
 		this.game.load.image("audio_button","assets/sprites/menu/settings/audio.png");
 		this.game.load.image("audiooff_button","assets/sprites/menu/settings/audiooff.png");
@@ -24,11 +28,7 @@ preloadMenu.prototype = {
 		this.game.load.image("player_select","assets/sprites/menu/settings/playerSelect.png");
 		this.game.load.image("key_button","assets/sprites/menu/settings/key.png");
 
-		this.game.load.image("endless_button","assets/sprites/menu/modes/endless.png");
-		this.game.load.image("oldSchool_button","assets/sprites/menu/modes/oldSchool.png");
-		this.game.load.image("collecting_button","assets/sprites/menu/modes/collecting.png");
-		this.game.load.image("adventure_button","assets/sprites/menu/modes/adventure.png");
-		this.game.load.image("creative_button","assets/sprites/menu/modes/creative.png");
+
 
 		this.game.load.image("back_button","assets/sprites/menu/navigation/back.png");
 		this.game.load.image("accept_button","assets/sprites/menu/navigation/accept.png");
