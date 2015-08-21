@@ -1,7 +1,7 @@
 var stats = function (game) {
 	this.ui = {};
 };
-  
+
 stats.prototype = {
 	create: function () {
 		var ui = this.ui;
@@ -68,7 +68,7 @@ stats.prototype = {
 		ui.oldSchool = this.game.add.sprite(0, 0, 'old-stats');
 		ui.oldSchool.anchor.setTo(0.5,0.5);
 		ui.oldSchool.alpha = 0.7;
-		ui.textOldSchool = this.game.add.text(0, 0, localStorage.getItem("oldSchool"), {
+		ui.textOldSchool = this.game.add.text(0, 0, localStorage.getItem("deathScores"), {
         font: "60px dosis",
         fill: colorHex,
         align: "center"
@@ -99,13 +99,6 @@ stats.prototype = {
 
   	ui.title.position.set(w2,h2*0.3);
 
-    var wOrientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
-    if (wOrientation == "portrait" && mobile) {
-      ui.title.scale.set(0.7,0.7);
-    } else {
-      ui.title.scale.set(1,1);
-    }
-    if((mobile && wOrientation == "landscape") || (!mobile)){
 			ui.highScore.position.set(w2-300, h2-85);
 			ui.highScoretext.position.set(w2-250, h2-85);
 
@@ -121,29 +114,13 @@ stats.prototype = {
 			ui.oldSchool.position.set(w2+300, h2-85);
 			ui.textOldSchool.position.set(w2+350, h2-85);
 
-		}	else if (mobile && wOrientation == "portrait") {
-			ui.highScore.position.set(w2-150, h2-175);
-			ui.highScoretext.position.set(w2-100, h2-175);
-
-			ui.survivalScore.position.set(w2+150, h2-175);
-			ui.survivalScoretext.position.set(w2+200, h2-175);
-
-			ui.totalBalls.position.set(w2-150, h2);
-			ui.totalBallsText.position.set(w2-100,h2);
-
-			ui.statsDeaths.position.set(w2+150, h2);
-			ui.textDeaths.position.set(w2+200, h2);
-
-			ui.oldSchool.position.set(w2, h2+175);
-			ui.textOldSchool.position.set(w2+50, h2+175);
-		}
 
 		ui.highScore.scale.set(0.7,0.7);
 		ui.highScoretext.scale.set(0.7,0.7);
 
 		ui.survivalScore.scale.set(0.7,0.7);
 		ui.survivalScoretext.scale.set(0.7,0.7);
-	
+
 		ui.totalBallsText.scale.set(0.7,0.7);
 		ui.totalBalls.scale.set(0.7,0.7);
 
@@ -157,5 +134,5 @@ stats.prototype = {
 
 		ui.backButton.position.set(w2/2,1.6*h2);
   	}
-  	
+
 };

@@ -11,11 +11,15 @@ var menu = function (game) {
     Phaser.Keyboard.U,]
   menuMusic = null;
   this.ui = {};
+  this.ui.buttons={};
   graphicsMode = false;
 };
 
 menu.prototype = {
   create: function () {
+
+    setScreenFixed(this.game);
+
     this.world.pivot.set(0, 0);
     this.world.angle = 0;
 
@@ -45,8 +49,8 @@ menu.prototype = {
     var ui = this.ui;
 
 		//Game Title
-		ui.title = this.add.text(0,0, "curvatron", {
-      font: "200px dosis",
+		ui.title = this.add.text(w2,100, "curvatron", {
+      font: "175px dosis",
       fill: "#ffffff",
       align: "center"
   	});
@@ -59,26 +63,13 @@ menu.prototype = {
     });
     ui.beta.anchor.setTo(0.5,0.5);*/
 
-    //Single Player
-		ui.spButton = this.add.button(0,0,"singleplayer_button");
-		ui.spButton.anchor.setTo(0.5,0.5);
-    ui.spButton.input.useHandCursor = true;
-    clickButton(ui.spButton, this.singlePlayer, this);
-
-    //Multiplayer
-		ui.mpButton = this.add.button(0,0,"multiplayer_button");
-		ui.mpButton.anchor.setTo(0.5,0.5);
-    ui.mpButton.input.useHandCursor = true;
-    clickButton(ui.mpButton, this.multiplayer, this);
-
-
     //TODO PC leaderboards
     /*ui.leaderboard = this.add.button(0,0,"leaderboard_button");
     ui.leaderboard.anchor.setTo(0.5,0.5);
     ui.leaderboard.input.useHandCursor = true;
     clickButton(ui.leaderboard, this.leaderboard, this);*/
 
-    //Configure Keys
+    /*//Configure Keys
     ui.keysButton = this.add.button(0,0,"setkeys_button");
     ui.keysButton.anchor.setTo(0.5,0.5);
     ui.keysButton.input.useHandCursor = true;
@@ -101,7 +92,22 @@ menu.prototype = {
       ui.audioButton.input.useHandCursor = true;
     }
 
-    clickButton(ui.audioButton, this.muteSound, this);
+    clickButton(ui.audioButton, this.muteSound, this);*/
+
+    ui.buttons.sp = new Button(w2, 350, 'singleplayer_button', 'single player', this.singlePlayer, this, this.game);
+    ui.buttons.sp.create();
+
+    ui.buttons.mp = new Button(w2, 500, 'multiplayer_button', 'multiplayer', this.multiplayer, this, this.game);
+    ui.buttons.mp.create();
+
+    ui.buttons.stats = new Button(w2, 650, 'stats_button', 'statistics', this.stats, this, this.game);
+    ui.buttons.stats.create();
+
+    ui.buttons.settings = new Button(w2, 800, 'settings_button', 'settings', this.stats, this, this.game);
+    ui.buttons.settings.create();
+
+
+;
 
     this.scale.refresh();
     //Place the menu buttons and labels on their correct positions
@@ -135,7 +141,6 @@ menu.prototype = {
 
 	setKeys: function () {
     this.state.start("SetKeys");
-    graphicsMode = true;
 	},
 
   leaderboard: function () {
@@ -176,17 +181,18 @@ menu.prototype = {
   setPositions: function () {
     var ui = this.ui;
 
-    ui.title.position.set(w2,h2*0.3);
-
-    ui.spButton.position.set(w2-170,h2);
-    ui.mpButton.position.set(w2+170,h2);
+    /*for (var key in ui.buttons) {
+       if (ui.buttons.hasOwnProperty(key)) {
+          ui.buttons[key].reposition();
+       }
+    }*/
+  /*  ui.keysButton.position.set(w2+w2/2,1.6*h2);
+    ui.statsButton.position.set(w2,1.6*h2);
+    ui.audioButton.position.set(w2/2,1.6*h2)*/
 
     //TODO leaderboard position
     //ui.leaderboard.position.set(w2+w2/2,1.6*h2)
 
-    ui.keysButton.position.set(w2+w2/2,1.6*h2);
-    ui.statsButton.position.set(w2,1.6*h2);
-    ui.audioButton.position.set(w2/2,1.6*h2);
   }
 
 };

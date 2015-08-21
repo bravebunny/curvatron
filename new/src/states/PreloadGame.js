@@ -1,4 +1,5 @@
 var preloadGame = function (game) {
+	this.game = game;
 	this.mode = null;
 };
 
@@ -8,6 +9,8 @@ preloadGame.prototype = {
 	},
 
 	preload: function () {
+		
+		ajustScreen(this.game);
 
     var loadingBar = this.add.sprite(w2,h2,"loading");
     this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE);

@@ -1,5 +1,6 @@
 var singlePlayer = function (game) {
 	this.ui = {};
+	this.ui.buttons = {};
 	this.bestScore = 0;
 	this.bestSurvScore = 0;
 };
@@ -8,35 +9,30 @@ singlePlayer.prototype = {
 	create: function () {
 		var ui = this.ui;
 
-		ui.title = this.game.add.text(0,0, "single player", {
-	    font: "150px dosis",
-	    fill: "#ffffff",
-	    align: "center"});
+		ui.title = this.game.add.text(w2,100, "single player", {
+      font: "150px dosis",
+      fill: "#ffffff",
+      align: "center"
+  	});
   	ui.title.anchor.setTo(0.5,0.5);
 
-		//Play Buttons
-		ui.normalButton = this.game.add.button(0,0,"collecting_button");
-		ui.normalButton.anchor.setTo(0.5,0.5);
-		ui.normalButton.input.useHandCursor=true;
-		clickButton(ui.normalButton, this.playNormalGame, this);
+		ui.buttons.normal = new Button(w2, 300, 'collecting_button', 'normal', this.playNormalGame, this, this.game);
+		ui.buttons.normal.create();
 
-		ui.endlessButton = this.game.add.button(0,0,"endless_button");
-		ui.endlessButton.anchor.setTo(0.5,0.5);
-		ui.endlessButton.input.useHandCursor=true;
-		clickButton(ui.endlessButton, this.playEndlessGame, this);
+		ui.buttons.endless = new Button(w2, 450, 'endless_button', 'endless', this.playEndlessGame, this, this.game);
+		ui.buttons.endless.create();
 
-		ui.oldSchoolButton = this.game.add.button(0,0,"oldSchool_button");
-		ui.oldSchoolButton.anchor.setTo(0.5,0.5);
-		ui.oldSchoolButton.input.useHandCursor=true;
-		clickButton(ui.oldSchoolButton, this.playOldSchoolGame, this);
+		ui.buttons.oldSchool = new Button(w2, 600, 'oldSchool_button', 'old school', this.playOldSchoolGame, this, this.game);
+		ui.buttons.oldSchool.create();
 
-		//Go back Button
-		ui.backButton = this.game.add.button(0,0,"back_button");
-		ui.backButton.anchor.setTo(0.5,0.5);
-		ui.backButton.input.useHandCursor=true;
-		clickButton(ui.backButton, this.backPressed, this);
+		ui.buttons.adventure = new Button(w2, 750, 'adventure_button', 'adventure', this.adventure, this, this.game);
+		ui.buttons.adventure.create();
 
-		this.setPositions();
+		ui.buttons.creative = new Button(w2, 900, 'creative_button', 'creative', this.creative, this, this.game);
+		ui.buttons.creative.create();
+
+		ui.buttons.creative = new Button(w2, 1050, 'back_button', 'back', this.backPressed, this, this.game);
+		ui.buttons.creative.create();
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
@@ -63,11 +59,27 @@ singlePlayer.prototype = {
 		this.game.state.start("PreloadGame", true, false, mode);
 	},
 
+	adventure: function() {
+		numberPlayers = 0;
+		menuMusic.fadeOut(2000);
+		var mode = new Adventure(this.game);
+		this.game.state.start("PreloadGame", true, false, mode);
+	},
+
+	creative: function() {
+		numberPlayers = 0;
+		menuMusic.fadeOut(2000);
+		var mode = new Creative(this.game);
+		this.game.state.start("PreloadGame", true, false, mode);
+	},
+
 	backPressed: function () {
 		this.game.state.start("Menu");
 	},
 
-	setPositions: function () {
+/*	setPositions: function () {
+		var xo = -((this.game.input.mousePointer.x/window.innerWidth)*w2*2 - w2)*0.2;
+
 		var ui = this.ui;
   	ui.title.position.set(w2,h2*0.3);
 
@@ -91,17 +103,13 @@ singlePlayer.prototype = {
 	    ui.endlessText.position.set(w2+330,h2+10);
 	  }
 
-	  if ((mobile && wOrientation == "landscape") || !mobile) {
-			ui.normalButton.position.set(w2-270,h2);
-			ui.endlessButton.position.set(w2,h2);
-			ui.oldSchoolButton.position.set(w2+270,h2);
-		} else if (mobile && wOrientation == "portrait") {
-			ui.normalButton.position.set(w2-170,h2-120);
-			ui.endlessButton.position.set(w2+170,h2-120);
-			ui.oldSchoolButton.position.set(w2,h2+170);
-		}
 
 		ui.backButton.position.set(w2/2,h2*1.6);
-    }
+
+  },
+
+  update: function() {
+    this.setPositions();
+  }*/
 
 };

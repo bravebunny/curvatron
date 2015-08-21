@@ -103,47 +103,61 @@ Player.prototype = {
 
 		if (!this.paused) {
 
-			//Draw trail graphics
-			if (graphicsMode) {
-				this.graphics.clear();
-				this.graphics.lineStyle(16*scale, 0xffffff, 1)
-				if (this.trailArray[0]) {
-					this.graphics.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
-					for (var i = 1; i < this.trailArray.length; i++) {
-						this.graphics.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
-					}
-				}
-			} else {
-				//Draw trail bmd
-				if (this.trailArray[0]) {
-					var ctx = bmd.ctx;
-					bmd.dirty = true;
-					ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
+			//Draw trail bmd line
+			if (this.trailArray[0]) {
+				var ctx = bmd.ctx;
+				bmd.dirty = true;
+				ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
 
-					ctx.strokeStyle = 'rgb(255, 255, 255)';
-					ctx.lineWidth   = 16*scale;
-					ctx.lineCap     = 'round';
+				ctx.strokeStyle = 'rgb(255, 255, 255)';
+				ctx.lineWidth   = 16*scale;
+				ctx.lineCap     = 'round';
 
-					ctx.beginPath();
+				ctx.beginPath();
 
-					ctx.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
-					for (var i = 1; i < this.trailArray.length; i++) {
-						var x = this.trailArray[i].x;
-						var y = this.trailArray[i].y;
+				ctx.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
+				for (var i = 1; i < this.trailArray.length; i++) {
+					var x = this.trailArray[i].x;
+					var y = this.trailArray[i].y;
 
-						if (x < -4 || y < -4 || y > 2*h2+4 || x > 2*w2+4) {
-							ctx.stroke();
-							ctx.beginPath();
-						} else {
-							ctx.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
-						}
-
-
+					if (x < -4 || y < -4 || y > 2*h2+4 || x > 2*w2+4) {
+						ctx.stroke();
+						ctx.beginPath();
+					} else {
+						ctx.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
 					}
 
-					ctx.stroke();
+
 				}
+
+				ctx.stroke();
 			}
+
+
+			//Draw trail bmd circles
+			/*if (this.trailArray[0]) {
+				bmd.dirty = true;
+				//bmd.clear();
+				bmd.ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
+
+				for (var i = 0; i < this.trailArray.length; i++) {
+					var x = this.trailArray[i].x;
+					var y = this.trailArray[i].y;
+					//bmd.draw(this.trail, x, y);
+					bmd.circle(x, y, 8*scale, "rgba(255,255,255,1)");
+				}
+
+			}*/
+
+			//Draw trail graphics
+			/*this.graphics.clear();
+			this.graphics.lineStyle(16*scale, 0xffffff, 1)
+			if (this.trailArray[0]) {
+				this.graphics.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
+				for (var i = 1; i < this.trailArray.length; i++) {
+					this.graphics.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
+				}
+			}*/
 
 			if (!this.sprite.alive) {
 				this.kill();
@@ -159,7 +173,7 @@ Player.prototype = {
 			if (!this.dead) {
 				//Add to trail
 				if (this.frameCount == 0 && !this.dead) {
-					trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
+					var trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 					this.trailArray.push(trailPiece);
 					//bmd.draw(this.trail, this.sprite.x, this.sprite.y);
 				}

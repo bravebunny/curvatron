@@ -12,7 +12,7 @@ var Adventure = function(game) {
 
 Adventure.prototype = {
 
-	preload: function () {	
+	preload: function () {
 		this.game.load.image('player0', 'assets/playerSingle.png');
 		this.game.load.image('trail0', 'assets/trailSingle.png');
 		this.game.load.image('superPower', 'assets/powerHS.png');
@@ -23,6 +23,8 @@ Adventure.prototype = {
 
 	create: function() {
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+
 
 		this.game.width = this.width;
 		this.game.height = this.height;
@@ -39,11 +41,18 @@ Adventure.prototype = {
 		this.game.scale.refresh();
 
 		borders = [0, this.game.world.width, 0,this.game.world.height];
-		bmd.width = this.game.world.width;
-		bmd.height = this.game.world.height;
+
+		//redo bitmapData
+		delete bmd;
+		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
+		bmd.addToWorld();
+		bmd.smoothed = false;
 
 		w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
+
+		bmd.width = 2*w2;
+		bmd.height = 2*h2;
 
 		players[0].x = w2;
 		players[0].y = h2;
@@ -56,7 +65,14 @@ Adventure.prototype = {
 
     this.layer = this.map.createLayer('obstacles'); //layer[0]
 
-		//this.map.setCollisionByExclusion([], true, this.layer);
+		powerText = this.game.add.text(0, 0, "1", {
+		font: "15px dosis",
+				fill: colorHex,
+				align: "center"
+		});
+		powerText.anchor.setTo(0.5,0.5);
+
+		this.map.setCollisionByExclusion([], true, this.layer);
 
 		this.layer.resizeWorld();
 
@@ -64,7 +80,7 @@ Adventure.prototype = {
 	},
 
 	update: function() {
-		if(this.game.physics.arcade.overlap(players[0].sprite, this.layer)){
+		if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
 			players[0].kill();
 		}
 	},
@@ -95,13 +111,8 @@ Adventure.prototype = {
 	},
 
 	submitScore: function () {
-		var params = Cocoon.Social.ScoreParams;
 		if (this.score > this.getHighScore()) {
 			this.setHighScore(this.score);
-		}
-		params.leaderboardID = this.leaderboardID;
-		if (mobile && socialService && socialService.isLoggedIn()) {
-			socialService.submitScore(this.score, null, params);
 		}
 	},
 

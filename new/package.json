@@ -1,0 +1,9 @@
+{
+  "name": "Curvatron",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "width": 1366,
+    "height": 768
+  }
+}
