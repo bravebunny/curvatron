@@ -9,17 +9,21 @@ preloadMenu.prototype = {
 		loadingBar.body.angularVelocity = 200;
 		this.game.physics.arcade.velocityFromAngle(loadingBar.angle, 300*this.speed, loadingBar.body.velocity);
 		//Load all stuf from menu
+		this.game.load.image("stats_button","assets/sprites/menu/main/stats.png");
+		this.game.load.image("multiplayer_button","assets/sprites/menu/main/multiplayer.png");
+		this.game.load.image("singleplayer_button","assets/sprites/menu/main/singleplayer.png");
+		this.game.load.image("settings_button","assets/sprites/menu/main/settings.png");
+
+
+
 		this.game.load.image("audio_button","assets/sprites/menu/settings/audio.png");
 		this.game.load.image("audiooff_button","assets/sprites/menu/settings/audiooff.png");
 		this.game.load.image("setkeys_button","assets/sprites/menu/settings/setkeys.png");
 		this.game.load.image("leaderboard_button","assets/sprites/menu/settings/leaderboard.png");
 		this.game.load.image("fullscreen_button","assets/sprites/menu/settings/fullscreen.png");
-		this.game.load.image("stats_button","assets/sprites/menu/settings/stats.png");
 		this.game.load.image("player_select","assets/sprites/menu/settings/playerSelect.png");
 		this.game.load.image("key_button","assets/sprites/menu/settings/key.png");
 
-		this.game.load.image("multiplayer_button","assets/sprites/menu/modes/multiplayer.png");
-		this.game.load.image("singleplayer_button","assets/sprites/menu/modes/singleplayer.png");
 		this.game.load.image("endless_button","assets/sprites/menu/modes/endless.png");
 		this.game.load.image("oldSchool_button","assets/sprites/menu/modes/oldSchool.png");
 		this.game.load.image("collecting_button","assets/sprites/menu/modes/collecting.png");

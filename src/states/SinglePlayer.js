@@ -9,31 +9,27 @@ singlePlayer.prototype = {
 	create: function () {
 		var ui = this.ui;
 
-		ui.title = this.game.add.text(0,0, "single player", {
-	    font: "150px dosis",
-	    fill: "#ffffff",
-	    align: "center"});
+		ui.title = this.game.add.text(w2,100, "single player", {
+      font: "150px dosis",
+      fill: "#ffffff",
+      align: "center"
+  	});
   	ui.title.anchor.setTo(0.5,0.5);
 
-		ui.buttons.normal = new Button(-270, 0, 0.5, 0.5, 105, 'collecting_button', this.playNormalGame, this, this.game);
+		ui.buttons.normal = new Button(w2, 300, 'collecting_button', 'normal', this.playNormalGame, this, this.game);
 		ui.buttons.normal.create();
-		ui.buttons.normal.setMouseMove();
 
-		ui.buttons.endless = new Button(0, 0, 0.5, 0.5, 105, 'endless_button', this.playEndlessGame, this, this.game);
+		ui.buttons.endless = new Button(w2, 500, 'endless_button', 'endless', this.playEndlessGame, this, this.game);
 		ui.buttons.endless.create();
-		ui.buttons.endless.setMouseMove();
 
-		ui.buttons.oldSchool = new Button(270, 0, 0.5, 0.5, 105, 'oldSchool_button', this.playOldSchoolGame, this, this.game);
+		ui.buttons.oldSchool = new Button(w2, 700, 'oldSchool_button', 'old school', this.playOldSchoolGame, this, this.game);
 		ui.buttons.oldSchool.create();
-		ui.buttons.oldSchool.setMouseMove();
 
 		//Go back Button
 		ui.backButton = this.game.add.button(0,0,"back_button");
 		ui.backButton.anchor.setTo(0.5,0.5);
 		ui.backButton.input.useHandCursor=true;
 		clickButton(ui.backButton, this.backPressed, this);
-
-		this.setPositions();
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
@@ -64,7 +60,7 @@ singlePlayer.prototype = {
 		this.game.state.start("Menu");
 	},
 
-	setPositions: function () {
+/*	setPositions: function () {
 		var xo = -((this.game.input.mousePointer.x/window.innerWidth)*w2*2 - w2)*0.2;
 
 		var ui = this.ui;
@@ -93,15 +89,10 @@ singlePlayer.prototype = {
 
 		ui.backButton.position.set(w2/2,h2*1.6);
 
-		for (var key in ui.buttons) {
-			 if (ui.buttons.hasOwnProperty(key)) {
-					ui.buttons[key].reposition();
-			 }
-		}
   },
 
   update: function() {
     this.setPositions();
-  }
+  }*/
 
 };

@@ -1,56 +1,54 @@
 //wf and hx are fractions of the width and hight of the screen, respectively
 //if wf = 0.5 and hf = 0.5, the button will stay in the center of the screen.
 //xo and yo are the x and y offsets
-var Button = function (xo, yo, wf, hf, radius, icon, callback, context, game) {
-	this.wf = wf;
-	this.hf = hf;
-	this.xo = xo;
-	this.yo = yo;
-	this.icon = icon;
-	this.context = context;
+var Button = function (x, y, iconName, text, callback, context, game) {
+	this.x = x;
+	this.y = y;
+	this.text = text;
+	this.iconName = iconName;
 	this.callback = callback;
+	this.context = context;
 	this.game = game;
+
   this.graphics = null;
-	this.shape = null;
-	this.radius = radius;
-	this.mouseMove = false;
+	this.label = null;
+	this.icon = null;
+
+	this.w = 520;
+	this.h = 150;
 };
 
 Button.prototype = {
 	create: function () {
-    this.graphics = this.game.add.graphics(0, 0);
+		var x = this.x;
+		var y = this.y;
+		var w = this.w;
+		var h = this.h;
+
+		//Button background rectangle
+    this.graphics = this.game.add.graphics(x-w/2, y-h/2);
     this.graphics.lineStyle(0);
     this.graphics.beginFill(0xFFFFFF, 1);
-    this.graphics.drawCircle(0, 0, 2*this.radius);
+    this.graphics.drawRoundedRect(0, 0, w, h, h/2);
     this.graphics.endFill();
 		//this.graphics.anchor.setTo(0.5,0.5);
 
-		this.shape = this.game.add.button(0, 0, this.icon);
-		this.shape.anchor.setTo(0.5,0.5);
-		this.shape.tint = parseInt(colorHex.substring(1), 16);
-		this.shape.hitArea = new Phaser.Circle(0, 0,2*this.radius);
+		//Button icon
+		this.icon = this.game.add.button(x-w/2 + 80, y, this.iconName);
+		this.icon.anchor.setTo(0.5,0.5);
+		this.icon.scale.set(0.8, 0.8);
+		this.icon.tint = parseInt(colorHex.substring(1), 16);
+		//this.icon.hitArea = new Phaser.Circle(0, 0,2*this.radius);
+		this.icon.input.useHandCursor = true;
+		clickButton(this.icon, this.callback, this.context);
 
-		this.shape.input.useHandCursor = true;
-		clickButton(this.shape, this.callback, this.context);
-	},
-
-	//needs to be called on window resize
-	reposition: function() {
-		var wf = this.wf;
-		var hf = this.hf;
-		var xo = this.xo;
-		var yo = this.yo;
-
-		if (this.mouseMove) {
-			xo -= this.game.input.mousePointer.x-w2
-		}
-
-		this.graphics.position.set(w2*2*wf + xo, h2*2*hf + yo);
-		this.shape.position.set(w2*2*wf + xo, h2*2*hf + yo);
-	},
-
-	setMouseMove: function() {
-		this.mouseMove = true;
+		//Button label
+		this.label = this.game.add.text(x+50, y, this.text, {
+			font: "60px dosis",
+			fill: colorHex,
+			align: "middle"
+		});
+		this.label.anchor.setTo(0.5,0.5);
 	}
 
 };

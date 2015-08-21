@@ -18,6 +18,8 @@ var menu = function (game) {
 menu.prototype = {
   create: function () {
 
+    setScreenFixed(this.game);
+
     this.world.pivot.set(0, 0);
     this.world.angle = 0;
 
@@ -47,8 +49,8 @@ menu.prototype = {
     var ui = this.ui;
 
 		//Game Title
-		ui.title = this.add.text(0,0, "curvatron", {
-      font: "200px dosis",
+		ui.title = this.add.text(w2,100, "curvatron", {
+      font: "175px dosis",
       fill: "#ffffff",
       align: "center"
   	});
@@ -67,7 +69,7 @@ menu.prototype = {
     ui.leaderboard.input.useHandCursor = true;
     clickButton(ui.leaderboard, this.leaderboard, this);*/
 
-    //Configure Keys
+    /*//Configure Keys
     ui.keysButton = this.add.button(0,0,"setkeys_button");
     ui.keysButton.anchor.setTo(0.5,0.5);
     ui.keysButton.input.useHandCursor = true;
@@ -90,13 +92,19 @@ menu.prototype = {
       ui.audioButton.input.useHandCursor = true;
     }
 
-    clickButton(ui.audioButton, this.muteSound, this);
+    clickButton(ui.audioButton, this.muteSound, this);*/
 
-    ui.buttons.sp = new Button(-170, 0, 0.5, 0.5, 105, 'singleplayer_button', this.singlePlayer, this, this.game);
+    ui.buttons.sp = new Button(w2, 300, 'singleplayer_button', 'single player', this.singlePlayer, this, this.game);
     ui.buttons.sp.create();
 
-    ui.buttons.mp = new Button(170, 0, 0.5, 0.5, 105, 'multiplayer_button', this.multiplayer, this, this.game);
+    ui.buttons.mp = new Button(w2, 500, 'multiplayer_button', 'multiplayer', this.multiplayer, this, this.game);
     ui.buttons.mp.create();
+
+    ui.buttons.stats = new Button(w2, 700, 'stats_button', 'statistics', this.stats, this, this.game);
+    ui.buttons.stats.create();
+
+    ui.buttons.settings = new Button(w2, 900, 'settings_button', 'settings', this.stats, this, this.game);
+    ui.buttons.settings.create();
 
 
 ;
@@ -176,17 +184,14 @@ menu.prototype = {
   setPositions: function () {
     var ui = this.ui;
 
-    for (var key in ui.buttons) {
+    /*for (var key in ui.buttons) {
        if (ui.buttons.hasOwnProperty(key)) {
           ui.buttons[key].reposition();
        }
-    }
-
-    ui.title.position.set(w2,h2*0.3);
-
-    ui.keysButton.position.set(w2+w2/2,1.6*h2);
+    }*/
+  /*  ui.keysButton.position.set(w2+w2/2,1.6*h2);
     ui.statsButton.position.set(w2,1.6*h2);
-    ui.audioButton.position.set(w2/2,1.6*h2)
+    ui.audioButton.position.set(w2/2,1.6*h2)*/
 
     //TODO leaderboard position
     //ui.leaderboard.position.set(w2+w2/2,1.6*h2)

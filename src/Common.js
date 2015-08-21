@@ -109,3 +109,47 @@ function socialInit() {
     break;
   }
 }
+
+function ajustScreen(game) {
+  var winW = window.innerWidth;
+  var winH = window.innerHeight;
+  var winRatio = winW/winH;
+  var height = Math.round(Math.sqrt(baseArea/winRatio));
+  var width =  Math.round(winRatio*height);
+
+  game.width = width;
+  game.height = height;
+  game.canvas.width = width;
+  game.canvas.height = height;
+  game.renderer.resize(width, height);
+  game.stage.width = width;
+  game.stage.height = height;
+  game.scale.width = width;
+  game.scale.height = height;
+  game.world.setBounds(0, 0, width, height);
+  game.camera.setSize(width, height);
+  game.camera.setBoundsToWorld();
+  game.scale.refresh();
+
+  w2 = game.world.width/2;
+  h2 = game.world.height/2;
+}
+
+function setScreenFixed(game) {
+  game.width = baseH;
+  game.height = baseH;
+  game.canvas.width = baseH;
+  game.canvas.height = baseH;
+  game.renderer.resize(baseH, baseH);
+  game.stage.width = baseH;
+  game.stage.height = baseH;
+  game.scale.width = baseH;
+  game.scale.height = baseH;
+  game.world.setBounds(0, 0, baseH, baseH);
+  game.camera.setSize(baseH, baseH);
+  game.camera.setBoundsToWorld();
+  game.scale.refresh();
+
+  w2 = game.world.width/2;
+  h2 = game.world.height/2;
+}

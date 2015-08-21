@@ -42,10 +42,14 @@
 (function() {
 
 
-    baseW = 1366;
+    /*baseW = 1366;
     baseH = 768;
-    baseRatio = 1366/768;
-    baseArea = 1024*1024;
+    baseRatio = 1366/768;*/
+    baseW = 1920;
+    baseH = 1080;
+    baseRatio = 1920/1080;
+    //baseArea = 1024*1024;
+    baseArea = 1440*1440;
 
     var winW = window.innerWidth;
     var winH = window.innerHeight;
@@ -56,7 +60,7 @@
     var height = Math.round(Math.sqrt(baseArea/winRatio));
     var width =  Math.round(winRatio*height);
 
-    var game = new Phaser.Game(width, height, Phaser.CANVAS, "Curvatron");
+    var game = new Phaser.Game(baseH, baseH, Phaser.CANVAS, "Curvatron");
     game.state.add("Boot",boot);
     game.state.add("PreloadMenu",preloadMenu);
     game.state.add("Menu",menu);

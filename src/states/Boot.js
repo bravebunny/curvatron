@@ -35,12 +35,11 @@ boot.prototype = {
 		//[red, blue, pink, green, brown, cyan, purple, yellow]
 		colorPlayers = ['#eb1c1c','#4368e0','#f07dc1','#44c83a','#9e432e','#3dd6e0','#9339e0','#ebd90f'];
 
-		this.game.forcesSingleUpdate = true;
+		//this.game.forcesSingleUpdate = true;
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.scale.pageAlignHorizontally = true;
 		this.scale.pageAlignVertically = true;
-		this.scale.forceOrientation(true, false);
-		this.scale.setResizeCallback(this.resize, this);
+		//this.scale.setResizeCallback(this.resize, this);
 
 		this.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -51,7 +50,6 @@ boot.prototype = {
 
 	resize: function () {
 		if ((this.state.current != 'GameMananger') && (this.state.current != 'PreloadMenu') && (this.state.current != 'PreloadGame')) {
-			orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 			var winW = window.innerWidth;
 			var winH = window.innerHeight;
 			var winRatio = winW/winH;
