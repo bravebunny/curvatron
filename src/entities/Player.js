@@ -103,6 +103,7 @@ Player.prototype = {
 
 		if (!this.paused) {
 
+			//TODO prevent lines crossing the screen
 			//Draw trail bmd line
 			if (this.trailArray[0]) {
 				var ctx = bmd.ctx;
@@ -126,7 +127,6 @@ Player.prototype = {
 					} else {
 						ctx.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
 					}
-
 
 				}
 

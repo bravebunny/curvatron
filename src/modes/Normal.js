@@ -15,12 +15,12 @@ var Normal = function(game) {
 Normal.prototype = {
 
 	preload: function () {
-		this.game.load.image('point', 'assets/point.png');
-		this.game.load.image('player0', 'assets/playerSingle.png');
-		this.game.load.image('trail0', 'assets/trailSingle.png');
-		this.game.load.image('superPower', 'assets/powerHS.png');
-		this.game.load.image('obstacle', 'assets/obstacle.png');
-		this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100);
+		this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png');
+		this.game.load.image('player0', 'assets/sprites/game/singleplayer/playerSingle.png');
+		this.game.load.image('trail0', 'assets/sprites/game/singleplayer/trailSingle.png');
+		this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png');
+		this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png');
+		this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100);
 	},
 
 	create: function() {
