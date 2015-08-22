@@ -5,7 +5,11 @@ var boot = function (game) {
 	changeColor = false;
 	mute = false;
 	firstTime = true;
-	pressingSelect = false;
+
+	menuArray = [];
+	selection = 0;
+	this.pressingSelect = false;
+
 };
 
 boot.prototype = {
@@ -63,32 +67,30 @@ boot.prototype = {
 
 	selectDown: function() {
 		if (!this.pressingSelect) {
-			var state = this.state.states[this.game.state.current];
-			state.selection = (state.selection+1)%state.ui.buttons.length;
-			state.ui.buttons[state.selection].button.onInputOver.dispatch();
+			var newS = (selection+1)%menuArray.length;
+			menuArray[newS].button.onInputOver.dispatch();
+			selection = newS;
 		}
 
 	},
 
 	selectUp: function() {
 		if (!this.pressingSelect) {
-			var state = this.state.states[this.game.state.current];
-			var n = state.ui.buttons.length;
-			state.selection = (((state.selection-1)%n)+n)%n;
-			state.ui.buttons[state.selection].button.onInputOver.dispatch();
+			var n = menuArray.length;
+			var newS = (((selection-1)%n)+n)%n;
+			menuArray[newS].button.onInputOver.dispatch();
+			selection = newS;
 		}
 	},
 
 	selectPress: function() {
 		this.pressingSelect = true;
-		var state = this.state.states[this.game.state.current];
-		state.ui.buttons[state.selection].button.onInputDown.dispatch();
+		menuArray[selection].button.onInputDown.dispatch();
 	},
 
 	selectRelease: function() {
 		this.pressingSelect = false;
-		var state = this.state.states[this.game.state.current];
-		state.ui.buttons[state.selection].button.onInputUp.dispatch();
+		menuArray[selection].button.onInputUp.dispatch();
 	},
 
 	backPressed: function() {

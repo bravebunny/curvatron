@@ -8,7 +8,7 @@ var Adventure = function(game) {
 	this.layer = null;
 	this.width = 1344;
 	this.height = 768;
-	this.pointPositions = [];
+	this.pointPositions = null;
 	this.level = 1;
 };
 

@@ -11,13 +11,11 @@ var menu = function (game) {
     Phaser.Keyboard.U,]
   menuMusic = null;
   this.ui = {};
-  this.ui.buttons=[];
   this.selection = 0;
 };
 
 menu.prototype = {
   create: function () {
-
     setScreenFixed(this.game);
 
     this.world.pivot.set(0, 0);
@@ -94,22 +92,29 @@ menu.prototype = {
 
     clickButton(ui.audioButton, this.muteSound, this);*/
 
-    ui.buttons[0] = new Button(w2, 350, 'singleplayer_button', 'single player', this.singlePlayer, this.ui.buttons, this, this.game);
-    ui.buttons[0].create();
+    menuArray = [];
 
-    ui.buttons[1] = new Button(w2, 500, 'multiplayer_button', 'multiplayer', this.multiplayer, this.ui.buttons, this, this.game);
-    ui.buttons[1].create();
+    menuArray[0] = new Button(w2, 300, 'singleplayer_button', 'single player', 0, this.singlePlayer, this, this.game);
+    menuArray[0].create();
 
-    ui.buttons[2] = new Button(w2, 650, 'stats_button', 'statistics', this.stats, this.ui.buttons, this, this.game);
-    ui.buttons[2].create();
+    menuArray[1] = new Button(w2, 450, 'multiplayer_button', 'multiplayer', 1, this.multiplayer, this, this.game);
+    menuArray[1].create();
 
-    ui.buttons[3] = new Button(w2, 800, 'settings_button', 'settings', this.stats, this.ui.buttons, this, this.game);
-    ui.buttons[3].create();
+    menuArray[2] = new Button(w2, 600, 'stats_button', 'statistics', 2, this.stats, this, this.game);
+    menuArray[2].create();
+
+    menuArray[3] = new Button(w2, 750, 'settings_button', 'settings', 3, this.settings, this, this.game);
+    menuArray[3].create();
+
+    menuArray[4] = new Button(w2, 900, 'editor_button', 'editor', 4, this.editor, this, this.game);
+    menuArray[4].create();
 
 
-    this.ui.buttons[this.selection].button.onInputOver.dispatch();
+    selection = this.selection;
+    menuArray[selection].select();
 
     //Place the menu buttons and labels on their correct positions
+    //TODO remove
     this.setPositions();
 
 	},
@@ -182,9 +187,9 @@ menu.prototype = {
   setPositions: function () {
     var ui = this.ui;
 
-    /*for (var key in ui.buttons) {
-       if (ui.buttons.hasOwnProperty(key)) {
-          ui.buttons[key].reposition();
+    /*for (var key in menuArray) {
+       if (menuArray.hasOwnProperty(key)) {
+          menuArray[key].reposition();
        }
     }*/
   /*  ui.keysButton.position.set(w2+w2/2,1.6*h2);

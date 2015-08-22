@@ -26,10 +26,6 @@ function clickButton(button, callback, state, buttonArray) {
 
   button.onInputOver.add(function () {
     tweenOut.onComplete.active = true;
-
-    for (var i = 0; (buttonArray != null) && (i < buttonArray.length); i++) {
-      buttonArray[i].button.onInputOut.dispatch();
-    }
     tweenOver.start();
   });
 

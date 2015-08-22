@@ -181,7 +181,7 @@ Normal.prototype = {
 			}
 		}
 
-		var powerup = new PowerUp(this.game, type, this, 100, 100);
+		var powerup = new PowerUp(this.game, type, this, x, y);
 		if(type == "shrink"){
 			this.shrink = powerup;
 		}
