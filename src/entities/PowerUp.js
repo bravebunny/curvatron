@@ -32,11 +32,11 @@ PowerUp.prototype = {
 			}
 		}
 
-		if (!this.x && this.mode.gridded) {
+		/*if (!this.x && this.mode.gridded) {
 			this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
 			this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
-		}
-		
+		}*/
+
 		this.sprite = this.game.add.sprite(this.x, this.y, this.type);
 		if (this.type == "shrink") {
 			var anim = this.sprite.animations.add('timed');
@@ -46,7 +46,7 @@ PowerUp.prototype = {
 		this.sprite.anchor.setTo(.5,.5);
 		this.sprite.scale.set((this.size/2)*scale);
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-		
+
 		this.sprite.name = this.type;
 		if (nextBallHigh == 1) {
 			this.sprite.loadTexture('superPower');

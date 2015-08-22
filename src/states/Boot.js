@@ -11,7 +11,7 @@ var boot = function (game) {
 boot.prototype = {
 
 	preload: function () {
-		this.game.load.image("loading","assets/sprites/menu/loading.png");
+		this.game.load.image("loading","assets/sprites/gui/loading.png");
 	},
 
 	create: function () {
@@ -56,6 +56,9 @@ boot.prototype = {
 
 		this.game.input.resetLocked = true;
 
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
+
+
 	},
 
 	selectDown: function() {
@@ -86,6 +89,12 @@ boot.prototype = {
 		this.pressingSelect = false;
 		var state = this.state.states[this.game.state.current];
 		state.ui.buttons[state.selection].button.onInputUp.dispatch();
+	},
+
+	backPressed: function() {
+		if (this.state.states[this.game.state.current].backPressed) {
+			this.state.states[this.game.state.current].backPressed();
+		}
 	},
 
 	resize: function () {

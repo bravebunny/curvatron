@@ -35,8 +35,6 @@ singlePlayer.prototype = {
 		ui.buttons[5] = new Button(w2, 1050, 'back_button', 'back', this.backPressed, this.ui.buttons, this, this.game);
 		ui.buttons[5].create();
 
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
-
 		this.ui.buttons[this.selection].button.onInputOver.dispatch();
 	},
 

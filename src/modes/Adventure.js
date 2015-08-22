@@ -8,24 +8,25 @@ var Adventure = function(game) {
 	this.layer = null;
 	this.width = 1344;
 	this.height = 768;
+	this.pointPositions = [];
+	this.level = 1;
 };
 
 Adventure.prototype = {
 
 	preload: function () {
-		this.game.load.image('player0', 'assets/playerSingle.png');
-		this.game.load.image('trail0', 'assets/trailSingle.png');
-		this.game.load.image('superPower', 'assets/powerHS.png');
-		this.game.load.spritesheet('shrink', 'assets/shrink.png', 100, 100);
-		this.game.load.image('Pastel', 'assets/level/Pastel.png'); // loading the tileset image
-		this.game.load.tilemap('level1', 'assets/level/level1.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
+		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
+		this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png');
+		this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png');
+		this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100);
+
+		this.game.load.image('Pastel', 'assets/levels/Pastel.png'); // loading the tileset image
+		this.game.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
+		this.game.load.json('points1', 'assets/levels/points1.json');
 	},
 
 	create: function() {
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-
-
 		this.game.width = this.width;
 		this.game.height = this.height;
 		this.game.canvas.width = this.width;
@@ -60,7 +61,7 @@ Adventure.prototype = {
 		this.score = 0;
 		spawnPowers = true;
 
-		this.map = this.game.add.tilemap('level1'); // Preloaded tilemap
+		this.map = this.game.add.tilemap('level' + this.level); // Preloaded tilemap
 		this.map.addTilesetImage('Pastel'); // Preloaded tileset
 
     this.layer = this.map.createLayer('obstacles'); //layer[0]
@@ -74,9 +75,7 @@ Adventure.prototype = {
 
 		this.map.setCollisionByExclusion([], true, this.layer);
 
-		this.layer.resizeWorld();
-
-		//players[0].sprite.scale.set((-1/24)*8+7/12);
+		this.pointPositions = this.game.cache.getJSON('points' + this.level);
 	},
 
 	update: function() {
@@ -119,14 +118,18 @@ Adventure.prototype = {
 	collect: function (player, power) {
 
 		this.score++;
-		var powerup = new PowerUp(this.game, 'point', this);
-		powerup.create();
+		this.createPower();
 
 		var ballsScore = parseInt(localStorage.getItem("ballsScore"));
 		if (isNaN(ballsScore)) {
 			ballsScore = 0;
 		}
 		localStorage.setItem("ballsScore", ballsScore+1);
+	},
+
+	createPower: function () {
+		var powerup = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y);
+		powerup.create();
 	}
 
 };
