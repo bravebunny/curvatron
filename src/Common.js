@@ -9,13 +9,13 @@ function buttonUp() {
 
 function clickButton(button, callback, state) {
   var s = button.scale;
-  if (mobile){
-    var tweenTime = 80;
-  } else {
-    var tweenTime = 30;
-  }
-  var tweenIn = button.game.add.tween(s).to( { x: s.x*0.85, y: s.y*0.85 }, tweenTime, Phaser.Easing.Linear.None, false);
+  var tweenTime = 30;
+
+  var tweenIn = button.game.add.tween(s).to( { x: s.x*0.9, y: s.y*0.9 }, tweenTime, Phaser.Easing.Linear.None, false);
   var tweenOut = button.game.add.tween(s).to( { x: s.x, y: s.y }, tweenTime, Phaser.Easing.Linear.None, false);
+
+  var tweenOver = button.game.add.tween(s).to( { x: s.x*1.2, y: s.y*1.2 }, tweenTime*2, Phaser.Easing.Linear.None, false);
+  var tweenOverOut = button.game.add.tween(s).to( { x: s.x, y: s.y }, tweenTime*2, Phaser.Easing.Linear.None, false);
 
   tweenOut.onComplete.add(function () {
     if (!tweenOut.isRunning && !tweenIn.isRunning) {
@@ -26,10 +26,12 @@ function clickButton(button, callback, state) {
 
   button.onInputOver.add(function () {
     tweenOut.onComplete.active = true;
+    tweenOver.start();
   });
 
   button.onInputOut.add(function () {
     tweenOut.onComplete.active = false;
+    tweenOverOut.start();
   });
 
   button.onInputDown.add(buttonDown, {

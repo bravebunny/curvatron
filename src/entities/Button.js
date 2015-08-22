@@ -16,6 +16,7 @@ var Button = function (x, y, iconName, text, callback, context, game) {
 
 	this.w = 520;
 	this.h = 130;
+	this.selected = false;
 };
 
 Button.prototype = {
