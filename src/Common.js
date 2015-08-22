@@ -7,7 +7,7 @@ function buttonUp() {
   this.tween.start();
 }
 
-function clickButton(button, callback, state) {
+function clickButton(button, callback, state, buttonArray) {
   var s = button.scale;
   var tweenTime = 30;
 
@@ -26,6 +26,10 @@ function clickButton(button, callback, state) {
 
   button.onInputOver.add(function () {
     tweenOut.onComplete.active = true;
+
+    for (var i = 0; (buttonArray != null) && (i < buttonArray.length); i++) {
+      buttonArray[i].button.onInputOut.dispatch();
+    }
     tweenOver.start();
   });
 

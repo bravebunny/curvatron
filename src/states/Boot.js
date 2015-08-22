@@ -5,6 +5,7 @@ var boot = function (game) {
 	changeColor = false;
 	mute = false;
 	firstTime = true;
+	pressingSelect = false;
 };
 
 boot.prototype = {
@@ -46,6 +47,45 @@ boot.prototype = {
 		this.stage.smoothed = true;
 
 		this.state.start("PreloadMenu");
+
+		this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.selectDown, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.selectUp, this);
+
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.selectPress, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onUp.add(this.selectRelease, this);
+
+		this.game.input.resetLocked = true;
+
+	},
+
+	selectDown: function() {
+		if (!this.pressingSelect) {
+			var state = this.state.states[this.game.state.current];
+			state.selection = (state.selection+1)%state.ui.buttons.length;
+			state.ui.buttons[state.selection].button.onInputOver.dispatch();
+		}
+
+	},
+
+	selectUp: function() {
+		if (!this.pressingSelect) {
+			var state = this.state.states[this.game.state.current];
+			var n = state.ui.buttons.length;
+			state.selection = (((state.selection-1)%n)+n)%n;
+			state.ui.buttons[state.selection].button.onInputOver.dispatch();
+		}
+	},
+
+	selectPress: function() {
+		this.pressingSelect = true;
+		var state = this.state.states[this.game.state.current];
+		state.ui.buttons[state.selection].button.onInputDown.dispatch();
+	},
+
+	selectRelease: function() {
+		this.pressingSelect = false;
+		var state = this.state.states[this.game.state.current];
+		state.ui.buttons[state.selection].button.onInputUp.dispatch();
 	},
 
 	resize: function () {

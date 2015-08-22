@@ -1,7 +1,7 @@
 //wf and hx are fractions of the width and hight of the screen, respectively
 //if wf = 0.5 and hf = 0.5, the button will stay in the center of the screen.
 //xo and yo are the x and y offsets
-var Button = function (x, y, iconName, text, callback, context, game) {
+var Button = function (x, y, iconName, text, callback, buttonArray, context, game) {
 	this.x = x;
 	this.y = y;
 	this.text = text;
@@ -9,10 +9,12 @@ var Button = function (x, y, iconName, text, callback, context, game) {
 	this.callback = callback;
 	this.context = context;
 	this.game = game;
+	this.buttonArray = buttonArray;
 
   this.graphics = null;
 	this.label = null;
 	this.icon = null;
+	this.button = null;
 
 	this.w = 520;
 	this.h = 130;
@@ -54,7 +56,7 @@ Button.prototype = {
 		//this.icon.hitArea = new Phaser.Rectangle(-80, -80, w, h);
 		this.button.input.useHandCursor = true;
 
-		clickButton(this.button, this.callback, this.context);
+		clickButton(this.button, this.callback, this.context, this.buttonArray);
 		this.button.addChild(this.graphics);
 		this.button.addChild(this.icon);
 		this.button.addChild(this.label);

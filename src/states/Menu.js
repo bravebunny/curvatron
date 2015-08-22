@@ -11,8 +11,8 @@ var menu = function (game) {
     Phaser.Keyboard.U,]
   menuMusic = null;
   this.ui = {};
-  this.ui.buttons={};
-  graphicsMode = false;
+  this.ui.buttons=[];
+  this.selection = 0;
 };
 
 menu.prototype = {
@@ -94,22 +94,21 @@ menu.prototype = {
 
     clickButton(ui.audioButton, this.muteSound, this);*/
 
-    ui.buttons.sp = new Button(w2, 350, 'singleplayer_button', 'single player', this.singlePlayer, this, this.game);
-    ui.buttons.sp.create();
+    ui.buttons[0] = new Button(w2, 350, 'singleplayer_button', 'single player', this.singlePlayer, this.ui.buttons, this, this.game);
+    ui.buttons[0].create();
 
-    ui.buttons.mp = new Button(w2, 500, 'multiplayer_button', 'multiplayer', this.multiplayer, this, this.game);
-    ui.buttons.mp.create();
+    ui.buttons[1] = new Button(w2, 500, 'multiplayer_button', 'multiplayer', this.multiplayer, this.ui.buttons, this, this.game);
+    ui.buttons[1].create();
 
-    ui.buttons.stats = new Button(w2, 650, 'stats_button', 'statistics', this.stats, this, this.game);
-    ui.buttons.stats.create();
+    ui.buttons[2] = new Button(w2, 650, 'stats_button', 'statistics', this.stats, this.ui.buttons, this, this.game);
+    ui.buttons[2].create();
 
-    ui.buttons.settings = new Button(w2, 800, 'settings_button', 'settings', this.stats, this, this.game);
-    ui.buttons.settings.create();
+    ui.buttons[3] = new Button(w2, 800, 'settings_button', 'settings', this.stats, this.ui.buttons, this, this.game);
+    ui.buttons[3].create();
 
 
-;
+    this.ui.buttons[this.selection].button.onInputOver.dispatch();
 
-    this.scale.refresh();
     //Place the menu buttons and labels on their correct positions
     this.setPositions();
 
@@ -129,6 +128,8 @@ menu.prototype = {
     }.bind(this));
     loader.start();
   },*/
+
+
 
 	singlePlayer: function () {
 		this.state.start("SinglePlayer",true,false);

@@ -1,8 +1,9 @@
 var singlePlayer = function (game) {
 	this.ui = {};
-	this.ui.buttons = {};
+	this.ui.buttons = [];
 	this.bestScore = 0;
 	this.bestSurvScore = 0;
+	this.selection = 0;
 };
 
 singlePlayer.prototype = {
@@ -16,25 +17,27 @@ singlePlayer.prototype = {
   	});
   	ui.title.anchor.setTo(0.5,0.5);
 
-		ui.buttons.normal = new Button(w2, 300, 'collecting_button', 'normal', this.playNormalGame, this, this.game);
-		ui.buttons.normal.create();
+		ui.buttons[0] = new Button(w2, 300, 'collecting_button', 'normal', this.playNormalGame, this.ui.buttons, this, this.game);
+		ui.buttons[0].create();
 
-		ui.buttons.endless = new Button(w2, 450, 'endless_button', 'endless', this.playEndlessGame, this, this.game);
-		ui.buttons.endless.create();
+		ui.buttons[1] = new Button(w2, 450, 'endless_button', 'endless', this.playEndlessGame, this.ui.buttons, this, this.game);
+		ui.buttons[1].create();
 
-		ui.buttons.oldSchool = new Button(w2, 600, 'oldSchool_button', 'old school', this.playOldSchoolGame, this, this.game);
-		ui.buttons.oldSchool.create();
+		ui.buttons[2] = new Button(w2, 600, 'oldSchool_button', 'old school', this.playOldSchoolGame, this.ui.buttons, this, this.game);
+		ui.buttons[2].create();
 
-		ui.buttons.adventure = new Button(w2, 750, 'adventure_button', 'adventure', this.adventure, this, this.game);
-		ui.buttons.adventure.create();
+		ui.buttons[3] = new Button(w2, 750, 'adventure_button', 'adventure', this.adventure, this.ui.buttons, this, this.game);
+		ui.buttons[3].create();
 
-		ui.buttons.creative = new Button(w2, 900, 'creative_button', 'creative', this.creative, this, this.game);
-		ui.buttons.creative.create();
+		ui.buttons[4] = new Button(w2, 900, 'creative_button', 'creative', this.creative, this.ui.buttons, this, this.game);
+		ui.buttons[4].create();
 
-		ui.buttons.creative = new Button(w2, 1050, 'back_button', 'back', this.backPressed, this, this.game);
-		ui.buttons.creative.create();
+		ui.buttons[5] = new Button(w2, 1050, 'back_button', 'back', this.backPressed, this.ui.buttons, this, this.game);
+		ui.buttons[5].create();
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
+
+		this.ui.buttons[this.selection].button.onInputOver.dispatch();
 	},
 
 	playNormalGame: function () {
