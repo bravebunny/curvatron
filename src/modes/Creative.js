@@ -9,7 +9,7 @@ var Creative = function (game) {
 Creative.prototype = {
 
 	preload: function () {
-		this.game.load.image('player0', 'assets/playerSingle.png');
+		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
 		this.game.load.image('screenshotButton', 'assets/sprites/gui/hud/screenshot.png');
 	},
 
@@ -25,9 +25,8 @@ Creative.prototype = {
 	},
 
 	takeScreenShot: function() {
-		//console.log(Cocoon.Utils.captureScreen("myScreenshot.png"));
-		Cocoon.Utils.captureScreenAsync("myScreenshot.png", Cocoon.App.StorageType.EXTERNAL_STORAGE, true, Cocoon.Utils.CaptureType.EVERYTHING, function(callback){
-			console.log("Done:" + JSON.stringify(callback));
+		this.game.canvas.toBlob(function(blob) {
+	    saveAs(blob, "creative.png");
 		});
 	},
 

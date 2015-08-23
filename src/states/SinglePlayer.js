@@ -24,19 +24,19 @@ singlePlayer.prototype = {
 		menuArray[0] = new Button(w2, 300, 'collecting_button', 'normal', 0, this.playNormalGame, this, this.game);
 		menuArray[0].create();
 
-		menuArray[1] = new Button(w2, 450, 'endless_button', 'endless', 1,  this.playEndlessGame, this, this.game);
+		menuArray[1] = new Button(w2, 425, 'endless_button', 'endless', 1,  this.playEndlessGame, this, this.game);
 		menuArray[1].create();
 
-		menuArray[2] = new Button(w2, 600, 'oldSchool_button', 'old school', 2,  this.playOldSchoolGame, this, this.game);
+		menuArray[2] = new Button(w2, 550, 'oldSchool_button', 'old school', 2,  this.playOldSchoolGame, this, this.game);
 		menuArray[2].create();
 
-		menuArray[3] = new Button(w2, 750, 'adventure_button', 'adventure', 3,  this.adventure, this, this.game);
+		menuArray[3] = new Button(w2, 675, 'adventure_button', 'adventure', 3,  this.adventure, this, this.game);
 		menuArray[3].create();
 
-		menuArray[4] = new Button(w2, 900, 'creative_button', 'creative', 4,  this.creative, this, this.game);
+		menuArray[4] = new Button(w2, 800, 'creative_button', 'creative', 4,  this.creative, this, this.game);
 		menuArray[4].create();
 
-		menuArray[5] = new Button(w2, 1050, 'back_button', 'back', 5,  this.backPressed, this, this.game);
+		menuArray[5] = new Button(w2, 925, 'back_button', 'back', 5,  this.backPressed, this, this.game);
 		menuArray[5].create();
 
 		menuArray[selection].button.onInputOver.dispatch();

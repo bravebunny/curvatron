@@ -33,6 +33,7 @@ preloadMenu.prototype = {
 		this.game.load.image("accept_button","assets/sprites/gui/navigation/accept.png");
 		this.game.load.image("exit_button","assets/sprites/gui/navigation/exit.png");
 
+
 		this.game.load.image("deaths-stats","assets/sprites/gui/stats/deaths-stats.png");
 		this.game.load.image("old-stats","assets/sprites/gui/stats/old-stats.png");
 		this.game.load.image("score-stat","assets/sprites/gui/stats/score-stat.png");

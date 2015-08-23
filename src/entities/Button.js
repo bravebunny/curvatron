@@ -17,8 +17,8 @@ var Button = function (x, y, iconName, text, index, callback, context, game) {
 	this.button = null;
 	this.tween = {};
 
-	this.w = 520;
-	this.h = 130;
+	this.w = 450;
+	this.h = 100;
 	this.selected = false;
 };
 
@@ -38,15 +38,15 @@ Button.prototype = {
 		//this.graphics.anchor.setTo(0.5,0.5);
 
 		//Button label
-		this.label = this.game.add.text(50, 0, this.text, {
+		this.label = this.game.add.text(40, 0, this.text, {
 			font: "60px dosis",
 			fill: colorHex
 		});
 		this.label.anchor.setTo(0.5,0.5);
 
 		//Button icon
-		this.icon = this.game.add.sprite(-w/2 + 80, 0, this.iconName);
-		this.icon.scale.set(0.7, 0.7);
+		this.icon = this.game.add.sprite(-w/2 + 60, 0, this.iconName);
+		this.icon.scale.set(0.5, 0.5);
 		this.icon.tint = parseInt(colorHex.substring(1), 16);
 		//this.icon.hitArea = new Phaser.Rectangle(-80, -80, w, h);
 		this.icon.anchor.setTo(0.5,0.5);
