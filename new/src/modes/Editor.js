@@ -1,160 +1,71 @@
-var Normal = function(game) {
+var Editor = function(game) {
 	this.sp = true;
 	this.game = game;
-	this.spawnPowers = true;
-	this.leaderboardID = modesLB[0];
-	this.shrinkFreq = 5;
-	this.obstacleGroup = null;
-	this.cellSize = 64;
-	this.rows = Math.floor(h2*1.9/this.cellSize);
-	this.columns = Math.floor(w2*1.9/this.cellSize);
-	this.marginX = (2*w2 - this.columns*this.cellSize + this.cellSize)*0.5;
-	this.marginY = (2*h2 - this.rows*this.cellSize + this.cellSize)*0.5;
+	this.layer = null;
+	this.marker = null;
+	this.map = null;
+
 };
 
-Normal.prototype = {
+Editor.prototype = {
 
 	preload: function () {
+		setScreenFixed(baseW, baseH, this.game);
+
 		this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png');
 		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
-		this.game.load.image('trail0', 'assets/sprites/game/singleplayer/trailSingle.png');
 		this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png');
 		this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png');
 		this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100);
+
+		this.game.load.image('Pastel', 'assets/levels/Pastel.png'); // loading the tileset image
+		this.game.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
+		this.game.load.json('points1', 'assets/levels/points1.json');
+
+
 	},
 
 	create: function() {
-		this.score = 0;
 		this.obstacleGroup = this.game.add.group();
-		this.pointsPow = [];
-		this.pointsObs = [];
 		this.lastPoint = null;
 		this.player = players[0];
-		this.shrink = null;
 
-		var textSize = 15;
-		powerText = this.game.add.text(0, 0, "1", {
-		font: "" + textSize + "px dosis",
-      	fill: colorHex,
-      	align: "center"
-  	});
-  	powerText.anchor.setTo(0.5,0.5);
+		this.marker = this.game.add.graphics();
+    this.marker.lineStyle(2, 0xFFFFFF, 1);
+    this.marker.drawRect(0, 0, 24, 24);
+		this.marker.lineStyle(2, 0x000000, 1);
+		this.marker.drawRect(0, 0, 22, 22);
 
-  	//create grid points
-  	for (var i = 0; i < this.columns; i++) {
-			for (var j = 0; j < this.rows; j++) {
-				this.pointsPow.push({x: i, y: j});
-			}
-		}
-		this.pointsPow = shuffleArray(this.pointsPow);
+		this.map = this.game.add.tilemap('level1'); // Preloaded tilemap
+		this.map.addTilesetImage('Pastel'); // Preloaded tileset
 
-  	//create grid points
-  	for (var i = 0; i < this.columns*0.5; i++) {
-			for (var j = 0; j < this.rows*0.5; j++) {
-				this.pointsObs.push({x: i*2, y: j*2});
-			}
-		}
-		this.pointsObs = shuffleArray(this.pointsObs);
+		this.layer = this.map.createLayer('obstacles'); //layer[0]
+		this.map.setCollisionByExclusion([], true, this.layer);
+		this.tile = this.map.getTile(0, 0);
+
+		this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
 	},
 
 	update: function() {
+		this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * 24;
+    this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * 24;
 
+
+
+		if (this.game.input.mousePointer.isDown) {
+      if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
+          this.map.putTile(this.tile, this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
+      }
+    }
+
+		/*if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
+			players[0].kill();
+		}*/
 	},
 
 	erasesTrail: function () {
 		return true;
-	},
-
-	getScore: function () {
-		return this.score;
-	},
-
-	getHighScore: function () {
-		var score = parseInt(localStorage.getItem("highScore"));
-		if (isNaN(score)) {
-			return 0;
-		} else {
-			return score;
-		}
-	},
-
-	setScore: function (score) {
-		this.score = score;
-	},
-
-	setHighScore: function (score) {
-		localStorage.setItem("highScore", score);
-	},
-
-	submitScore: function () {
-		if (this.score > this.getHighScore()) {
-			this.setHighScore(this.score);
-		}
-	},
-
-	collect: function (playerSprite, powerSprite) {
-		var point = this.lastPoint;
-		if (point) {
-			this.pointsPow.push(point);
-			this.pointsPow = shuffleArray(this.pointsPow);
-
-			if (point.x % 2 == 0 && point.y % 2 == 0) {
-				this.pointsObs.push(point);
-				this.pointsObs = shuffleArray(this.pointsObs);
-			}
-
-			if (this.getScore() % 5 == 4) {
-				this.player.growth += 2;
-			}
-		}
-
-		var highScore = this.getHighScore();
-
-		if (powerSprite.name == 'point') {
-			this.score++;
-			this.createPower('point');
-
-			//if (((this.score % this.shrinkFreq) == this.shrinkFreq-1) && (this.score > 0)) {
-			if (((this.score % this.shrinkFreq) == this.shrinkFreq-1) && (this.score > 0)) {
-				this.createPower('shrink')
-			}
-		}
-
-		var ballsScore = parseInt(localStorage.getItem("ballsScore"));
-		if (isNaN(ballsScore)) {
-			ballsScore = 0;
-		}
-		localStorage.setItem("ballsScore", ballsScore+1);
-
-		if ((nextBallHigh == 0) && (this.score == highScore-1)) {
-			nextBallHigh = 1;
-		}
-
-		if(powerSprite.name == 'shrink'){
-
-			if (!this.gridIsFull()) {
-				this.createObstacle();
-			}
-			if (!this.gridIsFull()) {
-				this.createObstacle();
-			}
-
-			this.shrink = null;
-		}
-
-		if (powerSprite.name == 'point') {
-			this.player.size += this.player.growth;
-
-		} else if (powerSprite.name == 'shrink') {
-			this.player.shrink = true;
-			this.player.size = this.player.initialSize;
-		}
-
-	},
-
-	gridIsFull: function () {
-		return (!this.pointsObs[0]);
 	},
 
 	createPower: function (type) {
@@ -246,15 +157,6 @@ Normal.prototype = {
 			this.shrink.sprite.animations.paused = false;
 		}
 
-	},
-
-	render: function() {
-    // call renderGroup on each of the alive members
-    //this.obstacleGroup.forEachAlive(this.renderGroup, this);
-	},
-
-	renderGroup: function(member) {
-    //this.game.debug.body(member);
 	}
 
 };

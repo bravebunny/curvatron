@@ -142,8 +142,6 @@ gameMananger.prototype = {
 		ui.overlay.scale.set(0);
 		ui.overlay.alpha = 0.5;
 
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.pause, this);
-
 		if (!mute) {
 			menuMusic.volume = 1;
 		}
@@ -182,9 +180,6 @@ gameMananger.prototype = {
 	createPower: function () {
 		if (this.mode.createPower) {
 			this.mode.createPower('point');
-		} else {
-			var powerup = new PowerUp(this.game, 'point', this.mode);
-			powerup.create();
 		}
 	},
 
@@ -279,7 +274,7 @@ gameMananger.prototype = {
 		}
 	},
 
-	pause: function() {
+	backPressed: function() {
 		var ui = this.ui;
 		if (!paused) { //pause
 
@@ -315,7 +310,7 @@ gameMananger.prototype = {
         ui.menu.anchor.setTo(0.5, 0.5);
         ui.menu.scale.set(1,1);
         ui.menu.input.useHandCursor=true;
-        clickButton(ui.menu,this.pause, this);
+        clickButton(ui.menu,this.backPressed, this);
 
         ui.restart = this.add.button(w2-150, h2, 'restart_button');
         ui.restart.anchor.setTo(0.5, 0.5);
@@ -375,7 +370,7 @@ gameMananger.prototype = {
 
 	touchPauseButton: function(){
 		if (!paused) {
-			this.pause();
+			this.backPressed();
 			if (mobile) {
 				pauseSprite.input.useHandCursor=false;
 			}
@@ -398,10 +393,6 @@ gameMananger.prototype = {
 	    	}
 	    }
 	},
-
-	backPressed: function () {
-    this.pause();
-  },
 
 	/*render: function(){
 		players[0].render();

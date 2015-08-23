@@ -7,15 +7,15 @@ function buttonUp() {
   this.tween.start();
 }
 
-function clickButton(button, callback, state) {
+function clickButton(button, callback, state, buttonArray) {
   var s = button.scale;
-  if (mobile){
-    var tweenTime = 80;
-  } else {
-    var tweenTime = 30;
-  }
-  var tweenIn = button.game.add.tween(s).to( { x: s.x*0.85, y: s.y*0.85 }, tweenTime, Phaser.Easing.Linear.None, false);
+  var tweenTime = 30;
+
+  var tweenIn = button.game.add.tween(s).to( { x: s.x*0.9, y: s.y*0.9 }, tweenTime, Phaser.Easing.Linear.None, false);
   var tweenOut = button.game.add.tween(s).to( { x: s.x, y: s.y }, tweenTime, Phaser.Easing.Linear.None, false);
+
+  var tweenOver = button.game.add.tween(s).to( { x: s.x*1.2, y: s.y*1.2 }, tweenTime*2, Phaser.Easing.Linear.None, false);
+  var tweenOverOut = button.game.add.tween(s).to( { x: s.x, y: s.y }, tweenTime*2, Phaser.Easing.Linear.None, false);
 
   tweenOut.onComplete.add(function () {
     if (!tweenOut.isRunning && !tweenIn.isRunning) {
@@ -26,10 +26,12 @@ function clickButton(button, callback, state) {
 
   button.onInputOver.add(function () {
     tweenOut.onComplete.active = true;
+    tweenOver.start();
   });
 
   button.onInputOut.add(function () {
     tweenOut.onComplete.active = false;
+    tweenOverOut.start();
   });
 
   button.onInputDown.add(buttonDown, {
@@ -74,21 +76,21 @@ function ajustScreen(game) {
   h2 = game.world.height/2;
 }
 
-function setScreenFixed(game) {
-  game.width = baseH;
-  game.height = baseH;
-  game.canvas.width = baseH;
-  game.canvas.height = baseH;
-  game.renderer.resize(baseH, baseH);
-  game.stage.width = baseH;
-  game.stage.height = baseH;
-  game.scale.width = baseH;
-  game.scale.height = baseH;
-  game.world.setBounds(0, 0, baseH, baseH);
-  game.camera.setSize(baseH, baseH);
+function setScreenFixed(w, h, game) {
+  game.width = w;
+  game.height = h;
+  game.canvas.width = w;
+  game.canvas.height = h;
+  game.renderer.resize(w, h);
+  game.stage.width = w;
+  game.stage.height = h;
+  game.scale.width = w;
+  game.scale.height = h;
+  game.world.setBounds(0, 0, w, h);
+  game.camera.setSize(w, h);
   game.camera.setBoundsToWorld();
   game.scale.refresh();
 
-  w2 = game.world.width/2;
-  h2 = game.world.height/2;
+  w2 = w/2;
+  h2 = h/2;
 }

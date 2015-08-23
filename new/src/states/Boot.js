@@ -5,12 +5,17 @@ var boot = function (game) {
 	changeColor = false;
 	mute = false;
 	firstTime = true;
+
+	menuArray = [];
+	selection = 0;
+	this.pressingSelect = false;
+
 };
 
 boot.prototype = {
 
 	preload: function () {
-		this.game.load.image("loading","assets/sprites/menu/loading.png");
+		this.game.load.image("loading","assets/sprites/gui/loading.png");
 	},
 
 	create: function () {
@@ -46,6 +51,52 @@ boot.prototype = {
 		this.stage.smoothed = true;
 
 		this.state.start("PreloadMenu");
+
+		this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.selectDown, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.selectUp, this);
+
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.selectPress, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onUp.add(this.selectRelease, this);
+
+		this.game.input.resetLocked = true;
+
+		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
+
+
+	},
+
+	selectDown: function() {
+		if (!this.pressingSelect) {
+			var newS = (selection+1)%menuArray.length;
+			menuArray[newS].button.onInputOver.dispatch();
+			selection = newS;
+		}
+
+	},
+
+	selectUp: function() {
+		if (!this.pressingSelect) {
+			var n = menuArray.length;
+			var newS = (((selection-1)%n)+n)%n;
+			menuArray[newS].button.onInputOver.dispatch();
+			selection = newS;
+		}
+	},
+
+	selectPress: function() {
+		this.pressingSelect = true;
+		menuArray[selection].button.onInputDown.dispatch();
+	},
+
+	selectRelease: function() {
+		this.pressingSelect = false;
+		menuArray[selection].button.onInputUp.dispatch();
+	},
+
+	backPressed: function() {
+		if (this.state.states[this.game.state.current].backPressed) {
+			this.state.states[this.game.state.current].backPressed();
+		}
 	},
 
 	resize: function () {

@@ -11,14 +11,12 @@ var menu = function (game) {
     Phaser.Keyboard.U,]
   menuMusic = null;
   this.ui = {};
-  this.ui.buttons={};
-  graphicsMode = false;
+  this.selection = 0;
 };
 
 menu.prototype = {
   create: function () {
-
-    setScreenFixed(this.game);
+    setScreenFixed(baseH, baseH, this.game);
 
     this.world.pivot.set(0, 0);
     this.world.angle = 0;
@@ -94,23 +92,34 @@ menu.prototype = {
 
     clickButton(ui.audioButton, this.muteSound, this);*/
 
-    ui.buttons.sp = new Button(w2, 350, 'singleplayer_button', 'single player', this.singlePlayer, this, this.game);
-    ui.buttons.sp.create();
+    menuArray = [];
 
-    ui.buttons.mp = new Button(w2, 500, 'multiplayer_button', 'multiplayer', this.multiplayer, this, this.game);
-    ui.buttons.mp.create();
+    menuArray[0] = new Button(w2, 300, 'singleplayer_button', 'single player', 0, this.singlePlayer, this, this.game);
+    menuArray[0].create();
 
-    ui.buttons.stats = new Button(w2, 650, 'stats_button', 'statistics', this.stats, this, this.game);
-    ui.buttons.stats.create();
+    menuArray[1] = new Button(w2, 425, 'multiplayer_button', 'multiplayer', 1, this.multiplayer, this, this.game);
+    menuArray[1].create();
 
-    ui.buttons.settings = new Button(w2, 800, 'settings_button', 'settings', this.stats, this, this.game);
-    ui.buttons.settings.create();
+    menuArray[2] = new Button(w2, 550, 'stats_button', 'statistics', 2, this.stats, this, this.game);
+    menuArray[2].create();
+
+    menuArray[3] = new Button(w2, 675, 'editor_button', 'editor', 3, this.editor, this, this.game);
+    menuArray[3].create();
+
+    menuArray[4] = new Button(w2, 800, 'settings_button', 'settings', 4, this.settings, this, this.game);
+    menuArray[4].create();
+
+    menuArray[5] = new Button(w2, 925, 'exit_button', 'exit', 5, this.backPressed, this, this.game);
+    menuArray[5].create();
 
 
-;
 
-    this.scale.refresh();
+
+    selection = this.selection;
+    menuArray[selection].select();
+
     //Place the menu buttons and labels on their correct positions
+    //TODO remove
     this.setPositions();
 
 	},
@@ -129,6 +138,13 @@ menu.prototype = {
     }.bind(this));
     loader.start();
   },*/
+
+  editor: function () {
+    numberPlayers = 0;
+    menuMusic.fadeOut(2000);
+    var mode = new Editor(this.game);
+    this.game.state.start("PreloadGame", true, false, mode);
+  },
 
 	singlePlayer: function () {
 		this.state.start("SinglePlayer",true,false);
@@ -175,15 +191,15 @@ menu.prototype = {
   },
 
   backPressed: function () {
-    //exit game?
+    window.close();
   },
 
   setPositions: function () {
     var ui = this.ui;
 
-    /*for (var key in ui.buttons) {
-       if (ui.buttons.hasOwnProperty(key)) {
-          ui.buttons[key].reposition();
+    /*for (var key in menuArray) {
+       if (menuArray.hasOwnProperty(key)) {
+          menuArray[key].reposition();
        }
     }*/
   /*  ui.keysButton.position.set(w2+w2/2,1.6*h2);
