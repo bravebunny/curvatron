@@ -76,21 +76,21 @@ function ajustScreen(game) {
   h2 = game.world.height/2;
 }
 
-function setScreenFixed(game) {
-  game.width = baseH;
-  game.height = baseH;
-  game.canvas.width = baseH;
-  game.canvas.height = baseH;
-  game.renderer.resize(baseH, baseH);
-  game.stage.width = baseH;
-  game.stage.height = baseH;
-  game.scale.width = baseH;
-  game.scale.height = baseH;
-  game.world.setBounds(0, 0, baseH, baseH);
-  game.camera.setSize(baseH, baseH);
+function setScreenFixed(w, h, game) {
+  game.width = w;
+  game.height = h;
+  game.canvas.width = w;
+  game.canvas.height = h;
+  game.renderer.resize(w, h);
+  game.stage.width = w;
+  game.stage.height = h;
+  game.scale.width = w;
+  game.scale.height = h;
+  game.world.setBounds(0, 0, w, h);
+  game.camera.setSize(w, h);
   game.camera.setBoundsToWorld();
   game.scale.refresh();
 
-  w2 = game.world.width/2;
-  h2 = game.world.height/2;
+  w2 = w/2;
+  h2 = h/2;
 }

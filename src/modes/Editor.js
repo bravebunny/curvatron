@@ -1,17 +1,28 @@
 var Editor = function(game) {
 	this.sp = true;
 	this.game = game;
+	this.layer = null;
+	this.marker = null;
+	this.map = null;
 
 };
 
 Editor.prototype = {
 
 	preload: function () {
+		setScreenFixed(baseW, baseH, this.game);
+
 		this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png');
-		this.game.load.image('player0', 'assets/sprites/game/singleplayer/playerSingle.png');
+		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
 		this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png');
 		this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png');
 		this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100);
+
+		this.game.load.image('Pastel', 'assets/levels/Pastel.png'); // loading the tileset image
+		this.game.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
+		this.game.load.json('points1', 'assets/levels/points1.json');
+
+
 	},
 
 	create: function() {
@@ -19,10 +30,36 @@ Editor.prototype = {
 		this.lastPoint = null;
 		this.player = players[0];
 
+		this.marker = this.game.add.graphics();
+    this.marker.lineStyle(2, 0xFFFFFF, 1);
+    this.marker.drawRect(0, 0, 24, 24);
+
+		this.map = this.game.add.tilemap('level1'); // Preloaded tilemap
+		this.map.addTilesetImage('Pastel'); // Preloaded tileset
+
+		this.layer = this.map.createLayer('obstacles'); //layer[0]
+		this.map.setCollisionByExclusion([], true, this.layer);
+		this.tile = this.map.getTile(0, 0);
+
+		this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+
 	},
 
 	update: function() {
+		this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * 24;
+    this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * 24;
 
+
+
+		if (this.game.input.mousePointer.isDown) {
+      if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
+          this.map.putTile(this.tile, this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
+      }
+    }
+
+		if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
+			players[0].kill();
+		}
 	},
 
 	erasesTrail: function () {
