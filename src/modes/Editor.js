@@ -33,6 +33,8 @@ Editor.prototype = {
 		this.marker = this.game.add.graphics();
     this.marker.lineStyle(2, 0xFFFFFF, 1);
     this.marker.drawRect(0, 0, 24, 24);
+		this.marker.lineStyle(2, 0x000000, 1);
+		this.marker.drawRect(0, 0, 22, 22);
 
 		this.map = this.game.add.tilemap('level1'); // Preloaded tilemap
 		this.map.addTilesetImage('Pastel'); // Preloaded tileset
@@ -57,9 +59,9 @@ Editor.prototype = {
       }
     }
 
-		if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
+		/*if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
 			players[0].kill();
-		}
+		}*/
 	},
 
 	erasesTrail: function () {

@@ -124,6 +124,10 @@ menu.prototype = {
 
 	},
 
+  update: function() {
+    menuUpdate();
+  },
+
   /*getAvatar: function () {
     var loader = new Phaser.Loader(this.game);
     loader.image('avatar',"http://placekitten.com/g/300/300");

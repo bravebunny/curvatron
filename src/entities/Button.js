@@ -75,9 +75,6 @@ Button.prototype = {
 
 		//tween stuff
 		this.button.onInputOver.add(function() {
-			menuArray[selection].tween.out.start();
-			this.tween.over.start();
-			//menuArray[selection].button.onInputOut.dispatch();
 	    selection = this.index;
 	  }, this);
 
@@ -117,7 +114,14 @@ Button.prototype = {
 	},
 
 	select: function() {
-		this.button.onInputOver.dispatch();
+		this.selected = true;
+		selection = this.index;
+		this.tween.over.start();
+	},
+
+	deselect: function() {
+		this.selected = false;
+		this.tween.out.start();
 	}
 
 };

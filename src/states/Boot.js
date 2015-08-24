@@ -68,7 +68,7 @@ boot.prototype = {
 	selectDown: function() {
 		if (!this.pressingSelect) {
 			var newS = (selection+1)%menuArray.length;
-			menuArray[newS].button.onInputOver.dispatch();
+			//menuArray[newS].button.onInputOver.dispatch();
 			selection = newS;
 		}
 
@@ -78,7 +78,7 @@ boot.prototype = {
 		if (!this.pressingSelect) {
 			var n = menuArray.length;
 			var newS = (((selection-1)%n)+n)%n;
-			menuArray[newS].button.onInputOver.dispatch();
+			//menuArray[newS].button.onInputOver.dispatch();
 			selection = newS;
 		}
 	},

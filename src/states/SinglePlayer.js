@@ -42,6 +42,10 @@ singlePlayer.prototype = {
 		menuArray[selection].button.onInputOver.dispatch();
 	},
 
+	update: function() {
+		menuUpdate();
+	},
+
 	playNormalGame: function () {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);
