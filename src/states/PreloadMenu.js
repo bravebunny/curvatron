@@ -23,9 +23,12 @@ preloadMenu.prototype = {
 
 		this.game.load.image("audio_button","assets/sprites/gui/settings/audio.png");
 		this.game.load.image("audiooff_button","assets/sprites/gui/settings/audiooff.png");
+		this.game.load.image("music_button","assets/sprites/gui/settings/music.png");
+		this.game.load.image("musicoff_button","assets/sprites/gui/settings/musicoff.png");
 		this.game.load.image("setkeys_button","assets/sprites/gui/settings/setkeys.png");
 		this.game.load.image("leaderboard_button","assets/sprites/gui/settings/leaderboard.png");
 		this.game.load.image("fullscreen_button","assets/sprites/gui/settings/fullscreen.png");
+		this.game.load.image("windowed_button","assets/sprites/gui/settings/windowed.png");
 		this.game.load.image("player_select","assets/sprites/gui/settings/playerSelect.png");
 		this.game.load.image("key_button","assets/sprites/gui/settings/key.png");
 

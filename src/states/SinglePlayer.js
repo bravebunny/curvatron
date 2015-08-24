@@ -1,6 +1,5 @@
 var singlePlayer = function (game) {
 	this.ui = {};
-	this.menuArray = [];
 	this.bestScore = 0;
 	this.bestSurvScore = 0;
 	this.selection = 0;

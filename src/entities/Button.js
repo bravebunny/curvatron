@@ -79,6 +79,7 @@ Button.prototype = {
 	  }, this);
 
 		this.tween.release.onComplete.add(function() {
+			this.selected = false;
 			if (!this.tween.release.isRunning && !this.tween.press.isRunning) {
 				this.callback.call(this.context);
 			}
@@ -122,6 +123,14 @@ Button.prototype = {
 	deselect: function() {
 		this.selected = false;
 		this.tween.out.start();
+	},
+
+	setIcon: function(iconName) {
+		this.icon.loadTexture(iconName);
+	},
+
+	setText: function(text) {
+		this.label.text = text;
 	}
 
 };
