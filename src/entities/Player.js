@@ -87,6 +87,8 @@ Player.prototype = {
 
 		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
+		//this.moveRandom();
+
 	},
 
 	update: function () {
@@ -108,10 +110,11 @@ Player.prototype = {
 			//Draw trail bmd line
 			if (this.trailArray[0]) {
 				var ctx = bmd.ctx;
-				bmd.dirty = true;
-				ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
-
-				ctx.strokeStyle = 'rgb(255, 255, 255)';
+				if (this.mode.sp) {
+					ctx.strokeStyle = '#FFFFFF';
+				} else {
+					ctx.strokeStyle = colorPlayers[this.id];
+				}
 				ctx.lineWidth   = 16*scale;
 				ctx.lineCap     = 'round';
 
@@ -499,6 +502,16 @@ Player.prototype = {
 			this.textTween.resume();
 		}
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
+	},
+
+	//demo stuff
+	moveRandom: function() {
+		if (this.randomTimer == null) {
+			this.randomTimer = this.game.time.create(false);
+			this.randomTimer.start();
+		}
+		this.randomTimer.add(Phaser.Timer.SECOND * this.game.rnd.realInRange(0.2, 1.5), this.moveRandom, this);
+		this.keyPressed();
 	},
 
 	render: function(){

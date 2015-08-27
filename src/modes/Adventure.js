@@ -15,6 +15,8 @@ var Adventure = function(game) {
 Adventure.prototype = {
 
 	preload: function () {
+		setScreenFixed(baseW, baseH, this.game);
+
 		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
 		this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png');
 		this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png');
@@ -26,24 +28,6 @@ Adventure.prototype = {
 	},
 
 	create: function() {
-		//TODO remove code repetition
-		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.game.width = this.width;
-		this.game.height = this.height;
-		this.game.canvas.width = this.width;
-		this.game.canvas.height = this.height;
-		this.game.renderer.resize(this.width, this.height);
-		this.game.stage.width = this.width;
-		this.game.stage.height = this.height;
-		this.game.scale.width = this.width;
-		this.game.scale.height = this.height;
-		this.game.world.setBounds(0, 0, this.width, this.height);
-		this.game.camera.setSize(this.width, this.height);
-		this.game.camera.setBoundsToWorld();
-		this.game.scale.refresh();
-
-		borders = [0, this.game.world.width, 0,this.game.world.height];
-
 		//redo bitmapData
 		delete bmd;
 		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
