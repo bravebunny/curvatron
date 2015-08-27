@@ -29,6 +29,7 @@ var Player = function (id, x, y, key, mode, game) {
 	this.orientation = null;
 	this.playerMobileButton = null;
 	this.collectSemaphore = 0;
+
 };
 
 Player.prototype = {

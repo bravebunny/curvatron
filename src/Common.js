@@ -72,8 +72,8 @@ function ajustScreen(game) {
   game.camera.setBoundsToWorld();
   game.scale.refresh();
 
-  w2 = game.world.width/2;
-  h2 = game.world.height/2;
+  w2 = width/2;
+  h2 = height/2;
 }
 
 function setScreenFixed(w, h, game) {
