@@ -75,13 +75,11 @@ Button.prototype = {
 
 		//tween stuff
 		this.button.onInputOver.add(function() {
-			menuArray[selection].tween.out.start();
-			this.tween.over.start();
-			//menuArray[selection].button.onInputOut.dispatch();
 	    selection = this.index;
 	  }, this);
 
 		this.tween.release.onComplete.add(function() {
+			this.selected = false;
 			if (!this.tween.release.isRunning && !this.tween.press.isRunning) {
 				this.callback.call(this.context);
 			}
@@ -117,7 +115,22 @@ Button.prototype = {
 	},
 
 	select: function() {
-		this.button.onInputOver.dispatch();
+		this.selected = true;
+		selection = this.index;
+		this.tween.over.start();
+	},
+
+	deselect: function() {
+		this.selected = false;
+		this.tween.out.start();
+	},
+
+	setIcon: function(iconName) {
+		this.icon.loadTexture(iconName);
+	},
+
+	setText: function(text) {
+		this.label.text = text;
 	}
 
 };

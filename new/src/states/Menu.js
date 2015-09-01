@@ -112,17 +112,14 @@ menu.prototype = {
     menuArray[5] = new Button(w2, 925, 'exit_button', 'exit', 5, this.backPressed, this, this.game);
     menuArray[5].create();
 
-
-
-
     selection = this.selection;
     menuArray[selection].select();
 
-    //Place the menu buttons and labels on their correct positions
-    //TODO remove
-    this.setPositions();
-
 	},
+
+  update: function() {
+    menuUpdate();
+  },
 
   /*getAvatar: function () {
     var loader = new Phaser.Loader(this.game);
@@ -148,15 +145,14 @@ menu.prototype = {
 
 	singlePlayer: function () {
 		this.state.start("SinglePlayer",true,false);
+	},
 
+	settings: function () {
+		this.state.start("Settings",true,false);
 	},
 
 	multiplayer: function () {
     this.state.start("Multiplayer");
-	},
-
-	setKeys: function () {
-    this.state.start("SetKeys");
 	},
 
   leaderboard: function () {
@@ -167,48 +163,8 @@ menu.prototype = {
     this.state.start("Stats");
   },
 
-  muteSound: function () {
-    var ui = this.ui;
-
-    if (mute){
-      ui.audioButton.loadTexture('audio_button');
-      //this.game.sound.mute = false;
-      mute = false;
-      if (!menuMusic) {
-        menuMusic = this.add.audio('dream');
-      }
-      menuMusic.loop = true;
-      menuMusic.play();
-      menuMusic.volume = 1;
-    } else {
-      ui.audioButton.loadTexture('audiooff_button');
-      //this.game.sound.mute = true;
-      mute = true;
-      if (menuMusic && menuMusic.isPlaying) {
-        menuMusic.stop();
-      }
-    }
-  },
-
   backPressed: function () {
     window.close();
-  },
-
-  setPositions: function () {
-    var ui = this.ui;
-
-    /*for (var key in menuArray) {
-       if (menuArray.hasOwnProperty(key)) {
-          menuArray[key].reposition();
-       }
-    }*/
-  /*  ui.keysButton.position.set(w2+w2/2,1.6*h2);
-    ui.statsButton.position.set(w2,1.6*h2);
-    ui.audioButton.position.set(w2/2,1.6*h2)*/
-
-    //TODO leaderboard position
-    //ui.leaderboard.position.set(w2+w2/2,1.6*h2)
-
   }
 
 };

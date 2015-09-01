@@ -72,8 +72,8 @@ function ajustScreen(game) {
   game.camera.setBoundsToWorld();
   game.scale.refresh();
 
-  w2 = game.world.width/2;
-  h2 = game.world.height/2;
+  w2 = width/2;
+  h2 = height/2;
 }
 
 function setScreenFixed(w, h, game) {
@@ -93,4 +93,12 @@ function setScreenFixed(w, h, game) {
 
   w2 = w/2;
   h2 = h/2;
+}
+
+function menuUpdate() {
+  for (var i = 0; i < menuArray.length; i++) {
+    var b = menuArray[i];
+    if (i == selection && !b.selected) b.select();
+    else if (i != selection && b.selected) b.deselect();
+  }
 }

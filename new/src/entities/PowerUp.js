@@ -32,10 +32,10 @@ PowerUp.prototype = {
 			}
 		}
 
-		/*if (!this.x && this.mode.gridded) {
+		if (!this.x && this.mode.gridded) {
 			this.x = this.game.rnd.integerInRange(32/scale, 2*w2-32/scale);
 			this.y = this.game.rnd.integerInRange(32/scale, 2*h2-32/scale);
-		}*/
+		}
 
 		this.sprite = this.game.add.sprite(this.x, this.y, this.type);
 		if (this.type == "shrink") {

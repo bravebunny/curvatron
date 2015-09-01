@@ -12,10 +12,10 @@ var OldSchool = function(game) {
 OldSchool.prototype = {
 
 	preload: function () {
-		this.game.load.image('point', 'assets/pointOld.png');	
-		this.game.load.image('player0', 'assets/playerOld.png');
-		this.game.load.image('trail0', 'assets/trailOld.png');
-		this.game.load.image('superPower', 'assets/powerOld.png');
+		this.game.load.image('point', 'assets/sprites/game/oldschool/point.png');
+		this.game.load.image('player0', 'assets/sprites/game/oldschool/player.png');
+		this.game.load.image('trail0', 'assets/sprites/game/oldschool/trail.png');
+		this.game.load.image('superPower', 'assets/sprites/game/oldschool/power.png');
 		this.game.load.audio('sfx_collectOld', 'assets/sfx/collectOld.ogg');
 		this.game.load.audio('sfx_killOld', 'assets/sfx/killOld.ogg');
 	},
@@ -61,14 +61,14 @@ OldSchool.prototype = {
 		this.player.update();
 	},
 
-	erasesTrail: function () {
+	erasesTrail: function() {
 	},
 
-	getScore: function () {
+	getScore: function() {
 		return this.score;
 	},
 
-	getHighScore: function () {
+	getHighScore: function() {
 		var score = parseInt(localStorage.getItem("oldSchool"));
 		if (isNaN(score)) {
 			return 0;
@@ -77,22 +77,22 @@ OldSchool.prototype = {
 		}
 	},
 
-	setScore: function (score) {
+	createPower: function() {
+		var powerup = new PowerUp(this.game, 'point', this);
+		powerup.create();
+	},
+
+	setScore: function(score) {
 		this.score = score;
 	},
 
-	setHighScore: function (score) {
+	setHighScore: function(score) {
 		localStorage.setItem("oldSchool", score);
 	},
 
-	submitScore: function () {
-		var params = Cocoon.Social.ScoreParams;
+	submitScore: function() {
 		if (this.score > this.getHighScore()) {
 			this.setHighScore(this.score);
-		}
-		params.leaderboardID = this.leaderboardID;
-		if (mobile && socialService && socialService.isLoggedIn()) {
-			socialService.submitScore(this.score, null, params);
 		}
 	},
 

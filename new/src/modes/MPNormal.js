@@ -9,13 +9,13 @@ var MPNormal = function(nPlayers, game) {
 MPNormal.prototype = {
 
 	preload: function () {
-		this.game.load.image('point', 'assets/pointMP.png');
+		this.game.load.image('point', 'assets/sprites/game/multiplayer/pointMP.png');
 		this.game.load.image('tie', 'assets/sprites/menu/tie.png');
 		this.game.load.image('crown', 'assets/crown.png');
 		for (var i=0; i <= this.nPlayers; i++) {
-			this.game.load.image('player' + i, 'assets/player' + i +'.png');
-			this.game.load.image('crown' + i, 'assets/crown'+ i +'.png');
-			this.game.load.image('trail' + i, 'assets/trail'+ i +'.png');
+			this.game.load.image('player' + i, 'assets/sprites/game/multiplayer/player' + i +'.png');
+			this.game.load.image('crown' + i, 'assets/sprites/game/multiplayer/crown'+ i +'.png');
+			this.game.load.image('trail' + i, 'assets/sprites/game/multiplayer/trail'+ i +'.png');
 		}
 	},
 
@@ -70,7 +70,7 @@ MPNormal.prototype = {
 	collect: function (playerSprite, powerSprite, player) {
 		player.growth = 60*powerSprite.scale.x;
 		player.size += player.growth;
-		
+
 		if (player.size > this.highScore) {
 			this.highScore = player.size;
 			if(this.crowned > -1){
@@ -78,7 +78,7 @@ MPNormal.prototype = {
 			}
 			this.lastCrowned = this.crowned;
 			this.crowned = player.id;
-			
+
 		}
 
 	},
@@ -106,6 +106,11 @@ MPNormal.prototype = {
 			this.crowned = -1;
 			this.highScore = 0;
 		}
+	},
+
+	createPower: function() {
+		var powerup = new PowerUp(this.game, 'point', this);
+		powerup.create();
 	},
 
 	endGame: function() {
@@ -136,6 +141,6 @@ MPNormal.prototype = {
 
 	setHighScore: function (score) {
 		this.highScore = score;
-	}, 
+	},
 
 };

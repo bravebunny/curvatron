@@ -9,41 +9,26 @@ var Adventure = function(game) {
 	this.width = 1344;
 	this.height = 768;
 	this.pointPositions = null;
-	this.level = 1;
+	this.level = 4;
 };
 
 Adventure.prototype = {
 
 	preload: function () {
+		setScreenFixed(baseW, baseH, this.game);
+
 		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
 		this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png');
 		this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png');
 		this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100);
 
 		this.game.load.image('Pastel', 'assets/levels/Pastel.png'); // loading the tileset image
-		this.game.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
-		this.game.load.json('points1', 'assets/levels/points1.json');
+		this.game.load.tilemap('level', 'assets/levels/level' + this.level + '.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
+		this.game.load.json('points', 'assets/levels/points' + this.level + '.json');
+
 	},
 
 	create: function() {
-		//TODO remove code repetition
-		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.game.width = this.width;
-		this.game.height = this.height;
-		this.game.canvas.width = this.width;
-		this.game.canvas.height = this.height;
-		this.game.renderer.resize(this.width, this.height);
-		this.game.stage.width = this.width;
-		this.game.stage.height = this.height;
-		this.game.scale.width = this.width;
-		this.game.scale.height = this.height;
-		this.game.world.setBounds(0, 0, this.width, this.height);
-		this.game.camera.setSize(this.width, this.height);
-		this.game.camera.setBoundsToWorld();
-		this.game.scale.refresh();
-
-		borders = [0, this.game.world.width, 0,this.game.world.height];
-
 		//redo bitmapData
 		delete bmd;
 		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
@@ -62,7 +47,7 @@ Adventure.prototype = {
 		this.score = 0;
 		spawnPowers = true;
 
-		this.map = this.game.add.tilemap('level' + this.level); // Preloaded tilemap
+		this.map = this.game.add.tilemap('level'); // Preloaded tilemap
 		this.map.addTilesetImage('Pastel'); // Preloaded tileset
 
     this.layer = this.map.createLayer('obstacles'); //layer[0]
@@ -74,9 +59,9 @@ Adventure.prototype = {
 		});
 		powerText.anchor.setTo(0.5,0.5);
 
-		this.map.setCollisionByExclusion([], true, this.layer);
+		//this.map.setCollisionByExclusion([], true, this.layer);
 
-		this.pointPositions = this.game.cache.getJSON('points' + this.level);
+		this.pointPositions = this.game.cache.getJSON('points');
 	},
 
 	update: function() {

@@ -29,6 +29,9 @@ var Player = function (id, x, y, key, mode, game) {
 	this.orientation = null;
 	this.playerMobileButton = null;
 	this.collectSemaphore = 0;
+	this.head = null;
+	this.anim = null;
+
 };
 
 Player.prototype = {
@@ -37,6 +40,18 @@ Player.prototype = {
 
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
+		this.sprite.alpha = 0;
+
+
+		this.head = this.game.add.sprite(this.x, this.y, 'head');
+		this.head.anchor.setTo(0.5, 0.5);
+		this.anim = this.head.animations.add('rotation');
+		//anim.play(20,true,false);
+		//anim.stop();
+		/*this.anim.frame = 3;
+		anim.update();*/
+
+
 		this.sprite.name = "" + this.id;
 
 		this.sprite.anchor.setTo(.5,.5);
@@ -86,6 +101,8 @@ Player.prototype = {
 
 		this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this);
 
+		//this.moveRandom();
+
 	},
 
 	update: function () {
@@ -103,14 +120,31 @@ Player.prototype = {
 
 		if (!this.paused) {
 
+
+			//animate the snake head
+			this.head.position = this.sprite.position;
+
+			var inc = 360/14;
+			var angle = this.sprite.angle;
+
+			for (var i = -180, e = 0; i <= 180; i += inc, e++) {
+				var low = i;
+				var high = i + inc;
+
+				if ((low < angle) && (high > angle) ) {
+					this.anim.frame = e;
+				}
+			}
+
 			//TODO prevent lines crossing the screen
 			//Draw trail bmd line
 			if (this.trailArray[0]) {
 				var ctx = bmd.ctx;
-				bmd.dirty = true;
-				ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
-
-				ctx.strokeStyle = 'rgb(255, 255, 255)';
+				if (this.mode.sp) {
+					ctx.strokeStyle = '#FFFFFF';
+				} else {
+					ctx.strokeStyle = colorPlayers[this.id];
+				}
 				ctx.lineWidth   = 16*scale;
 				ctx.lineCap     = 'round';
 
@@ -498,6 +532,16 @@ Player.prototype = {
 			this.textTween.resume();
 		}
 		this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale;
+	},
+
+	//demo stuff
+	moveRandom: function() {
+		if (this.randomTimer == null) {
+			this.randomTimer = this.game.time.create(false);
+			this.randomTimer.start();
+		}
+		this.randomTimer.add(Phaser.Timer.SECOND * this.game.rnd.realInRange(0.2, 1.5), this.moveRandom, this);
+		this.keyPressed();
 	},
 
 	render: function(){

@@ -81,7 +81,7 @@ gameMananger.prototype = {
 			}
  		}
 
-		pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this);
+		/*pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this);
   	pauseSprite.anchor.setTo(0.5, 0.5);
   	pauseSprite.input.useHandCursor = true;
   	pauseSprite.scale.set(0.5);
@@ -89,7 +89,7 @@ gameMananger.prototype = {
   	if (!this.mode.sp) {
 			pauseSprite.position.set(w2, h2);
 			pauseSprite.scale.set(0.8);
-		}
+		}*/
 
 		//create BitmapData
 		bmd = this.add.bitmapData(this.game.width, this.game.height);
@@ -171,7 +171,11 @@ gameMananger.prototype = {
 
 			}
 		}
+
 		//Update players
+		var ctx = bmd.ctx;
+		bmd.dirty = true;
+		ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
 		for(var i=0; i < players.length; i++){
 			players[i].update();
 		}

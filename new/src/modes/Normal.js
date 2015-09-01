@@ -6,10 +6,6 @@ var Normal = function(game) {
 	this.shrinkFreq = 5;
 	this.obstacleGroup = null;
 	this.cellSize = 64;
-	this.rows = Math.floor(h2*1.9/this.cellSize);
-	this.columns = Math.floor(w2*1.9/this.cellSize);
-	this.marginX = (2*w2 - this.columns*this.cellSize + this.cellSize)*0.5;
-	this.marginY = (2*h2 - this.rows*this.cellSize + this.cellSize)*0.5;
 };
 
 Normal.prototype = {
@@ -17,6 +13,8 @@ Normal.prototype = {
 	preload: function () {
 		this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png');
 		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
+		//this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
+		this.game.load.spritesheet('head', 'assets/sprites/game/singleplayer/head.png', 32, 32, 14);
 		this.game.load.image('trail0', 'assets/sprites/game/singleplayer/trailSingle.png');
 		this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png');
 		this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png');
@@ -24,6 +22,10 @@ Normal.prototype = {
 	},
 
 	create: function() {
+		this.rows = Math.floor(h2*1.9/this.cellSize);
+		this.columns = Math.floor(w2*1.9/this.cellSize);
+		this.marginX = (2*w2 - this.columns*this.cellSize + this.cellSize)*0.5;
+		this.marginY = (2*h2 - this.rows*this.cellSize + this.cellSize)*0.5;
 		this.score = 0;
 		this.obstacleGroup = this.game.add.group();
 		this.pointsPow = [];

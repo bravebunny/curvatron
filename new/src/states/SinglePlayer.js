@@ -1,6 +1,5 @@
 var singlePlayer = function (game) {
 	this.ui = {};
-	this.menuArray = [];
 	this.bestScore = 0;
 	this.bestSurvScore = 0;
 	this.selection = 0;
@@ -40,6 +39,10 @@ singlePlayer.prototype = {
 		menuArray[5].create();
 
 		menuArray[selection].button.onInputOver.dispatch();
+	},
+
+	update: function() {
+		menuUpdate();
 	},
 
 	playNormalGame: function () {
