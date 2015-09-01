@@ -29,6 +29,8 @@ var Player = function (id, x, y, key, mode, game) {
 	this.orientation = null;
 	this.playerMobileButton = null;
 	this.collectSemaphore = 0;
+	this.head = null;
+	this.anim = null;
 
 };
 
@@ -38,6 +40,18 @@ Player.prototype = {
 
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
+		this.sprite.alpha = 0;
+
+
+		this.head = this.game.add.sprite(this.x, this.y, 'head');
+		this.head.anchor.setTo(0.5, 0.5);
+		this.anim = this.head.animations.add('rotation');
+		//anim.play(20,true,false);
+		//anim.stop();
+		/*this.anim.frame = 3;
+		anim.update();*/
+
+
 		this.sprite.name = "" + this.id;
 
 		this.sprite.anchor.setTo(.5,.5);
@@ -105,6 +119,22 @@ Player.prototype = {
 		}
 
 		if (!this.paused) {
+
+
+			//animate the snake head
+			this.head.position = this.sprite.position;
+
+			var inc = 360/14;
+			var angle = this.sprite.angle;
+
+			for (var i = -180, e = 0; i <= 180; i += inc, e++) {
+				var low = i;
+				var high = i + inc;
+
+				if ((low < angle) && (high > angle) ) {
+					this.anim.frame = e;
+				}
+			}
 
 			//TODO prevent lines crossing the screen
 			//Draw trail bmd line

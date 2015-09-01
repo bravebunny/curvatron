@@ -13,6 +13,8 @@ Normal.prototype = {
 	preload: function () {
 		this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png');
 		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
+		//this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
+		this.game.load.spritesheet('head', 'assets/sprites/game/singleplayer/head.png', 32, 32, 14);
 		this.game.load.image('trail0', 'assets/sprites/game/singleplayer/trailSingle.png');
 		this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png');
 		this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png');

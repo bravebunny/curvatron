@@ -9,7 +9,7 @@ var Adventure = function(game) {
 	this.width = 1344;
 	this.height = 768;
 	this.pointPositions = null;
-	this.level = 1;
+	this.level = 4;
 };
 
 Adventure.prototype = {
@@ -23,8 +23,9 @@ Adventure.prototype = {
 		this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100);
 
 		this.game.load.image('Pastel', 'assets/levels/Pastel.png'); // loading the tileset image
-		this.game.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
-		this.game.load.json('points1', 'assets/levels/points1.json');
+		this.game.load.tilemap('level', 'assets/levels/level' + this.level + '.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
+		this.game.load.json('points', 'assets/levels/points' + this.level + '.json');
+
 	},
 
 	create: function() {
@@ -46,7 +47,7 @@ Adventure.prototype = {
 		this.score = 0;
 		spawnPowers = true;
 
-		this.map = this.game.add.tilemap('level' + this.level); // Preloaded tilemap
+		this.map = this.game.add.tilemap('level'); // Preloaded tilemap
 		this.map.addTilesetImage('Pastel'); // Preloaded tileset
 
     this.layer = this.map.createLayer('obstacles'); //layer[0]
@@ -58,9 +59,9 @@ Adventure.prototype = {
 		});
 		powerText.anchor.setTo(0.5,0.5);
 
-		this.map.setCollisionByExclusion([], true, this.layer);
+		//this.map.setCollisionByExclusion([], true, this.layer);
 
-		this.pointPositions = this.game.cache.getJSON('points' + this.level);
+		this.pointPositions = this.game.cache.getJSON('points');
 	},
 
 	update: function() {
