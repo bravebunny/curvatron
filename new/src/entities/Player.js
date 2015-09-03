@@ -124,7 +124,7 @@ Player.prototype = {
 			//animate the snake head
 			this.head.position = this.sprite.position;
 
-			var inc = 360/14;
+			var inc = 360/40;
 			var angle = this.sprite.angle;
 
 			for (var i = -180, e = 0; i <= 180; i += inc, e++) {
@@ -138,7 +138,9 @@ Player.prototype = {
 
 			//TODO prevent lines crossing the screen
 			//Draw trail bmd line
-			if (this.trailArray[0]) {
+
+			var trail = this.trailArray;
+			if (trail[0]) {
 				var ctx = bmd.ctx;
 				if (this.mode.sp) {
 					ctx.strokeStyle = '#FFFFFF';
@@ -150,8 +152,11 @@ Player.prototype = {
 
 				ctx.beginPath();
 
-				ctx.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
-				for (var i = 1; i < this.trailArray.length; i++) {
+				ctx.moveTo(this.sprite.x ,this.sprite.y);
+				ctx.lineTo(trail[trail.length-1].x ,trail[trail.length-1].y);
+				ctx.stroke();
+
+				/*for (var i = 1; i < this.trailArray.length; i++) {
 					var x = this.trailArray[i].x;
 					var y = this.trailArray[i].y;
 
@@ -162,9 +167,9 @@ Player.prototype = {
 						ctx.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
 					}
 
-				}
+				}*/
 
-				ctx.stroke();
+
 			}
 
 
@@ -257,7 +262,7 @@ Player.prototype = {
 					}
 					for (var i = 0; i < nRemove && this.trailArray.length > 0; i++) {
 						trailPiece = this.trailArray.shift();
-						//ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+						ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 					}
 
 					/*if (this.trailArray.length > 0) {
@@ -270,13 +275,22 @@ Player.prototype = {
 			//erase trail from front
 			if (this.dead && this.frameCount == 0 && this.trailArray[0]) {
 				trailPiece = this.trailArray.pop();
-		    	//ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+		    ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 
 				/*if (this.trailArray.length > 0) {
 					trailPiece = this.trailArray[this.trailArray.length -1];
 					bmd.draw(this.trail, trailPiece.x, trailPiece.y);
 				}*/
 			}
+
+			//redraw erased trail
+			if (trail[1]) {
+				ctx.beginPath();
+				ctx.moveTo(trail[0].x ,trail[0].y);
+				ctx.lineTo(trail[1].x ,trail[1].y);
+				ctx.stroke();
+			}
+
 
 
 			//Border's collisions
