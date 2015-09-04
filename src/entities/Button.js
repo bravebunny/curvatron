@@ -37,8 +37,17 @@ Button.prototype = {
     this.graphics.endFill();
 		//this.graphics.anchor.setTo(0.5,0.5);
 
+		var offset = 40;
+		if (this.iconName == null) {
+			offset = 0;
+
+		} else {
+
+
+		}
+
 		//Button label
-		this.label = this.game.add.text(40, 0, this.text, {
+		this.label = this.game.add.text(offset, 0, this.text, {
 			font: "60px dosis",
 			fill: colorHex
 		});

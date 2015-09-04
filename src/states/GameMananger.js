@@ -173,9 +173,9 @@ gameMananger.prototype = {
 		}
 
 		//Update players
-		var ctx = bmd.ctx;
+		/*var ctx = bmd.ctx;
 		bmd.dirty = true;
-		ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);
+		ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);*/
 		for(var i=0; i < players.length; i++){
 			players[i].update();
 		}
@@ -401,6 +401,12 @@ gameMananger.prototype = {
 	/*render: function(){
 		players[0].render();
 	},*/
+
+	shutdown: function() {
+		for (var i = 0; i < players.length; i++) {
+			players[i].clearInput();
+		}
+	},
 
 	renderGroup: function (member) {
 		//this.game.debug.body(member);

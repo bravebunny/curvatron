@@ -55,13 +55,15 @@ boot.prototype = {
 		this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.selectDown, this);
 		this.game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.selectUp, this);
 
+		this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(this.left, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(this.right, this);
+
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.selectPress, this);
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onUp.add(this.selectRelease, this);
 
-		this.game.input.resetLocked = true;
-
 		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 
+		this.game.input.resetLocked = true;
 
 	},
 
@@ -96,6 +98,18 @@ boot.prototype = {
 	backPressed: function() {
 		if (this.state.states[this.game.state.current].backPressed) {
 			this.state.states[this.game.state.current].backPressed();
+		}
+	},
+
+	left: function() {
+		if (this.state.states[this.game.state.current].left) {
+			this.state.states[this.game.state.current].left();
+		}
+	},
+
+	right: function() {
+		if (this.state.states[this.game.state.current].right) {
+			this.state.states[this.game.state.current].right();
 		}
 	},
 

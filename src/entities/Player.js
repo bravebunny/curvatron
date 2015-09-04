@@ -29,8 +29,6 @@ var Player = function (id, x, y, key, mode, game) {
 	this.orientation = null;
 	this.playerMobileButton = null;
 	this.collectSemaphore = 0;
-	this.head = null;
-	this.anim = null;
 
 };
 
@@ -40,18 +38,6 @@ Player.prototype = {
 
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
-		this.sprite.alpha = 0;
-
-
-		this.head = this.game.add.sprite(this.x, this.y, 'head');
-		this.head.anchor.setTo(0.5, 0.5);
-		this.anim = this.head.animations.add('rotation');
-		//anim.play(20,true,false);
-		//anim.stop();
-		/*this.anim.frame = 3;
-		anim.update();*/
-
-
 		this.sprite.name = "" + this.id;
 
 		this.sprite.anchor.setTo(.5,.5);
@@ -120,25 +106,16 @@ Player.prototype = {
 
 		if (!this.paused) {
 
-
-			//animate the snake head
-			this.head.position = this.sprite.position;
-
-			var inc = 360/14;
-			var angle = this.sprite.angle;
-
-			for (var i = -180, e = 0; i <= 180; i += inc, e++) {
-				var low = i;
-				var high = i + inc;
-
-				if ((low < angle) && (high > angle) ) {
-					this.anim.frame = e;
-				}
-			}
-
 			//TODO prevent lines crossing the screen
 			//Draw trail bmd line
-			if (this.trailArray[0]) {
+			var inBounds =
+				this.sprite.x < this.game.width+8*scale &&
+				this.sprite.x > -8*scale &&
+				this.sprite.y < this.game.height+8*scale &&
+				this.sprite.y > -8*scale;
+
+			var trail = this.trailArray;
+			if (trail[0] && inBounds) {
 				var ctx = bmd.ctx;
 				if (this.mode.sp) {
 					ctx.strokeStyle = '#FFFFFF';
@@ -150,8 +127,11 @@ Player.prototype = {
 
 				ctx.beginPath();
 
-				ctx.moveTo(this.trailArray[0].x ,this.trailArray[0].y);
-				for (var i = 1; i < this.trailArray.length; i++) {
+				ctx.moveTo(this.sprite.x ,this.sprite.y);
+				ctx.lineTo(trail[trail.length-1].x ,trail[trail.length-1].y);
+				ctx.stroke();
+
+				/*for (var i = 1; i < this.trailArray.length; i++) {
 					var x = this.trailArray[i].x;
 					var y = this.trailArray[i].y;
 
@@ -162,9 +142,9 @@ Player.prototype = {
 						ctx.lineTo(this.trailArray[i].x ,this.trailArray[i].y);
 					}
 
-				}
+				}*/
 
-				ctx.stroke();
+
 			}
 
 
@@ -225,7 +205,6 @@ Player.prototype = {
 						}
 					}
 				}
-
 			}
 			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
 
@@ -257,7 +236,7 @@ Player.prototype = {
 					}
 					for (var i = 0; i < nRemove && this.trailArray.length > 0; i++) {
 						trailPiece = this.trailArray.shift();
-						//ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+						ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 					}
 
 					/*if (this.trailArray.length > 0) {
@@ -270,7 +249,7 @@ Player.prototype = {
 			//erase trail from front
 			if (this.dead && this.frameCount == 0 && this.trailArray[0]) {
 				trailPiece = this.trailArray.pop();
-		    	//ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
+		    ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
 
 				/*if (this.trailArray.length > 0) {
 					trailPiece = this.trailArray[this.trailArray.length -1];
@@ -278,6 +257,26 @@ Player.prototype = {
 				}*/
 			}
 
+			//redraw erased trail
+			if (trail[1]) {
+				var inBounds =
+					trail[0].x < this.game.width &&
+					trail[0].x > 0 &&
+					trail[0].y < this.game.height &&
+					trail[0].y > 0;
+				if (inBounds) {
+					var ctx = bmd.ctx;
+					if (this.mode.sp) {
+						ctx.strokeStyle = '#FFFFFF';
+					} else {
+						ctx.strokeStyle = colorPlayers[this.id];
+					}
+					ctx.beginPath();
+					ctx.moveTo(trail[0].x ,trail[0].y);
+					ctx.lineTo(trail[1].x ,trail[1].y);
+					ctx.stroke();
+				}
+			}
 
 			//Border's collisions
 			if ((xx+colisionMargin*scale) <= borders[0]) {
@@ -542,6 +541,10 @@ Player.prototype = {
 		}
 		this.randomTimer.add(Phaser.Timer.SECOND * this.game.rnd.realInRange(0.2, 1.5), this.moveRandom, this);
 		this.keyPressed();
+	},
+
+	clearInput: function() {
+		this.game.input.keyboard.removeKey(this.key);
 	},
 
 	render: function(){

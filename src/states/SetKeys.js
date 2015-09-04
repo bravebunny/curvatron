@@ -2,7 +2,7 @@ var setKeys = function (game) {
 	this.ui = {};
 	this.selectedPlayer = 0;
 };
-  
+
 setKeys.prototype = {
 	create: function () {
 
@@ -57,7 +57,6 @@ setKeys.prototype = {
   	this.setPositions();
 
   	this.game.input.keyboard.addCallbacks(this, this.onPressed);
-  	this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
 
 	backPressed: function () {
@@ -110,5 +109,5 @@ setKeys.prototype = {
 		ui.keyText.position.set(w2,h2+140);
 		ui.playButton.position.set(w2/2,1.6*h2);
 	}
-	
+
 };

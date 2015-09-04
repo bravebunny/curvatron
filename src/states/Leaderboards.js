@@ -1,7 +1,7 @@
 var leaderboards = function (game) {
 	this.ui = {};
 };
-  
+
 leaderboards.prototype = {
 	create: function () {
 		var ui = this.ui;
@@ -34,8 +34,6 @@ leaderboards.prototype = {
 		clickButton(ui.backButton, this.backPressed, this);
 
 		this.setPositions();
-
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
 
 	leaderboard: function (board) {
@@ -101,5 +99,5 @@ leaderboards.prototype = {
 		}
 
 		ui.backButton.position.set(w2/2,h2*1.6);
-  }   
+  }
 };

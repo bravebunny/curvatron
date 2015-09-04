@@ -86,8 +86,6 @@ stats.prototype = {
 
 		//Place the menu buttons and labels on their correct positions
     this.setPositions();
-
-		this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this);
 	},
 
 	backPressed:function () {
