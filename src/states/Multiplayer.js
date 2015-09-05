@@ -59,6 +59,22 @@ multiplayer.prototype = {
 			this.nPlayers++;
 	    }
 	    this.playersButton.setText('<    ' + (this.nPlayers + 1) + ' players    >');
-	}
+	},
+
+	up: function() {
+		selectUp();
+	},
+
+	down: function() {
+		selectDown();
+	},
+
+	selectPress: function() {
+		selectPress();
+	},
+
+	selectRelease: function() {
+		selectRelease();
+	},
 
 };

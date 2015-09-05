@@ -29,13 +29,11 @@ preloadMenu.prototype = {
 		this.game.load.image("leaderboard_button","assets/sprites/gui/settings/leaderboard.png");
 		this.game.load.image("fullscreen_button","assets/sprites/gui/settings/fullscreen.png");
 		this.game.load.image("windowed_button","assets/sprites/gui/settings/windowed.png");
-		this.game.load.image("player_select","assets/sprites/gui/settings/playerSelect.png");
 		this.game.load.image("key_button","assets/sprites/gui/settings/key.png");
 
 		this.game.load.image("back_button","assets/sprites/gui/navigation/back.png");
 		this.game.load.image("accept_button","assets/sprites/gui/navigation/accept.png");
 		this.game.load.image("exit_button","assets/sprites/gui/navigation/exit.png");
-
 
 		this.game.load.image("deaths-stats","assets/sprites/gui/stats/deaths-stats.png");
 		this.game.load.image("old-stats","assets/sprites/gui/stats/old-stats.png");
@@ -43,12 +41,6 @@ preloadMenu.prototype = {
 		this.game.load.image("total-stats","assets/sprites/gui/stats/total-stats.png");
 		this.game.load.image("aux-stat","assets/sprites/gui/stats/aux-stat.png");
 		this.game.load.image("survScore-stat","assets/sprites/gui/stats/endless-stat.png");
-
-		this.game.load.image("number_players","assets/sprites/gui/numberPlayers.png");
-		this.game.load.image("number_mod","assets/sprites/gui/numberMod.png");
-		this.game.load.image("set_players","assets/sprites/gui/setPlayers.png");
-		this.game.load.image("resume_button","assets/sprites/gui/resume.png");
-
 
 		this.game.load.audio('dream', 'assets/music/dream.ogg');
 

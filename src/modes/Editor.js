@@ -5,18 +5,31 @@ var Editor = function(game) {
 	this.marker = null;
 	this.map = null;
 
+	this.maxPoints = 10;
+
+	this.tool = 0; //0=draw, 1=erase, 2=point
+	this.selectedPoint = 1;
+
+	this.tb = {};
 };
 
 Editor.prototype = {
 
 	preload: function () {
-		setScreenFixed(baseW, baseH, this.game);
+		setScreenFixed(baseW, baseH+200, this.game);
 
 		this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png');
 		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
 		this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png');
 		this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png');
 		this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100);
+
+		this.game.load.image('editorPoint', 'assets/sprites/gui/editor/point.png');
+		this.game.load.image('editorDraw', 'assets/sprites/gui/editor/draw.png');
+		this.game.load.image('editorErase', 'assets/sprites/gui/editor/erase.png');
+		this.game.load.image('editorArrow', 'assets/sprites/gui/editor/arrow.png');
+		this.game.load.image('editorStart', 'assets/sprites/gui/editor/start.png');
+		this.game.load.image('editorSave', 'assets/sprites/gui/editor/save.png');
 
 		this.game.load.image('Pastel', 'assets/levels/Pastel.png'); // loading the tileset image
 		this.game.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
@@ -45,18 +58,66 @@ Editor.prototype = {
 
 		this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
+		//toolbar background
+		this.tb.bg = this.game.add.sprite(0, baseH, 'overlay');
+		this.tb.bg.width = baseW;
+		this.tb.bg.height = 200;
+		this.tb.bg.alpha = 0.5;
+
+		//toolbar icons
+		this.tb.left = this.game.add.button(200, baseH+100, 'editorArrow', this.pointDec, this);
+		this.tb.left.anchor.setTo(0.5, 0.5);
+		this.tb.left.scale.set(-0.5, 0.5);
+
+		this.tb.point = this.game.add.button(300, baseH+100, 'editorPoint', this.pointTool, this);
+		this.tb.point.anchor.setTo(0.5, 0.5);
+		this.tb.point.scale.set(0.5);
+
+		//toolbar icons
+		this.tb.right = this.game.add.button(400, baseH+100, 'editorArrow', this.pointInc, this);
+		this.tb.right.anchor.setTo(0.5, 0.5);
+		this.tb.right.scale.set(0.5);
+
+		this.tb.draw = this.game.add.button(700, baseH+100, 'editorDraw', this.drawTool, this);
+		this.tb.draw.anchor.setTo(0.5, 0.5);
+		this.tb.draw.scale.set(0.5);
+
+		this.tb.erase = this.game.add.button(1000, baseH+100, 'editorErase', this.eraseTool, this);
+		this.tb.erase.anchor.setTo(0.5, 0.5);
+		this.tb.erase.scale.set(0.5);
+
+		this.tb.erase = this.game.add.button(1300, baseH+100, 'editorStart', this.startTool, this);
+		this.tb.erase.anchor.setTo(0.5, 0.5);
+		this.tb.erase.scale.set(0.8);
+
+		this.tb.erase = this.game.add.button(1600, baseH+100, 'editorSave', this.save, this);
+		this.tb.erase.anchor.setTo(0.5, 0.5);
+		this.tb.erase.scale.set(0.5);
 	},
 
 	update: function() {
 		this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * 24;
     this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * 24;
 
-
-
 		if (this.game.input.mousePointer.isDown) {
-      if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
-          this.map.putTile(this.tile, this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
-      }
+			console.log(this.tool)
+			switch(this.tool) {
+				case 0: //draw
+					if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
+							this.map.putTile(this.tile, this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
+					}
+				break;
+
+				case 1: //erase
+					if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
+							this.map.removeTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
+					}
+				break;
+
+				case 2: //point
+				break;
+			}
+
     }
 
 		/*if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
@@ -64,98 +125,36 @@ Editor.prototype = {
 		}*/
 	},
 
-	erasesTrail: function () {
+	drawTool: function() {
+		this.tool = 0;
+	},
+
+	eraseTool: function() {
+		this.tool = 1;
+		console.log(this.tool)
+	},
+
+	pointTool: function() {
+		this.tool = 2;
+	},
+
+	pointDec: function() {
+		//this.tool = 'point';
+	},
+
+	pointInc: function() {
+		//this.tool = 'point';
+	},
+
+	erasesTrail: function() {
 		return true;
 	},
 
-	createPower: function (type) {
-		var collidesWithPlayer = true;
-
-		while (collidesWithPlayer) {
-			collidesWithPlayer = false;
-
-			this.lastPoint = this.pointsPow.pop();
-			var x = (this.lastPoint.x)*this.cellSize + this.marginX;
-			var y = (this.lastPoint.y)*this.cellSize + this.marginY;
-
-			var collSize = 16*scale;
-			for (var j = 0; j < this.player.trailArray.length; j++) {
-				var curTrail = this.player.trailArray[j];
-				if (curTrail && curTrail.x-collSize < x && curTrail.x+collSize > x &&
-				 	curTrail.y-collSize < y && curTrail.y+collSize > y) {
-					collidesWithPlayer = true;
-					var point = this.lastPoint;
-					this.pointsPow.push(point);
-					this.pointsPow = shuffleArray(this.pointsPow);
-					break;
-				}
-			}
-		}
-
-		var powerup = new PowerUp(this.game, type, this, x, y);
-		if(type == "shrink"){
-			this.shrink = powerup;
-		}
-		powerup.create();
-
-		for (var i = 0; i < this.pointsObs.length; i++) {
-			if (JSON.stringify(this.pointsObs[i]) === JSON.stringify(this.lastPoint)) {
-				this.pointsObs.splice(i, 1);
-				break;
-			}
-		}
-	},
-
-	createObstacle: function (){
-		points = this.pointsObs.pop();
-
-		var x = points.x*this.cellSize + this.marginX;
-		var y = points.y*this.cellSize + this.marginY;
-
-		/*var x = rx*this.cellSize*2-w2*0.05;
-		var y = ry*this.cellSize*2-h2*0.05;*/
-
-		var obstacle = this.game.add.sprite(x, y, 'obstacle');
-		var tweenObstacle = this.game.add.sprite(x, y, 'obstacle');
-		obstacle.scale.set(1.5);
-		obstacle.alpha = 0;
-		obstacle.anchor.setTo(.5,.5);
-		tweenObstacle.anchor.setTo(.5,.5);
-		tweenObstacle.scale.set(0.5);
-		tweenObstacle.alpha = 0.0;
-
-		var obstacleTween1 = this.game.add.tween(obstacle.scale).to( {x:0.5, y:0.5}, 4000, Phaser.Easing.Quadratic.In, true);
-		var obstacleTween2 = this.game.add.tween(obstacle).to( { alpha: 0.25 }, 2000, Phaser.Easing.Linear.None, true);
-		var obstacleTween3 = this.game.add.tween(tweenObstacle.scale).to( {x:1, y:1}, 1000, Phaser.Easing.Linear.None, false);
-		var obstacleTween4 = this.game.add.tween(tweenObstacle).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, false);
-		obstacleTween1.onComplete.add( function () {
-			obstacle.alpha = 0.5;
-			tweenObstacle.alpha = 0.5;
-			obstacleTween3.start();
-			obstacleTween4.start();
-			this.game.physics.enable(obstacle, Phaser.Physics.ARCADE);
-		}, this);
-		this.obstacleGroup.add(obstacle);
-
-		for (var i = 0; i < this.pointsPow.length; i++) {
-			if (JSON.stringify(this.pointsPow[i]) === JSON.stringify(points)) {
-				this.pointsPow.splice(i, 1);
-				break;
-			}
-		}
-	},
-
 	pause: function() {
-		if (this.shrink && this.shrink.sprite && this.shrink.sprite.animations) {
-			this.shrink.sprite.animations.paused = true;
-		}
 
 	},
 
 	unPause: function() {
-		if (this.shrink && this.shrink.sprite && this.shrink.sprite.animations) {
-			this.shrink.sprite.animations.paused = false;
-		}
 
 	}
 

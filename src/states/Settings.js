@@ -102,6 +102,22 @@ settings.prototype = {
 		menuUpdate();
 	},
 
+	up: function() {
+		selectUp();
+	},
+
+	down: function() {
+		selectDown();
+	},
+
+	selectPress: function() {
+		selectPress();
+	},
+
+	selectRelease: function() {
+		selectRelease();
+	},
+
 	backPressed: function () {
 		this.game.state.start("Menu");
 	}

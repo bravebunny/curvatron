@@ -1,5 +1,4 @@
 var gameMananger = function (game) {
-	this.crown = null;
 	this.gameTime = 60; //sec
 	this.initialTime = 0;
 	this.powerTimer = null;
@@ -50,8 +49,8 @@ gameMananger.prototype = {
 
 
 		groupPowers = this.add.group();
-		if (this.mode.sp && this.mode.leaderboardID) {
-			if (!mobile) {
+		if (this.mode.sp) {
+			if (this.mode.leaderboardID) {
 				tempLabel = this.add.sprite(w2, h2, 'score');
 				tempLabel.anchor.setTo(0.5,0.5);
 				tempLabel.alpha = 0.7;
@@ -64,9 +63,6 @@ gameMananger.prototype = {
 	  	}
 
 		} else {
-			this.crown = this.add.sprite(w2, -32, 'crown');
-			this.crown.anchor.setTo(0.5,0.8);
-			this.game.physics.enable(this.crown, Phaser.Physics.ARCADE);
 
 			ui.graphics.lineStyle(0);
 			ui.graphics.beginFill(0x000000, 0.2);
@@ -355,10 +351,6 @@ gameMananger.prototype = {
 
 			ui.overlay.inputEnabled = true;
 
-			if (mobile) {
-				pauseSprite.alpha = 0.2;
-				pauseSprite.input.useHandCursor=true;
-			}
 			ui.menu.destroy();
             ui.restart.destroy();
             ui.exit.destroy();

@@ -163,6 +163,22 @@ menu.prototype = {
     this.state.start("Stats");
   },
 
+  up: function() {
+    selectUp();
+  },
+
+  down: function() {
+    selectDown();
+  },
+
+  selectPress: function() {
+    selectPress();
+  },
+
+  selectRelease: function() {
+    selectRelease();
+  },
+
   backPressed: function () {
     window.close();
   }

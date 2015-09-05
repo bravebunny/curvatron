@@ -14,7 +14,6 @@ OldSchool.prototype = {
 	preload: function () {
 		this.game.load.image('point', 'assets/sprites/game/oldschool/point.png');
 		this.game.load.image('player0', 'assets/sprites/game/oldschool/player.png');
-		this.game.load.image('trail0', 'assets/sprites/game/oldschool/trail.png');
 		this.game.load.image('superPower', 'assets/sprites/game/oldschool/power.png');
 		this.game.load.audio('sfx_collectOld', 'assets/sfx/collectOld.ogg');
 		this.game.load.audio('sfx_killOld', 'assets/sfx/killOld.ogg');

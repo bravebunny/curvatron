@@ -22,7 +22,6 @@ var OldPlayer = function (x, y, mode, game) {
 	this.paused = false;
 	this.textTween = null;
 	this.trailArray = [];
-	this.trail = null
 	this.showKeyTime = 0;
 	this.showOneKey = true;
 	this.touch = null;
@@ -36,11 +35,6 @@ OldPlayer.prototype = {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.sprite.anchor.setTo(.5,.5);
 
-		this.trail = this.game.make.sprite(0, 0, 'trail0');
-		this.trail.anchor.set(0.5);
-		this.trail.scale.set(scale);
-
-		
 		this.sprite.scale.set(scale);
 		//this.sprite.body.setSize(20,20,0,0);
     this.lastTrailLength = this.growth;
@@ -56,10 +50,10 @@ OldPlayer.prototype = {
 				this.playerMobileButton.height = this.game.height/2;
 				this.playerMobileButton.onInputDown.add(this.click, this);
 			} else {
-				this.playerMobileButton = this.game.add.button(this.x,h2,"overlay",null,this);	
+				this.playerMobileButton = this.game.add.button(this.x,h2,"overlay",null,this);
 				this.playerMobileButton.width = this.game.width/2;
 				this.playerMobileButton.height = this.game.height;
-				this.playerMobileButton.onInputDown.add(this.click, this);	
+				this.playerMobileButton.onInputDown.add(this.click, this);
 	    	}
 	    		this.playerMobileButton.alpha = 0;
 	    		this.playerMobileButton.anchor.setTo(0.5,0.5);
@@ -103,7 +97,7 @@ OldPlayer.prototype = {
      	case 3:
 	      this.sprite.y -= this.speed;
       break;
-			}		
+			}
 
 			if (this.distance >= this.maxDistance) {
 				this.distance = 0;
@@ -124,7 +118,7 @@ OldPlayer.prototype = {
 			var xx = Math.cos(this.sprite.rotation)*18*scale + this.sprite.x;
 			var yy = Math.sin(this.sprite.rotation)*18*scale + this.sprite.y;
 
-			if (!this.dead) {		
+			if (!this.dead) {
 				//Create trail
 				trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
 				this.trailArray.push(trailPiece);
@@ -150,7 +144,7 @@ OldPlayer.prototype = {
 			if (this.dead && this.trailArray[0]) {
 				trailPiece = this.trailArray.pop();
 		    	ctx.clearRect(trailPiece.x-9*scale, trailPiece.y-9*scale, 18*scale, 18*scale);
-				
+
 				if (this.trailArray.length > 0) {
 					trailPiece = this.trailArray[this.trailArray.length -1];
 					bmd.draw(this.trail, trailPiece.x, trailPiece.y);
@@ -216,7 +210,7 @@ OldPlayer.prototype = {
 			}
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-				
+
 				if (mobile) {
 					this.game.add.tween(this.touch).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
 					this.game.add.tween(this.touch).to( { y: this.touch.y + 100 }, 1000, Phaser.Easing.Circular.In, true);
@@ -238,9 +232,9 @@ OldPlayer.prototype = {
 		var x1 = w2 - 81 , x2 = w2 + 81,
             y1 = h2 - 81, y2 = h2 + 81;
 
-        if (!(this.game.input.position.x > x1 
-        	&& this.game.input.position.x < x2 
-        	&& this.game.input.position.y > y1 
+        if (!(this.game.input.position.x > x1
+        	&& this.game.input.position.x < x2
+        	&& this.game.input.position.y > y1
         	&& this.game.input.position.y < y2 )) {
         		this.keyPressed();
         }
@@ -260,7 +254,7 @@ OldPlayer.prototype = {
 				killSound.play();
 			}
 			this.dead = true;
-			
+
 		}
 
 		if (other) {
@@ -283,7 +277,7 @@ OldPlayer.prototype = {
 		}
 
 		this.mode.collect(player, power, this);
-		
+
 		power.destroy();
 	},
 
@@ -310,7 +304,7 @@ OldPlayer.prototype = {
 		  		if (!this.mode.sp) {
 		  			this.keyText.visible = false;
 		  		}
-		  		
+
 		  	}
 			}
 

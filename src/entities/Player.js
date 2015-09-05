@@ -20,7 +20,6 @@ var Player = function (id, x, y, key, mode, game) {
 	this.paused = false;
 	this.textTween = null;
 	this.trailArray = [];
-	this.trail = null
 	this.showKeyTime = 0;
 	this.showOneKey = true;
 	this.shrink = false;
@@ -41,9 +40,6 @@ Player.prototype = {
 		this.sprite.name = "" + this.id;
 
 		this.sprite.anchor.setTo(.5,.5);
-		this.trail = this.game.make.sprite(0, 0, 'trail' + this.id);
-		this.trail.anchor.set(0.5);
-		this.trail.scale.set(scale);
 
 		//used to do this in a fancier way, but it broke some stuff
 		if (this.y > h2) {

@@ -8,7 +8,7 @@ var boot = function (game) {
 
 	menuArray = [];
 	selection = 0;
-	this.pressingSelect = false;
+	pressingSelect = false;
 
 };
 
@@ -52,8 +52,8 @@ boot.prototype = {
 
 		this.state.start("PreloadMenu");
 
-		this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.selectDown, this);
-		this.game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.selectUp, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.down, this);
+		this.game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.up, this);
 
 		this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(this.left, this);
 		this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(this.right, this);
@@ -67,37 +67,21 @@ boot.prototype = {
 
 	},
 
-	selectDown: function() {
-		if (!this.pressingSelect) {
-			var newS = (selection+1)%menuArray.length;
-			//menuArray[newS].button.onInputOver.dispatch();
-			selection = newS;
-		}
-
-	},
-
-	selectUp: function() {
-		if (!this.pressingSelect) {
-			var n = menuArray.length;
-			var newS = (((selection-1)%n)+n)%n;
-			//menuArray[newS].button.onInputOver.dispatch();
-			selection = newS;
-		}
-	},
-
-	selectPress: function() {
-		this.pressingSelect = true;
-		menuArray[selection].button.onInputDown.dispatch();
-	},
-
-	selectRelease: function() {
-		this.pressingSelect = false;
-		menuArray[selection].button.onInputUp.dispatch();
-	},
-
 	backPressed: function() {
 		if (this.state.states[this.game.state.current].backPressed) {
 			this.state.states[this.game.state.current].backPressed();
+		}
+	},
+
+	up: function() {
+		if (this.state.states[this.game.state.current].up) {
+			this.state.states[this.game.state.current].up();
+		}
+	},
+
+	down: function() {
+		if (this.state.states[this.game.state.current].down) {
+			this.state.states[this.game.state.current].down();
 		}
 	},
 
@@ -110,6 +94,18 @@ boot.prototype = {
 	right: function() {
 		if (this.state.states[this.game.state.current].right) {
 			this.state.states[this.game.state.current].right();
+		}
+	},
+
+	selectPress: function() {
+		if (this.state.states[this.game.state.current].selectPress) {
+			this.state.states[this.game.state.current].selectPress();
+		}
+	},
+
+	selectRelease: function() {
+		if (this.state.states[this.game.state.current].selectRelease) {
+			this.state.states[this.game.state.current].selectRelease();
 		}
 	},
 

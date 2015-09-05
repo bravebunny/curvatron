@@ -45,6 +45,22 @@ singlePlayer.prototype = {
 		menuUpdate();
 	},
 
+	up: function() {
+		selectUp();
+	},
+
+	down: function() {
+		selectDown();
+	},
+
+	selectPress: function() {
+		selectPress();
+	},
+
+	selectRelease: function() {
+		selectRelease();
+	},
+
 	playNormalGame: function () {
 		numberPlayers = 0;
     menuMusic.fadeOut(2000);

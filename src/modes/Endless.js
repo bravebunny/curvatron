@@ -9,7 +9,6 @@ Endless.prototype = {
 
 	preload: function () {
 		this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png');
-		//this.game.load.image('trail0', 'assets/trailSingle.png');
 	},
 
 	create: function () {

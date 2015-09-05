@@ -7,76 +7,81 @@ stats.prototype = {
 		var ui = this.ui;
 
 		ui.title = this.game.add.text(0,0, "stats", {
-	        font: "150px dosis",
-	        fill: "#ffffff",
-	        align: "center"
-	  	});
-	  	ui.title.anchor.setTo(0.5,0.5);
+      font: "150px dosis",
+      fill: "#ffffff",
+      align: "center"
+  	});
+  	ui.title.anchor.setTo(0.5,0.5);
 
+		var hs = localStorage.getItem("highScore");
+		if(!hs){
+			hs = 0;
+		}
 		ui.highScore = this.game.add.sprite(0, 0, 'score-stat');
 		ui.highScore.anchor.setTo(0.5,0.5);
 		ui.highScore.alpha = 0.7;
-		ui.highScoretext = this.game.add.text(0, 0, localStorage.getItem("highScore"), {
+		ui.highScoretext = this.game.add.text(0, 0, hs, {
       font: "60px dosis",
       fill: colorHex,
       align: "center"
   	});
   	ui.highScoretext.anchor.setTo(0.5,0.5);
-  	if(localStorage.getItem("highScore") == null){
-  		ui.highScoretext.text = "0";
-  	}
 
+		var ss = localStorage.getItem("survivalScore");
+		if(!ss){
+			ss = 0;
+		}
   	ui.survivalScore = this.game.add.sprite(0, 0, 'survScore-stat');
 		ui.survivalScore.anchor.setTo(0.5,0.5);
 		ui.survivalScore.alpha = 0.7;
-		ui.survivalScoretext = this.game.add.text(0, 0, localStorage.getItem("survivalScore"), {
+		ui.survivalScoretext = this.game.add.text(0, 0, ss, {
       font: "60px dosis",
       fill: colorHex,
       align: "center"
   	});
   	ui.survivalScoretext.anchor.setTo(0.5,0.5);
-  	if(localStorage.getItem("survivalScore") == null){
-  		ui.survivalScoretext.text = "0";
-  	}
 
+		var bs = localStorage.getItem("ballsScore");
+		if(!bs){
+			bs = 0;
+		}
 		ui.totalBalls = this.game.add.sprite(0, 0, 'total-stats');
 		ui.totalBalls.anchor.setTo(0.5,0.5);
 		ui.totalBalls.alpha = 0.7;
-		ui.totalBallsText = this.game.add.text(0,0, localStorage.getItem("ballsScore"), {
+		ui.totalBallsText = this.game.add.text(0,0, bs, {
       font: "60px dosis",
       fill: colorHex,
       align: "center"
   	});
   	ui.totalBallsText.anchor.setTo(0.5,0.5);
-  	if(localStorage.getItem("ballsScore") == null){
-  		ui.totalBallsText.text = "0";
-  	}
 
+		var ds = localStorage.getItem("deathScore");
+		if(!ds){
+			ds = 0;
+		}
     ui.statsDeaths = this.game.add.sprite(0, 0, 'deaths-stats');
 		ui.statsDeaths.anchor.setTo(0.5,0.5);
 		ui.statsDeaths.alpha = 0.7;
-		ui.textDeaths = this.game.add.text(0, 0, localStorage.getItem("deathScore"), {
+		ui.textDeaths = this.game.add.text(0, 0, ds, {
 	        font: "60px dosis",
 	        fill: colorHex,
 	        align: "center"
   	});
   	ui.textDeaths.anchor.setTo(0.5,0.5);
-  	if(localStorage.getItem("deathScore") == null){
-  		ui.textDeaths.text = "0";
-  	}
 
+		var os = localStorage.getItem("oldSchool");
+		if(!os){
+			os = 0;
+		}
 		ui.oldSchool = this.game.add.sprite(0, 0, 'old-stats');
 		ui.oldSchool.anchor.setTo(0.5,0.5);
 		ui.oldSchool.alpha = 0.7;
-		ui.textOldSchool = this.game.add.text(0, 0, localStorage.getItem("deathScores"), {
+		ui.textOldSchool = this.game.add.text(0, 0, os, {
         font: "60px dosis",
         fill: colorHex,
         align: "center"
 		});
 		ui.textOldSchool.anchor.setTo(0.5,0.5);
-		if(localStorage.getItem("oldSchool") == null){
-  		ui.textOldSchool.text = "0";
-  	}
 
     //back button
 		ui.backButton = this.game.add.button(0,0,"back_button");

@@ -10,12 +10,11 @@ MPNormal.prototype = {
 
 	preload: function () {
 		this.game.load.image('point', 'assets/sprites/game/multiplayer/pointMP.png');
-		this.game.load.image('tie', 'assets/sprites/menu/tie.png');
-		this.game.load.image('crown', 'assets/crown.png');
+		this.game.load.image('tie', 'assets/sprites/gui/hud/tie.png');
+		this.game.load.image('winner', 'assets/sprites/gui/hud/winner.png');
 		for (var i=0; i <= this.nPlayers; i++) {
 			this.game.load.image('player' + i, 'assets/sprites/game/multiplayer/player' + i +'.png');
 			this.game.load.image('crown' + i, 'assets/sprites/game/multiplayer/crown'+ i +'.png');
-			this.game.load.image('trail' + i, 'assets/sprites/game/multiplayer/trail'+ i +'.png');
 		}
 	},
 
