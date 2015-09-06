@@ -61,14 +61,31 @@ PowerUp.prototype = {
 			if (this.type == 'point') {
 				this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
 				this.game.add.tween(this.spriteTween.scale).to( {x:4, y:4}, 1000, Phaser.Easing.Linear.None, true);
-				powerText.setText(this.mode.score+1);
-				powerText.x = this.sprite.x;
-				powerText.y = this.sprite.y+2*scale;
+				if (this.mode.countPoints) {
+					powerText.setText(this.mode.score+1);
+					powerText.x = this.sprite.x;
+					powerText.y = this.sprite.y+2*scale;
+				}
+
+
 			} else if(this.mode.sp && (this.type == 'shrink')) {
 				this.game.add.tween(this.spriteTween).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
 				this.game.add.tween(this.spriteTween.scale).to( {x:2, y:2}, 1000, Phaser.Easing.Linear.None, true);
 			}
 		}
+	},
+
+	setPosition: function(x, y) {
+		this.sprite.x = x;
+		this.sprite.y = y;
+	},
+
+	setAlpha: function(a) {
+		this.sprite.alpha = a;
+	},
+
+	setScale: function(s) {
+		this.sprite.scale.setTo(s);
 	},
 
 	render: function () {

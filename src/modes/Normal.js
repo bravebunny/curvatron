@@ -6,6 +6,7 @@ var Normal = function(game) {
 	this.shrinkFreq = 5;
 	this.obstacleGroup = null;
 	this.cellSize = 64;
+	this.countPoints = true;
 };
 
 Normal.prototype = {

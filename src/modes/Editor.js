@@ -7,10 +7,12 @@ var Editor = function(game) {
 
 	this.maxPoints = 10;
 
-	this.tool = 0; //0=draw, 1=erase, 2=point
+	this.tool = 'draw'; //0=draw, 1=erase, 2=point
 	this.selectedPoint = 1;
 
 	this.tb = {};
+
+	this.points = [];
 };
 
 Editor.prototype = {
@@ -49,6 +51,11 @@ Editor.prototype = {
 		this.marker.lineStyle(2, 0x000000, 1);
 		this.marker.drawRect(0, 0, 22, 22);
 
+		this.selector = this.game.add.graphics();
+		this.selector.lineStyle(10, 0xFFFFFF, 1);
+		this.selector.drawRect(-60, -60, 120, 120);
+
+
 		this.map = this.game.add.tilemap('level1'); // Preloaded tilemap
 		this.map.addTilesetImage('Pastel'); // Preloaded tileset
 
@@ -65,60 +72,95 @@ Editor.prototype = {
 		this.tb.bg.alpha = 0.5;
 
 		//toolbar icons
-		this.tb.left = this.game.add.button(200, baseH+100, 'editorArrow', this.pointDec, this);
+		this.tb.left = this.game.add.button(100, baseH+100, 'editorArrow', this.pointDec, this);
 		this.tb.left.anchor.setTo(0.5, 0.5);
-		this.tb.left.scale.set(-0.5, 0.5);
+		this.tb.left.scale.set(-0.4, 0.4);
 
-		this.tb.point = this.game.add.button(300, baseH+100, 'editorPoint', this.pointTool, this);
-		this.tb.point.anchor.setTo(0.5, 0.5);
-		this.tb.point.scale.set(0.5);
+		this.tb.point = this.game.add.button(200, baseH+100, 'editorPoint', this.pointTool, this);
+		this.tb.point.anchor.setTo(0.5);
+		this.tb.point.scale.set(0.4);
+
+		this.tb.pointText = this.game.add.text(this.tb.point.x, this.tb.point.y, this.selectedPoint,{
+			font: "60px dosis",
+			fill: colorHexDark,
+			align: "center"
+		});
+		this.tb.pointText.anchor.setTo(0.5);
 
 		//toolbar icons
-		this.tb.right = this.game.add.button(400, baseH+100, 'editorArrow', this.pointInc, this);
+		this.tb.right = this.game.add.button(300, baseH+100, 'editorArrow', this.pointInc, this);
 		this.tb.right.anchor.setTo(0.5, 0.5);
-		this.tb.right.scale.set(0.5);
+		this.tb.right.scale.set(0.4);
 
-		this.tb.draw = this.game.add.button(700, baseH+100, 'editorDraw', this.drawTool, this);
+		this.tb.draw = this.game.add.button(450, baseH+100, 'editorDraw', this.drawTool, this);
 		this.tb.draw.anchor.setTo(0.5, 0.5);
-		this.tb.draw.scale.set(0.5);
+		this.tb.draw.scale.set(0.4);
 
-		this.tb.erase = this.game.add.button(1000, baseH+100, 'editorErase', this.eraseTool, this);
+		this.tb.erase = this.game.add.button(600, baseH+100, 'editorErase', this.eraseTool, this);
 		this.tb.erase.anchor.setTo(0.5, 0.5);
-		this.tb.erase.scale.set(0.5);
+		this.tb.erase.scale.set(0.4);
 
-		this.tb.erase = this.game.add.button(1300, baseH+100, 'editorStart', this.startTool, this);
-		this.tb.erase.anchor.setTo(0.5, 0.5);
-		this.tb.erase.scale.set(0.8);
+		this.tb.start = this.game.add.button(750, baseH+100, 'editorStart', this.startTool, this);
+		this.tb.start.anchor.setTo(0.5, 0.5);
+		this.tb.start.scale.set(0.6);
 
-		this.tb.erase = this.game.add.button(1600, baseH+100, 'editorSave', this.save, this);
-		this.tb.erase.anchor.setTo(0.5, 0.5);
-		this.tb.erase.scale.set(0.5);
+		this.tb.save = this.game.add.button(900, baseH+100, 'editorSave', this.save, this);
+		this.tb.save.anchor.setTo(0.5, 0.5);
+		this.tb.save.scale.set(0.4);
 	},
 
 	update: function() {
-		this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * 24;
-    this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * 24;
+		var pointerX = this.game.input.activePointer.worldX;
+		var pointerY = this.game.input.activePointer.worldY;
 
-		if (this.game.input.mousePointer.isDown) {
-			console.log(this.tool)
-			switch(this.tool) {
-				case 0: //draw
-					if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
-							this.map.putTile(this.tile, this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
-					}
-				break;
-
-				case 1: //erase
-					if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
-							this.map.removeTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
-					}
-				break;
-
-				case 2: //point
-				break;
+		for (var i = 0; i < this.maxPoints; i++) {
+			var point = this.points[i];
+			if (point) {
+				if (i == this.selectedPoint) {
+					point.setAlpha(1);
+					point.setScale(0.7);
+				} else {
+					point.setAlpha(0.3);
+					point.setScale(0.5);
+				}
 			}
+		}
 
-    }
+		this.selector.x = this.tb[this.tool].x;
+		this.selector.y = this.tb[this.tool].y;
+
+		if (pointerY < this.tb.bg.y) {
+			this.marker.x = this.layer.getTileX(pointerX) * 24;
+	    this.marker.y = this.layer.getTileY(pointerY) * 24;
+
+			if (this.game.input.mousePointer.isDown) {
+				console.log(this.tool)
+				switch(this.tool) {
+					case 'draw':
+						if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
+								this.map.putTile(this.tile, this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
+						}
+					break;
+
+					case 'erase':
+						if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
+								this.map.removeTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
+						}
+					break;
+
+					case 'point':
+						var x = this.marker.x + 12;
+						var y = this.marker.y + 12;
+						if (this.points[this.selectedPoint] == null) {
+							this.points[this.selectedPoint] = new PowerUp(this.game, 'point', this, x, y);
+							this.points[this.selectedPoint].create();
+						} else {
+							this.points[this.selectedPoint].setPosition(x, y);
+						}
+					break;
+				}
+	    }
+		}
 
 		/*if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
 			players[0].kill();
@@ -126,24 +168,33 @@ Editor.prototype = {
 	},
 
 	drawTool: function() {
-		this.tool = 0;
+		this.tool = 'draw';
 	},
 
 	eraseTool: function() {
-		this.tool = 1;
-		console.log(this.tool)
+		this.tool = 'erase';
 	},
 
 	pointTool: function() {
-		this.tool = 2;
+		this.tool = 'point';
 	},
 
 	pointDec: function() {
-		//this.tool = 'point';
+		if (this.selectedPoint > 1) {
+			this.selectedPoint--;
+		} else if (this.points.length > 0) {
+			this.selectedPoint = this.points.length;
+		}
+		this.tb.pointText.text = this.selectedPoint;
 	},
 
 	pointInc: function() {
-		//this.tool = 'point';
+		if (this.selectedPoint < this.points.length) {
+			this.selectedPoint++;
+		} else {
+			this.selectedPoint = 1;
+		}
+		this.tb.pointText.text = this.selectedPoint;
 	},
 
 	erasesTrail: function() {
