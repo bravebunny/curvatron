@@ -13,6 +13,11 @@ var Editor = function(game) {
 	this.tb = {};
 
 	this.points = [];
+
+	this.prevCursorX = 0;
+	this.prevCursorY = 0;
+
+	this.mouseWasDown = false;
 };
 
 Editor.prototype = {
@@ -41,19 +46,10 @@ Editor.prototype = {
 	},
 
 	create: function() {
+
 		this.obstacleGroup = this.game.add.group();
 		this.lastPoint = null;
 		this.player = players[0];
-
-		this.marker = this.game.add.graphics();
-    this.marker.lineStyle(2, 0xFFFFFF, 1);
-    this.marker.drawRect(0, 0, 24, 24);
-		this.marker.lineStyle(2, 0x000000, 1);
-		this.marker.drawRect(0, 0, 22, 22);
-
-		this.selector = this.game.add.graphics();
-		this.selector.lineStyle(10, 0xFFFFFF, 1);
-		this.selector.drawRect(-60, -60, 120, 120);
 
 
 		this.map = this.game.add.tilemap('level1'); // Preloaded tilemap
@@ -61,7 +57,6 @@ Editor.prototype = {
 
 		this.layer = this.map.createLayer('obstacles'); //layer[0]
 		this.map.setCollisionByExclusion([], true, this.layer);
-		this.tile = this.map.getTile(0, 0);
 
 		this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
@@ -107,6 +102,18 @@ Editor.prototype = {
 		this.tb.save = this.game.add.button(900, baseH+100, 'editorSave', this.save, this);
 		this.tb.save.anchor.setTo(0.5, 0.5);
 		this.tb.save.scale.set(0.4);
+
+		this.marker = this.game.add.graphics();
+		this.marker.lineStyle(2, 0xFFFFFF, 1);
+		this.marker.drawRect(0, 0, 24, 24);
+		this.marker.lineStyle(2, 0x000000, 1);
+		this.marker.drawRect(0, 0, 22, 22);
+
+		this.selector = this.game.add.graphics();
+		this.selector.lineStyle(10, 0xFFFFFF, 1);
+		this.selector.drawRect(-60, -60, 120, 120);
+
+
 	},
 
 	update: function() {
@@ -126,45 +133,74 @@ Editor.prototype = {
 			}
 		}
 
+		//square around selected tool in toolbar
 		this.selector.x = this.tb[this.tool].x;
 		this.selector.y = this.tb[this.tool].y;
 
 		if (pointerY < this.tb.bg.y) {
+			//cursor square to mark drawing position
 			this.marker.x = this.layer.getTileX(pointerX) * 24;
 	    this.marker.y = this.layer.getTileY(pointerY) * 24;
 
+			var x = this.marker.x + 12;
+			var y = this.marker.y + 12;
+
+			if (!this.mouseWasDown) {
+				this.prevCursorX = this.layer.getTileX(x);
+				this.prevCursorY = this.layer.getTileY(y);
+			}
+
 			if (this.game.input.mousePointer.isDown) {
-				console.log(this.tool)
-				switch(this.tool) {
-					case 'draw':
-						if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
-								this.map.putTile(this.tile, this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
-						}
-					break;
+				this.mouseWasDown = true;
+				var line = new Phaser.Line(this.prevCursorX, this.prevCursorY, this.layer.getTileX(x), this.layer.getTileY(y));
+				var linePoints = line.coordinatesOnLine();
+				this.prevCursorX = this.layer.getTileX(x);
+				this.prevCursorY = this.layer.getTileY(y);
 
-					case 'erase':
-						if (this.map.getTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.tile) {
-								this.map.removeTile(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
-						}
-					break;
 
-					case 'point':
-						var x = this.marker.x + 12;
-						var y = this.marker.y + 12;
-						if (this.points[this.selectedPoint] == null) {
-							this.points[this.selectedPoint] = new PowerUp(this.game, 'point', this, x, y);
-							this.points[this.selectedPoint].create();
-						} else {
-							this.points[this.selectedPoint].setPosition(x, y);
-						}
-					break;
+				for (var i = 0; i < linePoints.length; i++) {
+					tileX = linePoints[i][0];
+					tileY = linePoints[i][1];
+
+					switch(this.tool) {
+						case 'draw':
+							if (this.map.getTile(tileX, tileY) == null) {
+									this.map.putTile(0, tileX, tileY)
+							}
+						break;
+
+						case 'erase':
+							if (this.map.getTile(tileX, tileY) != null) {
+									this.map.removeTile(tileX, tileY)
+							}
+						break;
+
+						case 'point':
+
+							if (this.points[this.selectedPoint] == null) {
+								this.points[this.selectedPoint] = new PowerUp(this.game, 'point', this, x, y);
+								this.points[this.selectedPoint].create();
+							} else {
+								this.points[this.selectedPoint].setPosition(x, y);
+							}
+						break;
+
 				}
-	    }
+
+
+				}
+	    } else {
+				this.mouseWasDown = false;
+			}
 		}
 
 		/*if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
 			players[0].kill();
 		}*/
+	},
+
+	startTool: function() {
+		this.tool = 'start';
 	},
 
 	drawTool: function() {

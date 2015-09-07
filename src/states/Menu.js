@@ -137,10 +137,11 @@ menu.prototype = {
   },*/
 
   editor: function () {
-    numberPlayers = 0;
-    menuMusic.fadeOut(2000);
+    /*numberPlayers = 0;
     var mode = new Editor(this.game);
-    this.game.state.start("PreloadGame", true, false, mode);
+    this.game.state.start("PreloadGame", true, false, mode);*/
+    menuMusic.fadeOut(2000);
+    this.state.start("Editor2");
   },
 
 	singlePlayer: function () {

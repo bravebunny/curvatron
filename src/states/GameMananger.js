@@ -5,7 +5,7 @@ var gameMananger = function (game) {
 	this.ui = {};
 	this.mode = null;
 	colisionMargin = 20;
-}
+};
 
 gameMananger.prototype = {
 	init: function (mode) {

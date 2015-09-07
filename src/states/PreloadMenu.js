@@ -42,6 +42,9 @@ preloadMenu.prototype = {
 		this.game.load.image("aux-stat","assets/sprites/gui/stats/aux-stat.png");
 		this.game.load.image("survScore-stat","assets/sprites/gui/stats/endless-stat.png");
 
+		this.game.load.image('overlay', 'assets/sprites/game/overlay.png');
+
+
 		this.game.load.audio('dream', 'assets/music/dream.ogg');
 
 	},
