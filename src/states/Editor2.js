@@ -11,6 +11,7 @@ var editor2 = function(game) {
 	this.tb = {};
 
 	this.points = [];
+	this.pointsGrid = [];
 
 	this.prevCursorX = 0;
 	this.prevCursorY = 0;
@@ -184,6 +185,7 @@ editor2.prototype = {
 						break;
 
 						case 'point':
+							var newPoint = {x: this.layer.getTileX(x), y: this.layer.getTileX(y)};
 
 							if (this.points[this.selectedPoint] == null) {
 								this.points[this.selectedPoint] = this.game.add.sprite(x, y, 'point');
@@ -192,6 +194,8 @@ editor2.prototype = {
 							} else {
 								this.points[this.selectedPoint].position.set(x, y);
 							}
+							this.pointsGrid[this.selectedPoint] = [this.layer.getTileX(x), this.layer.getTileX(y)];
+
 						break;
 
 				}
@@ -263,7 +267,16 @@ editor2.prototype = {
 				else levelArray[x][y] = 0;
 			}
 		}
-		var blob = new Blob([JSON.stringify(levelArray, null, "ï»¿")], {type: "text/plain;charset=utf-8"});
+
+		var grid = this.pointsGrid;
+		console.log(grid)
+		for (var i = 1; i < grid.length; i++) {
+			var x = grid[i][0];
+			var y = grid[i][1];
+			levelArray[x][y] = i+1;
+		}
+
+		var blob = new Blob([JSON.stringify(levelArray, null)], {type: "text/plain;charset=utf-8"});
 		saveAs(blob, "curvatron_level.json");
 	}
 

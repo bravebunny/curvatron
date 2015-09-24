@@ -8,7 +8,7 @@ var Adventure = function(game) {
 	this.layer = null;
 	this.width = 1344;
 	this.height = 768;
-	this.pointPositions = null;
+	this.pointPositions = [];
 	this.level = 1;
 };
 
@@ -58,6 +58,13 @@ Adventure.prototype = {
 		for (var x = 0; x < this.map.width; x++) {
 			for (var y = 0; y < this.map.height; y++) {
 				if (levelArray[x][y] == 1) this.map.putTile(0, x, y);
+				else if (levelArray[x][y] > 1) {
+					this.pointPositions[levelArray[x][y] - 2] = {};
+					var point = this.pointPositions[levelArray[x][y] - 2];
+					point.x = x*24-12;
+					point.y = y*24-12;
+
+				}
 			}
 		}
 
@@ -71,8 +78,6 @@ Adventure.prototype = {
 		powerText.anchor.setTo(0.5,0.5);
 
 		//this.map.setCollisionByExclusion([], true, this.layer);
-
-		this.pointPositions = this.game.cache.getJSON('points');
 	},
 
 	update: function() {
