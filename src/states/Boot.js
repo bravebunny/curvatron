@@ -5,6 +5,7 @@ var boot = function (game) {
 	changeColor = false;
 	mute = false;
 	firstTime = true;
+	scale = 1;
 
 	menuArray = [];
 	selection = 0;

@@ -67,11 +67,11 @@ editor2.prototype = {
 
 		//toolbar icons
 		this.tb.left = this.game.add.button(100, baseH+100, 'editorArrow', this.pointDec, this);
-		this.tb.left.anchor.setTo(0.5, 0.5);
+		this.tb.left.anchor.set(0.5, 0.5);
 		this.tb.left.scale.set(-0.4, 0.4);
 
 		this.tb.point = this.game.add.button(200, baseH+100, 'editorPoint', this.pointTool, this);
-		this.tb.point.anchor.setTo(0.5);
+		this.tb.point.anchor.set(0.5);
 		this.tb.point.scale.set(0.4);
 
 		this.tb.pointText = this.game.add.text(this.tb.point.x, this.tb.point.y, this.selectedPoint,{
@@ -79,27 +79,27 @@ editor2.prototype = {
 			fill: colorHexDark,
 			align: "center"
 		});
-		this.tb.pointText.anchor.setTo(0.5);
+		this.tb.pointText.anchor.set(0.5);
 
 		//toolbar icons
 		this.tb.right = this.game.add.button(300, baseH+100, 'editorArrow', this.pointInc, this);
-		this.tb.right.anchor.setTo(0.5, 0.5);
+		this.tb.right.anchor.set(0.5, 0.5);
 		this.tb.right.scale.set(0.4);
 
 		this.tb.draw = this.game.add.button(450, baseH+100, 'editorDraw', this.drawTool, this);
-		this.tb.draw.anchor.setTo(0.5, 0.5);
+		this.tb.draw.anchor.set(0.5, 0.5);
 		this.tb.draw.scale.set(0.4);
 
 		this.tb.erase = this.game.add.button(600, baseH+100, 'editorErase', this.eraseTool, this);
-		this.tb.erase.anchor.setTo(0.5, 0.5);
+		this.tb.erase.anchor.set(0.5, 0.5);
 		this.tb.erase.scale.set(0.4);
 
 		this.tb.start = this.game.add.button(750, baseH+100, 'editorStart', this.startTool, this);
-		this.tb.start.anchor.setTo(0.5, 0.5);
+		this.tb.start.anchor.set(0.5, 0.5);
 		this.tb.start.scale.set(0.6);
 
 		this.tb.save = this.game.add.button(900, baseH+100, 'editorSave', this.save, this);
-		this.tb.save.anchor.setTo(0.5, 0.5);
+		this.tb.save.anchor.set(0.5, 0.5);
 		this.tb.save.scale.set(0.4);
 
 		this.marker = this.game.add.graphics();
@@ -123,11 +123,11 @@ editor2.prototype = {
 			var point = this.points[i];
 			if (point) {
 				if (i == this.selectedPoint) {
-					point.setAlpha(1);
-					point.setScale(0.7);
+					point.alpha = 1;
+					point.scale.set(0.7);
 				} else {
-					point.setAlpha(0.3);
-					point.setScale(0.5);
+					point.alpha = 0.3;
+					point.scale.set(0.5);
 				}
 			}
 		}
@@ -177,10 +177,10 @@ editor2.prototype = {
 						case 'point':
 
 							if (this.points[this.selectedPoint] == null) {
-								this.points[this.selectedPoint] = new PowerUp(this.game, 'point', this, x, y);
-								this.points[this.selectedPoint].create();
+								this.points[this.selectedPoint] = this.game.add.sprite(x, y, 'point');
+								this.points[this.selectedPoint].anchor.set(0.5);
 							} else {
-								this.points[this.selectedPoint].setPosition(x, y);
+								this.points[this.selectedPoint].position.set(x, y);
 							}
 						break;
 
