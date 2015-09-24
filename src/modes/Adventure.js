@@ -9,7 +9,7 @@ var Adventure = function(game) {
 	this.width = 1344;
 	this.height = 768;
 	this.pointPositions = null;
-	this.level = 4;
+	this.level = 1;
 };
 
 Adventure.prototype = {
@@ -23,8 +23,10 @@ Adventure.prototype = {
 		this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100);
 
 		this.game.load.image('Pastel', 'assets/levels/Pastel.png'); // loading the tileset image
-		this.game.load.tilemap('level', 'assets/levels/level' + this.level + '.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
+		this.game.load.tilemap('blank', 'assets/levels/blank.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
 		this.game.load.json('points', 'assets/levels/points' + this.level + '.json');
+		this.game.load.json('level', 'assets/levels/level' + this.level + '.json');
+
 
 	},
 
@@ -47,8 +49,17 @@ Adventure.prototype = {
 		this.score = 0;
 		spawnPowers = true;
 
-		this.map = this.game.add.tilemap('level'); // Preloaded tilemap
+		this.map = this.game.add.tilemap('blank');
 		this.map.addTilesetImage('Pastel'); // Preloaded tileset
+
+		var levelArray = this.game.cache.getJSON('level');
+		console.log(levelArray)
+
+		for (var x = 0; x < this.map.width; x++) {
+			for (var y = 0; y < this.map.height; y++) {
+				if (levelArray[x][y] == 1) this.map.putTile(0, x, y);
+			}
+		}
 
     this.layer = this.map.createLayer('obstacles'); //layer[0]
 

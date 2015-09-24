@@ -5,8 +5,6 @@ var editor2 = function(game) {
 	this.marker = null;
 	this.map = null;
 
-	this.maxPoints = 10;
-
 	this.tool = 'draw'; //0=draw, 1=erase, 2=point
 	this.selectedPoint = 1;
 
@@ -39,9 +37,7 @@ editor2.prototype = {
 		this.game.load.image('editorSave', 'assets/sprites/gui/editor/save.png');
 
 		this.game.load.image('Pastel', 'assets/levels/Pastel.png'); // loading the tileset image
-		this.game.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
-		this.game.load.json('points1', 'assets/levels/points1.json');
-
+		this.game.load.tilemap('level', 'assets/levels/blank.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
 
 	},
 
@@ -51,7 +47,7 @@ editor2.prototype = {
 		this.lastPoint = null;
 
 
-		this.map = this.game.add.tilemap('level1'); // Preloaded tilemap
+		this.map = this.game.add.tilemap('level'); // Preloaded tilemap
 		this.map.addTilesetImage('Pastel'); // Preloaded tileset
 
 		this.layer = this.map.createLayer('obstacles'); //layer[0]
@@ -119,7 +115,7 @@ editor2.prototype = {
 		var pointerX = this.game.input.activePointer.worldX;
 		var pointerY = this.game.input.activePointer.worldY;
 
-		for (var i = 0; i < this.maxPoints; i++) {
+		for (var i = 0; i < this.points.length; i++) {
 			var point = this.points[i];
 			if (point) {
 				if (i == this.selectedPoint) {
@@ -164,25 +160,27 @@ editor2.prototype = {
 					switch(this.tool) {
 						case 'draw':
 							if (this.map.getTile(tileX, tileY) == null) {
-									this.map.putTile(0, tileX, tileY)
+									this.map.putTile(0, tileX, tileY);
 							}
 						break;
 
 						case 'erase':
 							if (this.map.getTile(tileX, tileY) != null) {
-									this.map.removeTile(tileX, tileY)
+									this.map.removeTile(tileX, tileY);
 							}
-							for (var i = 0; i < this.points.length; i++) {
+							/*for (var i = 0; i < this.points.length; i++) {
 								if (this.points[i] && this.points[i].input.pointerOver()) {
 									this.points[i].destroy();
 									for (var e = i; e < this.points.length-1; e++) {
 										this.points[e] = this.points[e+1];
 									}
 									this.points = this.points.slice(0, -1);
-									this.pointDec();
-
+									if (this.selectedPoint >= i) {
+										this.pointDec();
+									}
+									break;
 								}
-							}
+							}*/
 						break;
 
 						case 'point':
@@ -191,7 +189,6 @@ editor2.prototype = {
 								this.points[this.selectedPoint] = this.game.add.sprite(x, y, 'point');
 								this.points[this.selectedPoint].anchor.set(0.5);
 								this.points[this.selectedPoint].inputEnabled = true;
-								console.log(this.points[this.selectedPoint].input)
 							} else {
 								this.points[this.selectedPoint].position.set(x, y);
 							}
@@ -245,16 +242,29 @@ editor2.prototype = {
 		this.tb.pointText.text = this.selectedPoint;
 	},
 
-	backPressed:function () {
+	backPressed:function() {
 		this.game.state.start("Menu");
 	},
 
-	left: function () {
+	left: function() {
 		this.pointDec();
 	},
 
-	right: function () {
+	right: function() {
 		this.pointInc();
 	},
+
+	save: function() {
+		var levelArray = [];
+		for (var x = 0; x < this.map.width; x++) {
+			levelArray[x] = [];
+			for (var y = 0; y < this.map.height; y++) {
+				if ((this.map.hasTile(x, y, 0))) levelArray[x][y] = 1;
+				else levelArray[x][y] = 0;
+			}
+		}
+		var blob = new Blob([JSON.stringify(levelArray, null, "ï»¿")], {type: "text/plain;charset=utf-8"});
+		saveAs(blob, "curvatron_level.json");
+	}
 
 };
