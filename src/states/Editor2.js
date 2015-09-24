@@ -172,6 +172,17 @@ editor2.prototype = {
 							if (this.map.getTile(tileX, tileY) != null) {
 									this.map.removeTile(tileX, tileY)
 							}
+							for (var i = 0; i < this.points.length; i++) {
+								if (this.points[i] && this.points[i].input.pointerOver()) {
+									this.points[i].destroy();
+									for (var e = i; e < this.points.length-1; e++) {
+										this.points[e] = this.points[e+1];
+									}
+									this.points = this.points.slice(0, -1);
+									this.pointDec();
+
+								}
+							}
 						break;
 
 						case 'point':
@@ -179,6 +190,8 @@ editor2.prototype = {
 							if (this.points[this.selectedPoint] == null) {
 								this.points[this.selectedPoint] = this.game.add.sprite(x, y, 'point');
 								this.points[this.selectedPoint].anchor.set(0.5);
+								this.points[this.selectedPoint].inputEnabled = true;
+								console.log(this.points[this.selectedPoint].input)
 							} else {
 								this.points[this.selectedPoint].position.set(x, y);
 							}
