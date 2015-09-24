@@ -169,6 +169,8 @@ editor2.prototype = {
 							if (this.map.getTile(tileX, tileY) != null) {
 									this.map.removeTile(tileX, tileY);
 							}
+
+							//TODO this seems to cause crashes
 							/*for (var i = 0; i < this.points.length; i++) {
 								if (this.points[i] && this.points[i].input.pointerOver()) {
 									this.points[i].destroy();

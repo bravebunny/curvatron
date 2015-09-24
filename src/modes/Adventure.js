@@ -77,7 +77,7 @@ Adventure.prototype = {
 		});
 		powerText.anchor.setTo(0.5,0.5);
 
-		//this.map.setCollisionByExclusion([], true, this.layer);
+		this.map.setCollisionByExclusion([], true, this.layer);
 	},
 
 	update: function() {
