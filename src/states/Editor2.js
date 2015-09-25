@@ -271,14 +271,13 @@ editor2.prototype = {
 		}
 
 		var grid = this.pointsGrid;
-		console.log(grid)
 		for (var i = 1; i < grid.length; i++) {
 			var x = grid[i][0];
 			var y = grid[i][1];
 			levelArray[x][y] = i+1;
 		}
 
-		var blob = new Blob([JSON.stringify(levelArray, null)], {type: "text/plain;charset=utf-8"});
+		var blob = new Blob([JSON.stringify(levelArray)], {type: "text/plain"});
 		saveAs(blob, "curvatron_level.json");
 	}
 
