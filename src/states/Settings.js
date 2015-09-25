@@ -76,11 +76,11 @@ settings.prototype = {
 	},
 
 	toggleFullscreen: function() {
-		if (typeof variable_here !== 'undefined') {
+		if (typeof require !== 'undefined') {
 			var gui = require('nw.gui');
 			var win = gui.Window.get();
 			win.toggleFullscreen();
-			this.updateScreenBUtton();
+			this.updateScreenButton();
 		}
 	},
 
