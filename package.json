@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "webexe_settings": {
     "linux-x32": false,
     "export_dir": "E:\\Desktop\\web2exe\\output",
@@ -64,3 +65,62 @@
   },
   "gypfile": true
 }
+=======
+    "webexe_settings": {
+        "linux-x32": false, 
+        "export_dir": "E:\\Desktop\\web2exe\\output", 
+        "windows-x64": false, 
+        "download_dir": "E:\\Desktop\\web2exe\\download", 
+        "nw_compression_level": 0, 
+        "mac-x32": false, 
+        "windows-x32": true, 
+        "mac-x64": false, 
+        "nw_version": "0.12.1", 
+        "force_download": false, 
+        "linux-x64": false
+    }, 
+    "single-instance": true, 
+    "description": "", 
+    "nodejs": true, 
+    "chromium-args": "--data-path='./saves/' --in-process-gpu --disable-transparency", 
+    "additional_trust_anchors": "", 
+    "js-flags": "", 
+    "user-agent": "", 
+    "inject-js-end": "", 
+    "keywords": [], 
+    "window": {
+        "fullscreen": false, 
+        "kiosk_emulation": false, 
+        "resizable": true, 
+        "show": true, 
+        "always-on-top": false, 
+        "frame": true, 
+        "title": "Curvatron", 
+        "kiosk": false, 
+        "height": 800, 
+        "exe_icon": "", 
+        "visible": true, 
+        "as_desktop": false, 
+        "width": 600, 
+        "position": "", 
+        "show_in_taskbar": false, 
+        "mac_icon": "", 
+        "transparent": false, 
+        "toolbar": true, 
+        "icon": ""
+    }, 
+    "version": "0.1.0", 
+    "snapshot": "", 
+    "node-main": "", 
+    "webkit": {
+        "page-cache": false, 
+        "java": false, 
+        "plugin": false
+    }, 
+    "inject-js-start": "", 
+    "node-remote": "", 
+    "main": "index.html", 
+    "app_name": "Curvatron", 
+    "name": "curvatron"
+}
+>>>>>>> origin/pc
