@@ -32,6 +32,7 @@ Adventure.prototype = {
 		//varialbes that need to be reset on startup
 		this.score = 0;
 		this.pointPositions = [];
+		this.player = players[0];
 
 		//redo bitmapData
 		delete bmd;
@@ -132,6 +133,8 @@ Adventure.prototype = {
 		if (this.score >= this.pointPositions.length-2) {
 			nextBallHigh = 1;
 		}
+
+		this.player.size += this.player.growth;
 
 		var ballsScore = parseInt(localStorage.getItem("ballsScore"));
 		if (isNaN(ballsScore)) {
