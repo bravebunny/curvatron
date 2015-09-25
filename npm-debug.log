@@ -1,0 +1,67 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/xicombd/.nvm/versions/node/v0.12.7/bin/node',
+1 verbose cli   '/Users/xicombd/.nvm/versions/node/v0.12.7/bin/npm',
+1 verbose cli   'i' ]
+2 info using npm@2.11.3
+3 info using node@v0.12.7
+4 verbose readDependencies loading dependencies from /Users/xicombd/Code/steam/curvatron/package.json
+5 warn package.json curvatron@0.1.0 No description
+6 warn package.json curvatron@0.1.0 No repository field.
+7 warn package.json curvatron@0.1.0 No README data
+8 warn package.json curvatron@0.1.0 No license field.
+9 verbose install where, deps [ '/Users/xicombd/Code/steam/curvatron',
+9 verbose install   [ 'nan', 'mocha', 'nw-gyp' ] ]
+10 verbose install where, peers [ '/Users/xicombd/Code/steam/curvatron', [] ]
+11 verbose installManyTop reading for lifecycle /Users/xicombd/Code/steam/curvatron/package.json
+12 info preinstall curvatron@0.1.0
+13 verbose installManyTop reading scoped package data from /Users/xicombd/Code/steam/curvatron/node_modules/mocha/package.json
+14 verbose installManyTop reading scoped package data from /Users/xicombd/Code/steam/curvatron/node_modules/nan/package.json
+15 verbose installManyTop reading scoped package data from /Users/xicombd/Code/steam/curvatron/node_modules/nw-gyp/package.json
+16 info package.json nw-gyp@0.12.4 No license field.
+17 info package.json mocha@1.21.4 No license field.
+18 verbose readDependencies loading dependencies from /Users/xicombd/Code/steam/curvatron/package.json
+19 verbose targetResolver reading package data from /Users/xicombd/Code/steam/curvatron/node_modules/mocha/package.json
+20 verbose targetResolver reading package data from /Users/xicombd/Code/steam/curvatron/node_modules/nan/package.json
+21 verbose targetResolver reading package data from /Users/xicombd/Code/steam/curvatron/node_modules/nw-gyp/package.json
+22 verbose targetResolver reading package data from /Users/xicombd/Code/steam/curvatron/node_modules/.bin/mocha/package.json
+23 verbose targetResolver reading package data from /Users/xicombd/Code/steam/curvatron/node_modules/.bin/nw-gyp/package.json
+24 verbose already installed skipping mocha@1.21.4 /Users/xicombd/Code/steam/curvatron
+25 verbose already installed skipping nw-gyp@^0.12.4 /Users/xicombd/Code/steam/curvatron
+26 verbose already installed skipping nan@2.0.8 /Users/xicombd/Code/steam/curvatron
+27 silly install resolved []
+28 info build /Users/xicombd/Code/steam/curvatron
+29 info linkStuff curvatron@0.1.0
+30 silly linkStuff curvatron@0.1.0 has /Users/xicombd/Code/steam as its parent node_modules
+31 verbose linkBins curvatron@0.1.0
+32 verbose linkMans curvatron@0.1.0
+33 verbose rebuildBundles curvatron@0.1.0
+34 verbose rebuildBundles [ '.bin', 'mocha', 'nan', 'nw-gyp' ]
+35 info install curvatron@0.1.0
+36 verbose unsafe-perm in lifecycle true
+37 info curvatron@0.1.0 Failed to exec install script
+38 verbose stack Error: curvatron@0.1.0 install: `node-gyp rebuild`
+38 verbose stack Exit status 1
+38 verbose stack     at EventEmitter.<anonymous> (/Users/xicombd/.nvm/versions/node/v0.12.7/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
+38 verbose stack     at EventEmitter.emit (events.js:110:17)
+38 verbose stack     at ChildProcess.<anonymous> (/Users/xicombd/.nvm/versions/node/v0.12.7/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+38 verbose stack     at ChildProcess.emit (events.js:110:17)
+38 verbose stack     at maybeClose (child_process.js:1015:16)
+38 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
+39 verbose pkgid curvatron@0.1.0
+40 verbose cwd /Users/xicombd/Code/steam/curvatron
+41 error Darwin 14.5.0
+42 error argv "/Users/xicombd/.nvm/versions/node/v0.12.7/bin/node" "/Users/xicombd/.nvm/versions/node/v0.12.7/bin/npm" "i"
+43 error node v0.12.7
+44 error npm  v2.11.3
+45 error code ELIFECYCLE
+46 error curvatron@0.1.0 install: `node-gyp rebuild`
+46 error Exit status 1
+47 error Failed at the curvatron@0.1.0 install script 'node-gyp rebuild'.
+47 error This is most likely a problem with the curvatron package,
+47 error not with npm itself.
+47 error Tell the author that this fails on your system:
+47 error     node-gyp rebuild
+47 error You can get their info via:
+47 error     npm owner ls curvatron
+47 error There is likely additional logging output above.
+48 verbose exit [ 1, true ]

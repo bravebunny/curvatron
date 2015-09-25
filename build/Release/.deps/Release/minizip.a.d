@@ -1,0 +1,1 @@
+cmd_Release/minizip.a := rm -f Release/minizip.a && ./gyp-mac-tool filter-libtool libtool  -static -o Release/minizip.a Release/obj.target/minizip/deps/zlib/contrib/minizip/ioapi.o Release/obj.target/minizip/deps/zlib/contrib/minizip/unzip.o Release/obj.target/minizip/deps/zlib/contrib/minizip/zip.o
