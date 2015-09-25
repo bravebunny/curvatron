@@ -1,11 +1,13 @@
 var preloadGame = function (game) {
 	this.game = game;
 	this.mode = null;
+	this.level = null;
 };
 
 preloadGame.prototype = {
-	init: function (mode) {
+	init: function (mode, level) {
 		this.mode = mode;
+		this.level = level;
 	},
 
 	preload: function () {
@@ -20,6 +22,10 @@ preloadGame.prototype = {
 
 		if (this.state.preload) {
 			this.state.preload();
+		}
+
+		if (this.level != null) {
+			this.game.load.json('level', 'assets/levels/level' + this.level + '.json');
 		}
 
     //Load all stuf from game

@@ -86,8 +86,8 @@ singlePlayer.prototype = {
 	adventure: function() {
 		numberPlayers = 0;
 		menuMusic.fadeOut(2000);
-		var mode = new Adventure(this.game);
-		this.game.state.start("PreloadGame", true, false, mode);
+		var mode = new Adventure(this.game, 1);
+		this.game.state.start("PreloadGame", true, false, mode, 1);
 	},
 
 	creative: function() {

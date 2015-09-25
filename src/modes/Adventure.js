@@ -2,17 +2,18 @@ var Adventure = function(game) {
 	this.sp = true;
 	this.game = game;
 	this.spawnPowers = true;
-	this.leaderboardID = modesLB[0];
-	this.score = 0;
 	this.map = null;
 	this.layer = null;
 	this.width = 1344;
 	this.height = 768;
-	this.pointPositions = [];
 	this.level = 1;
 };
 
 Adventure.prototype = {
+
+	init: function (level) {
+		this.level = level;
+	},
 
 	preload: function () {
 		setScreenFixed(baseW, baseH, this.game);
@@ -24,13 +25,14 @@ Adventure.prototype = {
 
 		this.game.load.image('Pastel', 'assets/levels/Pastel.png'); // loading the tileset image
 		this.game.load.tilemap('blank', 'assets/levels/blank.json', null, Phaser.Tilemap.TILED_JSON); // loading the tilemap file
-		this.game.load.json('points', 'assets/levels/points' + this.level + '.json');
-		this.game.load.json('level', 'assets/levels/level' + this.level + '.json');
-
 
 	},
 
 	create: function() {
+		//varialbes that need to be reset on startup
+		this.score = 0;
+		this.pointPositions = [];
+
 		//redo bitmapData
 		delete bmd;
 		bmd = this.game.add.bitmapData(this.game.width, this.game.height);
@@ -80,7 +82,7 @@ Adventure.prototype = {
 		this.map.setCollisionByExclusion([], true, this.layer);
 	},
 
-	update: function() {
+	update: function () {
 		if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
 			players[0].kill();
 		}
@@ -120,7 +122,16 @@ Adventure.prototype = {
 	collect: function (player, power) {
 
 		this.score++;
-		this.createPower();
+
+		if (this.score >= this.pointPositions.length) {
+			this.nextLevel();
+		} else {
+			this.createPower();
+		}
+
+		if (this.score >= this.pointPositions.length-2) {
+			nextBallHigh = 1;
+		}
 
 		var ballsScore = parseInt(localStorage.getItem("ballsScore"));
 		if (isNaN(ballsScore)) {
@@ -132,6 +143,11 @@ Adventure.prototype = {
 	createPower: function () {
 		var powerup = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y);
 		powerup.create();
+	},
+
+	nextLevel: function () {
+		var mode = new Adventure(this.game, this.level+1);
+		this.game.state.start("PreloadGame", true, false, mode, this.level+1);
 	}
 
 };
