@@ -15,7 +15,7 @@
     "single-instance": true, 
     "description": "", 
     "nodejs": true, 
-    "chromium-args": "", 
+    "chromium-args": "--data-path='./saves/' --in-process-gpu --disable-transparency", 
     "additional_trust_anchors": "", 
     "js-flags": "", 
     "user-agent": "", 
