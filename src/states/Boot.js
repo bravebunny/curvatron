@@ -24,6 +24,8 @@ boot.prototype = {
 		w2 = this.game.world.width/2;
 		h2 = this.game.world.height/2;
 
+		this.game.stage.disableVisibilityChange = true;
+
 		//Background colors
 		//[green, red, purple, blue]
 		bgColors = ['#76b83d', '#cf5e4f', '#805296', '#4c99b9'];
