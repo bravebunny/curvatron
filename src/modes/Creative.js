@@ -36,18 +36,6 @@ Creative.prototype = {
 
 		var png = this.game.canvas.toDataURL();
 		this.png = png.replace(/^data:image\/png;base64,/, "");
-		var fs = require("fs");
-		var path = require("path");
-		var process = require("process");
-
-		var root = path.dirname(process.execPath);
-		var savePath = root + '/tmp/screenshot.png';
-		fs.mkdir(root + "/tmp");
-
-		//Save
-		fs.writeFile(savePath, this.png, 'base64', function (err) {
-		    if (err) throw err;
-		});
 
 		var twitterAPI = require('node-twitter-api');
 		this.twitter = new twitterAPI({
