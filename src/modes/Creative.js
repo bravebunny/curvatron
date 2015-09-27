@@ -25,9 +25,43 @@ Creative.prototype = {
 	},
 
 	takeScreenShot: function() {
+
 		this.game.canvas.toBlob(function(blob) {
-	    saveAs(blob, "creative.png");
+
+	    //saveAs(blob, "creative.png");
 		});
+
+		var png = this.game.canvas.toDataURL();
+		png = png.replace(/^data:image\/png;base64,/, "");
+		var fs = require("fs");
+		var path = require("path");
+		var process = require("process");
+
+		var root = path.dirname(process.execPath);
+		var savePath = root + '/tmp/screenshot.png';
+		fs.mkdir(root + "/tmp");
+
+		//Save
+		fs.writeFile(savePath, png, 'base64', function (err) {
+		    if (err) throw err;
+		});
+
+
+
+		var Twitter = require('node-twitter');
+
+		var twitterRestClient = new Twitter.RestClient(
+				'NwssUgdW5A1dKhtzExUFc5AtQ',
+				'S4yhhvUDPKAEI4Wqwx9TCqLaQgsdcB8FjhPG6GyMLVK1xzgqeV',
+				'234170272-Qqcb4osrZo2Nb00dvQ9B8qzkFntiacQfDjmkTxca',
+				'NHzJE8Yek8xG8Dn28ZoGxxpKNJTDvpi6L2OLaguzDLN8t'
+		);
+
+		twitterRestClient.statusesUpdateWithMedia({
+			'status': 'I made art with #Curvatron',
+			'media[]': savePath
+		}, function(error, result) {});
+
 	},
 
 	update: function () {

@@ -146,6 +146,7 @@ menu.prototype = {
 
 	singlePlayer: function () {
 		this.state.start("SinglePlayer",true,false);
+
 	},
 
 	settings: function () {
