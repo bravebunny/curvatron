@@ -13,7 +13,7 @@ gameMananger.prototype = {
   },
 
   create: function () {
-    this.orientation = Math.abs(window.orientation) - 90 == 0 ? 'landscape' : 'portrait'
+    this.orientation = Math.abs(window.orientation) - 90 === 0 ? 'landscape' : 'portrait'
     scale = 1
     if (!this.mode.sp) {
       scale = (-1 / 24) * this.mode.nPlayers + 7 / 12
@@ -91,7 +91,7 @@ gameMananger.prototype = {
     bmd.smoothed = false
 
     var angle = 0
-    if (mobile && this.orientation == 'portrait') {
+    if (mobile && this.orientation === 'portrait') {
       angle = Math.PI / 2
     }
 
@@ -144,7 +144,7 @@ gameMananger.prototype = {
 
   update: function () {
     if (!paused) {
-      if (menuMusic.isPlaying && (menuMusic.volume == 1) && !gameOver && !mute) {
+      if (menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !mute) {
         menuMusic.fadeOut(2000)
       }
       totalTime += this.game.time.physicsElapsed
@@ -164,6 +164,8 @@ gameMananger.prototype = {
         }
 
       }
+    } else {
+      menuUpdate()
     }
 
     // Update players
@@ -292,47 +294,30 @@ gameMananger.prototype = {
       paused = true
       ui.overlay.inputEnabled = false
 
-      if (mobile) {
-        pauseSprite.alpha = 0
-      } else if (this.mode.sp && this.mode.leaderboardID) {
-        tempLabel.alpha = 0
-        tempLabelText.alpha = 0
-      }
-
       if (!this.mode.sp) {
         this.game.time.events.remove(this.powerTimer)
       }
 
-      ui.menu = this.add.button(w2, h2 - 150, 'resume_button')
-      ui.menu.anchor.setTo(0.5, 0.5)
-      ui.menu.scale.set(1, 1)
-      ui.menu.input.useHandCursor = true
-      clickButton(ui.menu, this.backPressed, this)
+      menuArray = []
 
-      ui.restart = this.add.button(w2 - 150, h2, 'restart_button')
-      ui.restart.anchor.setTo(0.5, 0.5)
-      ui.restart.scale.set(1, 1)
-      ui.restart.input.useHandCursor = true
-      clickButton(ui.restart, this.restart, this)
+      menuArray[0] = new Button(w2, 300, 'resume_button', 'resume', 0, this.backPressed, this, this.game)
+      menuArray[0].create()
 
-      ui.exit = this.add.button(w2, h2 + 150, 'exit_button')
-      ui.exit.anchor.setTo(0.5, 0.5)
-      ui.exit.scale.set(1, 1)
-      ui.exit.input.useHandCursor = true
-      clickButton(ui.exit, function () {this.state.start('Menu');}, this)
+      menuArray[1] = new Button(w2, 425, 'restart_button', 'restart', 1, this.restart, this, this.game)
+      menuArray[1].create()
+
+      menuArray[2] = new Button(w2, 550, 'exit_button', 'exit', 2, function () { this.state.start('Menu') }, this, this.game)
+      menuArray[2].create()
 
       if (mute) {
-        ui.audioButton = this.add.button(w2 + 150, h2, 'audiooff_button')
-        ui.audioButton.anchor.setTo(0.5, 0.5)
-        ui.audioButton.scale.set(1, 1)
-        ui.audioButton.input.useHandCursor = true
+        menuArray[3] = new Button(w2, 675, 'audiooff_button', 'unmute', 3, this.muteSound, this, this.game)
+        menuArray[3].create()
       } else {
-        ui.audioButton = this.add.button(w2 + 150, h2, 'audio_button')
-        ui.audioButton.anchor.setTo(0.5, 0.5)
-        ui.audioButton.scale.set(1, 1)
-        ui.audioButton.input.useHandCursor = true
+        menuArray[3] = new Button(w2, 675, 'audio_button', 'mute', 3, this.muteSound, this, this.game)
+        menuArray[3].create()
       }
-      clickButton(ui.audioButton, this.muteSound, this)
+
+      menuArray[0].select()
 
     } else { // unpause
       this.game.tweens.resumeAll()
