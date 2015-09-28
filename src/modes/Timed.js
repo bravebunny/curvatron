@@ -1,86 +1,84 @@
-var Timed = function(game) {
-	this.sp = true;
-	this.game = game;
-	this.spawnPowers = true;
-	this.leaderboardID = modesLB[0];
-	this.score = 0;
-};
+var Timed = function (game) {
+  this.sp = true
+  this.game = game
+  this.spawnPowers = true
+  this.leaderboardID = modesLB[0]
+  this.score = 0
+}
 
 Timed.prototype = {
+  preload: function () {
+    this.game.load.image('player0', 'assets/playerSingle.png')
+  },
 
-	preload: function () {
-		this.game.load.image('player0', 'assets/playerSingle.png');
-	},
+  create: function () {
+    this.score = 0
+    spawnPowers = true
 
-	create: function() {
-		this.score = 0;
-		spawnPowers = true;
+  },
 
-	},
+  update: function () {
+    if (this.score == 10) {
+    }
 
-	update: function() {
-		if(this.score == 10){
+  },
 
-		}
+  erasesTrail: function () {
+    return true
+  },
 
-	},
+  getScore: function () {
+    return this.score
+  },
 
-	erasesTrail: function () {
-		return true;
-	},
+  getHighScore: function () {
+    var score = parseInt(localStorage.getItem('highScore'))
+    if (isNaN(score)) {
+      return 0
+    } else {
+      return score
+    }
+  },
 
-	getScore: function () {
-		return this.score;
-	},
+  setScore: function (score) {
+    this.score = score
+  },
 
-	getHighScore: function () {
-		var score = parseInt(localStorage.getItem("highScore"));
-		if (isNaN(score)) {
-			return 0;
-		} else {
-			return score;
-		}
-	},
+  setHighScore: function (score) {
+    localStorage.setItem('highScore', score)
+  },
 
-	setScore: function (score) {
-		this.score = score;
-	},
+  submitScore: function () {
+    /*var params = Cocoon.Social.ScoreParams
+    if (this.score > this.getHighScore()) {
+    	this.setHighScore(this.score)
+    }
+    params.leaderboardID = this.leaderboardID
+    if (mobile && socialService && socialService.isLoggedIn()) {
+    	socialService.submitScore(this.score, null, params)
+    }*/
+  },
 
-	setHighScore: function (score) {
-		localStorage.setItem("highScore", score);
-	},
+  collect: function (player, power) {
+    this.score++
+    var highScore = this.getHighScore()
+    var powerup = new PowerUp(this.game, 'point', this)
+    powerup.create()
 
-	submitScore: function () {
-		/*var params = Cocoon.Social.ScoreParams;
-		if (this.score > this.getHighScore()) {
-			this.setHighScore(this.score);
-		}
-		params.leaderboardID = this.leaderboardID;
-		if (mobile && socialService && socialService.isLoggedIn()) {
-			socialService.submitScore(this.score, null, params);
-		}*/
-	},
+    if (((highScore % 10) == 9) && (highScore > 0)) {
+      var powerup = new PowerUp(this.game, 'shrink', this)
+      powerup.create()
+    }
 
-	collect: function (player, power) {
-		this.score++;
-		var highScore = this.getHighScore();
-		var powerup = new PowerUp(this.game, 'point', this);
-		powerup.create();
+    var ballsScore = parseInt(localStorage.getItem('ballsScore'))
+    if (isNaN(ballsScore)) {
+      ballsScore = 0
+    }
+    localStorage.setItem('ballsScore', ballsScore + 1)
 
-		if (((highScore % 10) == 9) && (highScore > 0)) {
-			var powerup = new PowerUp(this.game, "shrink", this);
-			powerup.create();
-		}
+    if ((nextBallHigh == 0) && (this.score == highScore - 1)) {
+      nextBallHigh = 1
+    }
+  }
 
-		var ballsScore = parseInt(localStorage.getItem("ballsScore"));
-		if (isNaN(ballsScore)) {
-			ballsScore = 0;
-		}
-		localStorage.setItem("ballsScore", ballsScore+1);
-
-		if ((nextBallHigh == 0) && (this.score == highScore-1)) {
-			nextBallHigh = 1;
-		}
-	}
-
-};
+}

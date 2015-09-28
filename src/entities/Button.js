@@ -57,7 +57,7 @@ Button.prototype = {
     // this.icon.hitArea = new Phaser.Rectangle(-80, -80, w, h)
     this.button.input.useHandCursor = true
 
-    // clickButton(this.button, this.callback, this.context, menuArray, this.index);
+    // clickButton(this.button, this.callback, this.context, menuArray, this.index)
     this.button.addChild(this.graphics)
     this.button.addChild(this.icon)
     this.button.addChild(this.label)
@@ -73,7 +73,7 @@ Button.prototype = {
       out: this.game.add.tween(s).to({ x: s.x, y: s.y }, tweenTime * 2, Phaser.Easing.Linear.None, false)
     }
 
-    //tween stuff
+    // tween stuff
     this.button.onInputOver.add(function () {
       selection = this.index
     }, this)
@@ -87,12 +87,12 @@ Button.prototype = {
 
     this.button.onInputOver.add(function () {
       this.tween.release.onComplete.active = true
-      // tweenOver.start()
+    // tweenOver.start()
     }, this)
 
     this.button.onInputOut.add(function () {
       this.tween.release.onComplete.active = false
-      // tweenOverOut.start()
+    // tweenOverOut.start()
     }, this)
 
     this.button.onInputDown.add(this.buttonDown, {
