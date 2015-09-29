@@ -1,3 +1,0 @@
-
-
-[2015-09-21 22:38:28] Loaded 0 apps from install folder "E:\Desktop\steam sdk\tools\ContentBuilder\builder\steamapps\appmanifest_*.acf".
