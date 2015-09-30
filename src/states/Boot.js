@@ -51,63 +51,10 @@ boot.prototype = {
 
     this.stage.smoothed = true
 
+    this.game.input.gamepad.start()
+    pad1 = this.game.input.gamepad.pad1
+
     this.state.start('PreloadMenu')
-
-    this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.down, this)
-    this.game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.up, this)
-
-    this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(this.left, this)
-    this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(this.right, this)
-
-    this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.selectPress, this)
-    this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onUp.add(this.selectRelease, this)
-
-    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.backPressed, this)
-
-    this.game.input.resetLocked = true
-
-  },
-
-  backPressed: function () {
-    if (this.state.states[this.game.state.current].backPressed) {
-      this.state.states[this.game.state.current].backPressed()
-    }
-  },
-
-  up: function () {
-    if (this.state.states[this.game.state.current].up) {
-      this.state.states[this.game.state.current].up()
-    }
-  },
-
-  down: function () {
-    if (this.state.states[this.game.state.current].down) {
-      this.state.states[this.game.state.current].down()
-    }
-  },
-
-  left: function () {
-    if (this.state.states[this.game.state.current].left) {
-      this.state.states[this.game.state.current].left()
-    }
-  },
-
-  right: function () {
-    if (this.state.states[this.game.state.current].right) {
-      this.state.states[this.game.state.current].right()
-    }
-  },
-
-  selectPress: function () {
-    if (this.state.states[this.game.state.current].selectPress) {
-      this.state.states[this.game.state.current].selectPress()
-    }
-  },
-
-  selectRelease: function () {
-    if (this.state.states[this.game.state.current].selectRelease) {
-      this.state.states[this.game.state.current].selectRelease()
-    }
   },
 
   resize: function () {

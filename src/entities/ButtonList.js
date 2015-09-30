@@ -6,6 +6,8 @@ var ButtonList = function (context, game) {
 
   this.selection = 0
   this.pressingSelect = false
+  this.pressingUp = false
+  this.pressingDown = false
 }
 
 ButtonList.prototype = {
