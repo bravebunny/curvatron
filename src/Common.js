@@ -94,39 +94,3 @@ function setScreenFixed (w, h, game) {
   w2 = w / 2
   h2 = h / 2
 }
-
-function menuUpdate () {
-  for (var i = 0; i < menuArray.length; i++) {
-    var b = menuArray[i]
-    if (i == selection && !b.selected) b.select()
-    else if (i != selection && b.selected) b.deselect()
-  }
-}
-
-function selectDown () {
-  if (!pressingSelect) {
-    var newS = (selection + 1) % menuArray.length
-    // menuArray[newS].button.onInputOver.dispatch()
-    selection = newS
-  }
-
-}
-
-function selectUp () {
-  if (!pressingSelect) {
-    var n = menuArray.length
-    var newS = (((selection - 1) % n) + n) % n
-    // menuArray[newS].button.onInputOver.dispatch()
-    selection = newS
-  }
-}
-
-function selectPress () {
-  pressingSelect = true
-  menuArray[selection].button.onInputDown.dispatch()
-}
-
-function selectRelease () {
-  pressingSelect = false
-  menuArray[selection].button.onInputUp.dispatch()
-}

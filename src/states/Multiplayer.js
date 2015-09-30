@@ -1,9 +1,10 @@
+/* global ButtonList, w2, MPNormal */
 var multiplayer = function (game) {
   this.title = null
   this.maxPlayers = 7
   this.nPlayers = 1
-  this.selection = 1
   this.playersButton = null
+  this.buttons = null
 }
 
 multiplayer.prototype = {
@@ -11,26 +12,23 @@ multiplayer.prototype = {
     this.title = this.game.add.text(w2, 100, 'multiplayer', {
       font: '150px dosis',
       fill: '#ffffff',
-    align: 'center'})
+      align: 'center'
+    })
     this.title.anchor.setTo(0.5, 0.5)
 
-    // menu buttons
-    menuArray[0] = new Button(w2, 300, null, '<    ' + (this.nPlayers + 1) + ' players    >', 0, this.right, this, this.game)
-    menuArray[0].create()
-    this.playersButton = menuArray[0]
+    this.buttons = new ButtonList(this, this.game)
 
-    menuArray[1] = new Button(w2, 425, 'accept_button', 'play', 1, this.play, this, this.game)
-    menuArray[1].create()
+    this.playersButton = this.buttons.add(null, '<    ' + (this.nPlayers + 1) + ' players    >', this.right)
+    this.buttons.add('accept_button', 'play', this.play)
+    this.buttons.add('back_button', 'back', this.backPressed)
 
-    menuArray[2] = new Button(w2, 550, 'back_button', 'back', 2, this.backPressed, this, this.game)
-    menuArray[2].create()
+    this.buttons.create()
 
-    menuArray[this.selection].button.onInputOver.dispatch()
-
+    this.buttons.select(1)
   },
 
   update: function () {
-    menuUpdate()
+    this.buttons.update()
   },
 
   play: function () {
@@ -43,7 +41,7 @@ multiplayer.prototype = {
   },
 
   left: function () {
-    if (this.nPlayers == 1) {
+    if (this.nPlayers === 1) {
       this.nPlayers = this.maxPlayers
     } else {
       this.nPlayers--
@@ -52,7 +50,7 @@ multiplayer.prototype = {
   },
 
   right: function () {
-    if (this.nPlayers == this.maxPlayers) {
+    if (this.nPlayers === this.maxPlayers) {
       this.nPlayers = 1
     } else {
       this.nPlayers++
@@ -61,19 +59,19 @@ multiplayer.prototype = {
   },
 
   up: function () {
-    selectUp()
+    this.buttons.selectUp()
   },
 
   down: function () {
-    selectDown()
+    this.buttons.selectDown()
   },
 
   selectPress: function () {
-    selectPress()
+    this.buttons.selectPress()
   },
 
   selectRelease: function () {
-    selectRelease()
-  },
+    this.buttons.selectRelease()
+  }
 
 }

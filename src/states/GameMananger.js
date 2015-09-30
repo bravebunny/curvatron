@@ -5,6 +5,7 @@ var gameMananger = function (game) {
   this.ui = {}
   this.mode = null
   colisionMargin = 20
+  this.buttons = null
 }
 
 gameMananger.prototype = {
@@ -60,7 +61,6 @@ gameMananger.prototype = {
         })
         tempLabelText.anchor.setTo(0.5, 0.5)
       }
-
     } else {
       ui.graphics.lineStyle(0)
       ui.graphics.beginFill(0x000000, 0.2)
@@ -76,13 +76,13 @@ gameMananger.prototype = {
     }
 
     /*pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this)
-  	pauseSprite.anchor.setTo(0.5, 0.5)
-  	pauseSprite.input.useHandCursor = true
-  	pauseSprite.scale.set(0.5)
+    pauseSprite.anchor.setTo(0.5, 0.5)
+    pauseSprite.input.useHandCursor = true
+    pauseSprite.scale.set(0.5)
 
-  	if (!this.mode.sp) {
-    	pauseSprite.position.set(w2, h2)
-    	pauseSprite.scale.set(0.8)
+    if (!this.mode.sp) {
+      pauseSprite.position.set(w2, h2)
+      pauseSprite.scale.set(0.8)
     }*/
 
     // create BitmapData
@@ -140,6 +140,24 @@ gameMananger.prototype = {
       menuMusic.volume = 1
     }
 
+    var audioButton, audioText
+    if (mute) {
+      audioButton = 'audiooff_button'
+      audioText = 'audio: off'
+    } else {
+      audioButton = 'audio_button'
+      audioText = 'audio: on'
+    }
+
+    this.buttons = new ButtonList(this, this.game)
+
+    this.buttons.add('resume_button', 'resume', this.backPressed)
+    this.buttons.add('restart_button', 'restart', this.restart)
+    this.ui.audioButton = this.buttons.add(audioButton, audioText, this.muteSound)
+    this.buttons.add('exit_button', 'exit', function () { this.state.start('Menu') })
+
+    this.buttons.create()
+    this.buttons.hide()
   },
 
   update: function () {
@@ -150,8 +168,8 @@ gameMananger.prototype = {
       totalTime += this.game.time.physicsElapsed
 
       /*if(!this.mode.gridIsFull()){
-      	this.mode.createPower("point")
-      	this.mode.createObstacle()
+        this.mode.createPower("point")
+        this.mode.createObstacle()
       }*/
 
       if (!gameOver) {
@@ -165,7 +183,7 @@ gameMananger.prototype = {
 
       }
     } else {
-      menuUpdate()
+      this.buttons.update()
     }
 
     // Update players
@@ -298,26 +316,8 @@ gameMananger.prototype = {
         this.game.time.events.remove(this.powerTimer)
       }
 
-      menuArray = []
-
-      menuArray[0] = new Button(w2, 300, 'resume_button', 'resume', 0, this.backPressed, this, this.game)
-      menuArray[0].create()
-
-      menuArray[1] = new Button(w2, 425, 'restart_button', 'restart', 1, this.restart, this, this.game)
-      menuArray[1].create()
-
-      menuArray[2] = new Button(w2, 550, 'exit_button', 'exit', 2, function () { this.state.start('Menu') }, this, this.game)
-      menuArray[2].create()
-
-      if (mute) {
-        menuArray[3] = new Button(w2, 675, 'audiooff_button', 'unmute', 3, this.muteSound, this, this.game)
-        menuArray[3].create()
-      } else {
-        menuArray[3] = new Button(w2, 675, 'audio_button', 'mute', 3, this.muteSound, this, this.game)
-        menuArray[3].create()
-      }
-
-      menuArray[0].select()
+      this.buttons.show()
+      this.buttons.select(0)
 
     } else { // unpause
       this.game.tweens.resumeAll()
@@ -333,10 +333,7 @@ gameMananger.prototype = {
 
       ui.overlay.inputEnabled = true
 
-      ui.menu.destroy()
-      ui.restart.destroy()
-      ui.exit.destroy()
-      ui.audioButton.destroy()
+      this.buttons.hide()
       paused = false
     }
 
@@ -361,10 +358,12 @@ gameMananger.prototype = {
 
   muteSound: function () {
     if (mute) {
-      this.ui.audioButton.loadTexture('audio_button')
+      this.ui.audioButton.setIcon('audio_button')
+      this.ui.audioButton.setText('audio: on ')
       mute = false
     } else {
-      this.ui.audioButton.loadTexture('audiooff_button')
+      this.ui.audioButton.setIcon('audiooff_button')
+      this.ui.audioButton.setText('audio: off')
       mute = true
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()
@@ -373,13 +372,29 @@ gameMananger.prototype = {
   },
 
   /*render: function(){
-  	players[0].render()
+    players[0].render()
   },*/
 
   shutdown: function () {
     for (var i = 0; i < players.length; i++) {
       players[i].clearInput()
     }
+  },
+
+  up: function () {
+    if (paused) this.buttons.selectUp()
+  },
+
+  down: function () {
+    if (paused) this.buttons.selectDown()
+  },
+
+  selectPress: function () {
+    if (paused) this.buttons.selectPress()
+  },
+
+  selectRelease: function () {
+    if (paused) this.buttons.selectRelease()
   },
 
   renderGroup: function (member) {

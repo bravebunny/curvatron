@@ -1,3 +1,6 @@
+/* global Phaser, maxPlayers:true, keys:true, menuMusic:true, setScreenFixed,
+baseH, changeColor:true, chosenColor:true, colorHex:true, bgColors,
+colorHexDark:true, bgColorsDark, bgColor:true, mute, w2, ButtonList */
 var menu = function (game) {
   maxPlayers = 7
   keys = [
@@ -8,10 +11,10 @@ var menu = function (game) {
     Phaser.Keyboard.M,
     Phaser.Keyboard.C,
     Phaser.Keyboard.R,
-    Phaser.Keyboard.U,]
+    Phaser.Keyboard.U]
   menuMusic = null
   this.ui = {}
-  this.selection = 0
+  this.buttons = null
 }
 
 menu.prototype = {
@@ -54,90 +57,26 @@ menu.prototype = {
     })
     ui.title.anchor.setTo(0.5, 0.5)
 
-    /*ui.beta = this.add.text(0,0, "BETA", {
-      font: "50px dosis",
-      fill: "#ffffff",
-      align: "center"
-    })
-    ui.beta.anchor.setTo(0.5,0.5);*/
+    this.buttons = new ButtonList(this, this.game)
 
-    // TODO PC leaderboards
-    /*ui.leaderboard = this.add.button(0,0,"leaderboard_button")
-    ui.leaderboard.anchor.setTo(0.5,0.5)
-    ui.leaderboard.input.useHandCursor = true
-    clickButton(ui.leaderboard, this.leaderboard, this);*/
+    this.buttons.add('singleplayer_button', 'single player', this.singlePlayer)
+    this.buttons.add('multiplayer_button', 'multiplayer', this.multiplayer)
+    this.buttons.add('stats_button', 'statistics', this.stats)
+    this.buttons.add('editor_button', 'editor', this.editor)
+    this.buttons.add('settings_button', 'settings', this.settings)
+    this.buttons.add('exit_button', 'exit', this.backPressed)
 
-    /*//Configure Keys
-    ui.keysButton = this.add.button(0,0,"setkeys_button")
-    ui.keysButton.anchor.setTo(0.5,0.5)
-    ui.keysButton.input.useHandCursor = true
-    clickButton(ui.keysButton, this.setKeys, this)
-
-  	//Stats
-  	ui.statsButton = this.add.button(0,0,"stats_button")
-		ui.statsButton.anchor.setTo(0.5,0.5)
-    ui.statsButton.input.useHandCursor = true
-    clickButton(ui.statsButton, this.stats, this)
-
-  	//Audio
-    if (mute) {
-    	ui.audioButton = this.add.button(0,0,"audiooff_button")
-  		ui.audioButton.anchor.setTo(0.5,0.5)
-      ui.audioButton.input.useHandCursor = true
-    } else {
-      ui.audioButton = this.add.button(0,0,"audio_button")
-      ui.audioButton.anchor.setTo(0.5,0.5)
-      ui.audioButton.input.useHandCursor = true
-    }
-
-    clickButton(ui.audioButton, this.muteSound, this);*/
-
-    menuArray = []
-
-    menuArray[0] = new Button(w2, 300, 'singleplayer_button', 'single player', 0, this.singlePlayer, this, this.game)
-    menuArray[0].create()
-
-    menuArray[1] = new Button(w2, 425, 'multiplayer_button', 'multiplayer', 1, this.multiplayer, this, this.game)
-    menuArray[1].create()
-
-    menuArray[2] = new Button(w2, 550, 'stats_button', 'statistics', 2, this.stats, this, this.game)
-    menuArray[2].create()
-
-    menuArray[3] = new Button(w2, 675, 'editor_button', 'editor', 3, this.editor, this, this.game)
-    menuArray[3].create()
-
-    menuArray[4] = new Button(w2, 800, 'settings_button', 'settings', 4, this.settings, this, this.game)
-    menuArray[4].create()
-
-    menuArray[5] = new Button(w2, 925, 'exit_button', 'exit', 5, this.backPressed, this, this.game)
-    menuArray[5].create()
-
-    selection = this.selection
-    menuArray[selection].select()
-
+    this.buttons.create()
+    this.buttons.select(0)
   },
 
   update: function () {
-    menuUpdate()
+    this.buttons.update()
   },
 
-  /*getAvatar: function () {
-    var loader = new Phaser.Loader(this.game)
-    loader.image('avatar',"http://placekitten.com/g/300/300")
-    loader.onLoadComplete.addOnce(function () {
-      console.log('avatar')
-      var ui = this.ui
-      ui.avatar = this.add.image(0, 0, 'avatar')
-      ui.avatar.width = 40
-      ui.avatar.height = 40
-      ui.avatar.anchor.set(0.5)
-      ui.loginText.setText("logout")
-    }.bind(this))
-    loader.start()
-  },*/
-
   editor: function () {
-    /*numberPlayers = 0
+    /*
+    numberPlayers = 0
     var mode = new Editor(this.game)
     this.game.state.start("PreloadGame", true, false, mode);*/
     menuMusic.fadeOut(2000)
@@ -146,7 +85,6 @@ menu.prototype = {
 
   singlePlayer: function () {
     this.state.start('SinglePlayer', true, false)
-
   },
 
   settings: function () {
@@ -166,19 +104,19 @@ menu.prototype = {
   },
 
   up: function () {
-    selectUp()
+    this.buttons.selectUp()
   },
 
   down: function () {
-    selectDown()
+    this.buttons.selectDown()
   },
 
   selectPress: function () {
-    selectPress()
+    this.buttons.selectPress()
   },
 
   selectRelease: function () {
-    selectRelease()
+    this.buttons.selectRelease()
   },
 
   backPressed: function () {

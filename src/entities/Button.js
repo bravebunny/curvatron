@@ -1,14 +1,15 @@
 /* global Phaser, colorHex */
-var Button = function (x, y, iconName, text, index, callback, context, game) {
-  this.x = x
-  this.y = y
+var Button = function (iconName, text, callback, buttonList, context, game) {
   this.text = text
   this.iconName = iconName
   this.callback = callback
   this.context = context
   this.game = game
-  this.index = index
+  this.buttonList = buttonList
 
+  this.x = null
+  this.y = null
+  this.index = null
   this.graphics = null
   this.label = null
   this.icon = null
@@ -75,7 +76,7 @@ Button.prototype = {
 
     // tween stuff
     this.button.onInputOver.add(function () {
-      selection = this.index
+      this.buttonList.selection = this.index
     }, this)
 
     this.tween.release.onComplete.add(function () {
@@ -116,7 +117,7 @@ Button.prototype = {
 
   select: function () {
     this.selected = true
-    selection = this.index
+    this.buttonList.selection = this.index
     this.tween.over.start()
   },
 
@@ -131,6 +132,23 @@ Button.prototype = {
 
   setText: function (text) {
     this.label.text = text
+  },
+
+  setPosition: function (x, y) {
+    this.x = x
+    this.y = y
+  },
+
+  setIndex: function (index) {
+    this.index = index
+  },
+
+  hide: function () {
+    this.button.visible = false
+  },
+
+  show: function () {
+    this.button.visible = true
   }
 
 }
