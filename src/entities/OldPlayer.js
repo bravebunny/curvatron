@@ -335,5 +335,10 @@ OldPlayer.prototype = {
     if (this.textTween) {
       this.textTween.resume()
     }
+  },
+
+    clearInput: function () {
+    this.game.input.keyboard.removeKey(this.key)
   }
+
 }
