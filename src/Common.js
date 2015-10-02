@@ -56,6 +56,10 @@ function shuffleArray (o) { // v1.0
   return o
 }
 
+function lerp (a, b, f) {
+    return a + f * (b - a)
+}
+
 function ajustScreen (game) {
   var winW = window.innerWidth
   var winH = window.innerHeight

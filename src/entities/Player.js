@@ -1,7 +1,7 @@
 /* global mobile, scale, w2, h2, groupPowers, borders, paused, Phaser
   totalTime, bmd, colisionMargin, gameOver, tempLabel, tempLabelText,
   pauseSprite, localStorage, mute, killSound, collectSound, players,
-  colorPlayers, moveSounds
+  colorPlayers, moveSounds, pauseTween:true
 */
 var Player = function (id, x, y, key, mode, game) {
   this.game = game
@@ -33,6 +33,7 @@ var Player = function (id, x, y, key, mode, game) {
   this.orientation = null
   this.playerMobileButton = null
   this.collectSemaphore = 0
+  this.eatenPoint = null
 }
 
 Player.prototype = {
@@ -174,6 +175,21 @@ Player.prototype = {
         this.kill()
       }
 
+      if (this.eatenPoint !== null) {
+        var point = this.eatenPoint
+        var player = this.sprite
+        var x = lerp(player.x, point.x, 0.85)
+        var y = lerp(player.y, point.y, 0.85)
+        this.eatenPoint.position.setTo(x, y)
+
+        //this.game.physics.arcade.moveToObject(this.eatenPoint, this.sprite)
+
+        if (this.game.physics.arcade.distanceBetween(this.eatenPoint, this.sprite) <= 1) {
+          this.eatenPoint = null
+        }
+      }
+
+      // player movement
       this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300 * this.speed * scale, this.sprite.body.velocity)
       this.sprite.body.angularVelocity = this.direction * 200 * this.angularVelocity * this.speed
       this.frameCount = (this.frameCount + 1) % 1 / (this.speed * scale)
@@ -210,14 +226,14 @@ Player.prototype = {
         }
       }
 
-      for (var i = 0; i < players.length; i++) {
+      for (i = 0; i < players.length; i++) {
         if (i !== this.id) {
           this.game.physics.arcade.overlap(this.sprite, players[i].sprite, this.kill, null, this)
         }
       }
 
-      var trailPiece = null
-      var ctx = bmd.context
+      trailPiece = null
+      ctx = bmd.context
 
       // erase trail from behind
       if (this.trailArray.length >= this.size && this.frameCount === 0 && this.trailArray[0] || this.dead) {
@@ -230,7 +246,7 @@ Player.prototype = {
               nRemove = 4
             }
           }
-          for (var i = 0; i < nRemove && this.trailArray.length > 0; i++) {
+          for (i = 0; i < nRemove && this.trailArray.length > 0; i++) {
             trailPiece = this.trailArray.shift()
             ctx.clearRect(trailPiece.x - 10 * scale, trailPiece.y - 10 * scale, 20 * scale, 20 * scale)
           }
@@ -256,13 +272,13 @@ Player.prototype = {
 
       // redraw erased trail
       if (trail[1]) {
-        var inBounds =
+        inBounds =
         trail[0].x < this.game.width &&
           trail[0].x > 0 &&
           trail[0].y < this.game.height &&
           trail[0].y > 0
         if (inBounds) {
-          var ctx = bmd.ctx
+          ctx = bmd.ctx
           if (this.mode.sp) {
             ctx.strokeStyle = '#FFFFFF'
           } else {
@@ -422,8 +438,10 @@ Player.prototype = {
         this.mode.collect(player, power, this)
       }
 
+      this.eatenPoint = power
+
       this.game.add.tween(power).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true)
-      var powerTween = this.game.add.tween(power.scale).to({x: 0, y: 0}, 300, Phaser.Easing.Back.In, true)
+      var powerTween = this.game.add.tween(power.scale).to({x: 0, y: 0}, 300, Phaser.Easing.Linear.None, true)
       powerTween.onComplete.add(function () {
         power.destroy()
         this.collectSemaphore = 0
@@ -445,7 +463,7 @@ Player.prototype = {
         this.keyText = this.game.add.text(keyX, keyY, String.fromCharCode(this.key), {
           font: '60px dosis',
           fill: '#ffffff',
-        align: 'center'})
+          align: 'center'})
         this.keyText.scale.set(scale)
         this.keyText.anchor.setTo(0.5, 0.5)
 
