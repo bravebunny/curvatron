@@ -1,4 +1,5 @@
-/* global mobile, scale, w2, h2, Phaser, groupPowers, powerText
+/* global mobile, scale, w2, h2, Phaser, groupPowers, powerText,
+nextBallHigh:true
 */
 var PowerUp = function (game, type, mode, x, y) {
   this.mode = mode

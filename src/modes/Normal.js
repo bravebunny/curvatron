@@ -1,3 +1,6 @@
+/* global points:true, modesLB, h2, w2, players, powerText:true, colorHex,
+shuffleArray, localStorage, nextBallHigh:true, scale, PowerUp, Phaser
+*/
 var Normal = function (game) {
   this.sp = true
   this.game = game
@@ -48,13 +51,12 @@ Normal.prototype = {
     this.pointsPow = shuffleArray(this.pointsPow)
 
     // create grid points
-    for (var i = 0; i < this.columns * 0.5; i++) {
-      for (var j = 0; j < this.rows * 0.5; j++) {
+    for (i = 0; i < this.columns * 0.5; i++) {
+      for (j = 0; j < this.rows * 0.5; j++) {
         this.pointsObs.push({x: i * 2, y: j * 2})
       }
     }
     this.pointsObs = shuffleArray(this.pointsObs)
-
   },
 
   update: function () {},
@@ -68,7 +70,7 @@ Normal.prototype = {
   },
 
   getHighScore: function () {
-    var score = parseInt(localStorage.getItem('highScore'))
+    var score = parseInt(localStorage.getItem('highScore'), 10)
     if (isNaN(score)) {
       return 0
     } else {
@@ -96,39 +98,39 @@ Normal.prototype = {
       this.pointsPow.push(point)
       this.pointsPow = shuffleArray(this.pointsPow)
 
-      if (point.x % 2 == 0 && point.y % 2 == 0) {
+      if (point.x % 2 === 0 && point.y % 2 === 0) {
         this.pointsObs.push(point)
         this.pointsObs = shuffleArray(this.pointsObs)
       }
 
-      if (this.getScore() % 5 == 4) {
+      if (this.getScore() % 5 === 4) {
         this.player.growth += 2
       }
     }
 
     var highScore = this.getHighScore()
 
-    if (powerSprite.name == 'point') {
+    if (powerSprite.name === 'point') {
       this.score++
       this.createPower('point')
 
-      // if (((this.score % this.shrinkFreq) == this.shrinkFreq-1) && (this.score > 0)) {
-      if (((this.score % this.shrinkFreq) == this.shrinkFreq - 1) && (this.score > 0)) {
+      // if (((this.score % this.shrinkFreq) === this.shrinkFreq-1) && (this.score > 0)) {
+      if (((this.score % this.shrinkFreq) === this.shrinkFreq - 1) && (this.score > 0)) {
         this.createPower('shrink')
       }
     }
 
-    var ballsScore = parseInt(localStorage.getItem('ballsScore'))
+    var ballsScore = parseInt(localStorage.getItem('ballsScore'), 10)
     if (isNaN(ballsScore)) {
       ballsScore = 0
     }
     localStorage.setItem('ballsScore', ballsScore + 1)
 
-    if ((nextBallHigh == 0) && (this.score == highScore - 1)) {
+    if ((nextBallHigh === 0) && (this.score === highScore - 1)) {
       nextBallHigh = 1
     }
 
-    if (powerSprite.name == 'shrink') {
+    if (powerSprite.name === 'shrink') {
       if (!this.gridIsFull()) {
         this.createObstacle()
       }
@@ -139,14 +141,12 @@ Normal.prototype = {
       this.shrink = null
     }
 
-    if (powerSprite.name == 'point') {
+    if (powerSprite.name === 'point') {
       this.player.size += this.player.growth
-
-    } else if (powerSprite.name == 'shrink') {
+    } else if (powerSprite.name === 'shrink') {
       this.player.shrink = true
       this.player.size = this.player.initialSize
     }
-
   },
 
   gridIsFull: function () {
@@ -178,7 +178,7 @@ Normal.prototype = {
     }
 
     var powerup = new PowerUp(this.game, type, this, x, y)
-    if (type == 'shrink') {
+    if (type === 'shrink') {
       this.shrink = powerup
     }
     powerup.create()
@@ -197,20 +197,21 @@ Normal.prototype = {
     var x = points.x * this.cellSize + this.marginX
     var y = points.y * this.cellSize + this.marginY
 
-    /*var x = rx*this.cellSize*2-w2*0.05
-    var y = ry*this.cellSize*2-h2*0.05;*/
+    /*
+    var x = rx*this.cellSize*2-w2*0.05
+    var y = ry*this.cellSize*2-h2*0.05
+    */
 
     var obstacle = this.game.add.sprite(x, y, 'obstacle')
     var tweenObstacle = this.game.add.sprite(x, y, 'obstacle')
     obstacle.scale.set(1.5)
     obstacle.alpha = 0
-    obstacle.anchor.setTo(.5, .5)
-    tweenObstacle.anchor.setTo(.5, .5)
+    obstacle.anchor.setTo(0.5, 0.5)
+    tweenObstacle.anchor.setTo(0.5, 0.5)
     tweenObstacle.scale.set(0.5)
     tweenObstacle.alpha = 0.0
 
     var obstacleTween1 = this.game.add.tween(obstacle.scale).to({x: 0.5, y: 0.5}, 4000, Phaser.Easing.Quadratic.In, true)
-    var obstacleTween2 = this.game.add.tween(obstacle).to({ alpha: 0.25 }, 2000, Phaser.Easing.Linear.None, true)
     var obstacleTween3 = this.game.add.tween(tweenObstacle.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Linear.None, false)
     var obstacleTween4 = this.game.add.tween(tweenObstacle).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, false)
     obstacleTween1.onComplete.add(function () {
@@ -234,14 +235,12 @@ Normal.prototype = {
     if (this.shrink && this.shrink.sprite && this.shrink.sprite.animations) {
       this.shrink.sprite.animations.paused = true
     }
-
   },
 
   unPause: function () {
     if (this.shrink && this.shrink.sprite && this.shrink.sprite.animations) {
       this.shrink.sprite.animations.paused = false
     }
-
   },
 
   render: function () {
