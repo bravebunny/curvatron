@@ -7,6 +7,7 @@ var OldSchool = function (game) {
   this.score = 0
   this.leaderboardID = modesLB[2]
   this.gridded = true
+  this.countPoints = true
 }
 
 OldSchool.prototype = {
