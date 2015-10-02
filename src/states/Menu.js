@@ -80,7 +80,7 @@ menu.prototype = {
     var mode = new Editor(this.game)
     this.game.state.start("PreloadGame", true, false, mode);*/
     menuMusic.fadeOut(2000)
-    this.state.start('Editor2')
+    this.state.start('Editor')
   },
 
   singlePlayer: function () {

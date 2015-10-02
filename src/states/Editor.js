@@ -1,18 +1,17 @@
-var Editor = function (game) {
+var editor = function (game) {
   this.sp = true
   this.game = game
   this.layer = null
   this.marker = null
   this.map = null
 
-  this.maxPoints = 10
-
-  this.tool = 'draw' // 0=draw, 1=erase, 2=point
+  this.tool = 'draw'; // 0=draw, 1=erase, 2=point
   this.selectedPoint = 1
 
   this.tb = {}
 
   this.points = []
+  this.pointsGrid = []
 
   this.prevCursorX = 0
   this.prevCursorY = 0
@@ -20,7 +19,7 @@ var Editor = function (game) {
   this.mouseWasDown = false
 }
 
-Editor.prototype = {
+editor.prototype = {
   preload: function () {
     setScreenFixed(baseW, baseH + 200, this.game)
 
@@ -36,24 +35,25 @@ Editor.prototype = {
     this.game.load.image('editorArrow', 'assets/sprites/gui/editor/arrow.png')
     this.game.load.image('editorStart', 'assets/sprites/gui/editor/start.png')
     this.game.load.image('editorSave', 'assets/sprites/gui/editor/save.png')
+    this.game.load.image('editorNewPage', 'assets/sprites/gui/editor/newPage.png')
+    this.game.load.image('editorExit', 'assets/sprites/gui/editor/exit.png')
 
     this.game.load.image('Pastel', 'assets/levels/Pastel.png') // loading the tileset image
-    this.game.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON) // loading the tilemap file
-    this.game.load.json('points1', 'assets/levels/points1.json')
+    this.game.load.tilemap('level', 'assets/levels/blank.json', null, Phaser.Tilemap.TILED_JSON) // loading the tilemap file
+
   },
 
   create: function () {
     this.obstacleGroup = this.game.add.group()
     this.lastPoint = null
-    this.player = players[0]
 
-    this.map = this.game.add.tilemap('level1') // Preloaded tilemap
+    this.map = this.game.add.tilemap('level') // Preloaded tilemap
     this.map.addTilesetImage('Pastel') // Preloaded tileset
 
-    this.layer = this.map.createLayer('obstacles') // layer[0]
+    this.layer = this.map.createLayer('obstacles'); // layer[0]
     this.map.setCollisionByExclusion([], true, this.layer)
 
-    this.game.canvas.oncontextmenu = function (e) { e.preventDefault() }
+    this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
     // toolbar background
     this.tb.bg = this.game.add.sprite(0, baseH, 'overlay')
@@ -63,11 +63,11 @@ Editor.prototype = {
 
     // toolbar icons
     this.tb.left = this.game.add.button(100, baseH + 100, 'editorArrow', this.pointDec, this)
-    this.tb.left.anchor.setTo(0.5, 0.5)
+    this.tb.left.anchor.set(0.5, 0.5)
     this.tb.left.scale.set(-0.4, 0.4)
 
     this.tb.point = this.game.add.button(200, baseH + 100, 'editorPoint', this.pointTool, this)
-    this.tb.point.anchor.setTo(0.5)
+    this.tb.point.anchor.set(0.5)
     this.tb.point.scale.set(0.4)
 
     this.tb.pointText = this.game.add.text(this.tb.point.x, this.tb.point.y, this.selectedPoint, {
@@ -75,28 +75,36 @@ Editor.prototype = {
       fill: colorHexDark,
       align: 'center'
     })
-    this.tb.pointText.anchor.setTo(0.5)
+    this.tb.pointText.anchor.set(0.5)
 
     // toolbar icons
     this.tb.right = this.game.add.button(300, baseH + 100, 'editorArrow', this.pointInc, this)
-    this.tb.right.anchor.setTo(0.5, 0.5)
+    this.tb.right.anchor.set(0.5, 0.5)
     this.tb.right.scale.set(0.4)
 
     this.tb.draw = this.game.add.button(450, baseH + 100, 'editorDraw', this.drawTool, this)
-    this.tb.draw.anchor.setTo(0.5, 0.5)
+    this.tb.draw.anchor.set(0.5, 0.5)
     this.tb.draw.scale.set(0.4)
 
     this.tb.erase = this.game.add.button(600, baseH + 100, 'editorErase', this.eraseTool, this)
-    this.tb.erase.anchor.setTo(0.5, 0.5)
+    this.tb.erase.anchor.set(0.5, 0.5)
     this.tb.erase.scale.set(0.4)
 
     this.tb.start = this.game.add.button(750, baseH + 100, 'editorStart', this.startTool, this)
-    this.tb.start.anchor.setTo(0.5, 0.5)
+    this.tb.start.anchor.set(0.5, 0.5)
     this.tb.start.scale.set(0.6)
 
     this.tb.save = this.game.add.button(900, baseH + 100, 'editorSave', this.save, this)
-    this.tb.save.anchor.setTo(0.5, 0.5)
+    this.tb.save.anchor.set(0.5, 0.5)
     this.tb.save.scale.set(0.4)
+
+    this.tb.newPage = this.game.add.button(1650, baseH + 100, 'editorNewPage', this.newPage, this)
+    this.tb.newPage.anchor.setTo(0.5, 0.5)
+    this.tb.newPage.scale.set(0.4)
+
+    this.tb.exit = this.game.add.button(1800, baseH + 100, 'editorExit', this.exit, this)
+    this.tb.exit.anchor.setTo(0.5, 0.5)
+    this.tb.exit.scale.set(0.8)
 
     this.marker = this.game.add.graphics()
     this.marker.lineStyle(2, 0xFFFFFF, 1)
@@ -107,21 +115,22 @@ Editor.prototype = {
     this.selector = this.game.add.graphics()
     this.selector.lineStyle(10, 0xFFFFFF, 1)
     this.selector.drawRect(-60, -60, 120, 120)
+
   },
 
   update: function () {
     var pointerX = this.game.input.activePointer.worldX
     var pointerY = this.game.input.activePointer.worldY
 
-    for (var i = 0; i < this.maxPoints; i++) {
+    for (var i = 0; i < this.points.length; i++) {
       var point = this.points[i]
       if (point) {
-        if (i === this.selectedPoint) {
-          point.setAlpha(1)
-          point.setScale(0.7)
+        if (i == this.selectedPoint) {
+          point.alpha = 1
+          point.scale.set(0.7)
         } else {
-          point.setAlpha(0.3)
-          point.setScale(0.5)
+          point.alpha = 0.3
+          point.scale.set(0.5)
         }
       }
     }
@@ -156,7 +165,7 @@ Editor.prototype = {
 
           switch (this.tool) {
             case 'draw':
-              if (this.map.getTile(tileX, tileY) === null) {
+              if (this.map.getTile(tileX, tileY) == null) {
                 this.map.putTile(0, tileX, tileY)
               }
               break
@@ -165,27 +174,47 @@ Editor.prototype = {
               if (this.map.getTile(tileX, tileY) != null) {
                 this.map.removeTile(tileX, tileY)
               }
+
+              // TODO this seems to cause crashes
+              /*for (var i = 0; i < this.points.length; i++) {
+              	if (this.points[i] && this.points[i].input.pointerOver()) {
+              		this.points[i].destroy()
+              		for (var e = i; e < this.points.length-1; e++) {
+              			this.points[e] = this.points[e+1]
+              		}
+              		this.points = this.points.slice(0, -1)
+              		if (this.selectedPoint >= i) {
+              			this.pointDec()
+              		}
+              		break
+              	}
+              }*/
               break
 
             case 'point':
+              var newPoint = {x: this.layer.getTileX(x), y: this.layer.getTileX(y)}
 
-              if (this.points[this.selectedPoint] === null) {
-                this.points[this.selectedPoint] = new PowerUp(this.game, 'point', this, x, y)
-                this.points[this.selectedPoint].create()
+              if (this.points[this.selectedPoint] == null) {
+                this.points[this.selectedPoint] = this.game.add.sprite(x, y, 'point')
+                this.points[this.selectedPoint].anchor.set(0.5)
+                this.points[this.selectedPoint].inputEnabled = true
               } else {
-                this.points[this.selectedPoint].setPosition(x, y)
+                this.points[this.selectedPoint].position.set(x, y)
               }
+              this.pointsGrid[this.selectedPoint] = [this.layer.getTileX(x), this.layer.getTileX(y)]
+
               break
+
           }
+
         }
       } else {
         this.mouseWasDown = false
       }
     }
 
-  /*
-  if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
-    players[0].kill()
+  /*if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
+  	players[0].kill()
   }*/
   },
 
@@ -223,12 +252,45 @@ Editor.prototype = {
     this.tb.pointText.text = this.selectedPoint
   },
 
-  erasesTrail: function () {
-    return true
+  backPressed: function () {
+    this.game.state.start('Menu')
   },
 
-  pause: function () {},
+  left: function () {
+    this.pointDec()
+  },
 
-  unPause: function () {}
+  right: function () {
+    this.pointInc()
+  },
+
+  save: function () {
+    var levelArray = []
+    for (var x = 0; x < this.map.width; x++) {
+      levelArray[x] = []
+      for (var y = 0; y < this.map.height; y++) {
+        if ( (this.map.hasTile(x, y, 0))) levelArray[x][y] = 1
+        else levelArray[x][y] = 0
+      }
+    }
+
+    var grid = this.pointsGrid
+    for (var i = 1; i < grid.length; i++) {
+      var x = grid[i][0]
+      var y = grid[i][1]
+      levelArray[x][y] = i + 1
+    }
+
+    var blob = new Blob([JSON.stringify(levelArray)], {type: 'text/plain'})
+    saveAs(blob, 'curvatron_level.json')
+  },
+
+  newPage: function () {
+    this.state.restart(true, false, this.mode)
+  },
+
+  exit: function () {
+    this.state.start('Menu')
+  }
 
 }
