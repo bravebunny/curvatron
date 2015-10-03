@@ -377,7 +377,7 @@ Player.prototype = {
 
   // do not work :(
   /*
-      else if(this.mode.leaderboardID === null){
+      else if(this.mode.leaderboardID == null){
         var x11 = w2*0.5 - 100 - 61, x22 = w2*0.5 - 100 + 61
 
          if (!(this.game.input.position.x > x11
@@ -551,7 +551,7 @@ Player.prototype = {
 
   // demo stuff
   moveRandom: function () {
-    if (this.randomTimer === null) {
+    if (this.randomTimer == null) {
       this.randomTimer = this.game.time.create(false)
       this.randomTimer.start()
     }
