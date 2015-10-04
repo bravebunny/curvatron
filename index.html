@@ -49,6 +49,14 @@
     var greenworks = require('./greenworks');
     greenworks.initAPI();
 
+    var gui = require('nw.gui')
+    var win = gui.Window.get()
+    if (localStorage.getItem('fullscreen') === 'false') {
+      win.leaveFullscreen()
+    } else {
+      win.enterFullscreen()
+    }
+
     /*baseW = 1366;
     baseH = 768;
     baseRatio = 1366/768;*/

@@ -68,6 +68,7 @@ settings.prototype = {
     var gui = require('nw.gui')
     var win = gui.Window.get()
     win.toggleFullscreen()
+    localStorage.setItem('fullscreen', win.isFullscreen)
     this.updateScreenButton()
   },
 
