@@ -20,7 +20,12 @@ settings.prototype = {
     this.buttons = new ButtonList(this, this.game)
 
     this.buttons.add('setkeys_button', 'controls', this.controls)
-    this.audio = this.buttons.add('audio_button', 'audio: on ', this.toggleAudio)
+    if (localStorage.getItem('mute') === 'false') {
+      this.audio = this.buttons.add('audio_button', 'audio: on ', this.toggleAudio)
+    }
+    else {
+      this.audio = this.buttons.add('audio_button', 'audio: off ', this.toggleAudio)
+    }
     this.fullscreen = this.buttons.add('fullscreen_button', 'fullscreen', this.toggleFullscreen)
     this.buttons.add('back_button', 'back', this.backPressed)
 
@@ -39,6 +44,7 @@ settings.prototype = {
 
   updateAudioButton: function () {
     if (!mute) {
+      localStorage.setItem('mute', false)
       this.audio.setIcon('audio_button')
       this.audio.setText('audio: on ')
       // this.game.sound.mute = false
@@ -51,6 +57,7 @@ settings.prototype = {
         menuMusic.play()
       }
     } else {
+      localStorage.setItem('mute', true)
       this.audio.setIcon('audiooff_button')
       this.audio.setText('audio: off')
       // this.game.sound.mute = true

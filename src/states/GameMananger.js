@@ -1,3 +1,4 @@
+/* mute */
 var gameMananger = function (game) {
   this.gameTime = 60 // sec
   this.initialTime = 0
@@ -360,10 +361,12 @@ gameMananger.prototype = {
     if (mute) {
       this.ui.audioButton.setIcon('audio_button')
       this.ui.audioButton.setText('audio: on ')
+      localStorage.setItem('mute', false)
       mute = false
     } else {
       this.ui.audioButton.setIcon('audiooff_button')
       this.ui.audioButton.setText('audio: off')
+      localStorage.setItem('mute', true)
       mute = true
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()

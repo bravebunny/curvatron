@@ -37,15 +37,16 @@ menu.prototype = {
     this.stage.backgroundColor = colorHex
     document.body.style.background = colorHex
 
-    if (!menuMusic && !mute) {
-      menuMusic = this.add.audio('dream')
-      menuMusic.loop = true
-      menuMusic.play()
-    } else if (!menuMusic.isPlaying && !mute) {
-      menuMusic.loop = true
-      menuMusic.play()
-      menuMusic.volume = 1
-    }
+    menuMusic = this.add.audio('dream')
+      if (!menuMusic && !mute) {
+        menuMusic.loop = true
+        menuMusic.play()
+      } else if (!menuMusic.isPlaying && !mute) {
+        menuMusic.loop = true
+        menuMusic.play()
+        menuMusic.volume = 1
+      }
+
 
     var ui = this.ui
 

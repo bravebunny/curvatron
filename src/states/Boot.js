@@ -3,7 +3,12 @@ var boot = function (game) {
   w2 = 0
   h2 = 0
   changeColor = false
-  mute = false
+  if (localStorage.getItem('mute') === 'false') {
+    mute = false
+  }
+  else {
+    mute = true
+  }
   firstTime = true
   scale = 1
 
