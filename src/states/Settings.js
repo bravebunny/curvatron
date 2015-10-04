@@ -10,7 +10,7 @@ var settings = function (game) {
 
 settings.prototype = {
   create: function () {
-    this.title = this.game.add.text(w2, 100, 'single player', {
+    this.title = this.game.add.text(w2, 100, 'settings', {
       font: '150px dosis',
       fill: '#ffffff',
       align: 'center'

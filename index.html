@@ -46,8 +46,8 @@
 
 (function() {
 
-    var greenworks = require('./greenworks');
-    greenworks.initAPI();
+    var greenworks = require('./greenworks')
+    greenworks.initAPI()
 
     var gui = require('nw.gui')
     var win = gui.Window.get()
@@ -57,39 +57,33 @@
       win.enterFullscreen()
     }
 
-    /*baseW = 1366;
-    baseH = 768;
-    baseRatio = 1366/768;*/
-    baseW = 1920;
-    baseH = 1080;
-    baseRatio = 1920/1080;
-    //baseArea = 1024*1024;
-    baseArea = 1440*1440;
+    baseW = 1920
+    baseH = 1080
+    baseRatio = 1920/1080
+    baseArea = 1440*1440
 
-    var winW = window.innerWidth;
-    var winH = window.innerHeight;
-    var winRatio = winW/winH;
-    mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    //mobile = true;
+    var winW = window.innerWidth
+    var winH = window.innerHeight
+    var winRatio = winW/winH
 
-    var height = Math.round(Math.sqrt(baseArea/winRatio));
-    var width =  Math.round(winRatio*height);
+    var height = Math.round(Math.sqrt(baseArea/winRatio))
+    var width =  Math.round(winRatio*height)
 
-    var game = new Phaser.Game(baseH, baseH, Phaser.CANVAS, "Curvatron");
-    game.state.add("Boot",boot);
-    game.state.add("PreloadMenu",preloadMenu);
-    game.state.add("Menu",menu);
-    game.state.add("Multiplayer",multiplayer);
-    game.state.add("SetKeys",setKeys);
-    game.state.add("Leaderboards",leaderboards);
-    game.state.add("Stats",stats);
-    game.state.add("Settings",settings);
-    game.state.add("SinglePlayer",singlePlayer);
-    game.state.add("PreloadGame",preloadGame);
-    game.state.add("GameMananger",gameMananger);
-    game.state.add("Editor",editor);
-    game.state.start("Boot");
-})();
+    var game = new Phaser.Game(baseH, baseH, Phaser.CANVAS, "Curvatron")
+    game.state.add("Boot",boot)
+    game.state.add("PreloadMenu",preloadMenu)
+    game.state.add("Menu",menu)
+    game.state.add("Multiplayer",multiplayer)
+    game.state.add("SetKeys",setKeys)
+    game.state.add("Leaderboards",leaderboards)
+    game.state.add("Stats",stats)
+    game.state.add("Settings",settings)
+    game.state.add("SinglePlayer",singlePlayer)
+    game.state.add("PreloadGame",preloadGame)
+    game.state.add("GameMananger",gameMananger)
+    game.state.add("Editor",editor)
+    game.state.start("Boot")
+})()
 
 </script>
 

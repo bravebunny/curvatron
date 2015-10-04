@@ -5,7 +5,7 @@
         "windows-x64": false, 
         "download_dir": "E:\\Desktop\\web2exe\\download", 
         "nw_compression_level": 0, 
-        "mac-x32": false, 
+        "mac-x32": true, 
         "windows-x32": true, 
         "mac-x64": false, 
         "nw_version": "0.12.1", 
@@ -22,7 +22,7 @@
     "inject-js-end": "", 
     "keywords": [], 
     "window": {
-        "fullscreen": false, 
+        "fullscreen": true, 
         "kiosk_emulation": false, 
         "resizable": true, 
         "show": true, 

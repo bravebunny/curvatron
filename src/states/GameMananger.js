@@ -1,3 +1,12 @@
+/*eslint-disable*/
+/* global leaderboardButton:true, moveSounds:true, tempLabel:true, bmd:true,
+menuMusic, pauseSprite, colisionMargin, scale:true, players:true, gameOver:true,
+muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
+colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
+collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
+colorHex, mobile, Player, keys, colorHexDark, bgColor:true, mute:true, ButtonList,
+clickButton, localStorage */
+/*eslint-enable*/
 var gameMananger = function (game) {
   this.gameTime = 60 // sec
   this.initialTime = 0
@@ -75,7 +84,8 @@ gameMananger.prototype = {
       }
     }
 
-    /*pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this)
+    /*
+    pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this)
     pauseSprite.anchor.setTo(0.5, 0.5)
     pauseSprite.input.useHandCursor = true
     pauseSprite.scale.set(0.5)
@@ -83,7 +93,8 @@ gameMananger.prototype = {
     if (!this.mode.sp) {
       pauseSprite.position.set(w2, h2)
       pauseSprite.scale.set(0.8)
-    }*/
+    }
+    */
 
     // create BitmapData
     bmd = this.add.bitmapData(this.game.width, this.game.height)
@@ -124,7 +135,7 @@ gameMananger.prototype = {
       this.createPower()
     }
 
-    for (var i = 0; i <= nPlayers; i++) {
+    for (i = 0; i <= nPlayers; i++) {
       players[i].create()
     }
 
@@ -167,10 +178,11 @@ gameMananger.prototype = {
       }
       totalTime += this.game.time.physicsElapsed
 
-      /*if(!this.mode.gridIsFull()){
+      /* for testing point placement
+      if(!this.mode.gridIsFull()){
         this.mode.createPower("point")
         this.mode.createObstacle()
-      }*/
+      } */
 
       if (!gameOver) {
         // Give crown
@@ -180,16 +192,16 @@ gameMananger.prototype = {
         if (this.mode.sp && players[0].dead) {
           this.endGame()
         }
-
       }
     } else {
       this.buttons.update()
     }
 
     // Update players
-    /*var ctx = bmd.ctx
+    /*
+    var ctx = bmd.ctx
     bmd.dirty = true
-    ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height);*/
+    ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height) */
     for (var i = 0; i < players.length; i++) {
       players[i].update()
     }
@@ -237,7 +249,7 @@ gameMananger.prototype = {
       mainMenu.scale.set(1, 1)
       mainMenu.anchor.setTo(0.5, 0.5)
       mainMenu.input.useHandCursor = true
-      clickButton(mainMenu, function () {this.state.start('Menu');}, this)
+      clickButton(mainMenu, function () { this.state.start('Menu') }, this)
 
       if (mobile) {
         pauseSprite.alpha = 0
@@ -318,7 +330,6 @@ gameMananger.prototype = {
 
       this.buttons.show()
       this.buttons.select(0)
-
     } else { // unpause
       this.game.tweens.resumeAll()
       ui.overlay.scale.set(0)
@@ -336,7 +347,6 @@ gameMananger.prototype = {
       this.buttons.hide()
       paused = false
     }
-
   },
 
   restart: function () {
@@ -372,9 +382,10 @@ gameMananger.prototype = {
     }
   },
 
-  /*render: function(){
+  /*
+  render: function(){
     players[0].render()
-  },*/
+  }, */
 
   shutdown: function () {
     for (var i = 0; i < players.length; i++) {

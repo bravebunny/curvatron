@@ -78,11 +78,6 @@ menu.prototype = {
   },
 
   editor: function () {
-    /*
-    numberPlayers = 0
-    var mode = new Editor(this.game)
-    this.game.state.start("PreloadGame", true, false, mode);*/
-    menuMusic.fadeOut(2000)
     this.state.start('Editor')
   },
 

@@ -60,7 +60,7 @@ function lerp (a, b, f) {
     return a + f * (b - a)
 }
 
-function ajustScreen (game) {
+function adjustScreen (game) {
   var winW = window.innerWidth
   var winH = window.innerHeight
   var winRatio = winW / winH

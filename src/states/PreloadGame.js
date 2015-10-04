@@ -1,3 +1,6 @@
+/*eslint-disable*/
+/* global Phaser, adjustScreen, w2, h2 */
+/*eslint-enable*/
 var preloadGame = function (game) {
   this.game = game
   this.mode = null
@@ -11,7 +14,7 @@ preloadGame.prototype = {
   },
 
   preload: function () {
-    ajustScreen(this.game)
+    adjustScreen(this.game)
 
     var loadingBar = this.add.sprite(w2, h2, 'loading')
     this.game.physics.enable(loadingBar, Phaser.Physics.ARCADE)
@@ -38,7 +41,6 @@ preloadGame.prototype = {
     this.game.load.audio('kill', 'assets/sfx/kill.ogg')
     this.game.load.audio('sfx_collect0', 'assets/sfx/collect0.ogg')
     this.mode.preload()
-
   },
 
   create: function () {
