@@ -1,4 +1,3 @@
-/* mute */
 var gameMananger = function (game) {
   this.gameTime = 60 // sec
   this.initialTime = 0
@@ -163,7 +162,7 @@ gameMananger.prototype = {
 
   update: function () {
     if (!paused) {
-      if (menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !mute) {
+      if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !mute) {
         menuMusic.fadeOut(2000)
       }
       totalTime += this.game.time.physicsElapsed
@@ -361,16 +360,15 @@ gameMananger.prototype = {
     if (mute) {
       this.ui.audioButton.setIcon('audio_button')
       this.ui.audioButton.setText('audio: on ')
-      localStorage.setItem('mute', false)
       mute = false
     } else {
       this.ui.audioButton.setIcon('audiooff_button')
       this.ui.audioButton.setText('audio: off')
-      localStorage.setItem('mute', true)
       mute = true
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()
       }
+      localStorage.setItem('mute', mute)
     }
   },
 

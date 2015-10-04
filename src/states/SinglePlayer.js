@@ -1,5 +1,7 @@
+/*eslint-disable*/
 /* global ButtonList, w2, numberPlayers:true, menuMusic, Normal, Endless,
 OldSchool, Adventure, Creative */
+/*eslint-enable*/
 var singlePlayer = function (game) {
   this.ui = {}
   this.bestScore = 0
@@ -55,14 +57,12 @@ singlePlayer.prototype = {
 
   playNormalGame: function () {
     numberPlayers = 0
-    menuMusic.fadeOut(2000)
     var mode = new Normal(this.game)
     this.game.state.start('PreloadGame', true, false, mode)
   },
 
   playEndlessGame: function () {
     numberPlayers = 0
-    menuMusic.fadeOut(2000)
     // var mode = new Creative(this.game)
     var mode = new Endless(this.game)
     this.game.state.start('PreloadGame', true, false, mode)
@@ -70,21 +70,18 @@ singlePlayer.prototype = {
 
   playOldSchoolGame: function () {
     numberPlayers = 0
-    menuMusic.fadeOut(2000)
     var mode = new OldSchool(this.game)
     this.game.state.start('PreloadGame', true, false, mode)
   },
 
   adventure: function () {
     numberPlayers = 0
-    menuMusic.fadeOut(2000)
     var mode = new Adventure(this.game, 1)
     this.game.state.start('PreloadGame', true, false, mode, 1)
   },
 
   creative: function () {
     numberPlayers = 0
-    menuMusic.fadeOut(2000)
     var mode = new Creative(this.game)
     this.game.state.start('PreloadGame', true, false, mode)
   },

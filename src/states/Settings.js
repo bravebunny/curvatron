@@ -1,4 +1,4 @@
-/* global ButtonList, w2, mute:true, menuMusic:true */
+/* global ButtonList, w2, mute:true, menuMusic:true, localStorage  */
 var settings = function (game) {
   this.game = game
   this.title = null
@@ -20,17 +20,15 @@ settings.prototype = {
     this.buttons = new ButtonList(this, this.game)
 
     this.buttons.add('setkeys_button', 'controls', this.controls)
-    if (localStorage.getItem('mute') === 'false') {
-      this.audio = this.buttons.add('audio_button', 'audio: on ', this.toggleAudio)
-    }
-    else {
-      this.audio = this.buttons.add('audio_button', 'audio: off ', this.toggleAudio)
-    }
+    this.audio = this.buttons.add('audio_button', 'audio: on ', this.toggleAudio)
     this.fullscreen = this.buttons.add('fullscreen_button', 'fullscreen', this.toggleFullscreen)
     this.buttons.add('back_button', 'back', this.backPressed)
 
     this.buttons.create()
     this.buttons.select(this.selection)
+
+    this.updateAudioButton()
+    this.updateScreenButton()
   },
 
   controls: function () {
@@ -39,12 +37,12 @@ settings.prototype = {
 
   toggleAudio: function () {
     mute = !mute
+    localStorage.setItem('mute', mute)
     this.updateAudioButton()
   },
 
   updateAudioButton: function () {
     if (!mute) {
-      localStorage.setItem('mute', false)
       this.audio.setIcon('audio_button')
       this.audio.setText('audio: on ')
       // this.game.sound.mute = false
@@ -57,7 +55,6 @@ settings.prototype = {
         menuMusic.play()
       }
     } else {
-      localStorage.setItem('mute', true)
       this.audio.setIcon('audiooff_button')
       this.audio.setText('audio: off')
       // this.game.sound.mute = true

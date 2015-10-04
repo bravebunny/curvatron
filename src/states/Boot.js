@@ -1,21 +1,17 @@
+/*eslint-disable*/
+/* global playCounter:true, w2:true, h2:true, changeColor:true, mute:true,
+firstTime:true, bgColors:true, bgColorsDark:true, Phaser, colorPlayers:true,
+colorHex:true, pad1:true, colorHexDark:true, baseArea:true, chosenColor:true
+modesLB:true, localStorage, scale:true */
+/*eslint-enable*/
 var boot = function (game) {
   playCounter = 0
   w2 = 0
   h2 = 0
   changeColor = false
-  if (localStorage.getItem('mute') === 'false') {
-    mute = false
-  }
-  else {
-    mute = true
-  }
+  mute = false
   firstTime = true
   scale = 1
-
-  menuArray = []
-  selection = 0
-  pressingSelect = false
-
 }
 
 boot.prototype = {
@@ -28,6 +24,10 @@ boot.prototype = {
     h2 = this.game.world.height / 2
 
     this.game.stage.disableVisibilityChange = true
+
+    if (localStorage.getItem('mute') === 'true') {
+      mute = true
+    }
 
     // Background colors
     // [green, red, purple, blue]
@@ -63,7 +63,7 @@ boot.prototype = {
   },
 
   resize: function () {
-    if ((this.state.current != 'GameMananger') && (this.state.current != 'PreloadMenu') && (this.state.current != 'PreloadGame')) {
+    if ((this.state.current !== 'GameMananger') && (this.state.current !== 'PreloadMenu') && (this.state.current !== 'PreloadGame')) {
       var winW = window.innerWidth
       var winH = window.innerHeight
       var winRatio = winW / winH

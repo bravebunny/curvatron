@@ -1,6 +1,8 @@
+/*eslint-disable*/
 /* global Phaser, maxPlayers:true, keys:true, menuMusic:true, setScreenFixed,
 baseH, changeColor:true, chosenColor:true, colorHex:true, bgColors,
 colorHexDark:true, bgColorsDark, bgColor:true, mute, w2, ButtonList */
+/*eslint-enable*/
 var menu = function (game) {
   maxPlayers = 7
   keys = [
@@ -14,7 +16,8 @@ var menu = function (game) {
     Phaser.Keyboard.U]
   menuMusic = null
   this.ui = {}
-  this.buttons = null
+
+  this.buttons = null; // eslint-disable-line
 }
 
 menu.prototype = {
@@ -37,16 +40,15 @@ menu.prototype = {
     this.stage.backgroundColor = colorHex
     document.body.style.background = colorHex
 
-    menuMusic = this.add.audio('dream')
-      if (!menuMusic && !mute) {
-        menuMusic.loop = true
-        menuMusic.play()
-      } else if (!menuMusic.isPlaying && !mute) {
-        menuMusic.loop = true
-        menuMusic.play()
-        menuMusic.volume = 1
-      }
-
+    if (!menuMusic && !mute) {
+      menuMusic = this.add.audio('dream')
+      menuMusic.loop = true
+      menuMusic.play()
+    } else if (menuMusic && !menuMusic.isPlaying && !mute) {
+      menuMusic.loop = true
+      menuMusic.play()
+      menuMusic.volume = 1
+    }
 
     var ui = this.ui
 
