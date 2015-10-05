@@ -212,7 +212,7 @@ Player.prototype = {
             }
           }
         }
-      } else if (this.trailArray.length > 0) {
+      } else if (this.trailArray.length > 1) {
         // move the head backwards when dead
         this.sprite.position.set(this.trailArray[len - 1].x, this.trailArray[len - 1].y)
       } else if (this.sprite !== null) {
