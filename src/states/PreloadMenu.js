@@ -93,6 +93,11 @@ preloadMenu.prototype = {
         this.game.state.start('Menu')
         this.game.input.keyboard.onUpCallback = null
       }.bind(this)
+
+      this.game.input.mouse.mouseUpCallback = function () {
+        this.game.state.start('Menu')
+        this.game.input.mouse.mouseUpCallback = null
+      }.bind(this)
     }, this)
   },
 
