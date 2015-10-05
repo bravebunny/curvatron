@@ -1,7 +1,8 @@
-/* global global Phaser, keys, mobile, scale, w2, h2, groupPowers, borders, paused,
+/*eslint-disable*/
+/* global global Phaser, keys, scale, w2, h2, groupPowers, borders, paused,
   totalTime, bmd, colisionMargin, gameOver, tempLabel, tempLabelText,
-  pauseSprite, localStorage, mute, killSound, collectSound, colorHexDark
-*/
+  pauseSprite, localStorage, mute, killSound, collectSound, colorHexDark */
+/*eslint-enable*/
 var OldPlayer = function (x, y, mode, game) {
   this.game = game
   this.mode = mode
@@ -30,7 +31,6 @@ var OldPlayer = function (x, y, mode, game) {
   this.showOneKey = true
   this.touch = null
   this.orientation = null
-  this.playerMobileButton = null
   this.color = Phaser.Color.hexToColor('#FFFFFF')
 }
 
@@ -44,27 +44,7 @@ OldPlayer.prototype = {
     this.lastTrailLength = this.growth
 
     // this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale
-
-    if (mobile) {
-      this.game.input.onDown.add(this.click, this)
-    } else if (mobile && !this.mode.sp) {
-      if (this.orientation === 'portrait') {
-        this.playerMobileButton = this.game.add.button(w2, this.y, 'overlay', null, this)
-        this.playerMobileButton.width = this.game.width
-        this.playerMobileButton.height = this.game.height / 2
-        this.playerMobileButton.onInputDown.add(this.click, this)
-      } else {
-        this.playerMobileButton = this.game.add.button(this.x, h2, 'overlay', null, this)
-        this.playerMobileButton.width = this.game.width / 2
-        this.playerMobileButton.height = this.game.height
-        this.playerMobileButton.onInputDown.add(this.click, this)
-      }
-      this.playerMobileButton.alpha = 0
-      this.playerMobileButton.anchor.setTo(0.5, 0.5)
-      this.playerMobileButton.input.useHandCursor = true
-    } else {
-      this.game.input.onDown.add(this.keyPressed, this)
-    }
+    this.game.input.onDown.add(this.keyPressed, this)
 
     this.showKey()
 
@@ -210,19 +190,8 @@ OldPlayer.prototype = {
       if (this.keyText.alpha === 1) {
         this.textTween = this.game.add.tween(this.keyText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
 
-        if (mobile) {
-          this.game.add.tween(this.touch).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true)
-          this.game.add.tween(this.touch).to({ y: this.touch.y + 100 }, 1000, Phaser.Easing.Circular.In, true)
-        }
-
-        if (!mobile) {
-          this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
-          this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
-        }
-
-        if (mobile && pauseSprite.alpha === 1) {
-          pauseTween = this.game.add.tween(pauseSprite).to({ alpha: 0.1 }, 2000, Phaser.Easing.Linear.None, true)
-        }
+        this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+        this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
       }
     }
   },
@@ -299,25 +268,6 @@ OldPlayer.prototype = {
         })
         this.keyText.scale.set(scale)
         this.keyText.anchor.setTo(0.5, 0.5)
-
-        if (mobile) {
-          this.keyText.setText(this.mode.getHighScore())
-          if (!this.mode.sp) {
-            this.keyText.visible = false
-          }
-        }
-      }
-
-      if (mobile) {
-        if (this.orientation === 'portrait') {
-          this.touch = this.game.add.sprite(w2, h2 * 1.5 + 100, 'touch')
-        } else {
-          this.touch = this.game.add.sprite(w2 * 0.5, h2 + 100, 'touch')
-        }
-        this.touch.anchor.setTo(0.5, 0.5)
-        this.touch.alpha = 0
-        this.game.add.tween(this.touch).to({ alpha: 1 }, 1000, Phaser.Easing.Linear.None, true)
-        this.game.add.tween(this.touch).to({ y: this.touch.y - 100 }, 1000, Phaser.Easing.Circular.Out, true)
       }
     }
   },
@@ -337,7 +287,7 @@ OldPlayer.prototype = {
     }
   },
 
-    clearInput: function () {
+  clearInput: function () {
     this.game.input.keyboard.removeKey(this.key)
   }
 

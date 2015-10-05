@@ -1,3 +1,12 @@
+/*eslint-disable*/
+/* global leaderboardButton:true, moveSounds:true, tempLabel:true, bmd:true,
+menuMusic, pauseSprite, colisionMargin, scale:true, players:true, gameOver:true,
+muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
+colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
+collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
+colorHex:true, keys, colorHexDark:true, bgColor:true, mute:true, ButtonList,
+clickButton, localStorage, PowerUp, OldPlayer, powerText:true, modesLB */
+/*eslint-enable*/
 var OldSchool = function (game) {
   this.sp = true
   this.game = game
@@ -23,17 +32,10 @@ OldSchool.prototype = {
     colorHex = '#8eb367'
     colorHexDark = '#475933'
 
-    if (!mobile) {
-      tempLabelText.style.fill = colorHex
-    }
     collectSound = this.game.add.audio('sfx_collectOld')
     killSound = this.game.add.audio('sfx_killOld')
 
     var textSize = 20
-    if (mobile) {
-      textSize = 30
-    }
-
     powerText = this.game.add.text(0, 0, '1', {
       font: '' + textSize + 'px dosis',
       fill: colorHex,
@@ -41,15 +43,9 @@ OldSchool.prototype = {
     })
     powerText.anchor.setTo(0.5, 0.5)
 
-    var orientation = Math.abs(window.orientation) - 90 == 0 ? 'landscape' : 'portrait'
-    var x, y
-    if (orientation == 'landscape' || !mobile) {
-      x = 1.5 * w2
-      y = h2
-    } else {
-      x = w2
-      y = h2 * 0.5
-    }
+    var x = 1.5 * w2
+    var y = h2
+
     this.score = 0
     this.player = new OldPlayer(x, y, this, this.game)
     this.player.create()
@@ -67,7 +63,7 @@ OldSchool.prototype = {
   },
 
   getHighScore: function () {
-    var score = parseInt(localStorage.getItem('oldSchool'))
+    var score = parseInt(localStorage.getItem('oldSchool'), 10)
     if (isNaN(score)) {
       return 0
     } else {
@@ -100,13 +96,13 @@ OldSchool.prototype = {
     var powerup = new PowerUp(this.game, 'point', this)
     powerup.create()
 
-    var ballsScore = parseInt(localStorage.getItem('ballsScore'))
+    var ballsScore = parseInt(localStorage.getItem('ballsScore'), 10)
     if (isNaN(ballsScore)) {
       ballsScore = 0
     }
     localStorage.setItem('ballsScore', ballsScore + 1)
 
-    if ((nextBallHigh == 0) && (this.score == highScore - 1)) {
+    if ((nextBallHigh === 0) && (this.score === highScore - 1)) {
       nextBallHigh = 1
     }
   }

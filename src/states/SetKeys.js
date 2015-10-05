@@ -1,3 +1,6 @@
+/*eslint-disable*/
+/* global keys, colorHex, clickButton, maxPlayers, w2, h2 */
+/*eslint-enable*/
 var setKeys = function (game) {
   this.ui = {}
   this.selectedPlayer = 0
@@ -28,12 +31,12 @@ setKeys.prototype = {
     ui.leftArrow = this.game.add.button(0, 0, 'set_players', this.DecSelected, this)
     ui.leftArrow.anchor.setTo(0.5, 0.5)
     ui.leftArrow.scale.x = -1
-    ui.leftArrow.alpha = .7
+    ui.leftArrow.alpha = 0.7
     ui.leftArrow.input.useHandCursor = true
 
     ui.rightArrow = this.game.add.button(0, 0, 'set_players', this.IncSelected, this)
     ui.rightArrow.anchor.setTo(0.5, 0.5)
-    ui.rightArrow.alpha = .7
+    ui.rightArrow.alpha = 0.7
     ui.rightArrow.input.useHandCursor = true
 
     // key select button
@@ -63,7 +66,7 @@ setKeys.prototype = {
   },
 
   DecSelected: function () {
-    if (this.selectedPlayer == 0) {
+    if (this.selectedPlayer === 0) {
       this.selectedPlayer = maxPlayers
     } else {
       this.selectedPlayer--
@@ -73,7 +76,7 @@ setKeys.prototype = {
   },
 
   IncSelected: function () {
-    if (this.selectedPlayer == maxPlayers) {
+    if (this.selectedPlayer === maxPlayers) {
       this.selectedPlayer = 0
     } else {
       this.selectedPlayer++
@@ -83,7 +86,7 @@ setKeys.prototype = {
   },
 
   onPressed: function () {
-    if (this.game.input.keyboard.lastKey.keyCode >= 48 && this.game.input.keyboard.lastKey.keyCode <= 90 && this.state.current == 'SetKeys') {
+    if (this.game.input.keyboard.lastKey.keyCode >= 48 && this.game.input.keyboard.lastKey.keyCode <= 90 && this.state.current === 'SetKeys') {
       keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode
       this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]))
     }
@@ -93,12 +96,6 @@ setKeys.prototype = {
     var ui = this.ui
 
     ui.title.position.set(w2, h2 * 0.3)
-    var wOrientation = Math.abs(window.orientation) - 90 == 0 ? 'landscape' : 'portrait'
-    if (wOrientation == 'portrait' && mobile) {
-      ui.title.scale.set(0.7, 0.7)
-    } else {
-      ui.title.scale.set(1, 1)
-    }
 
     ui.playersAuxButton.position.set(w2, h2 - 80)
     ui.textPlayers.position.set(w2, h2 - 20)

@@ -1,4 +1,4 @@
-/* global mobile, scale, w2, h2, Phaser, groupPowers, powerText,
+/* global scale, w2, h2, Phaser, groupPowers, powerText,
 nextBallHigh:true
 */
 var PowerUp = function (game, type, mode, x, y) {
@@ -27,11 +27,7 @@ PowerUp.prototype = {
           this.size = 4
         }
       } else {
-        if (mobile) {
-          this.size = 1.5
-        } else {
-          this.size = 1
-        }
+        this.size = 1
       }
     }
 

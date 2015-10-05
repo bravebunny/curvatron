@@ -1,3 +1,7 @@
+/*eslint-disable*/
+/* global spawnPowers:true, powerText:true, players, totalTime, PowerUp, w2,
+h2, colorPlayers */
+/*eslint-enable*/
 var MPNormal = function (nPlayers, game) {
   this.game = game
   this.nPlayers = nPlayers
@@ -24,9 +28,6 @@ MPNormal.prototype = {
     this.highScore = 0
     spawnPowers = true
     var textSize = 15
-    if (mobile) {
-      textSize = 30
-    }
 
     powerText = this.game.add.text(0, 0, '1', {
       font: '' + textSize + 'px dosis',
@@ -37,7 +38,7 @@ MPNormal.prototype = {
   },
 
   update: function () {
-    if (this.crowned != -1) {
+    if (this.crowned !== -1) {
       players[this.crowned].addCrown()
     }
     if (this.manager.gameTime >= (totalTime)) {
@@ -76,9 +77,7 @@ MPNormal.prototype = {
       }
       this.lastCrowned = this.crowned
       this.crowned = player.id
-
     }
-
   },
 
   kill: function () {
@@ -90,17 +89,17 @@ MPNormal.prototype = {
     }
 
     var newMax = 0
-    for (var i = 0; i < players.length; i++) {
-      if (players.length - alreadyDead == 1 && i != this.id && !players[i].dead) {
+    for (i = 0; i < players.length; i++) {
+      if (players.length - alreadyDead === 1 && i !== this.id && !players[i].dead) {
         newMax = players[i].size
         this.crowned = i
-      } else if (i != this.id && players[i].size > newMax && !players[i].dead) {
+      } else if (i !== this.id && players[i].size > newMax && !players[i].dead) {
         newMax = players[i].size
         this.crowned = i
       }
     }
 
-    if (this.crowned != -1 && players[this.crowned].dead) {
+    if (this.crowned !== -1 && players[this.crowned].dead) {
       this.crowned = -1
       this.highScore = 0
     }
@@ -112,10 +111,9 @@ MPNormal.prototype = {
   },
 
   endGame: function () {
-    if (this.crowned == -1) {
+    if (this.crowned === -1) {
       var tie = this.game.add.sprite(w2, h2 + 150, 'tie')
       tie.anchor.setTo(0.5, 0.5)
-
     } else {
       var winnerFill = this.game.add.sprite(w2 - 75, h2 + 97, 'player' + players[this.crowned].id)
       winnerFill.scale.set(5)
@@ -139,6 +137,5 @@ MPNormal.prototype = {
 
   setHighScore: function (score) {
     this.highScore = score
-  },
-
+  }
 }

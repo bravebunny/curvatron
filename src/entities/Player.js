@@ -1,8 +1,10 @@
-/* global mobile, scale, w2, h2, groupPowers, borders, paused, Phaser
+/*eslint-disable*/
+/* global scale, w2, h2, groupPowers, borders, paused, Phaser
   totalTime, bmd, colisionMargin, gameOver, tempLabel, tempLabelText,
   pauseSprite, localStorage, mute, killSound, collectSound, players,
-  colorPlayers, moveSounds, pauseTween:true
+  colorPlayers, moveSounds, pauseTween:true, lerp
 */
+/*eslint-enable*/
 var Player = function (id, x, y, key, mode, game) {
   this.game = game
   this.mode = mode
@@ -29,9 +31,6 @@ var Player = function (id, x, y, key, mode, game) {
   this.showOneKey = true
   this.shrink = false
   this.shrinkAmount = 200
-  this.touch = null
-  this.orientation = null
-  this.playerMobileButton = null
   this.collectSemaphore = 0
   this.eatenPoint = null
 }
@@ -63,24 +62,7 @@ Player.prototype = {
 
     this.sprite.body.angularVelocity = this.direction * 200 * this.angularVelocity * this.speed * scale
 
-    if (mobile && this.mode.sp) {
-      this.game.input.onDown.add(this.click, this)
-    } else if (mobile && !this.mode.sp) {
-      if (this.orientation === 'portrait') {
-        this.playerMobileButton = this.game.add.button(w2, this.y, 'overlay', null, this)
-        this.playerMobileButton.width = this.game.width
-        this.playerMobileButton.height = this.game.height / 2
-        this.playerMobileButton.onInputDown.add(this.click, this)
-      } else {
-        this.playerMobileButton = this.game.add.button(this.x, h2, 'overlay', null, this)
-        this.playerMobileButton.width = this.game.width / 2
-        this.playerMobileButton.height = this.game.height
-        this.playerMobileButton.onInputDown.add(this.click, this)
-      }
-      this.playerMobileButton.alpha = 0
-      this.playerMobileButton.anchor.setTo(0.5, 0.5)
-      this.playerMobileButton.input.useHandCursor = true
-    } else if (!mobile && this.mode.sp) {
+    if (this.mode.sp) {
       this.game.input.onDown.add(this.keyPressed, this)
     }
 
@@ -105,17 +87,30 @@ Player.prototype = {
     }
 
     if (!this.paused) {
+      var ctx = bmd.ctx
+
+      // erase trail from front
+      if (this.dead && this.frameCount === 0 && this.trailArray[0]) {
+        var trailEnd = this.trailArray.pop()
+        ctx.clearRect(trailEnd.x - 10 * scale, trailEnd.y - 10 * scale, 20 * scale, 20 * scale)
+
+      /*
+      if (this.trailArray.length > 0) {
+        trailPiece = this.trailArray[this.trailArray.length -1]
+        bmd.draw(this.trail, trailPiece.x, trailPiece.y)
+      }*/
+      }
+
       // TODO prevent lines crossing the screen
       // Draw trail bmd line
       var inBounds =
       this.sprite.x < this.game.width + 8 * scale &&
-        this.sprite.x > -8 * scale &&
-        this.sprite.y < this.game.height + 8 * scale &&
-        this.sprite.y > -8 * scale
+      this.sprite.x > -8 * scale &&
+      this.sprite.y < this.game.height + 8 * scale &&
+      this.sprite.y > -8 * scale
 
       var trail = this.trailArray
-      if (trail[0] && inBounds) {
-        var ctx = bmd.ctx
+      if (trail.length > 1 && inBounds) {
         if (this.mode.sp) {
           ctx.strokeStyle = '#FFFFFF'
         } else {
@@ -126,8 +121,9 @@ Player.prototype = {
 
         ctx.beginPath()
 
-        ctx.moveTo(this.sprite.x, this.sprite.y)
-        ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y)
+        var len = trail.length
+        ctx.moveTo(trail[len - 2].x, trail[len - 2].y)
+        ctx.lineTo(trail[len - 1].x, trail[len - 1].y)
         ctx.stroke()
 
       /*
@@ -181,8 +177,6 @@ Player.prototype = {
         var x = lerp(player.x, point.x, 0.85)
         var y = lerp(player.y, point.y, 0.85)
         this.eatenPoint.position.setTo(x, y)
-
-        //this.game.physics.arcade.moveToObject(this.eatenPoint, this.sprite)
 
         if (this.game.physics.arcade.distanceBetween(this.eatenPoint, this.sprite) <= 1) {
           this.eatenPoint = null
@@ -258,27 +252,14 @@ Player.prototype = {
         }
       }
 
-      // erase trail from front
-      if (this.dead && this.frameCount === 0 && this.trailArray[0]) {
-        trailPiece = this.trailArray.pop()
-        ctx.clearRect(trailPiece.x - 10 * scale, trailPiece.y - 10 * scale, 20 * scale, 20 * scale)
-
-      /*
-      if (this.trailArray.length > 0) {
-        trailPiece = this.trailArray[this.trailArray.length -1]
-        bmd.draw(this.trail, trailPiece.x, trailPiece.y)
-      }*/
-      }
-
       // redraw erased trail
       if (trail[1]) {
-        inBounds =
+        var trailInBounds =
         trail[0].x < this.game.width &&
           trail[0].x > 0 &&
           trail[0].y < this.game.height &&
           trail[0].y > 0
-        if (inBounds) {
-          ctx = bmd.ctx
+        if (trailInBounds) {
           if (this.mode.sp) {
             ctx.strokeStyle = '#FFFFFF'
           } else {
@@ -325,30 +306,9 @@ Player.prototype = {
       if (this.keyText.alpha === 1) {
         this.textTween = this.game.add.tween(this.keyText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
 
-        if (mobile && this.mode.sp) {
-          this.game.add.tween(this.touch).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true)
-          this.game.add.tween(this.touch).to({ y: this.touch.y + 100 }, 1000, Phaser.Easing.Circular.In, true)
-        } else if (mobile && !this.mode.sp) {
-          if (this.orientation === 'portrait') {
-            this.game.add.tween(this.touch).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true)
-            if (this.touch.angle === 0) {
-              this.game.add.tween(this.touch).to({ y: this.touch.y + 90 }, 1000, Phaser.Easing.Circular.In, true)
-            } else {
-              this.game.add.tween(this.touch).to({ y: this.touch.y - 90 }, 1000, Phaser.Easing.Circular.In, true)
-            }
-          } else {
-            this.game.add.tween(this.touch).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true)
-            this.game.add.tween(this.touch).to({ x: this.touch.x - this.touch.angle }, 1000, Phaser.Easing.Circular.In, true)
-          }
-        }
-
-        if (this.mode.sp && !mobile && this.mode.leaderboardID) {
+        if (this.mode.sp && this.mode.leaderboardID) {
           this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
           this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
-        }
-
-        if (mobile && pauseSprite.alpha === 1) {
-          pauseTween = this.game.add.tween(pauseSprite).to({ alpha: 0.2 }, 2000, Phaser.Easing.Linear.None, true)
         }
       }
     }
@@ -466,58 +426,6 @@ Player.prototype = {
           align: 'center'})
         this.keyText.scale.set(scale)
         this.keyText.anchor.setTo(0.5, 0.5)
-
-        if (mobile && this.mode.getHighScore) {
-          this.keyText.setText(this.mode.getHighScore())
-          if (!this.mode.sp) {
-            this.keyText.visible = false
-          }
-        }
-      }
-
-      if (this.mode.sp && mobile) {
-        if (this.orientation === 'portrait') {
-          this.touch = this.game.add.sprite(w2, h2 * 1.5 + 100, 'touch')
-        } else {
-          this.touch = this.game.add.sprite(w2 * 0.5, h2 + 100, 'touch')
-        }
-        this.touch.anchor.setTo(0.5, 0.5)
-        this.touch.alpha = 0
-        this.game.add.tween(this.touch).to({ alpha: 1 }, 1000, Phaser.Easing.Linear.None, true)
-        this.game.add.tween(this.touch).to({ y: this.touch.y - 100 }, 1000, Phaser.Easing.Circular.Out, true)
-      } else if (!this.mode.sp && mobile) {
-        if (this.orientation === 'portrait') {
-          this.touch = this.game.add.sprite(w2, this.y, 'touch')
-          if (this.y > w2) {
-            this.touch.angle = 0
-            this.touch.x += 200
-          } else {
-            this.touch.angle = 180
-            this.touch.x -= 200
-          }
-          this.touch.anchor.setTo(0.5, 0.5)
-          this.touch.alpha = 0
-          this.game.add.tween(this.touch).to({ alpha: 1 }, 1000, Phaser.Easing.Linear.None, true)
-          if (this.touch.angle === 0) {
-            this.game.add.tween(this.touch).to({y: this.touch.y - 100}, 1000, Phaser.Easing.Circular.Out, true)
-          } else {
-            this.game.add.tween(this.touch).to({y: this.touch.y + 100}, 1000, Phaser.Easing.Circular.Out, true)
-          }
-        } else {
-          this.touch = this.game.add.sprite(this.x, h2, 'touch')
-          if (this.x > w2) {
-            this.touch.angle = -90
-            this.touch.y -= 200
-          } else {
-            this.touch.angle = 90
-            this.touch.y += 200
-          }
-
-          this.touch.anchor.setTo(0.5, 0.5)
-          this.touch.alpha = 0
-          this.game.add.tween(this.touch).to({ alpha: 1 }, 1000, Phaser.Easing.Linear.None, true)
-          this.game.add.tween(this.touch).to({x: this.touch.x + this.touch.angle}, 1000, Phaser.Easing.Circular.Out, true)
-        }
       }
     }
   },

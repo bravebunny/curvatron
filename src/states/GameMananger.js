@@ -4,7 +4,7 @@ menuMusic, pauseSprite, colisionMargin, scale:true, players:true, gameOver:true,
 muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
-colorHex, mobile, Player, keys, colorHexDark, bgColor:true, mute:true, ButtonList,
+colorHex, Player, keys, colorHexDark, bgColor:true, mute:true, ButtonList,
 clickButton, localStorage */
 /*eslint-enable*/
 var gameMananger = function (game) {
@@ -101,11 +101,6 @@ gameMananger.prototype = {
     bmd.addToWorld()
     bmd.smoothed = false
 
-    var angle = 0
-    if (mobile && this.orientation === 'portrait') {
-      angle = Math.PI / 2
-    }
-
     // Choose snake locations
     var nPlayers = 0
     if (this.mode.nPlayers) {
@@ -113,8 +108,8 @@ gameMananger.prototype = {
     }
     for (var i = 0; i <= nPlayers; i++) {
       players[i] = new Player(i,
-        Math.cos((2 * Math.PI / (nPlayers + 1)) * i - angle) * (w2 - 200) + w2,
-        Math.sin((2 * Math.PI / (nPlayers + 1)) * i - angle) * (h2 - 100) + h2,
+        Math.cos((2 * Math.PI / (nPlayers + 1)) * i) * (w2 - 200) + w2,
+        Math.sin((2 * Math.PI / (nPlayers + 1)) * i) * (h2 - 100) + h2,
         keys[i], this.mode, this.game)
     }
 
@@ -251,11 +246,6 @@ gameMananger.prototype = {
       mainMenu.input.useHandCursor = true
       clickButton(mainMenu, function () { this.state.start('Menu') }, this)
 
-      if (mobile) {
-        pauseSprite.alpha = 0
-        pauseSprite.input.useHandCursor = false
-      }
-
       if (this.mode.sp) {
         var spAuxLabel = this.add.sprite(w2, h2 + 77, 'aux-stat')
         spAuxLabel.scale.set(0.9, 0.9)
@@ -266,9 +256,6 @@ gameMananger.prototype = {
         spScoreLabel.scale.set(0.6, 0.6)
         spScoreLabel.anchor.setTo(0.5, 0.5)
         spScoreLabel.alpha = 0.7
-        if (mobile) {
-          spScoreLabel.x = w2 - 60
-        }
 
         var textCurrentScore = this.add.text(w2, h2 + 77, this.mode.getScore().toString(), {
           font: '90px dosis',
@@ -286,19 +273,8 @@ gameMananger.prototype = {
           align: 'center'
         })
 
-        if (mobile) {
-          textHighScore.x = w2 + 35 - 60
-        }
         textCurrentScore.anchor.setTo(0.5, 0.5)
         textHighScore.anchor.setTo(0.5, 0.5)
-
-        if (mobile) {
-          leaderboardButton = this.add.button(w2 + 105, h2 + 217, 'leaderboard_button')
-          leaderboardButton.scale.set(0.6, 0.6)
-          leaderboardButton.anchor.setTo(0.5, 0.5)
-          leaderboardButton.input.useHandCursor = true
-          clickButton(leaderboardButton, this.leaderboard, this)
-        }
       }
       gameOver = true
     }
@@ -356,9 +332,6 @@ gameMananger.prototype = {
   touchPauseButton: function () {
     if (!paused) {
       this.backPressed()
-      if (mobile) {
-        pauseSprite.input.useHandCursor = false
-      }
     }
   },
 
