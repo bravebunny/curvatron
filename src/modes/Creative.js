@@ -1,4 +1,6 @@
-/* global players */
+/*eslint-disable*/
+/* global players, scale:true */
+/*eslint-enable*/
 var Creative = function (game) {
   this.sp = true
   this.game = game
@@ -58,42 +60,46 @@ Creative.prototype = {
 
   update: function () {
     if (this.popup !== null && this.popup.location.href.split('oauth_verifier=')[1] !== undefined) {
-      var oauthVerifier = this.popup.location.href.split('oauth_verifier=')[1]
-      this.popup.close()
-      this.popup = null
-
-      var aToken, aTokenSecret
-
-      this.twitter.getAccessToken(this.rToken, this.rTokenSecret, oauthVerifier, function (error, accessToken, accessTokenSecret, results) {
-        if (error) {
-          console.log(error)
-        } else {
-          aToken = accessToken
-          aTokenSecret = accessTokenSecret
-
-          var params = {
-            media: this.png,
-            isBase64: true
-          }
-
-          this.twitter.uploadMedia(params, aToken, aTokenSecret, function (error, response) {
-            if (error) console.log(error)
-            else {
-              this.twitter.statuses('update', {
-                status: 'I made art with #Curvatron',
-                media_ids: response.media_id_string
-              },
-                aToken,
-                aTokenSecret,
-                function (error, data, response) {
-                  if (error) console.log(error)
-                }
-              )
-            }
-          }.bind(this))
-        }
-      }.bind(this))
+      this.tweetUpdate()
     }
+  },
+
+  tweetUpdate: function () {
+    var oauthVerifier = this.popup.location.href.split('oauth_verifier=')[1]
+    this.popup.close()
+    this.popup = null
+
+    var aToken, aTokenSecret
+
+    this.twitter.getAccessToken(this.rToken, this.rTokenSecret, oauthVerifier, function (error, accessToken, accessTokenSecret, results) {
+      if (error) {
+        console.log(error)
+      } else {
+        aToken = accessToken
+        aTokenSecret = accessTokenSecret
+
+        var params = {
+          media: this.png,
+          isBase64: true
+        }
+
+        this.twitter.uploadMedia(params, aToken, aTokenSecret, function (error, response) {
+          if (error) console.log(error)
+          else {
+            this.twitter.statuses('update', {
+              status: 'I made art with #Curvatron',
+              media_ids: response.media_id_string
+            },
+              aToken,
+              aTokenSecret,
+              function (error, data, response) {
+                if (error) console.log(error)
+              }
+            )
+          }
+        }.bind(this))
+      }
+    }.bind(this))
   },
 
   erasesTrail: function () {

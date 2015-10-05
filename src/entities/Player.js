@@ -212,6 +212,11 @@ Player.prototype = {
             }
           }
         }
+      } else if (this.trailArray.length > 0) {
+        // move the head backwards when dead
+        this.sprite.position.set(this.trailArray[len - 1].x, this.trailArray[len - 1].y)
+      } else if (this.sprite !== null) {
+        this.sprite.kill()
       }
       this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this)
 
@@ -362,7 +367,7 @@ Player.prototype = {
         localStorage.setItem('deathScore', deathScore + 1)
       }
       if (this.mode.sp || (!player && !other)) {
-        this.sprite.kill()
+        // this.sprite.kill()
         this.dead = true
       }
 

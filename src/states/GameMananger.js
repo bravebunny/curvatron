@@ -14,7 +14,11 @@ var gameMananger = function (game) {
   this.ui = {}
   this.mode = null
   colisionMargin = 20
-  this.buttons = null
+  this.pauseButtons = null
+  this.popup = null
+  this.twitter = null
+  this.rToken = null
+  this.rTokenSecret = null
 }
 
 gameMananger.prototype = {
@@ -155,15 +159,20 @@ gameMananger.prototype = {
       audioText = 'audio: on'
     }
 
-    this.buttons = new ButtonList(this, this.game)
+    this.pauseButtons = new ButtonList(this, this.game)
+    this.pauseButtons.add('resume_button', 'resume', this.backPressed)
+    this.pauseButtons.add('restart_button', 'restart', this.restart)
+    this.ui.audioButton = this.pauseButtons.add(audioButton, audioText, this.muteSound)
+    this.pauseButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
+    this.pauseButtons.create()
+    this.pauseButtons.hide()
 
-    this.buttons.add('resume_button', 'resume', this.backPressed)
-    this.buttons.add('restart_button', 'restart', this.restart)
-    this.ui.audioButton = this.buttons.add(audioButton, audioText, this.muteSound)
-    this.buttons.add('exit_button', 'exit', function () { this.state.start('Menu') })
-
-    this.buttons.create()
-    this.buttons.hide()
+    this.deathButtons = new ButtonList(this, this.game)
+    this.deathButtons.add('restart_button', 'restart', this.restart)
+    this.deathButtons.add('twitter_button', 'share score', this.share)
+    this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
+    this.deathButtons.create()
+    this.deathButtons.hide()
   },
 
   update: function () {
@@ -187,9 +196,11 @@ gameMananger.prototype = {
         if (this.mode.sp && players[0].dead) {
           this.endGame()
         }
+      } else {
+        this.deathButtons.update()
       }
     } else {
-      this.buttons.update()
+      this.pauseButtons.update()
     }
 
     // Update players
@@ -200,6 +211,10 @@ gameMananger.prototype = {
     for (var i = 0; i < players.length; i++) {
       players[i].update()
     }
+
+    if (this.popup !== null && this.popup.location.href.split('oauth_verifier=')[1] !== undefined) {
+      this.tweetUpdate()
+    }
   },
 
   createPower: function () {
@@ -209,6 +224,9 @@ gameMananger.prototype = {
   },
 
   endGame: function () {
+    var png = this.game.canvas.toDataURL()
+    this.png = png.replace(/^data:image\/png;base64,/, '')
+
     var ui = this.ui
     if (!gameOver) {
       if (this.mode.endGame) {
@@ -233,31 +251,21 @@ gameMananger.prototype = {
         this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(this.restart, this)
       }
 
-      var restartButton = this.add.button(w2 + 97, h2 - 97, 'restart_button')
-
-      restartButton.scale.set(1, 1)
-      restartButton.anchor.setTo(0.5, 0.5)
-      restartButton.input.useHandCursor = true
-      clickButton(restartButton, this.restart, this)
-
-      var mainMenu = this.add.button(w2 - 97, h2 - 97, 'exit_button')
-      mainMenu.scale.set(1, 1)
-      mainMenu.anchor.setTo(0.5, 0.5)
-      mainMenu.input.useHandCursor = true
-      clickButton(mainMenu, function () { this.state.start('Menu') }, this)
+      this.deathButtons.show()
+      this.deathButtons.select(0)
 
       if (this.mode.sp) {
-        var spAuxLabel = this.add.sprite(w2, h2 + 77, 'aux-stat')
+        var spAuxLabel = this.add.sprite(w2, h2 + 100, 'aux-stat')
         spAuxLabel.scale.set(0.9, 0.9)
         spAuxLabel.anchor.setTo(0.5, 0.5)
         spAuxLabel.alpha = 0.7
 
-        var spScoreLabel = this.add.sprite(w2, h2 + 217, 'score-stat')
+        var spScoreLabel = this.add.sprite(w2, h2 + 250, 'score-stat')
         spScoreLabel.scale.set(0.6, 0.6)
         spScoreLabel.anchor.setTo(0.5, 0.5)
         spScoreLabel.alpha = 0.7
 
-        var textCurrentScore = this.add.text(w2, h2 + 77, this.mode.getScore().toString(), {
+        var textCurrentScore = this.add.text(w2, h2 + 100, this.mode.getScore().toString(), {
           font: '90px dosis',
           fill: colorHexDark,
           align: 'center'
@@ -267,7 +275,7 @@ gameMananger.prototype = {
           this.mode.submitScore()
         }
 
-        var textHighScore = this.add.text(w2 + 35, h2 + 220, this.mode.getHighScore().toString(), {
+        var textHighScore = this.add.text(w2 + 35, h2 + 253, this.mode.getHighScore().toString(), {
           font: '40px dosis',
           fill: colorHexDark,
           align: 'center'
@@ -304,8 +312,8 @@ gameMananger.prototype = {
         this.game.time.events.remove(this.powerTimer)
       }
 
-      this.buttons.show()
-      this.buttons.select(0)
+      this.pauseButtons.show()
+      this.pauseButtons.select(0)
     } else { // unpause
       this.game.tweens.resumeAll()
       ui.overlay.scale.set(0)
@@ -320,7 +328,7 @@ gameMananger.prototype = {
 
       ui.overlay.inputEnabled = true
 
-      this.buttons.hide()
+      this.pauseButtons.hide()
       paused = false
     }
   },
@@ -367,19 +375,82 @@ gameMananger.prototype = {
   },
 
   up: function () {
-    if (paused) this.buttons.selectUp()
+    if (paused) this.pauseButtons.selectUp()
   },
 
   down: function () {
-    if (paused) this.buttons.selectDown()
+    if (paused) this.pauseButtons.selectDown()
   },
 
   selectPress: function () {
-    if (paused) this.buttons.selectPress()
+    if (paused) this.pauseButtons.selectPress()
   },
 
   selectRelease: function () {
-    if (paused) this.buttons.selectRelease()
+    if (paused) this.pauseButtons.selectRelease()
+  },
+
+  share: function () {
+    /*
+		this.game.canvas.toBlob(function(blob) {
+      //saveAs(blob, "creative.png")
+    });
+		*/
+
+    var TwitterAPI = require('node-twitter-api')
+    this.twitter = new TwitterAPI({
+      consumerKey: 'NwssUgdW5A1dKhtzExUFc5AtQ',
+      consumerSecret: 'S4yhhvUDPKAEI4Wqwx9TCqLaQgsdcB8FjhPG6GyMLVK1xzgqeV',
+      callback: 'http://bravebunny.co/'
+    })
+
+    this.twitter.getRequestToken(function (error, requestToken, requestTokenSecret, results) {
+      if (error) {
+        console.log(error)
+      } else {
+        this.rToken = requestToken
+        this.rTokenSecret = requestTokenSecret
+        this.popup = window.open(this.twitter.getAuthUrl(this.rToken))
+      }
+    }.bind(this))
+  },
+
+  tweetUpdate: function () {
+    var oauthVerifier = this.popup.location.href.split('oauth_verifier=')[1]
+    this.popup.close()
+    this.popup = null
+
+    var aToken, aTokenSecret
+
+    this.twitter.getAccessToken(this.rToken, this.rTokenSecret, oauthVerifier, function (error, accessToken, accessTokenSecret, results) {
+      if (error) {
+        console.log(error)
+      } else {
+        aToken = accessToken
+        aTokenSecret = accessTokenSecret
+
+        var params = {
+          media: this.png,
+          isBase64: true
+        }
+
+        this.twitter.uploadMedia(params, aToken, aTokenSecret, function (error, response) {
+          if (error) console.log(error)
+          else {
+            this.twitter.statuses('update', {
+              status: 'This is my score in #Curvatron',
+              media_ids: response.media_id_string
+            },
+              aToken,
+              aTokenSecret,
+              function (error, data, response) {
+                if (error) console.log(error)
+              }
+            )
+          }
+        }.bind(this))
+      }
+    }.bind(this))
   },
 
   renderGroup: function (member) {
