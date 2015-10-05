@@ -103,14 +103,15 @@ Player.prototype = {
 
       // TODO prevent lines crossing the screen
       // Draw trail bmd line
+      /*
       var inBounds =
       this.sprite.x < this.game.width + 8 * scale &&
       this.sprite.x > -8 * scale &&
       this.sprite.y < this.game.height + 8 * scale &&
-      this.sprite.y > -8 * scale
+      this.sprite.y > -8 * scale */
 
       var trail = this.trailArray
-      if (trail.length > 1 && inBounds) {
+      if (trail.length > 1) {
         if (this.mode.sp) {
           ctx.strokeStyle = '#FFFFFF'
         } else {
@@ -119,12 +120,15 @@ Player.prototype = {
         ctx.lineWidth = 16 * scale
         ctx.lineCap = 'round'
 
-        ctx.beginPath()
-
         var len = trail.length
-        ctx.moveTo(trail[len - 2].x, trail[len - 2].y)
-        ctx.lineTo(trail[len - 1].x, trail[len - 1].y)
-        ctx.stroke()
+        var distance = Math.sqrt(Math.pow(trail[len - 2].x - trail[len - 1].x, 2) + Math.pow(trail[len - 2].y - trail[len - 1].y, 2))
+
+        if (distance < 100) {
+          ctx.beginPath()
+          ctx.moveTo(trail[len - 2].x, trail[len - 2].y)
+          ctx.lineTo(trail[len - 1].x, trail[len - 1].y)
+          ctx.stroke()
+        }
 
       /*
         for (var i = 1; i < this.trailArray.length; i++) {
@@ -259,22 +263,29 @@ Player.prototype = {
 
       // redraw erased trail
       if (trail[1]) {
+        /*
         var trailInBounds =
         trail[0].x < this.game.width &&
           trail[0].x > 0 &&
           trail[0].y < this.game.height &&
-          trail[0].y > 0
-        if (trailInBounds) {
-          if (this.mode.sp) {
-            ctx.strokeStyle = '#FFFFFF'
-          } else {
-            ctx.strokeStyle = colorPlayers[this.id]
-          }
+          trail[0].y > 0 */
+        // if (trailInBounds) {
+        if (this.mode.sp) {
+          ctx.strokeStyle = '#FFFFFF'
+        } else {
+          ctx.strokeStyle = colorPlayers[this.id]
+        }
+
+        distance = Math.sqrt(Math.pow(trail[0].x - trail[1].x, 2) + Math.pow(trail[0].y - trail[1].y, 2))
+
+        if (distance < 100) {
           ctx.beginPath()
           ctx.moveTo(trail[0].x, trail[0].y)
           ctx.lineTo(trail[1].x, trail[1].y)
           ctx.stroke()
         }
+
+        // }
       }
 
       // Border's collisions
