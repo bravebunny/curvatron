@@ -57,7 +57,7 @@ function shuffleArray (o) { // v1.0
 }
 
 function lerp (a, b, f) {
-    return a + f * (b - a)
+  return a + f * (b - a)
 }
 
 function adjustScreen (game) {

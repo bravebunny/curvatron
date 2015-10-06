@@ -36,7 +36,7 @@
         "mac_icon": "", 
         "position": "", 
         "width": 800, 
-        "show_in_taskbar": false, 
+        "show_in_taskbar": true, 
         "height": 600, 
         "transparent": false, 
         "toolbar": true, 

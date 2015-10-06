@@ -14,6 +14,10 @@ var editor = function (game) {
 
   this.points = []
   this.pointsGrid = []
+  this.levelArray = []
+
+  this.mapW = 80
+  this.mapH = 45
 
   this.prevCursorX = 0
   this.prevCursorY = 0
@@ -56,6 +60,8 @@ editor.prototype = {
 
     this.layer = this.map.createLayer('obstacles') // layer[0]
     this.map.setCollisionByExclusion([], true, this.layer)
+
+    this.levelArray = Array.apply(null, Array(this.mapW * this.mapH)).map(Number.prototype.valueOf, 0)
 
     this.game.canvas.oncontextmenu = function (e) { e.preventDefault() }
 
@@ -170,12 +176,14 @@ editor.prototype = {
             case 'draw':
               if (this.map.getTile(tileX, tileY) == null) {
                 this.map.putTile(0, tileX, tileY)
+                this.levelArray[tileX * this.mapH + tileY] = 1
               }
               break
 
             case 'erase':
               if (this.map.getTile(tileX, tileY) != null) {
                 this.map.removeTile(tileX, tileY)
+                this.levelArray[tileX * this.mapH + tileY] = 0
               }
 
               // TODO this seems to cause crashes
@@ -266,24 +274,15 @@ editor.prototype = {
   },
 
   save: function () {
-    var levelArray = []
-    for (var x = 0; x < this.map.width; x++) {
-      levelArray[x] = []
-      for (var y = 0; y < this.map.height; y++) {
-        if ((this.map.hasTile(x, y, 0))) levelArray[x][y] = 1
-        else levelArray[x][y] = 0
-      }
-    }
-
     var grid = this.pointsGrid
     for (var i = 1; i < grid.length; i++) {
-      x = grid[i][0]
-      y = grid[i][1]
-      levelArray[x][y] = i + 1
+      var x = grid[i][0]
+      var y = grid[i][1]
+      this.levelArray[x * this.mapH + y] = i + 1
     }
 
-    var blob = new Blob([JSON.stringify(levelArray)], {type: 'text/plain'})
-    saveAs(blob, 'curvatron_level.json')
+    var blob = new Blob([this.levelArray.join('')], {type: 'text/plain'})
+    saveAs(blob, 'curvatron_level')
   },
 
   newPage: function () {

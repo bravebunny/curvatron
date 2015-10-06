@@ -1,6 +1,8 @@
+/*eslint-disable*/
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
-  w2:true, h2:true, powerText:true, localStorage, PowerUp
+  w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true
 */
+/*eslint-enable*/
 var Adventure = function (game) {
   this.sp = true
   this.game = game
@@ -10,6 +12,9 @@ var Adventure = function (game) {
   this.width = 1344
   this.height = 768
   this.level = 1
+
+  this.mapW = 80
+  this.mapH = 45
 }
 
 Adventure.prototype = {
@@ -51,20 +56,18 @@ Adventure.prototype = {
     players[0].y = h2
 
     this.score = 0
-    spawnPowers = true
 
     this.map = this.game.add.tilemap('blank')
     this.map.addTilesetImage('Pastel') // Preloaded tileset
 
-    var levelArray = this.game.cache.getJSON('level')
-    console.log(levelArray)
+    var levelArray = this.game.cache.getText('level').split('').map(Number)
 
     for (var x = 0; x < this.map.width; x++) {
       for (var y = 0; y < this.map.height; y++) {
-        if (levelArray[x][y] === 1) this.map.putTile(0, x, y)
-        else if (levelArray[x][y] > 1) {
-          this.pointPositions[levelArray[x][y] - 2] = {}
-          var point = this.pointPositions[levelArray[x][y] - 2]
+        if (levelArray[x * this.mapH + y] === 1) this.map.putTile(0, x, y)
+        else if (levelArray[x * this.mapH + y] > 1) {
+          this.pointPositions[levelArray[x * this.mapH + y] - 2] = {}
+          var point = this.pointPositions[levelArray[x * this.mapH + y] - 2]
           point.x = x * 24 - 12
           point.y = y * 24 - 12
         }

@@ -27,7 +27,7 @@ preloadGame.prototype = {
     }
 
     if (this.level != null) {
-      this.game.load.json('level', 'assets/levels/level' + this.level + '.json')
+      this.game.load.text('level', 'assets/levels/level' + this.level)
     }
 
     // Load all stuf from game
