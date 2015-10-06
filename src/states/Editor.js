@@ -1,29 +1,13 @@
 /* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs
 */
 var editor = function (game) {
-  this.sp = true
   this.game = game
   this.layer = null
   this.marker = null
   this.map = null
-
-  this.tool = 'draw' // 0=draw, 1=erase, 2=point
-  this.selectedPoint = 1
-
   this.tb = {}
-
-  this.points = []
-  this.pointPositions = []
-  this.levelArray = []
-
-  this.mapW = 60
-  this.mapH = 34
-  this.tileSize = 32
-
   this.prevCursorX = 0
   this.prevCursorY = 0
-
-  this.mouseWasDown = false
 }
 
 editor.prototype = {
@@ -50,6 +34,17 @@ editor.prototype = {
   },
 
   create: function () {
+    // variables that need to be reset
+    this.tool = 'draw' // 0=draw, 1=erase, 2=point
+    this.selectedPoint = 1
+    this.points = []
+    this.pointPositions = []
+    this.levelArray = []
+    this.mapW = 60
+    this.mapH = 34
+    this.tileSize = 32
+    this.mouseWasDown = false
+
     // change outer background color
     document.body.style.background = colorHexDark
 
@@ -105,7 +100,7 @@ editor.prototype = {
     this.tb.start.anchor.set(0.5, 0.5)
     this.tb.start.scale.set(0.6)
 
-    this.tb.save = this.game.add.button(900, baseH + 100, 'editorSave', this.save, this)
+    this.tb.save = this.game.add.button(1500, baseH + 100, 'editorSave', this.save, this)
     this.tb.save.anchor.set(0.5, 0.5)
     this.tb.save.scale.set(0.4)
 
@@ -117,6 +112,7 @@ editor.prototype = {
     this.tb.exit.anchor.setTo(0.5, 0.5)
     this.tb.exit.scale.set(0.8)
 
+    // the square that shows under the mouse to show what's selected
     this.marker = this.game.add.graphics()
     this.marker.lineStyle(2, 0xFFFFFF, 1)
     this.marker.drawRect(0, 0, this.tileSize, this.tileSize)
@@ -126,6 +122,32 @@ editor.prototype = {
     this.selector = this.game.add.graphics()
     this.selector.lineStyle(10, 0xFFFFFF, 1)
     this.selector.drawRect(-60, -60, 120, 120)
+
+    // grid overlay
+    var gridBMD = this.game.add.bitmapData(this.game.width, this.game.height)
+    var gridImage = gridBMD.addToWorld()
+    gridImage.alpha = 0.3
+    var gridSize = this.tileSize * 3
+
+    this.overlay = gridBMD.ctx
+    this.overlay.strokeStyle = '#FFFFFF'
+    this.overlay.lineWidth = 1
+    this.overlay.beginPath()
+    this.overlay.moveTo(0, 0)
+    for (var i = 1; i < this.mapW / 3; i++) {
+      this.overlay.moveTo(i * gridSize, 0)
+      this.overlay.lineTo(i * gridSize, this.tb.bg.y)
+      this.overlay.moveTo((i + 1) * gridSize, this.tb.bg.y)
+      this.overlay.lineTo((i + 1) * gridSize, 0)
+    }
+    this.overlay.moveTo(0, 0)
+    for (var e = 1; e < this.mapH / 3 - 1; e++) {
+      this.overlay.moveTo(0, e * gridSize)
+      this.overlay.lineTo(this.game.width, e * gridSize)
+      this.overlay.moveTo(this.game.width, (e + 1) * gridSize)
+      this.overlay.lineTo(0, (e + 1) * gridSize)
+    }
+    this.overlay.stroke()
   },
 
   update: function () {
