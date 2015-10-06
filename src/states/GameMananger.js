@@ -376,18 +376,22 @@ gameMananger.prototype = {
 
   up: function () {
     if (paused) this.pauseButtons.selectUp()
+    else if (gameOver) this.deathButtons.selectUp()
   },
 
   down: function () {
     if (paused) this.pauseButtons.selectDown()
+    else if (gameOver) this.deathButtons.selectDown()
   },
 
   selectPress: function () {
     if (paused) this.pauseButtons.selectPress()
+    else if (gameOver) this.deathButtons.selectPress()
   },
 
   selectRelease: function () {
     if (paused) this.pauseButtons.selectRelease()
+    else if (gameOver) this.deathButtons.selectRelease()
   },
 
   share: function () {
