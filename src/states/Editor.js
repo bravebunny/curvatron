@@ -13,11 +13,12 @@ var editor = function (game) {
   this.tb = {}
 
   this.points = []
-  this.pointsGrid = []
+  this.pointPositions = []
   this.levelArray = []
 
-  this.mapW = 80
-  this.mapH = 45
+  this.mapW = 60
+  this.mapH = 34
+  this.tileSize = 32
 
   this.prevCursorX = 0
   this.prevCursorY = 0
@@ -118,9 +119,9 @@ editor.prototype = {
 
     this.marker = this.game.add.graphics()
     this.marker.lineStyle(2, 0xFFFFFF, 1)
-    this.marker.drawRect(0, 0, 24, 24)
+    this.marker.drawRect(0, 0, this.tileSize, this.tileSize)
     this.marker.lineStyle(2, 0x000000, 1)
-    this.marker.drawRect(0, 0, 22, 22)
+    this.marker.drawRect(0, 0, this.tileSize - 2, this.tileSize - 2)
 
     this.selector = this.game.add.graphics()
     this.selector.lineStyle(10, 0xFFFFFF, 1)
@@ -150,69 +151,75 @@ editor.prototype = {
 
     if (pointerY < this.tb.bg.y) {
       // cursor square to mark drawing position
-      this.marker.x = this.layer.getTileX(pointerX) * 24
-      this.marker.y = this.layer.getTileY(pointerY) * 24
+      this.marker.x = this.layer.getTileX(pointerX) * this.tileSize
+      this.marker.y = this.layer.getTileY(pointerY) * this.tileSize
 
-      var x = this.marker.x + 12
-      var y = this.marker.y + 12
+      var x = this.marker.x + this.tileSize / 2
+      var y = this.marker.y + this.tileSize / 2
+      var tileX = this.layer.getTileX(x)
+      var tileY = this.layer.getTileY(y)
 
       if (!this.mouseWasDown) {
-        this.prevCursorX = this.layer.getTileX(x)
-        this.prevCursorY = this.layer.getTileY(y)
+        this.prevCursorX = tileX
+        this.prevCursorY = tileY
       }
 
       if (this.game.input.mousePointer.isDown) {
         this.mouseWasDown = true
-        var line = new Phaser.Line(this.prevCursorX, this.prevCursorY, this.layer.getTileX(x), this.layer.getTileY(y))
+        var line = new Phaser.Line(this.prevCursorX, this.prevCursorY, tileX, tileY)
         var linePoints = line.coordinatesOnLine()
-        this.prevCursorX = this.layer.getTileX(x)
-        this.prevCursorY = this.layer.getTileY(y)
+        this.prevCursorX = tileX
+        this.prevCursorY = tileY
 
         for (i = 0; i < linePoints.length; i++) {
-          var tileX = linePoints[i][0]
-          var tileY = linePoints[i][1]
+          var lineX = linePoints[i][0]
+          var lineY = linePoints[i][1]
+          var index = lineY * this.mapH + lineX
 
           switch (this.tool) {
             case 'draw':
-              if (this.map.getTile(tileX, tileY) == null) {
-                this.map.putTile(0, tileX, tileY)
-                this.levelArray[tileX * this.mapH + tileY] = 1
+              if (this.map.getTile(lineX, lineY) === null && this.levelArray[index] === 0) {
+                this.map.putTile(0, lineX, lineY)
+                this.levelArray[index] = 1
               }
               break
 
             case 'erase':
-              if (this.map.getTile(tileX, tileY) != null) {
-                this.map.removeTile(tileX, tileY)
-                this.levelArray[tileX * this.mapH + tileY] = 0
+              if (this.map.getTile(lineX, lineY) != null) {
+                this.map.removeTile(lineX, lineY)
               }
 
-              // TODO this seems to cause crashes
-              /*
-              for (var i = 0; i < this.points.length; i++) {
-                if (this.points[i] && this.points[i].input.pointerOver()) {
-                  this.points[i].destroy()
-                  for (var e = i; e < this.points.length-1; e++) {
-                    this.points[e] = this.points[e+1]
-                  }
-                  this.points = this.points.slice(0, -1)
-                  if (this.selectedPoint >= i) {
-                    this.pointDec()
-                  }
-                  break
+              if (this.levelArray[index] === 2) { // true if is a point
+                var pointN = this.pointPositions.indexOf(index)
+                this.points[pointN].destroy()
+                for (var e = pointN; e < this.points.length - 1; e++) {
+                  this.pointPositions[e] = this.pointPositions[e + 1]
+                  this.points[e] = this.points[e + 1]
                 }
-              }*/
+                this.points = this.points.slice(0, -1)
+                this.pointPositions = this.pointPositions.slice(0, -1)
+                if (this.selectedPoint >= pointN) {
+                  this.pointDec()
+                }
+              }
+
+              this.levelArray[index] = 0
               break
 
             case 'point':
-              if (this.points[this.selectedPoint] == null) {
-                this.points[this.selectedPoint] = this.game.add.sprite(x, y, 'point')
-                this.points[this.selectedPoint].anchor.set(0.5)
-                this.points[this.selectedPoint].inputEnabled = true
-              } else {
-                this.points[this.selectedPoint].position.set(x, y)
+              if (this.levelArray[index] === 0) {
+                if (this.points[this.selectedPoint] == null) {
+                  this.points[this.selectedPoint] = this.game.add.sprite(x, y, 'point')
+                  this.points[this.selectedPoint].anchor.set(0.5)
+                  this.points[this.selectedPoint].inputEnabled = true
+                } else {
+                  this.levelArray[this.pointPositions[this.selectedPoint]] = 0
+                  this.points[this.selectedPoint].position.set(x, y)
+                }
+                this.levelArray[index] = 2
+                this.pointPositions[this.selectedPoint] = index
+                // this.pointsGrid[this.selectedPoint] = [tileX, this.layer.getTileX(y)]
               }
-              this.pointsGrid[this.selectedPoint] = [this.layer.getTileX(x), this.layer.getTileX(y)]
-
               break
           }
         }
@@ -274,13 +281,6 @@ editor.prototype = {
   },
 
   save: function () {
-    var grid = this.pointsGrid
-    for (var i = 1; i < grid.length; i++) {
-      var x = grid[i][0]
-      var y = grid[i][1]
-      this.levelArray[x * this.mapH + y] = i + 1
-    }
-
     var blob = new Blob([this.levelArray.join('')], {type: 'text/plain'})
     saveAs(blob, 'curvatron_level')
   },
