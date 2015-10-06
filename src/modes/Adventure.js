@@ -51,7 +51,7 @@ Adventure.prototype = {
     bmd.width = 2 * w2
     bmd.height = 2 * h2
 
-    players[0].x = w2
+    players[0].x = w2 + 400
     players[0].y = h2
 
     this.score = 0
@@ -74,6 +74,7 @@ Adventure.prototype = {
     }
 
     this.layer = this.map.createLayer('obstacles') // layer[0]
+    this.map.setCollisionByIndex(0)
 
     powerText = this.game.add.text(0, 0, '1', {
       font: '15px dosis',
@@ -82,7 +83,7 @@ Adventure.prototype = {
     })
     powerText.anchor.setTo(0.5, 0.5)
 
-    this.map.setCollisionByExclusion([], true, this.layer)
+    // this.map.setCollisionByExclusion([], true, this.layer)
   },
 
   update: function () {

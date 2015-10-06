@@ -303,6 +303,10 @@ editor.prototype = {
   },
 
   save: function () {
+    for (var i = 0; i < this.pointPositions.length; i++) {
+      this.levelArray[this.pointPositions[i]] = i + 1
+    }
+
     var blob = new Blob([this.levelArray.join('')], {type: 'text/plain'})
     saveAs(blob, 'curvatron_level')
   },
