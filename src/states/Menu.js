@@ -40,16 +40,14 @@ menu.prototype = {
     this.stage.backgroundColor = colorHex
     document.body.style.background = colorHex
 
-    if (!menuMusic && !mute) {
+    if (menuMusic === null) {
       menuMusic = this.add.audio('dream')
-      menuMusic.loop = true
-      menuMusic.play()
-    } else if (menuMusic && !menuMusic.isPlaying && !mute) {
+    }
+    if (!menuMusic.isPlaying && !mute) {
       menuMusic.loop = true
       menuMusic.play()
       menuMusic.volume = 1
     }
-
     var ui = this.ui
 
     // Game Title

@@ -175,11 +175,14 @@ Player.prototype = {
         this.kill()
       }
 
+      var xx = Math.cos(this.sprite.rotation) * 30 * scale + this.sprite.x
+      var yy = Math.sin(this.sprite.rotation) * 30 * scale + this.sprite.y
+
+      // make the last eaten point follow the player
       if (this.eatenPoint !== null) {
         var point = this.eatenPoint
-        var player = this.sprite
-        var x = lerp(player.x, point.x, 0.85)
-        var y = lerp(player.y, point.y, 0.85)
+        var x = lerp(xx, point.x, 0.85)
+        var y = lerp(yy, point.y, 0.85)
         this.eatenPoint.position.setTo(x, y)
 
         if (this.game.physics.arcade.distanceBetween(this.eatenPoint, this.sprite) <= 1) {
@@ -187,13 +190,13 @@ Player.prototype = {
         }
       }
 
+      xx = Math.cos(this.sprite.rotation) * 18 * scale + this.sprite.x
+      yy = Math.sin(this.sprite.rotation) * 18 * scale + this.sprite.y
+
       // player movement
       this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300 * this.speed * scale, this.sprite.body.velocity)
       this.sprite.body.angularVelocity = this.direction * 200 * this.angularVelocity * this.speed
       this.frameCount = (this.frameCount + 1) % 1 / (this.speed * scale)
-
-      var xx = Math.cos(this.sprite.rotation) * 18 * scale + this.sprite.x
-      var yy = Math.sin(this.sprite.rotation) * 18 * scale + this.sprite.y
 
       if (!this.dead) {
         // Add to trail
@@ -416,7 +419,7 @@ Player.prototype = {
 
       this.eatenPoint = power
 
-      this.game.add.tween(power).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true)
+      // this.game.add.tween(power).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true)
       var powerTween = this.game.add.tween(power.scale).to({x: 0, y: 0}, 300, Phaser.Easing.Linear.None, true)
       powerTween.onComplete.add(function () {
         power.destroy()

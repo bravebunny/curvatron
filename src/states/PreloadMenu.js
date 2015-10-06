@@ -83,19 +83,23 @@ preloadMenu.prototype = {
         pad1.getButton(Phaser.Gamepad.XBOX360_B).onUp.add(this.keys.backPressed, this)
         pad1.getButton(Phaser.Gamepad.XBOX360_START).onUp.add(this.keys.backPressed, this)
       }
-      this.game.state.start('Menu')
-      this.game.input.gamepad.onUpCallback = null
+      this.goToMenu()
     }.bind(this)
 
     this.game.input.keyboard.onUpCallback = function () {
-      this.game.state.start('Menu')
-      this.game.input.keyboard.onUpCallback = null
+      this.goToMenu()
     }.bind(this)
 
     this.game.input.mouse.mouseUpCallback = function () {
-      this.game.state.start('Menu')
-      this.game.input.mouse.mouseUpCallback = null
+      this.goToMenu()
     }.bind(this)
+  },
+
+  goToMenu: function () {
+    this.game.state.start('Menu')
+    this.game.input.mouse.mouseUpCallback = null
+    this.game.input.keyboard.onUpCallback = null
+    this.game.input.gamepad.onUpCallback = null
   },
 
   keys: {

@@ -46,9 +46,6 @@ settings.prototype = {
       this.audio.setIcon('audio_button')
       this.audio.setText('audio: on ')
       // this.game.sound.mute = false
-      if (!menuMusic) {
-        menuMusic = this.add.audio('dream')
-      }
       menuMusic.loop = true
       menuMusic.volume = 1
       if (!menuMusic.isPlaying) {
@@ -58,7 +55,7 @@ settings.prototype = {
       this.audio.setIcon('audiooff_button')
       this.audio.setText('audio: off')
       // this.game.sound.mute = true
-      if (menuMusic && menuMusic.isPlaying) {
+      if (menuMusic.isPlaying) {
         menuMusic.stop()
       }
     }
