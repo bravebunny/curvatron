@@ -1,5 +1,5 @@
 /*eslint-disable*/
-/* global keys, colorHex, clickButton, maxPlayers, w2, h2 */
+/* global keys, colorHex, clickButton, maxPlayers, w2, h2, localStorage */
 /*eslint-enable*/
 var setKeys = function (game) {
   this.ui = {}
@@ -88,6 +88,7 @@ setKeys.prototype = {
   onPressed: function () {
     if (this.game.input.keyboard.lastKey.keyCode >= 48 && this.game.input.keyboard.lastKey.keyCode <= 90 && this.state.current === 'SetKeys') {
       keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode
+      localStorage['keys'] = JSON.stringify(keys)
       this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]))
     }
   },

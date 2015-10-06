@@ -1,7 +1,7 @@
 /*eslint-disable*/
 /* global Phaser, maxPlayers:true, keys:true, menuMusic:true, setScreenFixed,
 baseH, changeColor:true, chosenColor:true, colorHex:true, bgColors,
-colorHexDark:true, bgColorsDark, bgColor:true, mute, w2, ButtonList */
+colorHexDark:true, bgColorsDark, bgColor:true, mute, w2, ButtonList, localStorage */
 /*eslint-enable*/
 var menu = function (game) {
   maxPlayers = 7
@@ -26,6 +26,10 @@ menu.prototype = {
 
     this.world.pivot.set(0, 0)
     this.world.angle = 0
+
+    if (localStorage.getItem('keys') != null) {
+      keys = JSON.parse(localStorage['keys'])
+    }
 
     if (changeColor) {
       chosenColor = this.game.rnd.integerInRange(0, 3)
