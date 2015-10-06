@@ -196,11 +196,11 @@ editor.prototype = {
         for (i = 0; i < linePoints.length; i++) {
           var lineX = linePoints[i][0]
           var lineY = linePoints[i][1]
-          var index = lineY * this.mapH + lineX
+          var index = lineX * this.mapH + lineY
 
           switch (this.tool) {
             case 'draw':
-              if (this.map.getTile(lineX, lineY) === null && this.levelArray[index] === 0) {
+              if (this.levelArray[index] === 0) {
                 this.map.putTile(0, lineX, lineY)
                 this.levelArray[index] = 1
               }

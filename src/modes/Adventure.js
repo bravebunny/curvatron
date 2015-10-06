@@ -9,12 +9,11 @@ var Adventure = function (game) {
   this.spawnPowers = true
   this.map = null
   this.layer = null
-  this.width = 1344
-  this.height = 768
   this.level = 1
 
-  this.mapW = 80
-  this.mapH = 45
+  this.mapW = 60
+  this.mapH = 34
+  this.tileSize = 32
 }
 
 Adventure.prototype = {
@@ -62,14 +61,14 @@ Adventure.prototype = {
 
     var levelArray = this.game.cache.getText('level').split('').map(Number)
 
-    for (var x = 0; x < this.map.width; x++) {
-      for (var y = 0; y < this.map.height; y++) {
+    for (var x = 0; x < this.mapW; x++) {
+      for (var y = 0; y < this.mapH; y++) {
         if (levelArray[x * this.mapH + y] === 1) this.map.putTile(0, x, y)
         else if (levelArray[x * this.mapH + y] > 1) {
           this.pointPositions[levelArray[x * this.mapH + y] - 2] = {}
           var point = this.pointPositions[levelArray[x * this.mapH + y] - 2]
-          point.x = x * 24 - 12
-          point.y = y * 24 - 12
+          point.x = x * this.tileSize - this.tileSize / 2
+          point.y = y * this.tileSize - this.tileSize / 2
         }
       }
     }
