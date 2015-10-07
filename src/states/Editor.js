@@ -29,6 +29,7 @@ editor.prototype = {
     this.game.load.image('editorSave', 'assets/sprites/gui/editor/save.png')
     this.game.load.image('editorNewPage', 'assets/sprites/gui/editor/newPage.png')
     this.game.load.image('editorExit', 'assets/sprites/gui/editor/exit.png')
+    this.game.load.image('editorOpen', 'assets/sprites/gui/editor/open.png')
 
     this.game.load.image('Pastel', 'assets/levels/Pastel.png') // loading the tileset image
     this.game.load.tilemap('level', 'assets/levels/blank.json', null, Phaser.Tilemap.TILED_JSON) // loading the tilemap file
@@ -100,6 +101,10 @@ editor.prototype = {
     this.tb.start = this.game.add.button(750, baseH + 100, 'editorStart', this.startTool, this)
     this.tb.start.anchor.set(0.5, 0.5)
     this.tb.start.scale.set(0.6)
+
+    this.tb.open = this.game.add.button(1350, baseH + 100, 'editorOpen', this.open, this)
+    this.tb.open.anchor.set(0.5, 0.5)
+    this.tb.open.scale.set(0.4)
 
     this.tb.save = this.game.add.button(1500, baseH + 100, 'editorSave', this.save, this)
     this.tb.save.anchor.set(0.5, 0.5)
@@ -270,6 +275,13 @@ editor.prototype = {
   if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
     players[0].kill()
   }*/
+  },
+
+  open: function () {
+    var open = require('nw-open-file')
+    open(function (filename) {
+      console.log(filename)
+    })
   },
 
   startTool: function () {
