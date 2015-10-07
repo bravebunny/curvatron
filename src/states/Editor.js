@@ -1,4 +1,4 @@
-/* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs, h2, w2
+/* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs, ButtonList, h2, w2,
 */
 var editor = function (game) {
   this.game = game
@@ -9,6 +9,10 @@ var editor = function (game) {
   this.prevCursorX = 0
   this.prevCursorY = 0
   this.lastStartPosition = null
+  this.confirmButtons = null
+  this.save = false
+  this.newPage = false
+  this.exit = false
 }
 
 editor.prototype = {
@@ -85,6 +89,12 @@ editor.prototype = {
     })
     this.tb.pointText.anchor.set(0.5)
 
+    this.confirmButtons = new ButtonList(this, this.game)
+    this.confirmButtons.add('confimr_button', 'confirm', this.confirm)
+    this.confirmButtons.add('cancel_button', 'cancel', this.cancel)
+    this.confirmButtons.create()
+    this.confirmButtons.hide()
+
     // toolbar icons
     this.tb.right = this.game.add.button(300, baseH + 100, 'editorArrow', this.pointInc, this)
     this.tb.right.anchor.set(0.5, 0.5)
@@ -106,15 +116,15 @@ editor.prototype = {
     this.tb.open.anchor.set(0.5, 0.5)
     this.tb.open.scale.set(0.4)
 
-    this.tb.save = this.game.add.button(1500, baseH + 100, 'editorSave', this.save, this)
+    this.tb.save = this.game.add.button(1500, baseH + 100, 'editorSave', this.auxSave, this)
     this.tb.save.anchor.set(0.5, 0.5)
     this.tb.save.scale.set(0.4)
 
-    this.tb.newPage = this.game.add.button(1650, baseH + 100, 'editorNewPage', this.newPage, this)
+    this.tb.newPage = this.game.add.button(1650, baseH + 100, 'editorNewPage', this.auxNewPage, this)
     this.tb.newPage.anchor.setTo(0.5, 0.5)
     this.tb.newPage.scale.set(0.4)
 
-    this.tb.exit = this.game.add.button(1800, baseH + 100, 'editorExit', this.exit, this)
+    this.tb.exit = this.game.add.button(1800, baseH + 100, 'editorExit', this.auxExit, this)
     this.tb.exit.anchor.setTo(0.5, 0.5)
     this.tb.exit.scale.set(0.8)
 
@@ -365,21 +375,44 @@ editor.prototype = {
     this.pointInc()
   },
 
-  save: function () {
-    for (var i = 0; i < this.pointPositions.length; i++) {
-      this.levelArray[this.pointPositions[i]] = i + 1
+  auxSave: function () {
+    console.log("aqiiiii")
+    this.save = true
+    this.confirmButtons.show()
+    this.confirmButtons.select(0)
+  },
+
+  auxNewPage: function () {
+    this.newPage = true
+    this.confirmButtons.show()
+    this.confirmButtons.select(0)
+  },
+
+  auxExit: function () {
+    this.exit = true
+    this.confirmButtons.show()
+    this.confirmButtons.select(0)
+  },
+
+  confirm: function () {
+    if (this.save) {
+      this.save = false
+      for (var i = 0; i < this.pointPositions.length; i++) {
+        this.levelArray[this.pointPositions[i]] = i + 1
+      }
+
+      var blob = new Blob([this.levelArray.join('')], {type: 'text/plain'})
+      saveAs(blob, 'curvatron_level')
+    } else if (this.newPage) {
+      this.newPage = false
+      this.state.restart(true, false, this.mode)
+    } else if (this.exit) {
+      this.exit = false
+      this.state.start('Menu')
     }
-
-    var blob = new Blob([this.levelArray.join('')], {type: 'text/plain'})
-    saveAs(blob, 'curvatron_level')
   },
 
-  newPage: function () {
-    this.state.restart(true, false, this.mode)
-  },
-
-  exit: function () {
-    this.state.start('Menu')
+  cancel: function () {
+    this.confirmButtons.hide()
   }
-
 }
