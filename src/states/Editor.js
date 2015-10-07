@@ -240,14 +240,7 @@ editor.prototype = {
 
             case 'point':
               if (this.levelArray[index] === 0) {
-                if (this.points[this.selectedPoint] == null) {
-                  this.points[this.selectedPoint] = this.game.add.sprite(x, y, 'point')
-                  this.points[this.selectedPoint].anchor.set(0.5)
-                  this.points[this.selectedPoint].inputEnabled = true
-                } else {
-                  this.levelArray[this.pointPositions[this.selectedPoint]] = 0
-                  this.points[this.selectedPoint].position.set(x, y)
-                }
+                this.createPoint(tileX, tileY, this.selectedPoint)
                 this.levelArray[index] = 2
                 this.pointPositions[this.selectedPoint] = index
                 // this.pointsGrid[this.selectedPoint] = [tileX, this.layer.getTileX(y)]
@@ -256,12 +249,8 @@ editor.prototype = {
 
             case 'start':
               if (this.levelArray[index] === 0) {
-                if (!this.start.visible) this.start.visible = true
                 this.levelArray[index] = 's'
-                this.start.position.set(x, y)
-                var lp = this.lastStartPosition
-                if (lp !== null) this.levelArray[lp] = 0
-                this.lastStartPosition = index
+                this.createStart(tileX, tileY)
               }
               break
           }
@@ -278,10 +267,56 @@ editor.prototype = {
   },
 
   open: function () {
+    this.newPage()
     var open = require('nw-open-file')
-    open(function (filename) {
-      console.log(filename)
-    })
+    open(function (fileName) {
+      var fs = require('fs')
+      fs.readFile(fileName, 'utf8', function (error, data) {
+        if (error) throw error
+        this.levelArray = data.split('').map(function (val) {
+          var retVal = parseInt(val, 10)
+          if (isNaN(retVal)) {
+            retVal = val
+          }
+          return retVal
+        })
+
+        for (var x = 0; x < this.mapW; x++) {
+          for (var y = 0; y < this.mapH; y++) {
+            var index = x * this.mapH + y
+            var val = this.levelArray[index]
+            if (val === 1) this.map.putTile(0, x, y) // load walls
+            else if (val > 1) { // load points
+              this.pointPositions[val - 1] = index
+              this.createPoint(x, y, val - 1)
+            } else if (val === 's') { // load start point
+              this.createStart(x, y)
+            }
+          }
+        }
+      }.bind(this))
+    }.bind(this))
+  },
+
+  createPoint: function (tileX, tileY, i) {
+    var x = tileX * this.tileSize + this.tileSize / 2
+    var y = tileY * this.tileSize + this.tileSize / 2
+    if (this.points[i] == null) {
+      this.points[i] = this.game.add.sprite(x, y, 'point')
+      this.points[i].anchor.set(0.5)
+      this.points[i].inputEnabled = true
+    } else {
+      this.levelArray[this.pointPositions[i]] = 0
+      this.points[i].position.set(x, y)
+    }
+  },
+
+  createStart: function (x, y) {
+    if (!this.start.visible) this.start.visible = true
+    this.start.position.set(x * this.tileSize + this.tileSize / 2, y * this.tileSize + this.tileSize / 2)
+    var lp = this.lastStartPosition
+    if (lp !== null) this.levelArray[lp] = 0
+    this.lastStartPosition = x * this.mapH + y
   },
 
   startTool: function () {
