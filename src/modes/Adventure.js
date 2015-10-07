@@ -51,7 +51,7 @@ Adventure.prototype = {
     bmd.width = 2 * w2
     bmd.height = 2 * h2
 
-    players[0].x = w2 + 400
+    players[0].x = w2
     players[0].y = h2
 
     this.score = 0
@@ -59,16 +59,20 @@ Adventure.prototype = {
     this.map = this.game.add.tilemap('blank')
     this.map.addTilesetImage('Pastel') // Preloaded tileset
 
-    var levelArray = this.game.cache.getText('level').split('').map(Number)
+    var levelArray = this.game.cache.getText('level').split('')
 
     for (var x = 0; x < this.mapW; x++) {
       for (var y = 0; y < this.mapH; y++) {
-        if (levelArray[x * this.mapH + y] === 1) this.map.putTile(0, x, y)
-        else if (levelArray[x * this.mapH + y] > 1) {
-          this.pointPositions[levelArray[x * this.mapH + y] - 2] = {}
-          var point = this.pointPositions[levelArray[x * this.mapH + y] - 2]
+        var val = parseInt(levelArray[x * this.mapH + y], 16)
+        if (val === 1) this.map.putTile(0, x, y)
+        else if (val > 1) {
+          this.pointPositions[val - 2] = {}
+          var point = this.pointPositions[val - 2]
           point.x = x * this.tileSize - this.tileSize / 2
           point.y = y * this.tileSize - this.tileSize / 2
+        } else if (levelArray[x * this.mapH + y] === 's') {
+          players[0].x = x * this.tileSize - this.tileSize / 2
+          players[0].y = y * this.tileSize - this.tileSize / 2
         }
       }
     }
@@ -146,8 +150,10 @@ Adventure.prototype = {
   },
 
   createPower: function () {
-    var powerup = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
-    powerup.create()
+    if (this.pointPositions[this.score]) {
+      var powerup = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
+      powerup.create()
+    }
   },
 
   nextLevel: function () {

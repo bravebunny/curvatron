@@ -1,4 +1,4 @@
-/* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs
+/* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs, h2, w2
 */
 var editor = function (game) {
   this.game = game
@@ -8,6 +8,7 @@ var editor = function (game) {
   this.tb = {}
   this.prevCursorX = 0
   this.prevCursorY = 0
+  this.lastStartPosition = null
 }
 
 editor.prototype = {
@@ -35,7 +36,7 @@ editor.prototype = {
 
   create: function () {
     // variables that need to be reset
-    this.tool = 'draw' // 0=draw, 1=erase, 2=point
+    this.tool = 'draw' // draw, erase, point, start
     this.selectedPoint = 1
     this.points = []
     this.pointPositions = []
@@ -111,6 +112,10 @@ editor.prototype = {
     this.tb.exit = this.game.add.button(1800, baseH + 100, 'editorExit', this.exit, this)
     this.tb.exit.anchor.setTo(0.5, 0.5)
     this.tb.exit.scale.set(0.8)
+
+    this.start = this.game.add.sprite(w2, h2, 'loading')
+    this.start.anchor.set(0.5, 0.1)
+    this.start.visible = false
 
     // the square that shows under the mouse to show what's selected
     this.marker = this.game.add.graphics()
@@ -241,6 +246,17 @@ editor.prototype = {
                 this.levelArray[index] = 2
                 this.pointPositions[this.selectedPoint] = index
                 // this.pointsGrid[this.selectedPoint] = [tileX, this.layer.getTileX(y)]
+              }
+              break
+
+            case 'start':
+              if (this.levelArray[index] === 0) {
+                if (!this.start.visible) this.start.visible = true
+                this.levelArray[index] = 's'
+                this.start.position.set(x, y)
+                var lp = this.lastStartPosition
+                if (lp !== null) this.levelArray[lp] = 0
+                this.lastStartPosition = index
               }
               break
           }
