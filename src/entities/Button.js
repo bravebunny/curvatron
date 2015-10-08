@@ -16,7 +16,7 @@ var Button = function (iconName, text, callback, buttonList, context, game) {
   this.button = null
   this.tween = {}
 
-  this.w = 450
+  this.w = 400
   this.h = 100
   this.selected = false
 }
@@ -32,7 +32,9 @@ Button.prototype = {
     this.graphics = this.game.add.graphics(-w / 2, -h / 2)
     this.graphics.lineStyle(0)
     this.graphics.beginFill(0xFFFFFF, 1)
-    this.graphics.drawRoundedRect(0, 0, w, h, h / 2)
+    this.graphics.drawRect(0, 0, w, h)
+    this.graphics.drawCircle(0, h / 2, h)
+    this.graphics.drawCircle(w, h / 2, h)
     this.graphics.endFill()
     // this.graphics.anchor.setTo(0.5,0.5)
 
@@ -47,7 +49,7 @@ Button.prototype = {
     this.label.anchor.setTo(0.5, 0.5)
 
     // Button icon
-    this.icon = this.game.add.sprite(-w / 2 + 60, 0, this.iconName)
+    this.icon = this.game.add.sprite(-w / 2 + 30, 0, this.iconName)
     this.icon.scale.set(0.5, 0.5)
     this.icon.tint = parseInt(colorHex.substring(1), 16)
     // this.icon.hitArea = new Phaser.Rectangle(-80, -80, w, h)
