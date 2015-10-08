@@ -10,7 +10,7 @@ var editor = function (game) {
   this.prevCursorY = 0
   this.lastStartPosition = null
   this.confirmButtons = null
-  this.save = false
+  this.open = false
   this.newPage = false
   this.exit = false
   this.dialogText = null
@@ -113,11 +113,11 @@ editor.prototype = {
     this.tb.start.anchor.set(0.5, 0.5)
     this.tb.start.scale.set(0.6)
 
-    this.tb.open = this.game.add.button(1350, baseH + 100, 'editorOpen', this.open, this)
+    this.tb.open = this.game.add.button(1350, baseH + 100, 'editorOpen', this.auxOpen, this)
     this.tb.open.anchor.set(0.5, 0.5)
     this.tb.open.scale.set(0.4)
 
-    this.tb.save = this.game.add.button(1500, baseH + 100, 'editorSave', this.auxSave, this)
+    this.tb.save = this.game.add.button(1500, baseH + 100, 'editorSave', this.Save, this)
     this.tb.save.anchor.set(0.5, 0.5)
     this.tb.save.scale.set(0.4)
 
@@ -286,39 +286,6 @@ editor.prototype = {
     this.confirmButtons.update()
   },
 
-  open: function () {
-    this.new = true
-    this.confirm()
-    var open = require('nw-open-file')
-    open(function (fileName) {
-      var fs = require('fs')
-      fs.readFile(fileName, 'utf8', function (error, data) {
-        if (error) throw error
-        this.levelArray = data.split('').map(function (val) {
-          var retVal = parseInt(val, 10)
-          if (isNaN(retVal)) {
-            retVal = val
-          }
-          return retVal
-        })
-
-        for (var x = 0; x < this.mapW; x++) {
-          for (var y = 0; y < this.mapH; y++) {
-            var index = x * this.mapH + y
-            var val = this.levelArray[index]
-            if (val === 1) this.map.putTile(0, x, y) // load walls
-            else if (val > 1) { // load points
-              this.pointPositions[val - 1] = index
-              this.createPoint(x, y, val - 1)
-            } else if (val === 's') { // load start point
-              this.createStart(x, y)
-            }
-          }
-        }
-      }.bind(this))
-    }.bind(this))
-  },
-
   createPoint: function (tileX, tileY, i) {
     var x = tileX * this.tileSize + this.tileSize / 2
     var y = tileY * this.tileSize + this.tileSize / 2
@@ -386,9 +353,13 @@ editor.prototype = {
     this.pointInc()
   },
 
-  auxSave: function () {
-    this.save = true
-    this.showDialog('bla bla')
+  Save: function () {
+    for (var i = 0; i < this.pointPositions.length; i++) {
+      this.levelArray[this.pointPositions[i]] = i + 1
+    }
+
+    var blob = new Blob([this.levelArray.join('')], {type: 'text/plain'})
+    saveAs(blob, 'curvatron_level')
   },
 
   auxNewPage: function () {
@@ -399,6 +370,11 @@ editor.prototype = {
   auxExit: function () {
     this.exit = true
     this.showDialog('all unsaved progress will be lost. exit?')
+  },
+
+  auxOpen: function () {
+    this.open = true
+    this.showDialog('all unsaved progress will be lost. chose another project?')
   },
 
   showDialog: function (text) {
@@ -416,14 +392,38 @@ editor.prototype = {
   },
 
   confirm: function () {
-    if (this.save) {
-      this.save = false
-      for (var i = 0; i < this.pointPositions.length; i++) {
-        this.levelArray[this.pointPositions[i]] = i + 1
-      }
+    if (this.open) {
+      this.open = false
+      this.new = true
+      this.confirm()
+      var open = require('nw-open-file')
+      open(function (fileName) {
+        var fs = require('fs')
+        fs.readFile(fileName, 'utf8', function (error, data) {
+          if (error) throw error
+          this.levelArray = data.split('').map(function (val) {
+            var retVal = parseInt(val, 10)
+            if (isNaN(retVal)) {
+              retVal = val
+            }
+            return retVal
+          })
 
-      var blob = new Blob([this.levelArray.join('')], {type: 'text/plain'})
-      saveAs(blob, 'curvatron_level')
+          for (var x = 0; x < this.mapW; x++) {
+            for (var y = 0; y < this.mapH; y++) {
+              var index = x * this.mapH + y
+              var val = this.levelArray[index]
+              if (val === 1) this.map.putTile(0, x, y) // load walls
+              else if (val > 1) { // load points
+                this.pointPositions[val - 1] = index
+                this.createPoint(x, y, val - 1)
+              } else if (val === 's') { // load start point
+                this.createStart(x, y)
+              }
+            }
+          }
+        }.bind(this))
+      }.bind(this))
     } else if (this.newPage) {
       this.newPage = false
       this.state.restart(true, false, this.mode)
