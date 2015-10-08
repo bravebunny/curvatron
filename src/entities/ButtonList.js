@@ -8,6 +8,7 @@ var ButtonList = function (context, game) {
   this.pressingSelect = false
   this.pressingUp = false
   this.pressingDown = false
+  this.visible = true
 }
 
 ButtonList.prototype = {
@@ -21,10 +22,12 @@ ButtonList.prototype = {
   },
 
   update: function () {
-    for (var i = 0; i < this.buttons.length; i++) {
-      var b = this.buttons[i]
-      if (i === this.selection && !b.selected) b.select()
-      else if (i !== this.selection && b.selected) b.deselect()
+    if (this.visible) {
+      for (var i = 0; i < this.buttons.length; i++) {
+        var b = this.buttons[i]
+        if (i === this.selection && !b.selected) b.select()
+        else if (i !== this.selection && b.selected) b.deselect()
+      }
     }
   },
 
@@ -66,12 +69,14 @@ ButtonList.prototype = {
   },
 
   hide: function () {
+    this.visible = false
     for (var i = 0; i < this.buttons.length; i++) {
       this.buttons[i].hide()
     }
   },
 
   show: function () {
+    this.visible = true
     for (var i = 0; i < this.buttons.length; i++) {
       this.buttons[i].show()
     }

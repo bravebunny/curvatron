@@ -13,6 +13,7 @@ var editor = function (game) {
   this.save = false
   this.newPage = false
   this.exit = false
+  this.dialogText = null
 }
 
 editor.prototype = {
@@ -70,7 +71,7 @@ editor.prototype = {
     // toolbar background
     this.tb.bg = this.game.add.sprite(0, baseH, 'overlay')
     this.tb.bg.width = baseW
-    this.tb.bg.height = 200
+    this.tb.bg.height = 2 * h2
     this.tb.bg.alpha = 0.5
 
     // toolbar icons
@@ -90,8 +91,8 @@ editor.prototype = {
     this.tb.pointText.anchor.set(0.5)
 
     this.confirmButtons = new ButtonList(this, this.game)
-    this.confirmButtons.add('confimr_button', 'confirm', this.confirm)
-    this.confirmButtons.add('cancel_button', 'cancel', this.cancel)
+    this.confirmButtons.add('accept_button', 'yes', this.confirm)
+    this.confirmButtons.add('cancel_button', 'cancel', this.hideDialog)
     this.confirmButtons.create()
     this.confirmButtons.hide()
 
@@ -168,6 +169,14 @@ editor.prototype = {
       this.overlay.lineTo(0, (e + 1) * gridSize)
     }
     this.overlay.stroke()
+
+    this.dialogText = this.add.text(w2, 150, '', {
+      font: '80px dosis',
+      fill: '#ffffff',
+      align: 'center'
+    })
+    this.dialogText.anchor.setTo(0.5, 0.5)
+    this.dialogText.visible = false
   },
 
   update: function () {
@@ -274,10 +283,12 @@ editor.prototype = {
   if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
     players[0].kill()
   }*/
+    this.confirmButtons.update()
   },
 
   open: function () {
-    this.newPage()
+    this.new = true
+    this.confirm()
     var open = require('nw-open-file')
     open(function (fileName) {
       var fs = require('fs')
@@ -376,22 +387,32 @@ editor.prototype = {
   },
 
   auxSave: function () {
-    console.log("aqiiiii")
     this.save = true
-    this.confirmButtons.show()
-    this.confirmButtons.select(0)
+    this.showDialog('bla bla')
   },
 
   auxNewPage: function () {
     this.newPage = true
-    this.confirmButtons.show()
-    this.confirmButtons.select(0)
+    this.showDialog('all unsaved progress will be lost. clear screen?')
   },
 
   auxExit: function () {
     this.exit = true
+    this.showDialog('all unsaved progress will be lost. exit?')
+  },
+
+  showDialog: function (text) {
+    this.dialogText.text = text
+    this.dialogText.visible = true
+    this.tb.bg.y = 0
     this.confirmButtons.show()
     this.confirmButtons.select(0)
+  },
+
+  hideDialog: function () {
+    this.confirmButtons.hide()
+    this.dialogText.visible = false
+    this.tb.bg.y = baseH
   },
 
   confirm: function () {
@@ -410,9 +431,6 @@ editor.prototype = {
       this.exit = false
       this.state.start('Menu')
     }
-  },
-
-  cancel: function () {
-    this.confirmButtons.hide()
+    this.hideDialog()
   }
 }

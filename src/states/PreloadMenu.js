@@ -38,6 +38,7 @@ preloadMenu.prototype = {
 
     this.game.load.image('back_button', 'assets/sprites/gui/navigation/back.png')
     this.game.load.image('accept_button', 'assets/sprites/gui/navigation/accept.png')
+    this.game.load.image('cancel_button', 'assets/sprites/gui/navigation/cancel.png')
     this.game.load.image('exit_button', 'assets/sprites/gui/navigation/exit.png')
 
     this.game.load.image('deaths-stats', 'assets/sprites/gui/stats/deaths-stats.png')
