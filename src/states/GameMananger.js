@@ -164,6 +164,7 @@ gameMananger.prototype = {
     this.pauseButtons.add('restart_button', 'restart', this.restart)
     this.ui.audioButton = this.pauseButtons.add(audioButton, audioText, this.muteSound)
     this.pauseButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
+    this.pauseButtons.textColor = colorHexDark
     this.pauseButtons.create()
     this.pauseButtons.hide()
 
@@ -171,6 +172,7 @@ gameMananger.prototype = {
     this.deathButtons.add('restart_button', 'restart', this.restart)
     this.deathButtons.add('twitter_button', 'share score', this.share)
     this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
+    this.deathButtons.textColor = colorHexDark
     this.deathButtons.create()
     this.deathButtons.hide()
   },

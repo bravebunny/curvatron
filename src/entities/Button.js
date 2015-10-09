@@ -19,6 +19,8 @@ var Button = function (iconName, text, callback, buttonList, context, game) {
   this.w = 400
   this.h = 100
   this.selected = false
+
+  this.textColor = colorHex
 }
 
 Button.prototype = {
@@ -44,14 +46,14 @@ Button.prototype = {
     // Button label
     this.label = this.game.add.text(offset, 0, this.text, {
       font: '60px dosis',
-      fill: colorHex
+      fill: this.textColor
     })
     this.label.anchor.setTo(0.5, 0.5)
 
     // Button icon
     this.icon = this.game.add.sprite(-w / 2 + 30, 0, this.iconName)
     this.icon.scale.set(0.5, 0.5)
-    this.icon.tint = parseInt(colorHex.substring(1), 16)
+    this.icon.tint = parseInt(this.textColor.substring(1), 16)
     // this.icon.hitArea = new Phaser.Rectangle(-80, -80, w, h)
     this.icon.anchor.setTo(0.5, 0.5)
 

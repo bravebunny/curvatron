@@ -93,6 +93,7 @@ editor.prototype = {
     this.confirmButtons = new ButtonList(this, this.game)
     this.confirmButtons.add('accept_button', 'yes', this.confirm)
     this.confirmButtons.add('cancel_button', 'cancel', this.hideDialog)
+    this.confirmButtons.textColor = colorHexDark
     this.confirmButtons.create()
     this.confirmButtons.hide()
 

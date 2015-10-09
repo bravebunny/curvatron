@@ -1,4 +1,4 @@
-/* global w2, Button */
+/* global w2, Button, colorHex */
 var ButtonList = function (context, game) {
   this.context = context
   this.game = game
@@ -9,12 +9,15 @@ var ButtonList = function (context, game) {
   this.pressingUp = false
   this.pressingDown = false
   this.visible = true
+
+  this.textColor = colorHex
 }
 
 ButtonList.prototype = {
   create: function () {
     for (var i = 0; i < this.buttons.length; i++) {
       var b = this.buttons[i]
+      b.textColor = this.textColor
       b.setPosition(w2, 300 + i * 125)
       b.setIndex(i)
       b.create()
