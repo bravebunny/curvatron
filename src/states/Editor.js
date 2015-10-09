@@ -80,6 +80,17 @@ editor.prototype = {
 
     this.game.canvas.oncontextmenu = function (e) { e.preventDefault() }
 
+    // the square that shows under the mouse to show what's selected
+    this.marker = this.game.add.graphics()
+    this.marker.lineStyle(2, 0xFFFFFF, 1)
+    this.marker.drawRect(0, 0, this.tileSize, this.tileSize)
+    this.marker.lineStyle(2, 0x000000, 1)
+    this.marker.drawRect(0, 0, this.tileSize - 2, this.tileSize - 2)
+
+    this.selector = this.game.add.graphics()
+    this.selector.lineStyle(10, 0xFFFFFF, 1)
+    this.selector.drawRect(-60, -60, 120, 120)
+
     // toolbar background
     this.tb.bg = this.game.add.sprite(0, baseH, 'overlay')
     this.tb.bg.width = baseW
@@ -102,12 +113,9 @@ editor.prototype = {
     })
     this.tb.pointText.anchor.set(0.5)
 
-    this.confirmButtons = new ButtonList(this, this.game)
-    this.confirmButtons.add('accept_button', 'yes', this.confirm)
-    this.confirmButtons.add('cancel_button', 'cancel', this.hideDialog)
-    this.confirmButtons.textColor = colorHexDark
-    this.confirmButtons.create()
-    this.confirmButtons.hide()
+    this.start = this.game.add.sprite(w2, h2, 'loading')
+    this.start.anchor.set(0.5, 0.1)
+    this.start.visible = false
 
     // toolbar icons
     this.tb.right = this.game.add.button(300, baseH + 100, 'editorArrow', this.pointInc, this)
@@ -146,21 +154,6 @@ editor.prototype = {
     this.tb.test.anchor.setTo(0.5, 0.5)
     this.tb.test.scale.set(0.8)
 
-    this.start = this.game.add.sprite(w2, h2, 'loading')
-    this.start.anchor.set(0.5, 0.1)
-    this.start.visible = false
-
-    // the square that shows under the mouse to show what's selected
-    this.marker = this.game.add.graphics()
-    this.marker.lineStyle(2, 0xFFFFFF, 1)
-    this.marker.drawRect(0, 0, this.tileSize, this.tileSize)
-    this.marker.lineStyle(2, 0x000000, 1)
-    this.marker.drawRect(0, 0, this.tileSize - 2, this.tileSize - 2)
-
-    this.selector = this.game.add.graphics()
-    this.selector.lineStyle(10, 0xFFFFFF, 1)
-    this.selector.drawRect(-60, -60, 120, 120)
-
     // grid overlay
     var gridBMD = this.game.add.bitmapData(this.game.width, this.game.height)
     var gridImage = gridBMD.addToWorld()
@@ -186,6 +179,13 @@ editor.prototype = {
       this.overlay.lineTo(0, (e + 1) * gridSize)
     }
     this.overlay.stroke()
+
+    this.confirmButtons = new ButtonList(this, this.game)
+    this.confirmButtons.add('accept_button', 'yes', this.confirm)
+    this.confirmButtons.add('cancel_button', 'cancel', this.hideDialog)
+    this.confirmButtons.textColor = colorHexDark
+    this.confirmButtons.create()
+    this.confirmButtons.hide()
 
     this.dialogText = this.add.text(w2, 150, '', {
       font: '80px dosis',
@@ -360,7 +360,11 @@ editor.prototype = {
   },
 
   backPressed: function () {
-    this.auxExit()
+    if (this.confirmButtons.visible) {
+      this.hideDialog()
+    } else {
+      this.auxExit()
+    }
   },
 
   left: function () {
