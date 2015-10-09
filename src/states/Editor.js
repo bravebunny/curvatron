@@ -87,10 +87,6 @@ editor.prototype = {
     this.marker.lineStyle(2, 0x000000, 1)
     this.marker.drawRect(0, 0, this.tileSize - 2, this.tileSize - 2)
 
-    this.selector = this.game.add.graphics()
-    this.selector.lineStyle(10, 0xFFFFFF, 1)
-    this.selector.drawRect(-60, -60, 120, 120)
-
     // toolbar background
     this.tb.bg = this.game.add.sprite(0, baseH, 'overlay')
     this.tb.bg.width = baseW
@@ -154,6 +150,11 @@ editor.prototype = {
     this.tb.test.anchor.setTo(0.5, 0.5)
     this.tb.test.scale.set(0.8)
 
+    // square that shows the selected tool
+    this.selector = this.game.add.graphics()
+    this.selector.lineStyle(10, 0xFFFFFF, 1)
+    this.selector.drawRect(-60, -60, 120, 120)
+
     // grid overlay
     var gridBMD = this.game.add.bitmapData(this.game.width, this.game.height)
     var gridImage = gridBMD.addToWorld()
@@ -213,7 +214,7 @@ editor.prototype = {
       }
     }
 
-    // square around selected tool in toolbar
+    // save around selected tool in toolbar
     this.selector.x = this.tb[this.tool].x
     this.selector.y = this.tb[this.tool].y
 
