@@ -342,7 +342,7 @@ editor.prototype = {
   },
 
   backPressed: function () {
-    this.game.state.start('Menu')
+    this.auxExit()
   },
 
   left: function () {
