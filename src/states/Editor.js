@@ -276,17 +276,17 @@ editor.prototype = {
               break
 
             case 'point':
-              if (this.levelArray[index] === 0) {
+              if (this.levelArray[tileX * this.mapH + tileY] === 0) {
                 this.createPoint(tileX, tileY, this.selectedPoint)
-                this.levelArray[index] = 2
-                this.pointPositions[this.selectedPoint] = index
+                this.levelArray[tileX * this.mapH + tileY] = 2
+                this.pointPositions[this.selectedPoint] = tileX * this.mapH + tileY
                 // this.pointsGrid[this.selectedPoint] = [tileX, this.layer.getTileX(y)]
               }
               break
 
             case 'start':
-              if (this.levelArray[index] === 0) {
-                this.levelArray[index] = 's'
+              if (this.levelArray[tileX * this.mapH + tileY] === 0) {
+                this.levelArray[tileX * this.mapH + tileY] = 's'
                 this.createStart(tileX, tileY)
               }
               break
