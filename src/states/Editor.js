@@ -463,6 +463,7 @@ editor.prototype = {
         if (val === 1) this.map.putTile(0, x, y) // load walls
         else if (val > 1) { // load points
           this.pointPositions[val - 1] = index
+          this.levelArray[index] = 2
           this.createPoint(x, y, val - 1)
         } else if (val === 's') { // load start point
           this.createStart(x, y)
