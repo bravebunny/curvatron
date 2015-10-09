@@ -163,7 +163,12 @@ gameMananger.prototype = {
     this.pauseButtons.add('resume_button', 'resume', this.backPressed)
     this.pauseButtons.add('restart_button', 'restart', this.restart)
     this.ui.audioButton = this.pauseButtons.add(audioButton, audioText, this.muteSound)
-    this.pauseButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
+
+    if (this.mode.testing) {
+      this.pauseButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true) })
+    } else {
+      this.pauseButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
+    }
     this.pauseButtons.textColor = colorHexDark
     this.pauseButtons.create()
     this.pauseButtons.hide()
@@ -171,7 +176,11 @@ gameMananger.prototype = {
     this.deathButtons = new ButtonList(this, this.game)
     this.deathButtons.add('restart_button', 'restart', this.restart)
     this.deathButtons.add('twitter_button', 'share score', this.share)
-    this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
+    if (this.mode.testing) {
+      this.deathButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true) })
+    } else {
+      this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
+    }
     this.deathButtons.textColor = colorHexDark
     this.deathButtons.create()
     this.deathButtons.hide()

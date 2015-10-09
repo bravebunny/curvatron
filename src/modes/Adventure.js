@@ -3,24 +3,21 @@
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true
 */
 /*eslint-enable*/
-var Adventure = function (game) {
+var Adventure = function (game, testing) {
   this.sp = true
   this.game = game
   this.spawnPowers = true
   this.map = null
   this.layer = null
-  this.level = 1
 
   this.mapW = 60
   this.mapH = 34
   this.tileSize = 32
+
+  this.testing = testing
 }
 
 Adventure.prototype = {
-  init: function (level) {
-    this.level = level
-  },
-
   preload: function () {
     setScreenFixed(baseW, baseH, this.game)
 
@@ -157,8 +154,10 @@ Adventure.prototype = {
   },
 
   nextLevel: function () {
+    /*
     var mode = new Adventure(this.game, this.level + 1)
-    this.game.state.start('PreloadGame', true, false, mode, this.level + 1)
+    this.game.state.start('PreloadGame', true, false, mode, this.level + 1) */
+    // TODO
   }
 
 }

@@ -1,5 +1,7 @@
-/* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs, ButtonList, h2, w2,
-*/
+/*eslint-disable*/
+/* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs,
+ButtonList, h2, w2, Adventure, numberPlayers:true */
+/*eslint-enable*/
 var editor = function (game) {
   this.game = game
   this.layer = null
@@ -14,9 +16,16 @@ var editor = function (game) {
   this.newPage = false
   this.exit = false
   this.dialogText = null
+  this.returning = false
+  this.fileName = null
+  this.levelArray = []
 }
 
 editor.prototype = {
+  init: function (returning) {
+    this.returning = returning
+  },
+
   preload: function () {
     setScreenFixed(baseW, baseH + 200, this.game)
 
@@ -31,7 +40,7 @@ editor.prototype = {
     this.game.load.image('editorErase', 'assets/sprites/gui/editor/erase.png')
     this.game.load.image('editorArrow', 'assets/sprites/gui/editor/arrow.png')
     this.game.load.image('editorStart', 'assets/sprites/gui/editor/start.png')
-    this.game.load.image('editorSave', 'assets/sprites/gui/editor/save.png')
+    this.game.load.image('editorsave', 'assets/sprites/gui/editor/save.png')
     this.game.load.image('editorNewPage', 'assets/sprites/gui/editor/newPage.png')
     this.game.load.image('editorExit', 'assets/sprites/gui/editor/exit.png')
     this.game.load.image('editorOpen', 'assets/sprites/gui/editor/open.png')
@@ -46,7 +55,6 @@ editor.prototype = {
     this.selectedPoint = 1
     this.points = []
     this.pointPositions = []
-    this.levelArray = []
     this.mapW = 60
     this.mapH = 34
     this.tileSize = 32
@@ -64,7 +72,11 @@ editor.prototype = {
     this.layer = this.map.createLayer('obstacles') // layer[0]
     this.map.setCollisionByExclusion([], true, this.layer)
 
-    this.levelArray = Array.apply(null, Array(this.mapW * this.mapH)).map(Number.prototype.valueOf, 0)
+    if (this.returning) {
+      this.loadFromArray()
+    } else {
+      this.levelArray = Array.apply(null, Array(this.mapW * this.mapH)).map(Number.prototype.valueOf, 0)
+    }
 
     this.game.canvas.oncontextmenu = function (e) { e.preventDefault() }
 
@@ -118,7 +130,7 @@ editor.prototype = {
     this.tb.open.anchor.set(0.5, 0.5)
     this.tb.open.scale.set(0.4)
 
-    this.tb.save = this.game.add.button(1500, baseH + 100, 'editorSave', this.Save, this)
+    this.tb.save = this.game.add.button(1500, baseH + 100, 'editorsave', this.save, this)
     this.tb.save.anchor.set(0.5, 0.5)
     this.tb.save.scale.set(0.4)
 
@@ -129,6 +141,10 @@ editor.prototype = {
     this.tb.exit = this.game.add.button(1800, baseH + 100, 'editorExit', this.auxExit, this)
     this.tb.exit.anchor.setTo(0.5, 0.5)
     this.tb.exit.scale.set(0.8)
+
+    this.tb.test = this.game.add.button(1200, baseH + 100, 'resume_button', this.test, this)
+    this.tb.test.anchor.setTo(0.5, 0.5)
+    this.tb.test.scale.set(0.8)
 
     this.start = this.game.add.sprite(w2, h2, 'loading')
     this.start.anchor.set(0.5, 0.1)
@@ -355,12 +371,15 @@ editor.prototype = {
     this.pointInc()
   },
 
-  Save: function () {
+  generateFile: function () {
     for (var i = 0; i < this.pointPositions.length; i++) {
       this.levelArray[this.pointPositions[i]] = i + 1
     }
+    return this.levelArray.join('')
+  },
 
-    var blob = new Blob([this.levelArray.join('')], {type: 'text/plain'})
+  save: function () {
+    var blob = new Blob([this.generateFile()], {type: 'text/plain'})
     saveAs(blob, 'curvatron_level')
   },
 
@@ -377,6 +396,18 @@ editor.prototype = {
   auxOpen: function () {
     this.open = true
     this.showDialog('all unsaved progress will be lost. chose another project?')
+  },
+
+  test: function () {
+    var fs = require('fs')
+    fs.writeFile('tempLevel', this.generateFile(), function (err) {
+      if (err) throw err
+      console.log('It\'s saved!')
+    })
+
+    numberPlayers = 0
+    var mode = new Adventure(this.game, true)
+    this.game.state.start('PreloadGame', true, false, mode, 'tempLevel')
   },
 
   showDialog: function (text) {
@@ -396,7 +427,7 @@ editor.prototype = {
   confirm: function () {
     if (this.open) {
       this.open = false
-      this.new = true
+      this.newPage = true
       this.confirm()
       var open = require('nw-open-file')
       open(function (fileName) {
@@ -411,19 +442,7 @@ editor.prototype = {
             return retVal
           })
 
-          for (var x = 0; x < this.mapW; x++) {
-            for (var y = 0; y < this.mapH; y++) {
-              var index = x * this.mapH + y
-              var val = this.levelArray[index]
-              if (val === 1) this.map.putTile(0, x, y) // load walls
-              else if (val > 1) { // load points
-                this.pointPositions[val - 1] = index
-                this.createPoint(x, y, val - 1)
-              } else if (val === 's') { // load start point
-                this.createStart(x, y)
-              }
-            }
-          }
+          this.loadFromArray()
         }.bind(this))
       }.bind(this))
     } else if (this.newPage) {
@@ -434,5 +453,21 @@ editor.prototype = {
       this.state.start('Menu')
     }
     this.hideDialog()
+  },
+
+  loadFromArray: function () {
+    for (var x = 0; x < this.mapW; x++) {
+      for (var y = 0; y < this.mapH; y++) {
+        var index = x * this.mapH + y
+        var val = this.levelArray[index]
+        if (val === 1) this.map.putTile(0, x, y) // load walls
+        else if (val > 1) { // load points
+          this.pointPositions[val - 1] = index
+          this.createPoint(x, y, val - 1)
+        } else if (val === 's') { // load start point
+          this.createStart(x, y)
+        }
+      }
+    }
   }
 }
