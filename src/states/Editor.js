@@ -292,6 +292,7 @@ editor.prototype = {
     var y = tileY * this.tileSize + this.tileSize / 2
     if (this.points[i] == null) {
       this.points[i] = this.game.add.sprite(x, y, 'point')
+      this.game.world.sendToBack(this.points[i])
       this.points[i].anchor.set(0.5)
       this.points[i].inputEnabled = true
     } else {
