@@ -376,6 +376,22 @@ editor.prototype = {
     this.pointInc()
   },
 
+  up: function () {
+    if (this.confirmButtons.visible) this.confirmButtons.selectUp()
+  },
+
+  down: function () {
+    if (this.confirmButtons.visible) this.confirmButtons.selectDown()
+  },
+
+  selectPress: function () {
+    if (this.confirmButtons.visible) this.confirmButtons.selectPress()
+  },
+
+  selectRelease: function () {
+    if (this.confirmButtons.visible) this.confirmButtons.selectRelease()
+  },
+
   generateFile: function () {
     for (var i = 0; i < this.pointPositions.length; i++) {
       this.levelArray[this.pointPositions[i]] = i + 1
@@ -420,7 +436,7 @@ editor.prototype = {
     this.dialogText.visible = true
     this.tb.bg.y = 0
     this.confirmButtons.show()
-    this.confirmButtons.select(0)
+    this.confirmButtons.select(1)
   },
 
   hideDialog: function () {
