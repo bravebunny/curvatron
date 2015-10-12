@@ -15,6 +15,12 @@ var Adventure = function (game, testing) {
   this.tileSize = 32
 
   this.testing = testing
+
+  this.values = {
+    start: 35,
+    wall: 1,
+    empty: 0
+  }
 }
 
 Adventure.prototype = {
@@ -60,14 +66,14 @@ Adventure.prototype = {
 
     for (var x = 0; x < this.mapW; x++) {
       for (var y = 0; y < this.mapH; y++) {
-        var val = parseInt(levelArray[x * this.mapH + y], 16)
-        if (val === 1) this.map.putTile(0, x, y)
+        var val = parseInt(levelArray[x * this.mapH + y], 36)
+        if (val === this.values.wall) this.map.putTile(0, x, y)
         else if (val > 1) {
           this.pointPositions[val - 2] = {}
           var point = this.pointPositions[val - 2]
           point.x = x * this.tileSize - this.tileSize / 2
           point.y = y * this.tileSize - this.tileSize / 2
-        } else if (levelArray[x * this.mapH + y] === 's') {
+        } else if (levelArray[x * this.mapH + y] === this.values.start) {
           players[0].x = x * this.tileSize - this.tileSize / 2
           players[0].y = y * this.tileSize - this.tileSize / 2
         }

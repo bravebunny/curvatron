@@ -19,6 +19,15 @@ var editor = function (game) {
   this.returning = false
   this.fileName = null
   this.levelArray = []
+  this.maxPoints = 32
+
+  // reserved values in the level file
+  // the remaining ones can be used for the points
+  this.values = {
+    start: 35,
+    wall: 1,
+    empty: 0
+  }
 }
 
 editor.prototype = {
@@ -247,9 +256,9 @@ editor.prototype = {
 
           switch (this.tool) {
             case 'draw':
-              if (this.levelArray[index] === 0) {
+              if (this.levelArray[index] === this.values.empty) {
                 this.map.putTile(0, lineX, lineY)
-                this.levelArray[index] = 1
+                this.levelArray[index] = this.values.wall
               }
               break
 
@@ -272,12 +281,13 @@ editor.prototype = {
                 }
               }
 
-              this.levelArray[index] = 0
+              this.levelArray[index] = this.values.empty
               break
 
             case 'point':
-              if (this.levelArray[tileX * this.mapH + tileY] === 0) {
+              if (this.levelArray[tileX * this.mapH + tileY] === this.values.empty) {
                 this.createPoint(tileX, tileY, this.selectedPoint)
+                // value is set as 2 temporarily, will be replaced later
                 this.levelArray[tileX * this.mapH + tileY] = 2
                 this.pointPositions[this.selectedPoint] = tileX * this.mapH + tileY
                 // this.pointsGrid[this.selectedPoint] = [tileX, this.layer.getTileX(y)]
@@ -285,8 +295,8 @@ editor.prototype = {
               break
 
             case 'start':
-              if (this.levelArray[tileX * this.mapH + tileY] === 0) {
-                this.levelArray[tileX * this.mapH + tileY] = 's'
+              if (this.levelArray[tileX * this.mapH + tileY] === this.values.empty) {
+                this.levelArray[tileX * this.mapH + tileY] = this.values.start
                 this.createStart(tileX, tileY)
               }
               break
@@ -346,13 +356,14 @@ editor.prototype = {
     if (this.selectedPoint > 1) {
       this.selectedPoint--
     } else if (this.points.length > 0) {
-      this.selectedPoint = this.points.length
+      if (this.selectedPoint < this.maxPoints) this.selectedPoint = this.points.length
+      else this.selectedPoint = this.maxPoints
     }
     this.tb.pointText.text = this.selectedPoint
   },
 
   pointInc: function () {
-    if (this.selectedPoint < this.points.length) {
+    if (this.selectedPoint < this.points.length && this.selectedPoint < this.maxPoints) {
       this.selectedPoint++
     } else {
       this.selectedPoint = 1
@@ -396,7 +407,9 @@ editor.prototype = {
     for (var i = 0; i < this.pointPositions.length; i++) {
       this.levelArray[this.pointPositions[i]] = i + 1
     }
-    return this.levelArray.join('')
+    // using base 36 lets us use all the letters up to Z as numbers
+    var strings = this.levelArray.map(function (val) { return val.toString(36) })
+    return strings.join('')
   },
 
   save: function () {
@@ -456,7 +469,7 @@ editor.prototype = {
         fs.readFile(fileName, 'utf8', function (error, data) {
           if (error) throw error
           this.levelArray = data.split('').map(function (val) {
-            var retVal = parseInt(val, 10)
+            var retVal = parseInt(val, 36)
             if (isNaN(retVal)) {
               retVal = val
             }
@@ -481,12 +494,12 @@ editor.prototype = {
       for (var y = 0; y < this.mapH; y++) {
         var index = x * this.mapH + y
         var val = this.levelArray[index]
-        if (val === 1) this.map.putTile(0, x, y) // load walls
-        else if (val > 1) { // load points
+        if (val === this.values.wall) this.map.putTile(0, x, y) // load walls
+        else if (val > this.values.wall) { // load points
           this.pointPositions[val - 1] = index
           this.levelArray[index] = 2
           this.createPoint(x, y, val - 1)
-        } else if (val === 's') { // load start point
+        } else if (val === this.value.start) { // load start point
           this.createStart(x, y)
         }
       }
