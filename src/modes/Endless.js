@@ -42,6 +42,5 @@ Endless.prototype = {
     if (score > this.getHighScore()) {
       this.setHighScore(score)
     }
-  },
-
+  }
 }

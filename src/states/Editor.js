@@ -356,7 +356,7 @@ editor.prototype = {
     if (this.selectedPoint > 1) {
       this.selectedPoint--
     } else if (this.points.length > 0) {
-      if (this.selectedPoint < this.maxPoints) this.selectedPoint = this.points.length
+      if (this.points.length < this.maxPoints) this.selectedPoint = this.points.length
       else this.selectedPoint = this.maxPoints
     }
     this.tb.pointText.text = this.selectedPoint
