@@ -81,12 +81,6 @@ editor.prototype = {
     this.layer = this.map.createLayer('obstacles') // layer[0]
     this.map.setCollisionByExclusion([], true, this.layer)
 
-    if (this.returning) {
-      this.loadFromArray()
-    } else {
-      this.levelArray = Array.apply(null, Array(this.mapW * this.mapH)).map(Number.prototype.valueOf, 0)
-    }
-
     this.game.canvas.oncontextmenu = function (e) { e.preventDefault() }
 
     // the square that shows under the mouse to show what's selected
@@ -204,6 +198,12 @@ editor.prototype = {
     })
     this.dialogText.anchor.setTo(0.5, 0.5)
     this.dialogText.visible = false
+
+    if (this.returning) {
+      this.loadFromArray()
+    } else {
+      this.levelArray = Array.apply(null, Array(this.mapW * this.mapH)).map(Number.prototype.valueOf, 0)
+    }
   },
 
   update: function () {
@@ -329,6 +329,7 @@ editor.prototype = {
   },
 
   createStart: function (x, y) {
+    console.log('creating start at ' + x + ', ' + y)
     if (!this.start.visible) this.start.visible = true
     this.start.position.set(x * this.tileSize + this.tileSize / 2, y * this.tileSize + this.tileSize / 2)
     var lp = this.lastStartPosition
@@ -495,12 +496,11 @@ editor.prototype = {
         var index = x * this.mapH + y
         var val = this.levelArray[index]
         if (val === this.values.wall) this.map.putTile(0, x, y) // load walls
+        else if (val === this.values.start) this.createStart(x, y)
         else if (val > this.values.wall) { // load points
           this.pointPositions[val - 1] = index
           this.levelArray[index] = 2
           this.createPoint(x, y, val - 1)
-        } else if (val === this.value.start) { // load start point
-          this.createStart(x, y)
         }
       }
     }

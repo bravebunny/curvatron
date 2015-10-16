@@ -4,3 +4,14 @@ package.json
 build
 *.json
 package.json
+credits.html
+d3dcompiler_47.dll
+ffmpegsumo.dll
+icudtl.dat
+libEGL.dll
+libGLESv2.dll
+locales/
+nw.exe
+nw.pak
+nwjc.exe
+pdf.dll
