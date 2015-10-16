@@ -112,9 +112,10 @@ editor.prototype = {
     })
     this.tb.pointText.anchor.set(0.5)
 
-    this.start = this.game.add.sprite(w2, h2, 'loading')
-    this.start.anchor.set(0.5, 0.1)
+    this.start = this.game.add.sprite(w2, h2, 'editorStart')
+    this.start.anchor.set(0.5, 0.05)
     this.start.visible = false
+    // this.start.scale.set(0.9)
 
     // toolbar icons
     this.tb.right = this.game.add.button(300, baseH + 100, 'editorArrow', this.pointInc, this)
@@ -333,7 +334,8 @@ editor.prototype = {
     if (!this.start.visible) this.start.visible = true
     this.start.position.set(x * this.tileSize + this.tileSize / 2, y * this.tileSize + this.tileSize / 2)
     var lp = this.lastStartPosition
-    if (lp !== null) this.levelArray[lp] = 0
+    var index = x * this.mapH + y
+    if (lp !== null && lp !== index) this.levelArray[lp] = 0
     this.lastStartPosition = x * this.mapH + y
   },
 

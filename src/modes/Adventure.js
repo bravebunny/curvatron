@@ -68,14 +68,14 @@ Adventure.prototype = {
       for (var y = 0; y < this.mapH; y++) {
         var val = parseInt(levelArray[x * this.mapH + y], 36)
         if (val === this.values.wall) this.map.putTile(0, x, y)
-        else if (val > 1) {
+        else if (val === this.values.start) {
+          players[0].x = x * this.tileSize + this.tileSize / 2
+          players[0].y = y * this.tileSize + this.tileSize / 2 + 5
+        } else if (val > 1) {
           this.pointPositions[val - 2] = {}
           var point = this.pointPositions[val - 2]
           point.x = x * this.tileSize - this.tileSize / 2
           point.y = y * this.tileSize - this.tileSize / 2
-        } else if (levelArray[x * this.mapH + y] === this.values.start) {
-          players[0].x = x * this.tileSize - this.tileSize / 2
-          players[0].y = y * this.tileSize - this.tileSize / 2
         }
       }
     }
