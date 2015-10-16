@@ -282,7 +282,9 @@ editor.prototype = {
                 }
               }
 
-              this.levelArray[index] = this.values.empty
+              if (this.levelArray[index] !== this.values.start) {
+                this.levelArray[index] = this.values.empty
+              }
               break
 
             case 'point':
