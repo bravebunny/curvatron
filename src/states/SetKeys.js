@@ -1,6 +1,6 @@
 /*eslint-disable*/
 /* global keys, colorHex, clickButton, maxPlayers, w2, h2, localStorage,
-ButtonList, colorHexDark, changingKeys */
+ButtonList, colorHexDark, changingKeys:true, Phaser */
 /*eslint-enable*/
 var setKeys = function (game) {
   this.ui = {}
@@ -55,6 +55,7 @@ setKeys.prototype = {
     this.dialogText.visible = false
 
     this.game.input.keyboard.addCallbacks(this, this.onPressed)
+    this.game.input.gamepad.onUpCallback = this.onPressedGamepad.bind(this)
   },
 
   update: function () {
@@ -100,17 +101,27 @@ setKeys.prototype = {
   },
 
   backPressed: function () {
-    this.game.state.start('Menu')
+    if (changingKeys) this.hideDialog()
+    else this.game.state.start('Menu')
   },
 
   onPressed: function () {
     if (changingKeys &&
       this.game.input.keyboard.lastKey.keyCode >= 48 &&
-      this.game.input.keyboard.lastKey.keyCode <= 90 &&
-      this.state.current === 'SetKeys') {
-      keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode
+      this.game.input.keyboard.lastKey.keyCode <= 90) {
+      keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode + ''
       localStorage['keys'] = JSON.stringify(keys)
       this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]))
+      this.hideDialog()
+    }
+  },
+
+  onPressedGamepad: function (button, gamepad) {
+    console.log(arguments)
+    if (changingKeys && button !== Phaser.Gamepad.XBOX360_START) {
+      keys[this.selectedPlayer] = (gamepad + 1) + ',' + button
+      localStorage['keys'] = JSON.stringify(keys)
+      this.ui.keyText.setText(keys[this.selectedPlayer])
       this.hideDialog()
     }
   },
