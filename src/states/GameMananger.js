@@ -302,7 +302,7 @@ gameMananger.prototype = {
 
   backPressed: function () {
     var ui = this.ui
-    if (!paused) { // pause
+    if (!paused && !this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_B)) { // pause
       this.game.tweens.pauseAll()
       if (this.mode.pause) {
         this.mode.pause()

@@ -314,27 +314,29 @@ Player.prototype = {
   },
 
   keyPressed: function () {
-    this.ready = true
-    this.showOneKey = true
-    this.showKeyTime = 2 + totalTime
-    if (!this.dead) {
-      if (this.direction === 1 && !gameOver && !paused) {
-        this.direction = -1
-        if (!mute && !paused) {
-          moveSounds[0].play()
+    if (!this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+      this.ready = true
+      this.showOneKey = true
+      this.showKeyTime = 2 + totalTime
+      if (!this.dead) {
+        if (this.direction === 1 && !gameOver && !paused) {
+          this.direction = -1
+          if (!mute && !paused) {
+            moveSounds[0].play()
+          }
+        } else if (!gameOver && !paused) {
+          this.direction = 1
+          if (!mute) {
+            moveSounds[1].play()
+          }
         }
-      } else if (!gameOver && !paused) {
-        this.direction = 1
-        if (!mute) {
-          moveSounds[1].play()
-        }
-      }
-      if (this.keyText.alpha === 1) {
-        this.textTween = this.game.add.tween(this.keyText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+        if (this.keyText.alpha === 1) {
+          this.textTween = this.game.add.tween(this.keyText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
 
-        if (this.mode.sp && this.mode.leaderboardID) {
-          this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
-          this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+          if (this.mode.sp && this.mode.leaderboardID) {
+            this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+            this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+          }
         }
       }
     }
@@ -465,6 +467,9 @@ Player.prototype = {
   },
 
   pause: function () {
+    if (this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_START)) {
+      this.direction *= -1
+    }
     if (this.mode.submitScore) {
       this.mode.submitScore()
     }

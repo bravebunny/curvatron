@@ -57,6 +57,7 @@ preloadMenu.prototype = {
     this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.keys.selectPress, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onUp.add(this.keys.selectRelease, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.keys.backPressed, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onUp.add(this.keys.backReleased, this)
     this.game.input.resetLocked = true
 
     this.game.state.start('Menu')
@@ -64,9 +65,14 @@ preloadMenu.prototype = {
 
   keys: {
     backPressed: function () {
+      pressingBack = true
       if (this.state.states[this.game.state.current].backPressed) {
         this.state.states[this.game.state.current].backPressed()
       }
+    },
+
+    backReleased: function () {
+      pressingBack = false
     },
 
     up: function () {
