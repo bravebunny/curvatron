@@ -9,9 +9,14 @@ var setKeys = function (game) {
   this.playersButton = null
   this.maxPlayers = 7
   this.dialogText = null
+  this.previousState = null
 }
 
 setKeys.prototype = {
+  init: function (previousState) {
+    this.previousState = previousState
+  },
+
   create: function () {
     var ui = this.ui
 
@@ -103,7 +108,7 @@ setKeys.prototype = {
     if (changingKeys) this.hideDialog()
     else {
       localStorage['keys'] = JSON.stringify(keys)
-      this.game.state.start('Menu')
+      this.game.state.start(this.previousState)
     }
   },
 

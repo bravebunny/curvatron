@@ -38,7 +38,7 @@ multiplayer.prototype = {
   },
 
   controls: function () {
-    this.state.start('SetKeys')
+    this.state.start('SetKeys', true, false, 'Multiplayer')
   },
 
   backPressed: function () {
