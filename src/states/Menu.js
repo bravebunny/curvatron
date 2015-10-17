@@ -22,7 +22,7 @@ var menu = function (game) {
 
 menu.prototype = {
   create: function () {
-    setScreenFixed(baseH, baseH, this.game)
+    setScreenFixed(baseH*1.5, baseH, this.game)
 
     this.world.pivot.set(0, 0)
     this.world.angle = 0

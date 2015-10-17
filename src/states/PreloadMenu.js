@@ -35,6 +35,7 @@ preloadMenu.prototype = {
     this.game.load.image('fullscreen_button', 'assets/sprites/gui/settings/fullscreen.png')
     this.game.load.image('windowed_button', 'assets/sprites/gui/settings/windowed.png')
     this.game.load.image('key_button', 'assets/sprites/gui/settings/key.png')
+    this.game.load.image('smallKey_button', 'assets/sprites/gui/settings/keybutton.png')
     this.game.load.image('resume_button', 'assets/sprites/gui/hud/resume.png')
 
     this.game.load.image('back_button', 'assets/sprites/gui/navigation/back.png')
