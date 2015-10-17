@@ -83,5 +83,13 @@ ButtonList.prototype = {
     for (var i = 0; i < this.buttons.length; i++) {
       this.buttons[i].show()
     }
+  },
+
+  length: function () {
+    return this.buttons.length
+  },
+
+  getButton: function (i) {
+    return this.buttons[i]
   }
 }

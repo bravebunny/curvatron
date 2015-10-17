@@ -110,19 +110,19 @@ MPNormal.prototype = {
     powerup.create()
   },
 
-  endGame: function () {
+  endGame: function (bottomY) {
     if (this.crowned === -1) {
       var tie = this.game.add.sprite(w2, h2 + 150, 'tie')
       tie.anchor.setTo(0.5, 0.5)
     } else {
-      var winnerFill = this.game.add.sprite(w2 - 75, h2 + 97, 'player' + players[this.crowned].id)
+      var winnerFill = this.game.add.sprite(w2 - 75, bottomY + 157, 'player' + players[this.crowned].id)
       winnerFill.scale.set(5)
       winnerFill.anchor.setTo(0.5, 0.5)
 
-      var winnerLabel = this.game.add.sprite(w2, h2 + 97, 'winner')
+      var winnerLabel = this.game.add.sprite(w2, bottomY + 157, 'winner')
       winnerLabel.scale.set(1, 1)
       winnerLabel.anchor.setTo(0.5, 0.5)
-      var textWinner = this.game.add.text(w2 + 50, h2 + 105, String.fromCharCode(players[this.crowned].key), {
+      var textWinner = this.game.add.text(w2 + 50, bottomY + 160, String.fromCharCode(players[this.crowned].key), {
         font: '100px dosis',
         fill: colorPlayers[this.crowned],
         align: 'center'

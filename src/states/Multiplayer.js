@@ -20,6 +20,7 @@ multiplayer.prototype = {
 
     this.playersButton = this.buttons.add(null, '<    ' + (this.nPlayers + 1) + ' players    >', this.right)
     this.buttons.add('accept_button', 'play', this.play)
+    this.buttons.add('setkeys_button', 'controls', this.controls)
     this.buttons.add('back_button', 'back', this.backPressed)
 
     this.buttons.create()
@@ -34,6 +35,10 @@ multiplayer.prototype = {
   play: function () {
     var mode = new MPNormal(this.nPlayers, this.game)
     this.game.state.start('PreloadGame', true, false, mode)
+  },
+
+  controls: function () {
+    this.state.start('SetKeys')
   },
 
   backPressed: function () {

@@ -240,8 +240,9 @@ gameMananger.prototype = {
 
     var ui = this.ui
     if (!gameOver) {
+      var bottomY = this.deathButtons.getButton(this.deathButtons.length() - 1).y
       if (this.mode.endGame) {
-        this.mode.endGame()
+        this.mode.endGame(bottomY)
       }
 
       if (!mute) {
@@ -266,17 +267,17 @@ gameMananger.prototype = {
       this.deathButtons.select(0)
 
       if (this.mode.sp) {
-        var spAuxLabel = this.add.sprite(w2, h2 + 100, 'aux-stat')
+        var spAuxLabel = this.add.sprite(w2, bottomY + 150, 'aux-stat')
         spAuxLabel.scale.set(0.9, 0.9)
         spAuxLabel.anchor.setTo(0.5, 0.5)
         spAuxLabel.alpha = 0.7
 
-        var spScoreLabel = this.add.sprite(w2, h2 + 250, 'score-stat')
+        var spScoreLabel = this.add.sprite(w2, bottomY + 300, 'score-stat')
         spScoreLabel.scale.set(0.6, 0.6)
         spScoreLabel.anchor.setTo(0.5, 0.5)
         spScoreLabel.alpha = 0.7
 
-        var textCurrentScore = this.add.text(w2, h2 + 100, this.mode.getScore().toString(), {
+        var textCurrentScore = this.add.text(w2, bottomY + 150, this.mode.getScore().toString(), {
           font: '90px dosis',
           fill: colorHexDark,
           align: 'center'
@@ -286,7 +287,7 @@ gameMananger.prototype = {
           this.mode.submitScore()
         }
 
-        var textHighScore = this.add.text(w2 + 35, h2 + 253, this.mode.getHighScore().toString(), {
+        var textHighScore = this.add.text(w2 + 35, bottomY + 303, this.mode.getHighScore().toString(), {
           font: '40px dosis',
           fill: colorHexDark,
           align: 'center'
