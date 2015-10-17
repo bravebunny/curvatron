@@ -1,7 +1,8 @@
 /*eslint-disable*/
 /* global Phaser, maxPlayers:true, keys:true, menuMusic:true, setScreenFixed,
 baseH, changeColor:true, chosenColor:true, colorHex:true, bgColors,
-colorHexDark:true, bgColorsDark, bgColor:true, mute, w2, ButtonList, localStorage */
+colorHexDark:true, bgColorsDark, bgColor:true, mute, w2, ButtonList,
+localStorage, checkGamepads */
 /*eslint-enable*/
 var menu = function (game) {
   maxPlayers = 7
@@ -22,7 +23,7 @@ var menu = function (game) {
 
 menu.prototype = {
   create: function () {
-    setScreenFixed(baseH*1.5, baseH, this.game)
+    setScreenFixed(baseH * 1.5, baseH, this.game)
 
     this.world.pivot.set(0, 0)
     this.world.angle = 0
@@ -77,6 +78,7 @@ menu.prototype = {
 
   update: function () {
     this.buttons.update()
+    checkGamepads(this.game)
   },
 
   editor: function () {

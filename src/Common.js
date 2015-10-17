@@ -139,3 +139,23 @@ function selectRelease () {
   pressingSelect = false
   menuArray[selection].button.onInputUp.dispatch()
 }
+
+function checkGamepads (game) {
+  if (game.input.gamepad.supported && game.input.gamepad.active) {
+    var preload = game.state.states['PreloadMenu']
+    var keys = preload.keys
+    for (var i = 1; i < 5; i++) {
+      var pad = game.input.gamepad['pad' + i]
+      if (pad.connected) {
+        pad.getButton(Phaser.Gamepad.XBOX360_DPAD_UP).onDown.add(keys.up, preload)
+        pad.getButton(Phaser.Gamepad.XBOX360_DPAD_DOWN).onDown.add(keys.down, preload)
+        pad.getButton(Phaser.Gamepad.XBOX360_DPAD_LEFT).onDown.add(keys.left, preload)
+        pad.getButton(Phaser.Gamepad.XBOX360_DPAD_RIGHT).onDown.add(keys.right, preload)
+        pad.getButton(Phaser.Gamepad.XBOX360_A).onDown.add(keys.selectPress, preload)
+        pad.getButton(Phaser.Gamepad.XBOX360_A).onUp.add(keys.selectRelease, preload)
+        pad.getButton(Phaser.Gamepad.XBOX360_B).onUp.add(keys.backPressed, preload)
+        pad.getButton(Phaser.Gamepad.XBOX360_START).onUp.add(keys.backPressed, preload)
+      }
+    }
+  }
+}

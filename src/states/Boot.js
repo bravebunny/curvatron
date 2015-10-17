@@ -1,8 +1,8 @@
 /*eslint-disable*/
 /* global playCounter:true, w2:true, h2:true, changeColor:true, mute:true,
 firstTime:true, bgColors:true, bgColorsDark:true, Phaser, colorPlayers:true,
-colorHex:true, pad1:true, colorHexDark:true, baseArea:true, chosenColor:true
-modesLB:true, localStorage, scale:true */
+colorHex:true, colorHexDark:true, baseArea:true, chosenColor:true
+modesLB:true, localStorage, scale:true, changingKeys:true */
 /*eslint-enable*/
 var boot = function (game) {
   playCounter = 0
@@ -58,7 +58,6 @@ boot.prototype = {
     this.stage.smoothed = true
 
     this.game.input.gamepad.start()
-    pad1 = this.game.input.gamepad.pad1
 
     this.state.start('PreloadMenu')
   },
