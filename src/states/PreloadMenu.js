@@ -1,4 +1,4 @@
-/* global w2, h2, Phaser, pad1*/
+/* global w2, h2, Phaser, pad1, changingKeys*/
 
 var preloadMenu = function (game) {
   this.loadingBar = null
@@ -113,37 +113,37 @@ preloadMenu.prototype = {
     },
 
     up: function () {
-      if (this.state.states[this.game.state.current].up) {
+      if (this.state.states[this.game.state.current].up && !changingKeys) {
         this.state.states[this.game.state.current].up()
       }
     },
 
     down: function () {
-      if (this.state.states[this.game.state.current].down) {
+      if (this.state.states[this.game.state.current].down && !changingKeys) {
         this.state.states[this.game.state.current].down()
       }
     },
 
     left: function () {
-      if (this.state.states[this.game.state.current].left) {
+      if (this.state.states[this.game.state.current].left && !changingKeys) {
         this.state.states[this.game.state.current].left()
       }
     },
 
     right: function () {
-      if (this.state.states[this.game.state.current].right) {
+      if (this.state.states[this.game.state.current].right && !changingKeys) {
         this.state.states[this.game.state.current].right()
       }
     },
 
     selectPress: function () {
-      if (this.state.states[this.game.state.current].selectPress) {
+      if (this.state.states[this.game.state.current].selectPress && !changingKeys) {
         this.state.states[this.game.state.current].selectPress()
       }
     },
 
     selectRelease: function () {
-      if (this.state.states[this.game.state.current].selectRelease) {
+      if (this.state.states[this.game.state.current].selectRelease && !changingKeys) {
         this.state.states[this.game.state.current].selectRelease()
       }
     }

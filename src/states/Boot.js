@@ -12,6 +12,7 @@ var boot = function (game) {
   mute = false
   firstTime = true
   scale = 1
+  changingKeys = false
 }
 
 boot.prototype = {

@@ -1,6 +1,6 @@
 /*eslint-disable*/
 /* global keys, colorHex, clickButton, maxPlayers, w2, h2, localStorage,
-ButtonList, colorHexDark */
+ButtonList, colorHexDark, changingKeys */
 /*eslint-enable*/
 var setKeys = function (game) {
   this.ui = {}
@@ -58,7 +58,7 @@ setKeys.prototype = {
   },
 
   update: function () {
-    if (!this.overlay.visible) {
+    if (!changingKeys) {
       this.buttons.update()
     }
   },
@@ -104,7 +104,7 @@ setKeys.prototype = {
   },
 
   onPressed: function () {
-    if (this.overlay.visible &&
+    if (changingKeys &&
       this.game.input.keyboard.lastKey.keyCode >= 48 &&
       this.game.input.keyboard.lastKey.keyCode <= 90 &&
       this.state.current === 'SetKeys') {
@@ -120,13 +120,17 @@ setKeys.prototype = {
   },
 
   showDialog: function (text) {
+    this.game.input.mouse.enabled = false
     this.dialogText.text = text
     this.dialogText.visible = true
     this.overlay.visible = true
+    changingKeys = true
   },
 
   hideDialog: function () {
+    this.game.input.mouse.enabled = true
     this.dialogText.visible = false
     this.overlay.visible = false
+    changingKeys = false
   }
 }
