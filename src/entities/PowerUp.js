@@ -60,11 +60,6 @@ PowerUp.prototype = {
       if (this.type === 'point') {
         this.game.add.tween(this.spriteTween).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true)
         this.game.add.tween(this.spriteTween.scale).to({x: 4, y: 4}, 1000, Phaser.Easing.Linear.None, true)
-        if (this.mode.countPoints) {
-          powerText.setText(this.mode.score + 1)
-          powerText.x = this.sprite.x
-          powerText.y = this.sprite.y + 2 * scale
-        }
       } else if (this.mode.sp && (this.type === 'shrink')) {
         this.game.add.tween(this.spriteTween).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true)
         this.game.add.tween(this.spriteTween.scale).to({x: 2, y: 2}, 1000, Phaser.Easing.Linear.None, true)

@@ -1,4 +1,4 @@
-/* global points:true, modesLB, h2, w2, players, powerText:true, colorHex,
+/* global points:true, modesLB, h2, w2, players, colorHex,
 shuffleArray, localStorage, nextBallHigh:true, scale, PowerUp, Phaser
 */
 var Normal = function (game) {
@@ -10,6 +10,7 @@ var Normal = function (game) {
   this.obstacleGroup = null
   this.cellSize = 64
   this.countPoints = true
+  this.powerText = null
 }
 
 Normal.prototype = {
@@ -34,13 +35,12 @@ Normal.prototype = {
     this.player = players[0]
     this.shrink = null
 
-    var textSize = 15
-    powerText = this.game.add.text(0, 0, '1', {
-      font: '' + textSize + 'px dosis',
+    this.powerText = this.game.add.text(0, 0, '1', {
+      font: '15px dosis',
       fill: colorHex,
       align: 'center'
     })
-    powerText.anchor.setTo(0.5, 0.5)
+    this.powerText.anchor.setTo(0.5, 0.5)
 
     // create grid points
     for (var i = 0; i < this.columns; i++) {
@@ -189,6 +189,10 @@ Normal.prototype = {
         break
       }
     }
+
+    this.powerText.setText(this.score + 1)
+    this.powerText.x = powerup.sprite.x
+    this.powerText.y = powerup.sprite.y + 2 * scale
   },
 
   createObstacle: function () {

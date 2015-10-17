@@ -1,14 +1,17 @@
 /*eslint-disable*/
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
-  w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true
+  w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
+  scale
 */
 /*eslint-enable*/
 var Adventure = function (game, testing) {
   this.sp = true
   this.game = game
   this.spawnPowers = true
+  this.countPoints = true
   this.map = null
   this.layer = null
+  this.powerText = null
 
   this.mapW = 60
   this.mapH = 34
@@ -57,6 +60,13 @@ Adventure.prototype = {
     players[0].x = w2
     players[0].y = h2
 
+    this.powerText = this.game.add.text(0, 0, '1', {
+      font: '15px dosis',
+      fill: colorHex,
+      align: 'center'
+    })
+    this.powerText.anchor.setTo(0.5, 0.5)
+
     this.score = 0
 
     this.map = this.game.add.tilemap('blank')
@@ -82,13 +92,6 @@ Adventure.prototype = {
 
     this.layer = this.map.createLayer('obstacles') // layer[0]
     this.map.setCollisionByIndex(0)
-
-    powerText = this.game.add.text(0, 0, '1', {
-      font: '15px dosis',
-      fill: colorHex,
-      align: 'center'
-    })
-    powerText.anchor.setTo(0.5, 0.5)
 
     // this.map.setCollisionByExclusion([], true, this.layer)
   },
@@ -156,6 +159,15 @@ Adventure.prototype = {
     if (this.pointPositions[this.score]) {
       var powerup = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
       powerup.create()
+
+      var number = this.pointPositions.length - this.score - 1
+      if (number > 0) {
+        this.powerText.setText(this.pointPositions.length - this.score - 1)
+        this.powerText.x = powerup.sprite.x
+        this.powerText.y = powerup.sprite.y + 2 * scale
+      } else {
+        this.powerText.visible = false
+      }
     }
   },
 
