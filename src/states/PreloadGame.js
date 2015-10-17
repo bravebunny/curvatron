@@ -34,7 +34,6 @@ preloadGame.prototype = {
     // Load all stuf from game
     this.game.load.image('score', 'assets/sprites/gui/stats/score-general.png')
     this.game.load.image('pauseButton', 'assets/sprites/gui/hud/pause.png')
-    this.game.load.image('restart_button', 'assets/sprites/gui/hud/restart.png')
     this.game.load.image('twitter_button', 'assets/sprites/gui/hud/twitter.png')
     this.game.load.audio('move0', 'assets/sfx/move0.ogg')
     this.game.load.audio('move1', 'assets/sfx/move1.ogg')

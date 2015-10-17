@@ -1,6 +1,6 @@
 /*eslint-disable*/
-/* global keys, colorHex, clickButton, maxPlayers, w2, h2, localStorage,
-ButtonList, colorHexDark, changingKeys:true, Phaser */
+/* global keys:true, colorHex, clickButton, maxPlayers, w2, h2, localStorage,
+ButtonList, colorHexDark, changingKeys:true, Phaser, defaultKeys */
 /*eslint-enable*/
 var setKeys = function (game) {
   this.ui = {}
@@ -25,9 +25,8 @@ setKeys.prototype = {
     this.buttons = new ButtonList(this, this.game)
     this.playersButton = this.buttons.add(null, '<    player ' + (this.selectedPlayer + 1) + '     >', this.right)
     this.buttons.add('smallKey_button', 'change', this.change)
+    this.buttons.add('restart_button', 'reset', this.reset)
     this.buttons.add('accept_button', 'confirm', this.backPressed)
-    this.buttons.add('cancel_button', 'cancel', this.backPressed)
-
     this.buttons.create()
 
     // key select button
@@ -102,7 +101,10 @@ setKeys.prototype = {
 
   backPressed: function () {
     if (changingKeys) this.hideDialog()
-    else this.game.state.start('Menu')
+    else {
+      localStorage['keys'] = JSON.stringify(keys)
+      this.game.state.start('Menu')
+    }
   },
 
   onPressed: function () {
@@ -110,7 +112,6 @@ setKeys.prototype = {
       this.game.input.keyboard.lastKey.keyCode >= 48 &&
       this.game.input.keyboard.lastKey.keyCode <= 90) {
       keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode + ''
-      localStorage['keys'] = JSON.stringify(keys)
       this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]))
       this.hideDialog()
     }
@@ -120,7 +121,6 @@ setKeys.prototype = {
     console.log(arguments)
     if (changingKeys && button !== Phaser.Gamepad.XBOX360_START) {
       keys[this.selectedPlayer] = (gamepad + 1) + ',' + button
-      localStorage['keys'] = JSON.stringify(keys)
       this.ui.keyText.setText(keys[this.selectedPlayer])
       this.hideDialog()
     }
@@ -128,6 +128,11 @@ setKeys.prototype = {
 
   change: function () {
     this.showDialog('press the desired key for player ' + (this.selectedPlayer + 1))
+  },
+
+  reset: function () {
+    keys = defaultKeys.slice() // copy array
+    this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]))
   },
 
   showDialog: function (text) {

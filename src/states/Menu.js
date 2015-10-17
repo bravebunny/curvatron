@@ -2,11 +2,11 @@
 /* global Phaser, maxPlayers:true, keys:true, menuMusic:true, setScreenFixed,
 baseH, changeColor:true, chosenColor:true, colorHex:true, bgColors,
 colorHexDark:true, bgColorsDark, bgColor:true, mute, w2, ButtonList,
-localStorage, checkGamepads */
+localStorage, checkGamepads, defaultKeys:true */
 /*eslint-enable*/
 var menu = function (game) {
   maxPlayers = 7
-  keys = [
+  defaultKeys = [
     Phaser.Keyboard.W,
     Phaser.Keyboard.P,
     Phaser.Keyboard.B,
@@ -15,6 +15,7 @@ var menu = function (game) {
     Phaser.Keyboard.C,
     Phaser.Keyboard.R,
     Phaser.Keyboard.U]
+  keys = []
   menuMusic = null
   this.ui = {}
 
@@ -30,6 +31,8 @@ menu.prototype = {
 
     if (localStorage.getItem('keys') != null) {
       keys = JSON.parse(localStorage['keys'])
+    } else {
+      keys = defaultKeys
     }
 
     if (changeColor) {
