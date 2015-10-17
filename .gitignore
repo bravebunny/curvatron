@@ -1,9 +1,6 @@
 node_modules
 *.log
-package.json
 build
-*.json
-package.json
 credits.html
 d3dcompiler_47.dll
 ffmpegsumo.dll

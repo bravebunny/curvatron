@@ -7,14 +7,14 @@ localStorage, checkGamepads, defaultKeys:true */
 var menu = function (game) {
   maxPlayers = 7
   defaultKeys = [
-    Phaser.Keyboard.W,
-    Phaser.Keyboard.P,
-    Phaser.Keyboard.B,
-    Phaser.Keyboard.Z,
-    Phaser.Keyboard.M,
-    Phaser.Keyboard.C,
-    Phaser.Keyboard.R,
-    Phaser.Keyboard.U]
+    Phaser.Keyboard.W + '',
+    Phaser.Keyboard.P + '',
+    Phaser.Keyboard.B + '',
+    Phaser.Keyboard.Z + '',
+    Phaser.Keyboard.M + '',
+    Phaser.Keyboard.C + '',
+    Phaser.Keyboard.R + '',
+    Phaser.Keyboard.U + '']
   keys = []
   menuMusic = null
   this.ui = {}
