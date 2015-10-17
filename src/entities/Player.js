@@ -64,17 +64,18 @@ Player.prototype = {
 
     if (this.mode.sp) {
       this.game.input.onDown.add(this.keyPressed, this)
-    }
-
-    this.showKey()
-
-    if (this.key.indexOf(',') !== -1) { // this means it is a controller button
-      var gamepad = parseInt(this.key.split(',')[0], 10)
-      var button = parseInt(this.key.split(',')[1], 10)
-      this.input = this.game.input.gamepad['pad' + gamepad].getButton(button).onDown.add(this.keyPressed, this)
+      this.game.input.keyboard.onDownCallback = this.keyPressed.bind(this)
+      this.game.input.gamepad.onDownCallback = this.keyPressed.bind(this)
     } else {
-      this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this)
+      if (this.key.indexOf(',') !== -1) { // this means it is a controller button
+        var gamepad = parseInt(this.key.split(',')[0], 10)
+        var button = parseInt(this.key.split(',')[1], 10)
+        this.input = this.game.input.gamepad['pad' + gamepad].getButton(button).onDown.add(this.keyPressed, this)
+      } else {
+        this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this)
+      }
     }
+    this.showKey()
 
   // this.moveRandom()
   },
