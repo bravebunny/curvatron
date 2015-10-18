@@ -106,7 +106,6 @@ OldPlayer.prototype = {
         trailPiece = {'x': this.sprite.x, 'y': this.sprite.y, 'n': 1}
         this.trailArray.push(trailPiece)
         bmd.draw(this.trail, this.sprite.x, this.sprite.y)
-
         // collision detection
         var collSize = 12 * scale
         for (var j = 0; j < this.trailArray.length; j++) {

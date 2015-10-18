@@ -22,6 +22,7 @@
     <script type="text/javascript" src="src/states/Stats.js"></script>
     <script type="text/javascript" src="src/states/Settings.js"></script>
     <script type="text/javascript" src="src/states/Editor.js"></script>
+    <script type="text/javascript" src="src/states/LevelSelector.js"></script>
 
     <script type="text/javascript" src="src/modes/Normal.js"></script>
     <script type="text/javascript" src="src/modes/Endless.js"></script>
@@ -82,6 +83,7 @@
     game.state.add("PreloadGame",preloadGame)
     game.state.add("GameMananger",gameMananger)
     game.state.add("Editor",editor)
+    game.state.add("LevelSelector",levelSelector)
     game.state.start("Boot")
 })()
 

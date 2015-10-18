@@ -75,9 +75,7 @@ singlePlayer.prototype = {
   },
 
   adventure: function () {
-    numberPlayers = 0
-    var mode = new Adventure(this.game, false)
-    this.game.state.start('PreloadGame', true, false, mode, 'assets/levels/level1')
+    this.state.start('LevelSelector', true, false)
   },
 
   creative: function () {
