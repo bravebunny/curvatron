@@ -69,6 +69,7 @@ gameMananger.prototype = {
 
     groupPowers = this.add.group()
     if (this.mode.sp) {
+      countdown = false
       tempLabel = this.add.sprite(w2, h2, 'score')
       tempLabel.anchor.setTo(0.5, 0.5)
       tempLabel.alpha = 0.7
@@ -91,7 +92,6 @@ gameMananger.prototype = {
         // Generate powers
         this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this)
       }
-
     }
 
     /*
@@ -227,7 +227,9 @@ gameMananger.prototype = {
       } else {
         this.deathButtons.update()
       }
+      this.countdownText.alpha = 1
     } else {
+      this.countdownText.alpha = 0
       this.pauseButtons.update()
     }
 
@@ -247,11 +249,15 @@ gameMananger.prototype = {
   },
 
   updateCountdown: function () {
-    this.countdownCounter--
-    this.countdownText.setText(this.countdownCounter)
-    if (this.countdownCounter === -1) {
-      this.countdownText.kill()
-      countdown = false
+    if (!paused) {
+      this.countdownCounter--
+      this.countdownText.setText(this.countdownCounter)
+      if (this.countdownCounter === 0) {
+        countdown = false
+      }
+      if (this.countdownCounter === -1) {
+        this.countdownText.kill()
+      }
     }
   },
 
