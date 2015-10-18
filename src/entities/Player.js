@@ -2,7 +2,7 @@
 /* global scale, w2, h2, groupPowers, borders, paused, Phaser
   totalTime, bmd, colisionMargin, gameOver, tempLabel, tempLabelText,
   pauseSprite, localStorage, mute, killSound, collectSound, players,
-  colorPlayers, moveSounds, pauseTween:true, lerp
+  colorPlayers, moveSounds, pauseTween:true, lerp, countdown
 */
 /*eslint-enable*/
 var Player = function (id, x, y, key, mode, game) {
@@ -76,7 +76,6 @@ Player.prototype = {
       }
     }
     this.showKey()
-
   // this.moveRandom()
   },
 
@@ -177,7 +176,6 @@ Player.prototype = {
           this.graphics.lineTo(this.trailArray[i].x ,this.trailArray[i].y)
         }
       }*/
-
       if (!this.sprite.alive) {
         this.kill()
       }
@@ -186,6 +184,7 @@ Player.prototype = {
       var yy = Math.sin(this.sprite.rotation) * 30 * scale + this.sprite.y
 
       // make the last eaten point follow the player
+
       if (this.eatenPoint !== null) {
         var point = this.eatenPoint
         var x = lerp(xx, point.x, 0.85)
@@ -232,6 +231,7 @@ Player.prototype = {
       } else if (this.sprite !== null) {
         this.sprite.kill()
       }
+
       this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this)
 
       if (this.mode.obstacleGroup) {
@@ -314,28 +314,30 @@ Player.prototype = {
   },
 
   keyPressed: function () {
-    if (!this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
-      this.ready = true
-      this.showOneKey = true
-      this.showKeyTime = 2 + totalTime
-      if (!this.dead) {
-        if (this.direction === 1 && !gameOver && !paused) {
-          this.direction = -1
-          if (!mute && !paused) {
-            moveSounds[0].play()
+    if (!countdown) {
+      if (!this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+        this.ready = true
+        this.showOneKey = true
+        this.showKeyTime = 2 + totalTime
+        if (!this.dead) {
+          if (this.direction === 1 && !gameOver && !paused) {
+            this.direction = -1
+            if (!mute && !paused) {
+              moveSounds[0].play()
+            }
+          } else if (!gameOver && !paused) {
+            this.direction = 1
+            if (!mute) {
+              moveSounds[1].play()
+            }
           }
-        } else if (!gameOver && !paused) {
-          this.direction = 1
-          if (!mute) {
-            moveSounds[1].play()
-          }
-        }
-        if (this.keyText.alpha === 1) {
-          this.textTween = this.game.add.tween(this.keyText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+          if (this.keyText.alpha === 1) {
+            this.textTween = this.game.add.tween(this.keyText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
 
-          if (tempLabel !== null) {
-            this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
-            this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+            if (tempLabel !== null) {
+              this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+              this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+            }
           }
         }
       }

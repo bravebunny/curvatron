@@ -1,6 +1,6 @@
 /*eslint-disable*/
 /* global spawnPowers:true, powerText:true, players, totalTime, PowerUp, w2,
-h2, colorPlayers */
+h2, countdown, colorPlayers */
 /*eslint-enable*/
 var MPNormal = function (nPlayers, game) {
   this.game = game
@@ -38,28 +38,30 @@ MPNormal.prototype = {
   },
 
   update: function () {
-    if (this.crowned !== -1) {
-      players[this.crowned].addCrown()
-    }
-    if (this.manager.gameTime >= (totalTime)) {
-      this.manager.ui.timeCircle.scale.set((-1 / this.manager.gameTime) * (totalTime) + 1)
-    } else {
-      this.manager.endGame()
-    }
-
-    var numberAlive = 0
-    var playerAlive = -1
-    for (var i = 0; i < players.length; i++) {
-      if (!players[i].dead) {
-        playerAlive = i
-        numberAlive++
-        if (numberAlive > 1) break
+      if (this.crowned !== -1) {
+        players[this.crowned].addCrown()
       }
-    }
-    if (numberAlive < 2) {
-      this.lastCrowned = playerAlive
-      this.manager.endGame()
-    }
+      if (!countdown) {
+        if (this.manager.gameTime >= (totalTime)) {
+          this.manager.ui.timeCircle.scale.set((-1 / this.manager.gameTime) * (totalTime) + 1)
+        } else {
+          this.manager.endGame()
+        }
+      }
+
+      var numberAlive = 0
+      var playerAlive = -1
+      for (var i = 0; i < players.length; i++) {
+        if (!players[i].dead) {
+          playerAlive = i
+          numberAlive++
+          if (numberAlive > 1) break
+        }
+      }
+      if (numberAlive < 2) {
+        this.lastCrowned = playerAlive
+        this.manager.endGame()
+      }
   },
 
   erasesTrail: function () {

@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex, Player, keys, colorHexDark, bgColor:true, mute:true, ButtonList,
-clickButton, localStorage, saveAs */
+clickButton, localStorage, saveAs, countdown:false */
 /*eslint-enable*/
 var gameMananger = function (game) {
   tempLabel = null
@@ -15,6 +15,7 @@ var gameMananger = function (game) {
   this.ui = {}
   this.mode = null
   colisionMargin = 20
+  countdown = false
   this.pauseButtons = null
   this.popup = null
   this.twitter = null
@@ -22,6 +23,8 @@ var gameMananger = function (game) {
   this.rTokenSecret = null
   this.blob = null
   this.png = null
+  this.countdownCounter = 3
+  this.countdownText = 0
 }
 
 gameMananger.prototype = {
@@ -76,6 +79,7 @@ gameMananger.prototype = {
       })
       tempLabelText.anchor.setTo(0.5, 0.5)
     } else {
+      countdown = true
       ui.graphics.lineStyle(0)
       ui.graphics.beginFill(0x000000, 0.2)
       ui.timeCircle = ui.graphics.drawCircle(w2, h2, Math.sqrt(w2 * w2 + h2 * h2) * 2)
@@ -87,6 +91,7 @@ gameMananger.prototype = {
         // Generate powers
         this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this)
       }
+
     }
 
     /*
@@ -185,6 +190,16 @@ gameMananger.prototype = {
     this.deathButtons.textColor = colorHexDark
     this.deathButtons.create()
     this.deathButtons.hide()
+
+    if (!this.mode.sp) {
+      this.countdownCounter = 3
+      this.countdownText = this.game.add.text(w2, h2, '3', {
+        font: '175px dosis',
+        fill: '#ffffff',
+        align: 'center' })
+      this.countdownText.anchor.setTo(0.5, 0.5)
+      this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCountdown, this)
+    }
   },
 
   update: function () {
@@ -192,8 +207,9 @@ gameMananger.prototype = {
       if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !mute) {
         menuMusic.fadeOut(2000)
       }
-      totalTime += this.game.time.physicsElapsed
-
+      if (!countdown) {
+        totalTime += this.game.time.physicsElapsed
+      }
       /* for testing point placement
       if(!this.mode.gridIsFull()){
         this.mode.createPower("point")
@@ -230,9 +246,20 @@ gameMananger.prototype = {
     }
   },
 
+  updateCountdown: function () {
+    this.countdownCounter--
+    this.countdownText.setText(this.countdownCounter)
+    if (this.countdownCounter === -1) {
+      this.countdownText.kill()
+      countdown = false
+    }
+  },
+
   createPower: function () {
-    if (this.mode.createPower) {
-      this.mode.createPower('point')
+    if (!countdown) {
+      if (this.mode.createPower) {
+        this.mode.createPower('point')
+      }
     }
   },
 
