@@ -420,6 +420,17 @@ editor.prototype = {
   save: function () {
     var blob = new Blob([this.generateFile()], {type: 'text/plain'})
     saveAs(blob, 'curvatron_level')
+    /*
+    var greenworks = require('./greenworks')
+    greenworks.saveTextToFile('savedfile', this.generateFile(), function () {
+      console.log('success save')
+      greenworks.fileShare('savedfile', function () {
+        console.log('success share')
+        greenworks.publishWorkshopFile('savedfile', '', 'my level', 'here is the level', function () {
+          console.log('success publish')
+        }, function (err) { console.log('failure publish: ' + err) })
+      }, function (err) { console.log('failure share: ' + err) })
+    }, function (err) { console.log('failure save: ' + err) })*/
   },
 
   auxNewPage: function () {
@@ -484,6 +495,22 @@ editor.prototype = {
           this.loadFromArray()
         }.bind(this))
       }.bind(this))
+      /*
+      var greenworks = require('./greenworks')
+      greenworks.ugcSynchronizeItems('dirdirdir', function () {
+        console.log('success sync')
+        greenworks.readTextFromFile('savedfile', function (data) {
+          console.log('success read: ' + data)
+          this.levelArray = data.split('').map(function (val) {
+            var retVal = parseInt(val, 36)
+            if (isNaN(retVal)) {
+              retVal = val
+            }
+            return retVal
+          })
+        }.bind(this), function (err) { console.log('failure read: ' + err) })
+        this.loadFromArray()
+      }.bind(this), function (err) { console.log('failure read: ' + err) })*/
     } else if (this.newPage) {
       this.newPage = false
       this.state.restart(true, false, this.mode)
