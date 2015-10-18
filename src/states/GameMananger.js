@@ -181,7 +181,9 @@ gameMananger.prototype = {
 
     this.deathButtons = new ButtonList(this, this.game)
     this.deathButtons.add('restart_button', 'restart', this.restart)
-    this.deathButtons.add('twitter_button', 'share score', this.share)
+    if (this.mode.getScore) {
+      this.deathButtons.add('twitter_button', 'share score', this.share)
+    }
     if (this.mode.testing) {
       this.deathButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true) })
     } else {
@@ -270,42 +272,45 @@ gameMananger.prototype = {
   },
 
   endGame: function () {
-    var tempLabel = this.add.sprite(w2, h2, 'aux-stat')
-    tempLabel.scale.set(0.9, 0.9)
-    tempLabel.anchor.setTo(0.5, 0.5)
-    tempLabel.alpha = 0.7
 
-    var tempText = this.add.text(w2, h2 - 10, this.mode.getScore().toString(), {
-      font: '90px dosis',
-      fill: colorHex,
-      align: 'center'
-    })
-    tempText.anchor.setTo(0.5, 0.5)
+    if (this.mode.getScore) {
+      var tempLabel = this.add.sprite(w2, h2, 'aux-stat')
+      tempLabel.scale.set(0.9, 0.9)
+      tempLabel.anchor.setTo(0.5, 0.5)
+      tempLabel.alpha = 0.7
 
-    if (this.mode.name) {
-      var modeName = this.add.text(w2, h2 + 45, this.mode.name, {
-        font: '40px dosis',
+      var tempText = this.add.text(w2, h2 - 10, this.mode.getScore().toString(), {
+        font: '90px dosis',
         fill: colorHex,
         align: 'center'
       })
-      modeName.anchor.setTo(0.5, 0.5)
-      modeName.alpha = 0.7
+      tempText.anchor.setTo(0.5, 0.5)
+
+      if (this.mode.name) {
+        var modeName = this.add.text(w2, h2 + 45, this.mode.name, {
+          font: '40px dosis',
+          fill: colorHex,
+          align: 'center'
+        })
+        modeName.anchor.setTo(0.5, 0.5)
+        modeName.alpha = 0.7
+      }
+
+      this.game.renderer.render(this.game.stage)
+
+      // png to share on twitter
+      var png = this.game.canvas.toDataURL()
+      this.png = png.replace(/^data:image\/png;base64,/, '')
+
+      // png to save locally
+      this.game.canvas.toBlob(function (blob) {
+        this.blob = blob
+      }.bind(this))
+
+      tempLabel.kill()
+      tempText.kill()
+      modeName.kill()
     }
-
-    this.game.renderer.render(this.game.stage)
-
-    // png to share on twitter
-    var png = this.game.canvas.toDataURL()
-    this.png = png.replace(/^data:image\/png;base64,/, '')
-
-    // png to save locally
-    this.game.canvas.toBlob(function (blob) {
-      this.blob = blob
-    }.bind(this))
-
-    tempLabel.kill()
-    tempText.kill()
-    modeName.kill()
 
     var ui = this.ui
     if (!gameOver) {
