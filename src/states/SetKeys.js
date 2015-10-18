@@ -10,6 +10,8 @@ var setKeys = function (game) {
   this.maxPlayers = 7
   this.dialogText = null
   this.previousState = null
+  this.gamepadMap = ['A', 'B', 'X', 'Y', 'LB', 'RB', 'LT', 'RT',
+                     'BACK', 'START', 'L3', 'R3', 'UP', 'DOWN', 'LEFT', 'RIGHT']
 }
 
 setKeys.prototype = {
@@ -34,15 +36,24 @@ setKeys.prototype = {
     this.buttons.add('accept_button', 'confirm', this.backPressed)
     this.buttons.create()
 
-    // key select button
     ui.keyButton = this.game.add.sprite(w2, h2 + 320, 'key_button')
     ui.keyButton.anchor.setTo(0.5, 0.5)
-    ui.keyText = this.game.add.text(w2, h2 + 290, String.fromCharCode(keys[this.selectedPlayer]), {
+    ui.keyText = this.game.add.text(w2, h2 + 290, '', {
       font: '150px dosis',
       fill: colorHex,
       align: 'center'
     })
     ui.keyText.anchor.setTo(0.5, 0.5)
+
+    ui.gpText = this.game.add.text(w2, h2 + 425, 'controller 1', {
+      font: '40px dosis',
+      fill: 'white',
+      align: 'center'
+    })
+    ui.gpText.anchor.setTo(0.5, 0.5)
+    ui.gpText.visible = false
+
+    this.updateIcon()
 
     this.overlay = this.add.sprite(0, 0, 'overlay')
     this.overlay.width = w2 * 2
@@ -75,7 +86,7 @@ setKeys.prototype = {
       this.selectedPlayer--
     }
     this.playersButton.setText('<    player ' + (this.selectedPlayer + 1) + '     >')
-    this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]))
+    this.updateIcon()
   },
 
   right: function () {
@@ -85,7 +96,7 @@ setKeys.prototype = {
       this.selectedPlayer++
     }
     this.playersButton.setText('<    player ' + (this.selectedPlayer + 1) + '     >')
-    this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]))
+    this.updateIcon()
   },
 
   up: function () {
@@ -117,7 +128,7 @@ setKeys.prototype = {
       this.game.input.keyboard.lastKey.keyCode >= 48 &&
       this.game.input.keyboard.lastKey.keyCode <= 90) {
       keys[this.selectedPlayer] = this.game.input.keyboard.lastKey.keyCode + ''
-      this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]))
+      this.setKeyboardIcon()
       this.hideDialog()
     }
   },
@@ -126,9 +137,35 @@ setKeys.prototype = {
     console.log(arguments)
     if (changingKeys && button !== Phaser.Gamepad.XBOX360_START) {
       keys[this.selectedPlayer] = (gamepad + 1) + ',' + button
-      this.ui.keyText.setText(keys[this.selectedPlayer])
+      this.setGamepadIcon()
       this.hideDialog()
     }
+  },
+
+  updateIcon: function () {
+    if (keys[this.selectedPlayer].indexOf(',') === -1) {
+      this.setKeyboardIcon()
+    } else {
+      this.setGamepadIcon()
+    }
+  },
+
+  setGamepadIcon: function () {
+    this.ui.keyButton.loadTexture('gp_button')
+    var player = keys[this.selectedPlayer].split(',')[0]
+    var button = keys[this.selectedPlayer].split(',')[1]
+    var buttonName = this.gamepadMap[button]
+    this.ui.keyText.setText(buttonName)
+    this.ui.keyText.scale.set(1 / (buttonName.length))
+    this.ui.gpText.visible = true
+    this.ui.gpText.text = 'gamepad ' + player
+  },
+
+  setKeyboardIcon: function () {
+    this.ui.keyButton.loadTexture('key_button')
+    this.ui.keyText.setText(String.fromCharCode(keys[this.selectedPlayer]))
+    this.ui.keyText.scale.set(1)
+    this.ui.gpText.visible = false
   },
 
   change: function () {
