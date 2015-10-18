@@ -12,6 +12,7 @@ var Adventure = function (game, testing) {
   this.map = null
   this.layer = null
   this.powerText = null
+  this.name = 'adventure'
 
   this.mapW = 60
   this.mapH = 34

@@ -333,7 +333,7 @@ Player.prototype = {
         if (this.keyText.alpha === 1) {
           this.textTween = this.game.add.tween(this.keyText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
 
-          if (this.mode.sp && this.mode.leaderboardID) {
+          if (tempLabel !== null) {
             this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
             this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
           }

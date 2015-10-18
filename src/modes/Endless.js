@@ -2,7 +2,7 @@ var Endless = function (game) {
   this.sp = true
   this.game = game
   this.player = null
-  this.leaderboardID = modesLB[1]
+  this.name = 'endless'
 }
 
 Endless.prototype = {

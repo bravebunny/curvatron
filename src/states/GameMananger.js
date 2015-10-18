@@ -5,9 +5,10 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex, Player, keys, colorHexDark, bgColor:true, mute:true, ButtonList,
-clickButton, localStorage */
+clickButton, localStorage, saveAs */
 /*eslint-enable*/
 var gameMananger = function (game) {
+  tempLabel = null
   this.gameTime = 60 // sec
   this.initialTime = 0
   this.powerTimer = null
@@ -19,6 +20,8 @@ var gameMananger = function (game) {
   this.twitter = null
   this.rToken = null
   this.rTokenSecret = null
+  this.blob = null
+  this.png = null
 }
 
 gameMananger.prototype = {
@@ -63,17 +66,15 @@ gameMananger.prototype = {
 
     groupPowers = this.add.group()
     if (this.mode.sp) {
-      if (this.mode.leaderboardID) {
-        tempLabel = this.add.sprite(w2, h2, 'score')
-        tempLabel.anchor.setTo(0.5, 0.5)
-        tempLabel.alpha = 0.7
-        tempLabelText = this.add.text(w2 + 50, h2 + 8, this.mode.getHighScore().toString(), {
-          font: '100px dosis',
-          fill: colorHex,
-          align: 'center'
-        })
-        tempLabelText.anchor.setTo(0.5, 0.5)
-      }
+      tempLabel = this.add.sprite(w2, h2, 'score')
+      tempLabel.anchor.setTo(0.5, 0.5)
+      tempLabel.alpha = 0.7
+      tempLabelText = this.add.text(w2 + 50, h2 + 8, this.mode.getHighScore().toString(), {
+        font: '75px dosis',
+        fill: colorHex,
+        align: 'center'
+      })
+      tempLabelText.anchor.setTo(0.5, 0.5)
     } else {
       ui.graphics.lineStyle(0)
       ui.graphics.beginFill(0x000000, 0.2)
@@ -223,7 +224,8 @@ gameMananger.prototype = {
       players[i].update()
     }
 
-    if (this.popup !== null && this.popup.location.href.split('oauth_verifier=')[1] !== undefined) {
+    if (this.popup !== null && this.popup.location.href &&
+      this.popup.location.href.split('oauth_verifier=')[1] !== undefined) {
       this.tweetUpdate()
     }
   },
@@ -235,8 +237,42 @@ gameMananger.prototype = {
   },
 
   endGame: function () {
+    var tempLabel = this.add.sprite(w2, h2, 'aux-stat')
+    tempLabel.scale.set(0.9, 0.9)
+    tempLabel.anchor.setTo(0.5, 0.5)
+    tempLabel.alpha = 0.7
+
+    var tempText = this.add.text(w2, h2 - 10, this.mode.getScore().toString(), {
+      font: '90px dosis',
+      fill: colorHex,
+      align: 'center'
+    })
+    tempText.anchor.setTo(0.5, 0.5)
+
+    if (this.mode.name) {
+      var modeName = this.add.text(w2, h2 + 45, this.mode.name, {
+        font: '40px dosis',
+        fill: colorHex,
+        align: 'center'
+      })
+      modeName.anchor.setTo(0.5, 0.5)
+      modeName.alpha = 0.7
+    }
+
+    this.game.renderer.render(this.game.stage)
+
+    // png to share on twitter
     var png = this.game.canvas.toDataURL()
     this.png = png.replace(/^data:image\/png;base64,/, '')
+
+    // png to save locally
+    this.game.canvas.toBlob(function (blob) {
+      this.blob = blob
+    }.bind(this))
+
+    tempLabel.kill()
+    tempText.kill()
+    modeName.kill()
 
     var ui = this.ui
     if (!gameOver) {
@@ -407,11 +443,7 @@ gameMananger.prototype = {
   },
 
   share: function () {
-    /*
-		this.game.canvas.toBlob(function(blob) {
-      //saveAs(blob, "creative.png")
-    });
-		*/
+    saveAs(this.blob, 'creative.png')
 
     var TwitterAPI = require('node-twitter-api')
     this.twitter = new TwitterAPI({
