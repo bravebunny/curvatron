@@ -46,9 +46,42 @@ preloadMenu.prototype = {
     this.game.load.image('aux-stat', 'assets/sprites/gui/stats/aux-stat.png')
     this.game.load.image('survScore-stat', 'assets/sprites/gui/stats/endless-stat.png')
 
+    this.game.load.image('score', 'assets/sprites/gui/stats/score-general.png')
+    this.game.load.image('pauseButton', 'assets/sprites/gui/hud/pause.png')
+    this.game.load.image('twitter_button', 'assets/sprites/gui/hud/twitter.png')
+    this.game.load.audio('move0', 'assets/sfx/move0.ogg')
+    this.game.load.audio('move1', 'assets/sfx/move1.ogg')
+    this.game.load.audio('move1', 'assets/sfx/move1.ogg')
+    this.game.load.audio('kill', 'assets/sfx/kill.ogg')
+    this.game.load.audio('sfx_collect0', 'assets/sfx/collect0.ogg')
+
+    this.game.load.image('player', 'assets/sprites/game/singleplayer/player.png')
+    this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png')
+    this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png')
+    this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100)
+    this.game.load.image('Pastel', 'assets/levels/Pastel.png') // loading the tileset image
+    this.game.load.tilemap('blank', 'assets/levels/blank.json', null, Phaser.Tilemap.TILED_JSON) // loading the tilemap file
+
     this.game.load.image('overlay', 'assets/sprites/game/overlay.png')
 
     this.game.load.audio('dream', 'assets/music/dream.ogg')
+
+    // oldSchool
+    this.game.load.image('old_point', 'assets/sprites/game/oldschool/point.png')
+    this.game.load.image('old_player', 'assets/sprites/game/oldschool/player.png')
+    this.game.load.image('old_superPower', 'assets/sprites/game/oldschool/power.png')
+    this.game.load.image('old_trail', 'assets/sprites/game/oldschool/trail.png')
+    this.game.load.audio('sfx_collectOld', 'assets/sfx/collectOld.ogg')
+    this.game.load.audio('sfx_killOld', 'assets/sfx/killOld.ogg')
+
+    // multiplayer
+    this.game.load.image('pointMP', 'assets/sprites/game/multiplayer/pointMP.png')
+    this.game.load.image('tie', 'assets/sprites/gui/hud/tie.png')
+    this.game.load.image('winner', 'assets/sprites/gui/hud/winner.png')
+    for (var i = 0; i < 8; i++) {
+      this.game.load.image('player' + i, 'assets/sprites/game/multiplayer/player' + i + '.png')
+      this.game.load.image('crown' + i, 'assets/sprites/game/multiplayer/crown' + i + '.png')
+    }
   },
 
   create: function () {
@@ -59,7 +92,6 @@ preloadMenu.prototype = {
     this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.keys.selectPress, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onUp.add(this.keys.selectRelease, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.keys.backPressed, this)
-    this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onUp.add(this.keys.backReleased, this)
     this.game.input.resetLocked = true
 
     this.game.state.start('Menu')
@@ -67,14 +99,9 @@ preloadMenu.prototype = {
 
   keys: {
     backPressed: function () {
-      pressingBack = true
       if (this.state.states[this.game.state.current].backPressed) {
         this.state.states[this.game.state.current].backPressed()
       }
-    },
-
-    backReleased: function () {
-      pressingBack = false
     },
 
     up: function () {

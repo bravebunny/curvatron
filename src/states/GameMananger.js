@@ -65,7 +65,7 @@ gameMananger.prototype = {
     ui.graphics = this.add.graphics(w2, h2)
 
     groupPowers = this.add.group()
-    if (this.mode.sp) {
+    if (this.mode.sp && this.mode.getHighScore) {
       countdown = false
       tempLabel = this.add.sprite(w2, h2, 'score')
       tempLabel.anchor.setTo(0.5, 0.5)
@@ -76,7 +76,7 @@ gameMananger.prototype = {
         align: 'center'
       })
       tempLabelText.anchor.setTo(0.5, 0.5)
-    } else {
+    } else if (!this.mode.sp) {
       countdown = true
       ui.graphics.lineStyle(0)
       ui.graphics.beginFill(0x000000, 0.2)

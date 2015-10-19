@@ -11,16 +11,6 @@ var MPNormal = function (nPlayers, game) {
 }
 
 MPNormal.prototype = {
-  preload: function () {
-    this.game.load.image('point', 'assets/sprites/game/multiplayer/pointMP.png')
-    this.game.load.image('tie', 'assets/sprites/gui/hud/tie.png')
-    this.game.load.image('winner', 'assets/sprites/gui/hud/winner.png')
-    for (var i = 0; i <= this.nPlayers; i++) {
-      this.game.load.image('player' + i, 'assets/sprites/game/multiplayer/player' + i + '.png')
-      this.game.load.image('crown' + i, 'assets/sprites/game/multiplayer/crown' + i + '.png')
-    }
-  },
-
   create: function (manager) {
     this.crowned = -1
     this.lastCrowned = -1
@@ -108,7 +98,7 @@ MPNormal.prototype = {
   },
 
   createPower: function () {
-    var powerup = new PowerUp(this.game, 'point', this)
+    var powerup = new PowerUp(this.game, 'pointMP', this)
     powerup.create()
   },
 

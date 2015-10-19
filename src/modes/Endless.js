@@ -6,10 +6,6 @@ var Endless = function (game) {
 }
 
 Endless.prototype = {
-  preload: function () {
-    this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png')
-  },
-
   create: function () {
     this.player = players[0]
   },

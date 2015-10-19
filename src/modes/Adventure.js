@@ -28,19 +28,9 @@ var Adventure = function (game, testing) {
 }
 
 Adventure.prototype = {
-  preload: function () {
+  create: function () {
     setScreenFixed(baseW, baseH, this.game)
 
-    this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png')
-    this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png')
-    this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png')
-    this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100)
-
-    this.game.load.image('Pastel', 'assets/levels/Pastel.png') // loading the tileset image
-    this.game.load.tilemap('blank', 'assets/levels/blank.json', null, Phaser.Tilemap.TILED_JSON) // loading the tilemap file
-  },
-
-  create: function () {
     // varialbes that need to be reset on startup
     this.score = 0
     this.pointPositions = []

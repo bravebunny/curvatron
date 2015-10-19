@@ -14,11 +14,6 @@ var Creative = function (game) {
 }
 
 Creative.prototype = {
-
-  preload: function () {
-    this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png')
-  },
-
   create: function () {
     this.player = players[0]
     scale = 0.3

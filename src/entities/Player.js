@@ -39,8 +39,11 @@ Player.prototype = {
   create: function () {
     this.graphics = this.game.add.graphics(0, 0)
 
+    var spriteName = 'player'
+    if (!this.mode.sp) spriteName += this.id
+
     this.orientation = Math.abs(window.orientation) - 90 === 0 ? 'landscape' : 'portrait'
-    this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id)
+    this.sprite = this.game.add.sprite(this.x, this.y, spriteName)
     this.sprite.name = '' + this.id
 
     this.sprite.anchor.setTo(0.5, 0.5)

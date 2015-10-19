@@ -20,14 +20,6 @@ var OldSchool = function (game) {
 }
 
 OldSchool.prototype = {
-  preload: function () {
-    this.game.load.image('point', 'assets/sprites/game/oldschool/point.png')
-    this.game.load.image('player0', 'assets/sprites/game/oldschool/player.png')
-    this.game.load.image('superPower', 'assets/sprites/game/oldschool/power.png')
-    this.game.load.audio('sfx_collectOld', 'assets/sfx/collectOld.ogg')
-    this.game.load.audio('sfx_killOld', 'assets/sfx/killOld.ogg')
-  },
-
   create: function () {
     colorHex = '#8eb367'
     colorHexDark = '#475933'
@@ -72,7 +64,7 @@ OldSchool.prototype = {
   },
 
   createPower: function () {
-    var powerup = new PowerUp(this.game, 'point', this)
+    var powerup = new PowerUp(this.game, 'old_point', this)
     powerup.create()
   },
 
@@ -93,7 +85,7 @@ OldSchool.prototype = {
   collect: function (player, power) {
     this.score++
     var highScore = this.getHighScore()
-    var powerup = new PowerUp(this.game, 'point', this)
+    var powerup = new PowerUp(this.game, 'old_point', this)
     powerup.create()
 
     var ballsScore = parseInt(localStorage.getItem('ballsScore'), 10)

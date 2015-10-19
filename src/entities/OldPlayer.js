@@ -6,7 +6,7 @@
 var OldPlayer = function (x, y, mode, game) {
   this.game = game
   this.mode = mode
-  this.sprite = game.add.sprite(x, y, 'player0')
+  this.sprite = game.add.sprite(x, y, 'old_player')
   this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE)
 
   this.direction = 1
@@ -38,6 +38,9 @@ OldPlayer.prototype = {
   create: function () {
     this.orientation = Math.abs(window.orientation) - 90 === 0 ? 'landscape' : 'portrait'
     this.sprite.anchor.setTo(0.5, 0.5)
+
+    this.trail = this.game.make.sprite(0, 0, 'old_trail')
+    this.trail.anchor.set(0.5)
 
     this.sprite.scale.set(scale)
     // this.sprite.body.setSize(20,20,0,0)
@@ -234,14 +237,10 @@ OldPlayer.prototype = {
     if (!mute) {
       collectSound.play()
     }
-    if (power.name === 'point') {
+    if (power.name === 'old_point') {
       this.killTrail = false
       this.growth = 60 * power.scale.x
       this.score = this.score + power.scale.x
-    } else if (power.name === 'shrink') {
-      this.shrinkSize = this.trailArray.length - this.shrinkAmount
-      this.lastTrailLength -= this.shrinkAmount
-      this.shrink = true
     }
 
     this.mode.collect(player, power, this)
