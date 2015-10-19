@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex:true, keys, colorHexDark:true, bgColor:true, mute:true, ButtonList,
-clickButton, localStorage, PowerUp, OldPlayer, powerText:true, modesLB */
+clickButton, localStorage, PowerUp, OldPlayer, modesLB */
 /*eslint-enable*/
 var OldSchool = function (game) {
   this.sp = true
@@ -17,6 +17,7 @@ var OldSchool = function (game) {
   this.leaderboardID = modesLB[2]
   this.gridded = true
   this.countPoints = true
+  this.powerText = null
 }
 
 OldSchool.prototype = {
@@ -28,12 +29,12 @@ OldSchool.prototype = {
     killSound = this.game.add.audio('sfx_killOld')
 
     var textSize = 20
-    powerText = this.game.add.text(0, 0, '1', {
+    this.powerText = this.game.add.text(0, 0, '1', {
       font: '' + textSize + 'px dosis',
       fill: colorHex,
       align: 'center'
     })
-    powerText.anchor.setTo(0.5, 0.5)
+    this.powerText.anchor.setTo(0.5, 0.5)
 
     var x = 1.5 * w2
     var y = h2
@@ -66,6 +67,9 @@ OldSchool.prototype = {
   createPower: function () {
     var powerup = new PowerUp(this.game, 'old_point', this)
     powerup.create()
+    this.powerText.setText(this.score + 1)
+    this.powerText.x = powerup.sprite.x
+    this.powerText.y = powerup.sprite.y + 2 * scale
   },
 
   setScore: function (score) {
@@ -85,8 +89,7 @@ OldSchool.prototype = {
   collect: function (player, power) {
     this.score++
     var highScore = this.getHighScore()
-    var powerup = new PowerUp(this.game, 'old_point', this)
-    powerup.create()
+    this.createPower()
 
     var ballsScore = parseInt(localStorage.getItem('ballsScore'), 10)
     if (isNaN(ballsScore)) {

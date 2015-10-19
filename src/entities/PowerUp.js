@@ -1,4 +1,4 @@
-/* global scale, w2, h2, Phaser, groupPowers, powerText,
+/* global scale, w2, h2, Phaser, groupPowers
 nextBallHigh:true
 */
 var PowerUp = function (game, type, mode, x, y) {
@@ -48,7 +48,8 @@ PowerUp.prototype = {
 
     this.sprite.name = this.type
     if (nextBallHigh === 1) {
-      this.sprite.loadTexture('superPower')
+      if (this.type === 'old_point') this.sprite.loadTexture('old_superPower')
+      else this.sprite.loadTexture('superPower')
       nextBallHigh = 2
     }
 
