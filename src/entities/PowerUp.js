@@ -14,7 +14,7 @@ var PowerUp = function (game, type, mode, x, y) {
 
 PowerUp.prototype = {
   create: function () {
-    if (this.type === 'point') {
+    if (this.type.indexOf('point') > -1) {
       if (!this.mode.sp) {
         var randNum = this.game.rnd.integerInRange(0, 100)
         if (randNum < 60) {
@@ -57,7 +57,7 @@ PowerUp.prototype = {
       this.spriteTween = this.game.add.sprite(this.x, this.y, this.type)
       this.spriteTween.anchor.setTo(0.5, 0.5)
       this.spriteTween.scale.set((this.size / 2) * scale)
-      if (this.type === 'point') {
+      if (this.type.indexOf('point') > -1) {
         this.game.add.tween(this.spriteTween).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true)
         this.game.add.tween(this.spriteTween.scale).to({x: 4, y: 4}, 1000, Phaser.Easing.Linear.None, true)
       } else if (this.mode.sp && (this.type === 'shrink')) {
