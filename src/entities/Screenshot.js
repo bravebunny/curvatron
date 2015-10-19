@@ -1,44 +1,40 @@
-/*eslint-disable*/
-/* global players, scale:true */
-/*eslint-enable*/
-var Creative = function (game) {
-  this.sp = true
+/* global saveAs */
+var Screenshot = function (game) {
   this.game = game
-  this.player = null
-  this.leaderboardID = null
-  this.noCollisions = true
   this.popup = null
+  this.png = null
+  this.blob = null
   this.twitter = null
-  this.rToken = null
-  this.rTokenSecret = null
+  this.tweetMessage = '#Curvatron'
 }
 
-Creative.prototype = {
-
-  preload: function () {
-    this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png')
+Screenshot.prototype = {
+  update: function () {
+    if (this.popup !== null && this.popup.location.href &&
+      this.popup.location.href.split('oauth_verifier=')[1] !== undefined) {
+      this.tweetUpdate()
+    }
   },
 
-  create: function () {
-    this.player = players[0]
-    scale = 0.3
-    var screenShotSprite = this.game.add.button(100, 100, 'screenshot_button', this.takeScreenShot, this)
-    screenShotSprite.anchor.setTo(0.5, 0.5)
-    screenShotSprite.input.useHandCursor = true
-    screenShotSprite.scale.set(0.5)
-    screenShotSprite.alpha = 0.2
-  },
+  snap: function () {
+    // redraw screen
+    this.game.renderer.render(this.game.stage)
 
-  takeScreenShot: function () {
-    /*
-		this.game.canvas.toBlob(function(blob) {
-      //saveAs(blob, "creative.png")
-    });
-		*/
-
+    // png to share on twitter
     var png = this.game.canvas.toDataURL()
     this.png = png.replace(/^data:image\/png;base64,/, '')
 
+    // png to save locally
+    this.game.canvas.toBlob(function (blob) {
+      this.blob = blob
+    }.bind(this))
+  },
+
+  save: function () {
+    saveAs(this.blob, 'curvatron.png')
+  },
+
+  share: function () {
     var TwitterAPI = require('node-twitter-api')
     this.twitter = new TwitterAPI({
       consumerKey: 'NwssUgdW5A1dKhtzExUFc5AtQ',
@@ -55,12 +51,6 @@ Creative.prototype = {
         this.popup = window.open(this.twitter.getAuthUrl(this.rToken))
       }
     }.bind(this))
-  },
-
-  update: function () {
-    if (this.popup !== null && this.popup.location.href.split('oauth_verifier=')[1] !== undefined) {
-      this.tweetUpdate()
-    }
   },
 
   tweetUpdate: function () {
@@ -86,7 +76,7 @@ Creative.prototype = {
           if (error) console.log(error)
           else {
             this.twitter.statuses('update', {
-              status: 'I made art with #Curvatron',
+              status: this.tweetMessage,
               media_ids: response.media_id_string
             },
               aToken,
@@ -99,9 +89,6 @@ Creative.prototype = {
         }.bind(this))
       }
     }.bind(this))
-  },
-
-  erasesTrail: function () {
-    return !this.player.ready
   }
+
 }

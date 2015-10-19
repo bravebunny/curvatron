@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex, Player, keys, colorHexDark, bgColor:true, mute:true, ButtonList,
-clickButton, localStorage, saveAs, countdown:false */
+clickButton, localStorage, saveAs, countdown:true, Screenshot */
 /*eslint-enable*/
 var gameMananger = function (game) {
   tempLabel = null
@@ -17,14 +17,11 @@ var gameMananger = function (game) {
   colisionMargin = 20
   countdown = false
   this.pauseButtons = null
-  this.popup = null
-  this.twitter = null
   this.rToken = null
   this.rTokenSecret = null
-  this.blob = null
-  this.png = null
   this.countdownCounter = 3
   this.countdownText = 0
+  this.screenshot = null
 }
 
 gameMananger.prototype = {
@@ -111,6 +108,9 @@ gameMananger.prototype = {
     bmd.addToWorld()
     bmd.smoothed = false
 
+    this.screenshot = new Screenshot(this.game)
+    this.screenshot.tweetMessage = 'My score in the ' + this.mode.name + ' mode of #Curvatron'
+
     // Choose snake locations
     var nPlayers = 0
     if (this.mode.nPlayers) {
@@ -182,7 +182,8 @@ gameMananger.prototype = {
     this.deathButtons = new ButtonList(this, this.game)
     this.deathButtons.add('restart_button', 'restart', this.restart)
     if (this.mode.getScore) {
-      this.deathButtons.add('twitter_button', 'share score', this.share)
+      this.deathButtons.add('twitter_button', 'share score', this.screenshot.share.bind(this.screenshot))
+      this.deathButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
     }
     if (this.mode.testing) {
       this.deathButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true) })
@@ -205,6 +206,7 @@ gameMananger.prototype = {
   },
 
   update: function () {
+    this.game.forceSingleUpdate = true
     if (!paused) {
       if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !mute) {
         menuMusic.fadeOut(2000)
@@ -244,10 +246,7 @@ gameMananger.prototype = {
       players[i].update()
     }
 
-    if (this.popup !== null && this.popup.location.href &&
-      this.popup.location.href.split('oauth_verifier=')[1] !== undefined) {
-      this.tweetUpdate()
-    }
+    this.screenshot.update()
   },
 
   updateCountdown: function () {
@@ -272,7 +271,6 @@ gameMananger.prototype = {
   },
 
   endGame: function () {
-
     if (this.mode.getScore) {
       var tempLabel = this.add.sprite(w2, h2, 'aux-stat')
       tempLabel.scale.set(0.9, 0.9)
@@ -296,16 +294,7 @@ gameMananger.prototype = {
         modeName.alpha = 0.7
       }
 
-      this.game.renderer.render(this.game.stage)
-
-      // png to share on twitter
-      var png = this.game.canvas.toDataURL()
-      this.png = png.replace(/^data:image\/png;base64,/, '')
-
-      // png to save locally
-      this.game.canvas.toBlob(function (blob) {
-        this.blob = blob
-      }.bind(this))
+      this.screenshot.snap()
 
       tempLabel.kill()
       tempText.kill()
@@ -478,65 +467,6 @@ gameMananger.prototype = {
   selectRelease: function () {
     if (paused) this.pauseButtons.selectRelease()
     else if (gameOver) this.deathButtons.selectRelease()
-  },
-
-  share: function () {
-    saveAs(this.blob, 'creative.png')
-
-    var TwitterAPI = require('node-twitter-api')
-    this.twitter = new TwitterAPI({
-      consumerKey: 'NwssUgdW5A1dKhtzExUFc5AtQ',
-      consumerSecret: 'S4yhhvUDPKAEI4Wqwx9TCqLaQgsdcB8FjhPG6GyMLVK1xzgqeV',
-      callback: 'http://bravebunny.co/'
-    })
-
-    this.twitter.getRequestToken(function (error, requestToken, requestTokenSecret, results) {
-      if (error) {
-        console.log(error)
-      } else {
-        this.rToken = requestToken
-        this.rTokenSecret = requestTokenSecret
-        this.popup = window.open(this.twitter.getAuthUrl(this.rToken))
-      }
-    }.bind(this))
-  },
-
-  tweetUpdate: function () {
-    var oauthVerifier = this.popup.location.href.split('oauth_verifier=')[1]
-    this.popup.close()
-    this.popup = null
-
-    var aToken, aTokenSecret
-
-    this.twitter.getAccessToken(this.rToken, this.rTokenSecret, oauthVerifier, function (error, accessToken, accessTokenSecret, results) {
-      if (error) {
-        console.log(error)
-      } else {
-        aToken = accessToken
-        aTokenSecret = accessTokenSecret
-
-        var params = {
-          media: this.png,
-          isBase64: true
-        }
-
-        this.twitter.uploadMedia(params, aToken, aTokenSecret, function (error, response) {
-          if (error) console.log(error)
-          else {
-            this.twitter.statuses('update', {
-              status: 'This is my score in #Curvatron',
-              media_ids: response.media_id_string
-            },
-              aToken,
-              aTokenSecret,
-              function (error, data, response) {
-                if (error) console.log(error)
-              }
-            )
-          }
-        }.bind(this))
-      }
-    }.bind(this))
   },
 
   renderGroup: function (member) {
