@@ -1,5 +1,4 @@
 /* global scale, w2, h2, Phaser, groupPowers
-nextBallHigh:true
 */
 var PowerUp = function (game, type, mode, x, y) {
   this.mode = mode
@@ -47,11 +46,6 @@ PowerUp.prototype = {
     this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE)
 
     this.sprite.name = this.type
-    if (nextBallHigh === 1) {
-      if (this.type === 'old_point') this.sprite.loadTexture('old_superPower')
-      else this.sprite.loadTexture('superPower')
-      nextBallHigh = 2
-    }
 
     groupPowers.add(this.sprite)
     if (this.mode.sp) {

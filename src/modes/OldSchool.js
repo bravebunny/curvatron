@@ -43,6 +43,8 @@ OldSchool.prototype = {
     this.player = new OldPlayer(x, y, this, this.game)
     this.player.create()
     players[0] = this.player
+
+    this.createPower(false)
   },
 
   update: function () {
@@ -64,8 +66,10 @@ OldSchool.prototype = {
     }
   },
 
-  createPower: function () {
-    var powerup = new PowerUp(this.game, 'old_point', this)
+  createPower: function (high) {
+    var name = 'old_point'
+    if (high) name = 'old_pointSuper'
+    var powerup = new PowerUp(this.game, name, this)
     powerup.create()
     this.powerText.setText(this.score + 1)
     this.powerText.x = powerup.sprite.x
@@ -89,17 +93,18 @@ OldSchool.prototype = {
   collect: function (player, power) {
     this.score++
     var highScore = this.getHighScore()
-    this.createPower()
+
+    if ((this.score === highScore)) {
+      this.createPower(true)
+    } else {
+      this.createPower(false)
+    }
 
     var ballsScore = parseInt(localStorage.getItem('ballsScore'), 10)
     if (isNaN(ballsScore)) {
       ballsScore = 0
     }
     localStorage.setItem('ballsScore', ballsScore + 1)
-
-    if ((nextBallHigh === 0) && (this.score === highScore - 1)) {
-      nextBallHigh = 1
-    }
   }
 
 }

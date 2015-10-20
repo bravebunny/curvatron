@@ -1,5 +1,5 @@
 /* global points:true, modesLB, h2, w2, players, colorHex,
-shuffleArray, localStorage, nextBallHigh:true, scale, PowerUp, Phaser
+shuffleArray, localStorage, scale, PowerUp, Phaser
 */
 var Normal = function (game) {
   this.sp = true
@@ -50,6 +50,8 @@ Normal.prototype = {
       }
     }
     this.pointsObs = shuffleArray(this.pointsObs)
+
+    this.createPower('point')
   },
 
   update: function () {},
@@ -102,10 +104,14 @@ Normal.prototype = {
     }
 
     var highScore = this.getHighScore()
+    var pointName = 'point'
+    if ((this.score === highScore - 1)) {
+      pointName = 'pointSuper'
+    }
 
-    if (powerSprite.name === 'point') {
+    if (powerSprite.name.indexOf('point') > -1) {
       this.score++
-      this.createPower('point')
+      this.createPower(pointName)
 
       // if (((this.score % this.shrinkFreq) === this.shrinkFreq-1) && (this.score > 0)) {
       if (((this.score % this.shrinkFreq) === this.shrinkFreq - 1) && (this.score > 0)) {
@@ -119,10 +125,6 @@ Normal.prototype = {
     }
     localStorage.setItem('ballsScore', ballsScore + 1)
 
-    if ((nextBallHigh === 0) && (this.score === highScore - 1)) {
-      nextBallHigh = 1
-    }
-
     if (powerSprite.name === 'shrink') {
       if (!this.gridIsFull()) {
         this.createObstacle()
@@ -134,7 +136,7 @@ Normal.prototype = {
       this.shrink = null
     }
 
-    if (powerSprite.name === 'point') {
+    if (powerSprite.name.indexOf('point') > -1) {
       this.player.size += this.player.growth
     } else if (powerSprite.name === 'shrink') {
       this.player.shrink = true
@@ -182,10 +184,11 @@ Normal.prototype = {
         break
       }
     }
-
-    this.powerText.setText(this.score + 1)
-    this.powerText.x = powerup.sprite.x
-    this.powerText.y = powerup.sprite.y + 2 * scale
+    if (type !== 'shrink') {
+      this.powerText.setText(this.score + 1)
+      this.powerText.x = powerup.sprite.x
+      this.powerText.y = powerup.sprite.y + 2 * scale
+    }
   },
 
   createObstacle: function () {

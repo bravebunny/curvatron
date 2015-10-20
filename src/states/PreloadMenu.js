@@ -56,7 +56,8 @@ preloadMenu.prototype = {
     this.game.load.audio('sfx_collect0', 'assets/sfx/collect0.ogg')
 
     this.game.load.image('player', 'assets/sprites/game/singleplayer/player.png')
-    this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png')
+    this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png')
+    this.game.load.image('pointSuper', 'assets/sprites/game/singleplayer/powerHS.png')
     this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png')
     this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100)
     this.game.load.image('Pastel', 'assets/levels/Pastel.png') // loading the tileset image
@@ -69,7 +70,7 @@ preloadMenu.prototype = {
     // oldSchool
     this.game.load.image('old_point', 'assets/sprites/game/oldschool/point.png')
     this.game.load.image('old_player', 'assets/sprites/game/oldschool/player.png')
-    this.game.load.image('old_superPower', 'assets/sprites/game/oldschool/power.png')
+    this.game.load.image('old_pointSuper', 'assets/sprites/game/oldschool/power.png')
     this.game.load.image('old_trail', 'assets/sprites/game/oldschool/trail.png')
     this.game.load.audio('sfx_collectOld', 'assets/sfx/collectOld.ogg')
     this.game.load.audio('sfx_killOld', 'assets/sfx/killOld.ogg')

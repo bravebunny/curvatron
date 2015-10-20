@@ -87,7 +87,7 @@ gameMananger.prototype = {
 
       if (!this.mode.sp) {
         // Generate powers
-        this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this)
+        this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.mode.createPower, this.mode)
       }
     }
 
@@ -134,10 +134,6 @@ gameMananger.prototype = {
     } else {
       this.game.stage.backgroundColor = colorHexDark
       bgColor = Phaser.Color.hexToColor(colorHexDark)
-    }
-
-    if (this.mode.spawnPowers) {
-      this.createPower()
     }
 
     for (i = 0; i <= nPlayers; i++) {
@@ -258,14 +254,6 @@ gameMananger.prototype = {
       }
       if (this.countdownCounter === -1) {
         this.countdownText.kill()
-      }
-    }
-  },
-
-  createPower: function () {
-    if (!countdown) {
-      if (this.mode.createPower) {
-        this.mode.createPower('point')
       }
     }
   },
@@ -398,7 +386,7 @@ gameMananger.prototype = {
       }
 
       if (!this.mode.sp) {
-        this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.createPower, this)
+        this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.mode.createPower, this.mode)
       }
 
       ui.overlay.inputEnabled = true
