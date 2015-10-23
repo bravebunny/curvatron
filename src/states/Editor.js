@@ -1,6 +1,6 @@
 /*eslint-disable*/
 /* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs,
-ButtonList, h2, w2, Adventure, numberPlayers:true */
+ButtonList, h2, w2, Adventure, numberPlayers:true, CanvasInput */
 /*eslint-enable*/
 var editor = function (game) {
   this.game = game
@@ -20,6 +20,7 @@ var editor = function (game) {
   this.fileName = null
   this.levelArray = []
   this.maxPoints = 32
+  this.textInput = null
 
   // reserved values in the level file
   // the remaining ones can be used for the points
@@ -35,30 +36,8 @@ editor.prototype = {
     this.returning = returning
   },
 
-  preload: function () {
-    setScreenFixed(baseW, baseH + 200, this.game)
-
-    this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png')
-    this.game.load.image('player0', 'assets/sprites/game/singleplayer/player.png')
-    this.game.load.image('superPower', 'assets/sprites/game/singleplayer/powerHS.png')
-    this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png')
-    this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100)
-
-    this.game.load.image('editorPoint', 'assets/sprites/gui/editor/point.png')
-    this.game.load.image('editorDraw', 'assets/sprites/gui/editor/draw.png')
-    this.game.load.image('editorErase', 'assets/sprites/gui/editor/erase.png')
-    this.game.load.image('editorArrow', 'assets/sprites/gui/editor/arrow.png')
-    this.game.load.image('editorStart', 'assets/sprites/gui/editor/start.png')
-    this.game.load.image('editorsave', 'assets/sprites/gui/editor/save.png')
-    this.game.load.image('editorNewPage', 'assets/sprites/gui/editor/newPage.png')
-    this.game.load.image('editorExit', 'assets/sprites/gui/editor/exit.png')
-    this.game.load.image('editorOpen', 'assets/sprites/gui/editor/open.png')
-
-    this.game.load.image('Pastel', 'assets/levels/Pastel.png') // loading the tileset image
-    this.game.load.tilemap('level', 'assets/levels/blank.json', null, Phaser.Tilemap.TILED_JSON) // loading the tilemap file
-  },
-
   create: function () {
+    setScreenFixed(baseW, baseH + 200, this.game)
     // variables that need to be reset
     this.tool = 'draw' // draw, erase, point, start
     this.selectedPoint = 1
@@ -75,7 +54,7 @@ editor.prototype = {
     this.obstacleGroup = this.game.add.group()
     this.lastPoint = null
 
-    this.map = this.game.add.tilemap('level') // Preloaded tilemap
+    this.map = this.game.add.tilemap('blank') // Preloaded tilemap
     this.map.addTilesetImage('Pastel') // Preloaded tileset
 
     this.layer = this.map.createLayer('obstacles') // layer[0]
@@ -134,13 +113,21 @@ editor.prototype = {
     this.tb.start.anchor.set(0.5, 0.5)
     this.tb.start.scale.set(0.6)
 
-    this.tb.open = this.game.add.button(1350, baseH + 100, 'editorOpen', this.auxOpen, this)
+    this.tb.test = this.game.add.button(1050, baseH + 100, 'resume_button', this.test, this)
+    this.tb.test.anchor.setTo(0.5, 0.5)
+    this.tb.test.scale.set(0.8)
+
+    this.tb.open = this.game.add.button(1200, baseH + 100, 'editorOpen', this.auxOpen, this)
     this.tb.open.anchor.set(0.5, 0.5)
     this.tb.open.scale.set(0.4)
 
-    this.tb.save = this.game.add.button(1500, baseH + 100, 'editorsave', this.save, this)
+    this.tb.save = this.game.add.button(1350, baseH + 100, 'editorsave', this.save, this)
     this.tb.save.anchor.set(0.5, 0.5)
     this.tb.save.scale.set(0.4)
+
+    this.tb.save = this.game.add.button(1500, baseH + 100, 'upload_button', this.upload, this)
+    this.tb.save.anchor.set(0.5, 0.5)
+    this.tb.save.scale.set(0.9)
 
     this.tb.newPage = this.game.add.button(1650, baseH + 100, 'editorNewPage', this.auxNewPage, this)
     this.tb.newPage.anchor.setTo(0.5, 0.5)
@@ -149,10 +136,6 @@ editor.prototype = {
     this.tb.exit = this.game.add.button(1800, baseH + 100, 'editorExit', this.auxExit, this)
     this.tb.exit.anchor.setTo(0.5, 0.5)
     this.tb.exit.scale.set(0.8)
-
-    this.tb.test = this.game.add.button(1200, baseH + 100, 'resume_button', this.test, this)
-    this.tb.test.anchor.setTo(0.5, 0.5)
-    this.tb.test.scale.set(0.8)
 
     // square that shows the selected tool
     this.selector = this.game.add.graphics()
@@ -185,9 +168,41 @@ editor.prototype = {
     }
     this.overlay.stroke()
 
+    this.uploadButtons = new ButtonList(this, this.game)
+    this.uploadButtons.add('upload_button', 'upload', this.confirmUpload)
+    this.uploadButtons.add('cancel_button', 'cancel', this.cancel)
+    this.uploadButtons.textColor = colorHexDark
+    this.uploadButtons.create()
+    this.uploadButtons.hide()
+
+    this.inputBMD = this.add.bitmapData(600, 100)
+    this.inputImage = this.inputBMD.addToWorld()
+    this.inputImage.position.set(w2, 150)
+    this.inputImage.anchor.set(0.5)
+    this.inputImage.inputEnabled = true
+    this.inputImage.visible = false
+    this.inputImage.events.onInputUp.add(function () {
+      this.textInput.focus()
+    }, this)
+
+    this.textInput = new CanvasInput({
+      canvas: this.inputBMD.canvas,
+      fontSize: 60,
+      fontFamily: 'dosis',
+      fontColor: colorHexDark,
+      width: this.inputBMD.width - 10,
+      height: this.inputBMD.height - 10,
+      placeHolder: 'level name',
+      borderRadius: 0,
+      borderWidth: 0,
+      innerShadow: '0px',
+      padding: 10,
+      onsubmit: this.confirmUpload
+    })
+
     this.confirmButtons = new ButtonList(this, this.game)
     this.confirmButtons.add('accept_button', 'yes', this.confirm)
-    this.confirmButtons.add('cancel_button', 'cancel', this.hideDialog)
+    this.confirmButtons.add('cancel_button', 'cancel', this.cancel)
     this.confirmButtons.textColor = colorHexDark
     this.confirmButtons.create()
     this.confirmButtons.hide()
@@ -310,10 +325,6 @@ editor.prototype = {
       }
     }
 
-  /*
-  if(this.game.physics.arcade.collide(players[0].sprite, this.layer)){
-    players[0].kill()
-  }*/
     this.confirmButtons.update()
   },
 
@@ -377,8 +388,8 @@ editor.prototype = {
   },
 
   backPressed: function () {
-    if (this.confirmButtons.visible) {
-      this.hideDialog()
+    if (this.tb.bg.y === 0) { // true if confirmation menu is open
+      this.cancel()
     } else {
       this.auxExit()
     }
@@ -420,17 +431,7 @@ editor.prototype = {
   save: function () {
     var blob = new Blob([this.generateFile()], {type: 'text/plain'})
     saveAs(blob, 'curvatron_level')
-    /*
-    var greenworks = require('./greenworks')
-    greenworks.saveTextToFile('savedfile', this.generateFile(), function () {
-      console.log('success save')
-      greenworks.fileShare('savedfile', function () {
-        console.log('success share')
-        greenworks.publishWorkshopFile('savedfile', '', 'my level', 'here is the level', function () {
-          console.log('success publish')
-        }, function (err) { console.log('failure publish: ' + err) })
-      }, function (err) { console.log('failure share: ' + err) })
-    }, function (err) { console.log('failure save: ' + err) })*/
+    this.saveButtons.show()
   },
 
   auxNewPage: function () {
@@ -468,10 +469,36 @@ editor.prototype = {
     this.confirmButtons.select(1)
   },
 
-  hideDialog: function () {
+  cancel: function () {
     this.confirmButtons.hide()
+    this.uploadButtons.hide()
     this.dialogText.visible = false
     this.tb.bg.y = baseH
+    this.inputImage.visible = false
+    this.textInput.selectText()
+    this.textInput.blur()
+  },
+
+  upload: function () {
+    this.tb.bg.y = 0
+    this.uploadButtons.show()
+    this.uploadButtons.select(1)
+    this.textInput.focus()
+    this.inputImage.visible = true
+    this.textInput.selectText()
+  },
+
+  confirmUpload: function () {
+    var greenworks = require('./greenworks')
+    greenworks.saveTextToFile('customLevel', this.generateFile(), function () {
+      console.log('success save')
+      greenworks.fileShare('customLevel', function () {
+        console.log('success share')
+        greenworks.publishWorkshopFile('customLevel', '', this.textInput._value, '', function () {
+          console.log('success publish')
+        }, function (err) { console.log('failure publish: ' + err) })
+      }.bind(this), function (err) { console.log('failure share: ' + err) })
+    }.bind(this), function (err) { console.log('failure save: ' + err) })
   },
 
   confirm: function () {
@@ -491,7 +518,6 @@ editor.prototype = {
             }
             return retVal
           })
-
           this.loadFromArray()
         }.bind(this))
       }.bind(this))
@@ -518,7 +544,7 @@ editor.prototype = {
       this.exit = false
       this.state.start('Menu')
     }
-    this.hideDialog()
+    this.cancel()
   },
 
   loadFromArray: function () {

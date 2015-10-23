@@ -113,7 +113,7 @@
     "searchexclude": "",
     "searchopts": "",
     "searchsort": "name",
-    "shell": "C:\\Windows\\system32\\cmd.exe",
+    "shell": "C:\\WINDOWS\\system32\\cmd.exe",
     "shrinkwrap": "true",
     "sign_git_tag": "",
     "spin": "true",
