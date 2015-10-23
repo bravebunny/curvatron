@@ -39,10 +39,11 @@ levelSelector.prototype = {
 
     this.scrollMask = this.game.add.graphics(0, 0)
     this.scrollMask.beginFill(0xffffff)
-    this.scrollMask.drawRect(w2 * 0.5, this.containerY - 100, w2 * 2, h2 * 1.2)
+    this.scrollMask.drawRect(w2 * 0.5, this.containerY - 100, w2 * 2, h2 * 2)
     this.scrollMask.endFill()
 
-    this.containerScrollBar.mask = this.scrollMask
+    this.buttons.setMask(this.scrollMask)
+
     this.containerScrollBar.inputEnabled = true
     this.containerScrollBar.input.useHandCursor = true
     this.containerScrollBar.input.enableDrag(false, true)
