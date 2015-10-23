@@ -52,6 +52,12 @@ ButtonList.prototype = {
     }
   },
 
+  setGroup: function (group) {
+    for (var i = 0; i < this.buttons.length; i++) {
+      group.addChild(this.buttons[i].button)
+    }
+  },
+
   add: function (icon, text, callback) {
     var button = new Button(icon, text, callback, this, this.context, this.game)
     this.buttons.push(button)
