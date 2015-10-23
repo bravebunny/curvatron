@@ -29,8 +29,6 @@ var Adventure = function (game, testing) {
 
 Adventure.prototype = {
   create: function () {
-    setScreenFixed(baseW, baseH, this.game)
-
     // varialbes that need to be reset on startup
     this.score = 0
     this.pointPositions = []
@@ -85,6 +83,10 @@ Adventure.prototype = {
     this.map.setCollisionByIndex(0)
 
     // this.map.setCollisionByExclusion([], true, this.layer)
+  },
+
+  setScreen: function () {
+    setScreenFixed(baseW, baseH, this.game)
   },
 
   update: function () {

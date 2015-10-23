@@ -30,10 +30,13 @@ gameMananger.prototype = {
   },
 
   create: function () {
-    this.orientation = Math.abs(window.orientation) - 90 === 0 ? 'landscape' : 'portrait'
     scale = 1
     if (!this.mode.sp) {
       scale = (-1 / 24) * this.mode.nPlayers + 7 / 12
+    }
+
+    if (this.mode.setScreen) {
+      this.mode.setScreen()
     }
 
     players = []

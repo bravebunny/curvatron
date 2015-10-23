@@ -326,6 +326,7 @@ editor.prototype = {
     }
 
     this.confirmButtons.update()
+    this.uploadButtons.update()
   },
 
   createPoint: function (tileX, tileY, i) {
