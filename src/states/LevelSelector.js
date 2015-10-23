@@ -15,21 +15,6 @@ levelSelector.prototype = {
     })
     this.title.anchor.setTo(0.5, 0.5)
 
-    this.containerScrollBar = this.game.add.sprite(w2 * 0.5, h2 * 0.8, 'back_button')
-
-    this.scrollMask = this.game.add.graphics(0, 0)
-    this.scrollMask.beginFill(0xffffff)
-    this.scrollMask.drawRect(w2 * 0.5, h2 * 0.8, 5000, 500)
-    this.scrollMask.endFill()
-
-    this.containerScrollBar.mask = this.scrollMask
-    this.containerScrollBar.inputEnabled = true
-    this.containerScrollBar.input.enableDrag(false, false)
-    this.containerScrollBar.input.allowHorizontalDrag = false
-    this.containerScrollBar.input.boundsRect = (w2 * 0.5, h2 * 0.8, 5000, 500)
-
-    //this.containerScrollBar.addChild( levels )
-
     this.buttons = new ButtonList(this, this.game)
 
     this.buttons.add('back_button', 'back', this.backPressed)
@@ -38,6 +23,22 @@ levelSelector.prototype = {
     this.buttons.create()
 
     this.buttons.select(1)
+
+    this.containerScrollBar = this.game.add.sprite(w2 * 0.5, h2 * 0.8, 'back_button')
+
+  /*  this.scrollMask = this.game.add.graphics(0, 0)
+    this.scrollMask.beginFill(0xffffff)
+    this.scrollMask.drawRect(w2 * 0.5, h2 * 0.8, 5000, 500)
+    this.scrollMask.endFill()*/
+
+    //this.containerScrollBar.mask = this.scrollMask
+    this.containerScrollBar.inputEnabled = true
+    this.containerScrollBar.input.enableDrag(false, true)
+    this.containerScrollBar.input.allowHorizontalDrag = false
+    this.containerScrollBar.input.boundsRect = (w2 * 0.5, h2 * 0.8, 5000, 500)
+    this.containerScrollBar.input.useHandCursor = true
+
+    //this.containerScrollBar.addChild( levels )
   },
 
   play: function () {
