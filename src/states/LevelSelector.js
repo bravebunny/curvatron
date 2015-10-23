@@ -1,9 +1,11 @@
-/* global ButtonList, w2, h2, Adventure, numberPlayers */
+/* global ButtonList, w2, h2, Adventure, Phaser */
 var levelSelector = function (game) {
   this.title = null
   this.buttons = null
   this.containerScrollBar = null
   this.scrollMask = null
+  this.containerX = 0
+  this.containerY = 0
 }
 
 levelSelector.prototype = {
@@ -15,6 +17,9 @@ levelSelector.prototype = {
     })
     this.title.anchor.setTo(0.5, 0.5)
 
+    this.containerX = 1.5 * w2
+    this.containerY = h2 * 0.8
+
     this.buttons = new ButtonList(this, this.game)
 
     this.buttons.add('back_button', 'back', this.backPressed)
@@ -24,21 +29,23 @@ levelSelector.prototype = {
 
     this.buttons.select(1)
 
-    this.containerScrollBar = this.game.add.sprite(w2 * 0.5, h2 * 0.8, 'back_button')
+    this.containerScrollBar = this.game.add.sprite(this.containerX, this.containerY, 'scroll_button')
+    this.containerScrollBar.scale.set(50, 100)
+    this.containerScrollBar.anchor.set(1, 0)
 
-  /*  this.scrollMask = this.game.add.graphics(0, 0)
+    this.scrollMask = this.game.add.graphics(0, 0)
     this.scrollMask.beginFill(0xffffff)
-    this.scrollMask.drawRect(w2 * 0.5, h2 * 0.8, 5000, 500)
-    this.scrollMask.endFill()*/
+    this.scrollMask.drawRect(w2 * 0.5, h2 * 0.8, 5000, h2 * 1.2)
+    this.scrollMask.endFill()
 
-    //this.containerScrollBar.mask = this.scrollMask
+    this.containerScrollBar.mask = this.scrollMask
     this.containerScrollBar.inputEnabled = true
+    this.containerScrollBar.input.useHandCursor = true
     this.containerScrollBar.input.enableDrag(false, true)
     this.containerScrollBar.input.allowHorizontalDrag = false
-    this.containerScrollBar.input.boundsRect = (w2 * 0.5, h2 * 0.8, 5000, 500)
-    this.containerScrollBar.input.useHandCursor = true
+    this.containerScrollBar.input.boundsRect = new Phaser.Rectangle(this.containerX - this.containerScrollBar.width, this.containerY, 5000, h2 * 1.2)
 
-    //this.containerScrollBar.addChild( levels )
+    //this.containerScrollBar.addChild(this.buttons)
   },
 
   play: function () {
