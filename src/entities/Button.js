@@ -141,6 +141,10 @@ Button.prototype = {
   setPosition: function (x, y) {
     this.x = x
     this.y = y
+    if (this.button !== null) {
+      this.button.x = x
+      this.button.y = y
+    }
   },
 
   setIndex: function (index) {

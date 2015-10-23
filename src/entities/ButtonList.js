@@ -4,6 +4,8 @@ var ButtonList = function (context, game) {
   this.game = game
   this.buttons = []
 
+  this.x = w2
+  this.y = 300
   this.selection = 0
   this.pressingSelect = false
   this.pressingUp = false
@@ -18,7 +20,7 @@ ButtonList.prototype = {
     for (var i = 0; i < this.buttons.length; i++) {
       var b = this.buttons[i]
       b.textColor = this.textColor
-      b.setPosition(w2, 300 + i * 125)
+      b.setPosition(this.x, this.y + i * 125)
       b.setIndex(i)
       b.create()
     }
@@ -31,6 +33,22 @@ ButtonList.prototype = {
         if (i === this.selection && !b.selected) b.select()
         else if (i !== this.selection && b.selected) b.deselect()
       }
+    }
+  },
+
+  setX: function (x) {
+    this.x = x
+    for (var i = 0; i < this.buttons.length; i++) {
+      var b = this.buttons[i]
+      b.setPosition(this.x, this.y + i * 125)
+    }
+  },
+
+  setY: function (y) {
+    this.y = y
+    for (var i = 0; i < this.buttons.length; i++) {
+      var b = this.buttons[i]
+      b.setPosition(this.x, this.y + i * 125)
     }
   },
 
