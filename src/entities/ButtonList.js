@@ -52,9 +52,16 @@ ButtonList.prototype = {
     }
   },
 
+  setMask: function (mask) {
+    for (var i = 0; i < this.buttons.length; i++) {
+      var b = this.buttons[i]
+      b.button.mask = mask
+    }
+  },
+
   setGroup: function (group) {
     for (var i = 0; i < this.buttons.length; i++) {
-      group.addChild(this.buttons[i].button)
+      group.addChild(this.buttons[i])
     }
   },
 
