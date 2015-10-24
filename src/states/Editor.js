@@ -366,19 +366,7 @@ editor.prototype = {
   },
 
   pointTool: function () {
-    //this.tool = 'point'
-    var greenworks = require('./greenworks')
-
-    greenworks.ugcGetUserItems(
-      greenworks.UGCMatchingType.Items,
-      greenworks.UserUGCListSortOrder.SubscriptionDateDesc,
-      greenworks.UserUGCList.Subscribed,
-      function (items) {
-        console.log(items)
-      },
-      function (err) {
-        console.log('item get error: ' + err)
-      })
+    this.tool = 'point'
   },
 
   pointDec: function () {

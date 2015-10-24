@@ -10,13 +10,14 @@ var ButtonList = function (context, game) {
   this.pressingSelect = false
   this.pressingUp = false
   this.pressingDown = false
-  this.visible = true
+  this.visible = false
 
   this.textColor = colorHex
 }
 
 ButtonList.prototype = {
   create: function () {
+    this.visible = true
     for (var i = 0; i < this.buttons.length; i++) {
       var b = this.buttons[i]
       b.textColor = this.textColor
@@ -46,9 +47,11 @@ ButtonList.prototype = {
 
   setY: function (y) {
     this.y = y
-    for (var i = 0; i < this.buttons.length; i++) {
-      var b = this.buttons[i]
-      b.setPosition(this.x, this.y + i * 125)
+    if (this.visible) {
+      for (var i = 0; i < this.buttons.length; i++) {
+        var b = this.buttons[i]
+        b.setPosition(this.x, this.y + i * 125)
+      }
     }
   },
 
@@ -111,6 +114,8 @@ ButtonList.prototype = {
 
   show: function () {
     this.visible = true
+    this.setX(this.x)
+    this.setY(this.y)
     for (var i = 0; i < this.buttons.length; i++) {
       this.buttons[i].show()
     }
