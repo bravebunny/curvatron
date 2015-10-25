@@ -69,6 +69,34 @@ editor.prototype = {
     this.marker.lineStyle(2, 0x000000, 1)
     this.marker.drawRect(0, 0, this.tileSize - 2, this.tileSize - 2)
 
+    // grid overlay
+    var gridBMD = this.game.add.bitmapData(this.game.width, this.game.height)
+    var gridImage = gridBMD.addToWorld()
+    gridImage.alpha = 0.3
+    var gridSize = this.tileSize * 3
+    gridImage.inputEnabled = true
+    gridImage.events.onInputOver.add(function (button) { this.showTooltip('', button) }.bind(this))
+
+    this.overlay = gridBMD.ctx
+    this.overlay.strokeStyle = '#FFFFFF'
+    this.overlay.lineWidth = 1
+    this.overlay.beginPath()
+    this.overlay.moveTo(0, 0)
+    for (var i = 1; i < this.mapW / 3; i++) {
+      this.overlay.moveTo(i * gridSize, 0)
+      this.overlay.lineTo(i * gridSize, baseH)
+      this.overlay.moveTo((i + 1) * gridSize, baseH)
+      this.overlay.lineTo((i + 1) * gridSize, 0)
+    }
+    this.overlay.moveTo(0, 0)
+    for (var e = 1; e < this.mapH / 3 - 1; e++) {
+      this.overlay.moveTo(0, e * gridSize)
+      this.overlay.lineTo(this.game.width, e * gridSize)
+      this.overlay.moveTo(this.game.width, (e + 1) * gridSize)
+      this.overlay.lineTo(0, (e + 1) * gridSize)
+    }
+    this.overlay.stroke()
+
     // toolbar background
     this.tb.bg = this.game.add.sprite(0, baseH, 'overlay')
     this.tb.bg.width = baseW
@@ -83,6 +111,7 @@ editor.prototype = {
     this.tb.point = this.game.add.button(200, baseH + 100, 'editorPoint', this.pointTool, this)
     this.tb.point.anchor.set(0.5)
     this.tb.point.scale.set(0.4)
+    this.tb.point.events.onInputOver.add(function (button) { this.showTooltip('point', button) }.bind(this))
 
     this.tb.pointText = this.game.add.text(this.tb.point.x, this.tb.point.y, this.selectedPoint, {
       font: '60px dosis',
@@ -104,69 +133,52 @@ editor.prototype = {
     this.tb.draw = this.game.add.button(450, baseH + 100, 'editorDraw', this.drawTool, this)
     this.tb.draw.anchor.set(0.5, 0.5)
     this.tb.draw.scale.set(0.4)
+    this.tb.draw.events.onInputOver.add(function (button) { this.showTooltip('draw blocks', button) }.bind(this))
 
     this.tb.erase = this.game.add.button(600, baseH + 100, 'editorErase', this.eraseTool, this)
     this.tb.erase.anchor.set(0.5, 0.5)
     this.tb.erase.scale.set(0.4)
+    this.tb.erase.events.onInputOver.add(function (button) { this.showTooltip('erase blocks', button) }.bind(this))
 
     this.tb.start = this.game.add.button(750, baseH + 100, 'editorStart', this.startTool, this)
     this.tb.start.anchor.set(0.5, 0.5)
     this.tb.start.scale.set(0.6)
+    this.tb.start.events.onInputOver.add(function (button) { this.showTooltip('change start position', button) }.bind(this))
 
     this.tb.test = this.game.add.button(1050, baseH + 100, 'resume_button', this.test, this)
     this.tb.test.anchor.setTo(0.5, 0.5)
     this.tb.test.scale.set(0.8)
+    this.tb.test.events.onInputOver.add(function (button) { this.showTooltip('test level', button) }.bind(this))
 
     this.tb.open = this.game.add.button(1200, baseH + 100, 'editorOpen', this.auxOpen, this)
     this.tb.open.anchor.set(0.5, 0.5)
     this.tb.open.scale.set(0.8)
+    this.tb.open.events.onInputOver.add(function (button) { this.showTooltip('import level', button) }.bind(this))
 
     this.tb.save = this.game.add.button(1350, baseH + 100, 'editorsave', this.save, this)
     this.tb.save.anchor.set(0.5, 0.5)
     this.tb.save.scale.set(0.4)
+    this.tb.save.events.onInputOver.add(function (button) { this.showTooltip('save to computer', button) }.bind(this))
 
-    this.tb.save = this.game.add.button(1500, baseH + 100, 'upload_button', this.upload, this)
-    this.tb.save.anchor.set(0.5, 0.5)
-    this.tb.save.scale.set(0.9)
+    this.tb.upload = this.game.add.button(1500, baseH + 100, 'upload_button', this.upload, this)
+    this.tb.upload.anchor.set(0.5, 0.5)
+    this.tb.upload.scale.set(0.9)
+    this.tb.upload.events.onInputOver.add(function (button) { this.showTooltip('upload to workshop', button) }.bind(this))
 
     this.tb.newPage = this.game.add.button(1650, baseH + 100, 'editorNewPage', this.auxNewPage, this)
     this.tb.newPage.anchor.setTo(0.5, 0.5)
     this.tb.newPage.scale.set(0.4)
+    this.tb.newPage.events.onInputOver.add(function (button) { this.showTooltip('clear page', button) }.bind(this))
 
     this.tb.exit = this.game.add.button(1800, baseH + 100, 'editorExit', this.auxExit, this)
     this.tb.exit.anchor.setTo(0.5, 0.5)
     this.tb.exit.scale.set(0.8)
+    this.tb.exit.events.onInputOver.add(function (button) { this.showTooltip('exit to menu', button) }.bind(this))
 
     // square that shows the selected tool
     this.selector = this.game.add.graphics()
     this.selector.lineStyle(10, 0xFFFFFF, 1)
     this.selector.drawRect(-60, -60, 120, 120)
-
-    // grid overlay
-    var gridBMD = this.game.add.bitmapData(this.game.width, this.game.height)
-    var gridImage = gridBMD.addToWorld()
-    gridImage.alpha = 0.3
-    var gridSize = this.tileSize * 3
-
-    this.overlay = gridBMD.ctx
-    this.overlay.strokeStyle = '#FFFFFF'
-    this.overlay.lineWidth = 1
-    this.overlay.beginPath()
-    this.overlay.moveTo(0, 0)
-    for (var i = 1; i < this.mapW / 3; i++) {
-      this.overlay.moveTo(i * gridSize, 0)
-      this.overlay.lineTo(i * gridSize, this.tb.bg.y)
-      this.overlay.moveTo((i + 1) * gridSize, this.tb.bg.y)
-      this.overlay.lineTo((i + 1) * gridSize, 0)
-    }
-    this.overlay.moveTo(0, 0)
-    for (var e = 1; e < this.mapH / 3 - 1; e++) {
-      this.overlay.moveTo(0, e * gridSize)
-      this.overlay.lineTo(this.game.width, e * gridSize)
-      this.overlay.moveTo(this.game.width, (e + 1) * gridSize)
-      this.overlay.lineTo(0, (e + 1) * gridSize)
-    }
-    this.overlay.stroke()
 
     this.uploadButtons = new ButtonList(this, this.game)
     this.uploadButtons.add('upload_button', 'upload', this.confirmUpload)
@@ -220,6 +232,14 @@ editor.prototype = {
     } else {
       this.levelArray = Array.apply(null, Array(this.mapW * this.mapH)).map(Number.prototype.valueOf, 0)
     }
+
+    this.tooltip = this.add.text(0, 0, '', {
+      font: '35px dosis',
+      fill: '#ffffff',
+      align: 'center'
+    })
+    this.tooltip.anchor.setTo(0.5, 0.5)
+    this.tooltip.visible = false
   },
 
   update: function () {
@@ -327,6 +347,13 @@ editor.prototype = {
 
     this.confirmButtons.update()
     this.uploadButtons.update()
+  },
+
+  showTooltip: function (name, button) {
+    // tool titles
+    this.tooltip.position.set(button.x, baseH + 20)
+    this.tooltip.setText(name)
+    this.tooltip.visible = true
   },
 
   createPoint: function (tileX, tileY, i) {
@@ -479,7 +506,7 @@ editor.prototype = {
   },
 
   upload: function () {
-    this.game.canvas.toBlob(function(blob) {
+    this.game.canvas.toBlob(function (blob) {
       var fs = require('fs')
       var png = this.game.canvas.toDataURL()
       png = png.replace(/^data:image\/png;base64,/, '')
