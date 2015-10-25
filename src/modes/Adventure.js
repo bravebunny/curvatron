@@ -71,6 +71,7 @@ Adventure.prototype = {
           players[0].x = x * this.tileSize + this.tileSize / 2
           players[0].y = y * this.tileSize + this.tileSize / 2 + 5
         } else if (val > 1) {
+          console.log('makin point at ' + x + ', ' + y)
           this.pointPositions[val - 2] = {}
           var point = this.pointPositions[val - 2]
           point.x = x * this.tileSize - this.tileSize / 2
@@ -81,6 +82,8 @@ Adventure.prototype = {
 
     this.layer = this.map.createLayer('obstacles') // layer[0]
     this.map.setCollisionByIndex(0)
+
+    this.createPower()
 
     // this.map.setCollisionByExclusion([], true, this.layer)
   },
