@@ -71,7 +71,7 @@ menu.prototype = {
     this.buttons.add('singleplayer_button', 'single player', this.singlePlayer)
     this.buttons.add('multiplayer_button', 'multiplayer', this.multiplayer)
     this.buttons.add('stats_button', 'statistics', this.stats)
-    this.buttons.add('editor_button', 'editor', this.editor)
+    this.buttons.add('editor_button', 'custom levels', this.customLevels)
     this.buttons.add('settings_button', 'settings', this.settings)
     this.buttons.add('exit_button', 'exit', this.backPressed)
 
@@ -84,8 +84,8 @@ menu.prototype = {
     checkGamepads(this.game)
   },
 
-  editor: function () {
-    this.state.start('Editor')
+  customLevels: function () {
+    this.state.start('CustomLevels')
   },
 
   singlePlayer: function () {
