@@ -431,7 +431,6 @@ editor.prototype = {
   save: function () {
     var blob = new Blob([this.generateFile()], {type: 'text/plain'})
     saveAs(blob, 'curvatron_level')
-    this.saveButtons.show()
   },
 
   auxNewPage: function () {

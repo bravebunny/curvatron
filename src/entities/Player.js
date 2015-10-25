@@ -49,7 +49,7 @@ Player.prototype = {
     this.sprite.anchor.setTo(0.5, 0.5)
 
     // used to do this in a fancier way, but it broke some stuff
-    if (this.y > h2) {
+    if (this.y > h2 && !this.mode.sp) {
       this.sprite.rotation = Math.PI
     }
 
