@@ -7,9 +7,14 @@ var levelSelector = function (game) {
   this.containerX = 0
   this.containerY = 0
   this.items = null
+  this.workshop = false
 }
 
 levelSelector.prototype = {
+  init: function (workshop) {
+    this.workshop = workshop
+  },
+
   create: function () {
     this.title = this.game.add.text(w2, 100, 'Level Selector', {
       font: '150px dosis',
@@ -22,11 +27,41 @@ levelSelector.prototype = {
     this.containerY = 300
 
     this.buttons = new ButtonList(this, this.game)
-    for (var i = 0; i < 500; i++) {
-      this.buttons.add('back_button', i + '', this.backPressed)
-    }
-    this.buttons.add('back_button', 'end', this.backPressed)
+    this.buttons.add('back_button', 'back', this.backPressed)
 
+    if (this.workshop) this.getWorkshopLevels()
+    else this.getAdventureLevels()
+  },
+
+  getWorkshopLevels: function () {
+    // get subscribed levels from worskhop
+    var greenworks = require('./greenworks')
+    greenworks.ugcGetUserItems(
+      greenworks.UGCMatchingType.Items,
+      greenworks.UserUGCListSortOrder.SubscriptionDateDesc,
+      greenworks.UserUGCList.Subscribed,
+      function (items) {
+        this.items = items
+        for (var i = 0; i < items.length; i++) {
+          (function (i) {
+            this.buttons.add('accept_button', items[i].title, function () {
+              console.log(i)
+              this.play(i)
+            })
+          }.bind(this))(i)
+        }
+        this.createButtons()
+      }.bind(this),
+      function (err) {
+        console.log('item get error: ' + err)
+      })
+  },
+
+  getAdventureLevels: function () {
+    this.createButtons()
+  },
+
+  createButtons: function () {
     this.buttons.create()
     this.buttons.select(1)
 
@@ -53,23 +88,6 @@ levelSelector.prototype = {
       this.containerY - 100,
       2 * w2,
       barHeight)
-
-/*
-    // get subscribed levels from worskhop
-    var greenworks = require('./greenworks')
-    greenworks.ugcGetUserItems(
-      greenworks.UGCMatchingType.Items,
-      greenworks.UserUGCListSortOrder.SubscriptionDateDesc,
-      greenworks.UserUGCList.Subscribed,
-      function (items) {
-        this.items = items
-        for (var i = 0; i < items.length; i++) {
-          this.buttons.add('accept_button', items[i].title, this.play)
-        }
-      }.bind(this),
-      function (err) {
-        console.log('item get error: ' + err)
-      })*/
   },
 
   update: function () {
@@ -79,9 +97,20 @@ levelSelector.prototype = {
     }
   },
 
-  play: function () {
+  play: function (level) {
     var mode = new Adventure(this.game, false)
-    this.game.state.start('PreloadGame', true, false, mode, 'assets/levels/level1')
+    if (this.workshop) {
+      var greenworks = require('./greenworks')
+      var file = this.items[level].file
+      greenworks.ugcDownloadItem(file, 'saves', function () {
+        this.game.state.start('PreloadGame', true, false, mode, 'saves/customLevel')
+      }.bind(this), function (err) {
+        console.log('download errir: ' + err)
+      })
+
+    } else {
+      this.game.state.start('PreloadGame', true, false, mode, 'assets/levels/level1')
+    }
   },
 
   backPressed: function () {

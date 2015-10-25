@@ -119,7 +119,7 @@ editor.prototype = {
 
     this.tb.open = this.game.add.button(1200, baseH + 100, 'editorOpen', this.auxOpen, this)
     this.tb.open.anchor.set(0.5, 0.5)
-    this.tb.open.scale.set(0.4)
+    this.tb.open.scale.set(0.8)
 
     this.tb.save = this.game.add.button(1350, baseH + 100, 'editorsave', this.save, this)
     this.tb.save.anchor.set(0.5, 0.5)
@@ -344,7 +344,6 @@ editor.prototype = {
   },
 
   createStart: function (x, y) {
-    console.log('creating start at ' + x + ', ' + y)
     if (!this.start.visible) this.start.visible = true
     this.start.position.set(x * this.tileSize + this.tileSize / 2, y * this.tileSize + this.tileSize / 2)
     var lp = this.lastStartPosition
