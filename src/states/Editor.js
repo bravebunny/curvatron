@@ -480,6 +480,25 @@ editor.prototype = {
   },
 
   upload: function () {
+    this.game.canvas.toBlob(function(blob) {
+      var fs = require('fs')
+      var png = this.game.canvas.toDataURL()
+      png = png.replace(/^data:image\/png;base64,/, '')
+
+      var path = require('path')
+      var process = require('process')
+      var nwPath = process.execPath
+      var nwDir = path.dirname(nwPath) + '\\saves\\tempScreenshot.png'
+
+      fs.writeFile('saves/tempScreenshot.png', png, 'base64', function (err) {
+        if (err) throw err
+        console.log('screenshot save success')
+        var greenworks = require('./greenworks')
+        greenworks.saveFilesToCloud([nwDir], function () {
+          console.log('success save2cloud')
+        }, function (err) { console.log('failure save2cloud: ' + err) })
+      })
+    }.bind(this))
     this.tb.bg.y = 0
     this.uploadButtons.show()
     this.uploadButtons.select(1)
@@ -494,7 +513,12 @@ editor.prototype = {
       console.log('success save')
       greenworks.fileShare('customLevel', function () {
         console.log('success share')
-        greenworks.publishWorkshopFile('customLevel', '', this.textInput._value, '', function () {
+        var path = require('path')
+        var process = require('process')
+        var nwPath = process.execPath
+        var nwDir = path.dirname(nwPath)
+        console.log(nwDir + '\\tempScreenshot.png')
+        greenworks.publishWorkshopFile('customLevel', 'tempScreenshot.png', this.textInput._value, '', function () {
           console.log('success publish')
         }, function (err) { console.log('failure publish: ' + err) })
       }.bind(this), function (err) { console.log('failure share: ' + err) })
