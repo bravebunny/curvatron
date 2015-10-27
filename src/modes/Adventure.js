@@ -40,8 +40,8 @@ Adventure.prototype = {
     bmd.addToWorld()
     bmd.smoothed = false
 
-    w2 = this.game.world.width / 2
-    h2 = this.game.world.height / 2
+    w2 = this.game.width / 2
+    h2 = this.game.height / 2
 
     bmd.width = 2 * w2
     bmd.height = 2 * h2

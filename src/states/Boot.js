@@ -22,8 +22,8 @@ boot.prototype = {
   },
 
   create: function () {
-    w2 = this.game.world.width / 2
-    h2 = this.game.world.height / 2
+    w2 = this.game.width / 2
+    h2 = this.game.height / 2
 
     this.game.stage.disableVisibilityChange = true
 
@@ -87,8 +87,8 @@ boot.prototype = {
       this.camera.setBoundsToWorld()
       this.scale.refresh()
 
-      w2 = this.game.world.width / 2
-      h2 = this.game.world.height / 2
+      w2 = this.game.width / 2
+      h2 = this.game.height / 2
 
       if (this.state.states[this.game.state.current].setPositions) {
         this.state.states[this.game.state.current].setPositions()

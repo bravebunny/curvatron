@@ -45,7 +45,7 @@ gameMananger.prototype = {
     paused = false
     totalTime = 0
     pauseTween = null
-    borders = [0, this.game.world.width, 0, this.game.world.height]
+    borders = [0, this.game.width, 0, this.game.height]
     bmd = null
     nextBallHigh = 0
 
