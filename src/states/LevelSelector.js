@@ -46,7 +46,7 @@ levelSelector.prototype = {
           (function (i) {
             this.buttons.add('accept_button', items[i].title, function () {
               console.log(i)
-              this.play(i)
+              this.playWorkshopLevel(i)
             })
           }.bind(this))(i)
         }
@@ -58,6 +58,16 @@ levelSelector.prototype = {
   },
 
   getAdventureLevels: function () {
+    var fs = require('fs')
+    var files = fs.readdirSync('assets/levels')
+    for (var i = 0; i < files.length; i++) {
+      (function (i) {
+        this.buttons.add('accept_button', 'level ' + i, function () {
+          console.log(i)
+          this.playLocalLevel(files[i])
+        })
+      }.bind(this))(i)
+    }
     this.createButtons()
   },
 
@@ -97,7 +107,7 @@ levelSelector.prototype = {
     }
   },
 
-  play: function (level) {
+  playWorkshopLevel: function (level) {
     var mode = new Adventure(this.game, false)
     if (this.workshop) {
       var greenworks = require('./greenworks')
@@ -110,6 +120,11 @@ levelSelector.prototype = {
     } else {
       this.game.state.start('PreloadGame', true, false, mode, 'assets/levels/level1')
     }
+  },
+
+  playLocalLevel: function (level) {
+    var mode = new Adventure(this.game, false)
+    this.game.state.start('PreloadGame', true, false, mode, 'assets/levels/' + level)
   },
 
   backPressed: function () {
