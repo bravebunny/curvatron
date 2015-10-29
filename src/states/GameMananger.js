@@ -266,7 +266,7 @@ gameMananger.prototype = {
       var tempLabel = this.add.sprite(w2, h2, 'aux-stat')
       tempLabel.scale.set(0.9, 0.9)
       tempLabel.anchor.setTo(0.5, 0.5)
-      tempLabel.alpha = 0.7
+      tempLabel.alpha = 0.5
 
       var tempText = this.add.text(w2, h2 - 10, this.mode.getScore().toString(), {
         font: '90px dosis',
@@ -274,6 +274,7 @@ gameMananger.prototype = {
         align: 'center'
       })
       tempText.anchor.setTo(0.5, 0.5)
+      tempText.alpha = 0.7
 
       if (this.mode.name) {
         var modeName = this.add.text(w2, h2 + 45, this.mode.name, {
@@ -282,7 +283,7 @@ gameMananger.prototype = {
           align: 'center'
         })
         modeName.anchor.setTo(0.5, 0.5)
-        modeName.alpha = 0.7
+        modeName.alpha = 0.5
       }
 
       this.screenshot.snap()
