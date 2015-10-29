@@ -23,16 +23,16 @@ singlePlayer.prototype = {
 
     this.buttons = new ButtonList(this, this.game)
 
+    this.buttons.add('back_button', 'back', this.backPressed)
+    this.buttons.add('adventure_button', 'adventure', this.adventure)
     this.buttons.add('collecting_button', 'normal', this.playNormalGame)
     this.buttons.add('endless_button', 'endless', this.playEndlessGame)
     this.buttons.add('oldSchool_button', 'old school', this.playOldSchoolGame)
-    this.buttons.add('adventure_button', 'adventure', this.adventure)
     this.buttons.add('creative_button', 'creative', this.creative)
-    this.buttons.add('back_button', 'back', this.backPressed)
 
     this.buttons.create()
 
-    this.buttons.select(0)
+    this.buttons.select(1)
   },
 
   update: function () {

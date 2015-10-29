@@ -284,9 +284,9 @@ gameMananger.prototype = {
 
       this.screenshot.snap()
 
-      tempLabel.kill()
-      tempText.kill()
-      modeName.kill()
+      if (tempLabel) tempLabel.kill()
+      if (tempText) tempText.kill()
+      if (modeName) modeName.kill()
     }
 
     var ui = this.ui

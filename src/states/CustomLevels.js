@@ -17,17 +17,16 @@ customLevels.prototype = {
 
     this.buttons = new ButtonList(this, this.game)
 
+    this.buttons.add('back_button', 'back', this.backPressed)
     var workshop = this.buttons.add('steam_button', 'workshop', this.workshop)
     this.buttons.add('editorOpen', 'open file', this.openFile)
     this.buttons.add('editor_button', 'level editor', this.editor)
-    this.buttons.add('back_button', 'back', this.backPressed)
-
     this.buttons.create()
 
     if (nonSteam) {
       workshop.disable()
-      this.buttons.select(1)
-    } else this.buttons.select(0)
+      this.buttons.select(2)
+    } else this.buttons.select(1)
   },
 
   workshop: function () {

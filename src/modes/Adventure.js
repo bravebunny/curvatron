@@ -52,7 +52,7 @@ Adventure.prototype = {
     players[0].y = h2
 
     this.powerText = this.game.add.text(0, 0, '1', {
-      font: '15px dosis',
+      font: '20px dosis',
       fill: colorHex,
       align: 'center'
     })

@@ -30,10 +30,11 @@ setKeys.prototype = {
     ui.title.anchor.setTo(0.5, 0.5)
 
     this.buttons = new ButtonList(this, this.game)
+
+    this.buttons.add('accept_button', 'confirm', this.backPressed)
     this.playersButton = this.buttons.add(null, '<    player ' + (this.selectedPlayer + 1) + '     >', this.left, this.right)
     this.buttons.add('smallKey_button', 'change', this.change)
     this.buttons.add('restart_button', 'reset', this.reset)
-    this.buttons.add('accept_button', 'confirm', this.backPressed)
     this.buttons.create()
 
     ui.keyButton = this.game.add.sprite(w2, h2 + 320, 'key_button')

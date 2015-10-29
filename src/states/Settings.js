@@ -2,7 +2,6 @@
 var settings = function (game) {
   this.game = game
   this.title = null
-  this.selection = 0
   this.audio = null
   this.fullscreen = null
   this.buttons = null
@@ -19,13 +18,13 @@ settings.prototype = {
 
     this.buttons = new ButtonList(this, this.game)
 
-    this.buttons.add('setkeys_button', 'controls', this.controls)
+    this.buttons.add('back_button', 'back', this.backPressed)
     this.audio = this.buttons.add('audio_button', 'audio: on ', this.toggleAudio)
     this.fullscreen = this.buttons.add('fullscreen_button', 'fullscreen', this.toggleFullscreen)
-    this.buttons.add('back_button', 'back', this.backPressed)
+    this.buttons.add('setkeys_button', 'controls', this.controls)
 
     this.buttons.create()
-    this.buttons.select(this.selection)
+    this.buttons.select(1)
 
     this.updateAudioButton()
     this.updateScreenButton()

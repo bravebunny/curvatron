@@ -18,13 +18,12 @@ multiplayer.prototype = {
 
     this.buttons = new ButtonList(this, this.game)
 
+    this.buttons.add('back_button', 'back', this.backPressed)
     this.playersButton = this.buttons.add(null, '<    ' + (this.nPlayers + 1) + ' players    >', this.left, this.right)
     this.buttons.add('accept_button', 'play', this.play)
     this.buttons.add('setkeys_button', 'controls', this.controls)
-    this.buttons.add('back_button', 'back', this.backPressed)
 
     this.buttons.create()
-
     this.buttons.select(1)
   },
 
