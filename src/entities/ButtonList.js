@@ -74,21 +74,28 @@ ButtonList.prototype = {
     return button
   },
 
-  selectDown: function () {
+  moveSelection: function (offset) {
     if (!this.pressingSelect) {
-      var newS = (this.selection + 1) % this.buttons.length
-      // menuArray[newS].button.onInputOver.dispatch()
-      this.selection = newS
+      var initialSelection = this.selection // used to check for endless loop
+      var helper = true
+      var newS, n
+      while (helper) {
+        n = this.buttons.length
+        newS = (((this.selection + offset) % n) + n) % n
+        this.selection = newS
+        if (this.buttons[this.selection].enabled || this.selection === initialSelection) {
+          helper = false
+        }
+      }
     }
   },
 
+  selectDown: function () {
+    this.moveSelection(1)
+  },
+
   selectUp: function () {
-    if (!this.pressingSelect) {
-      var n = this.buttons.length
-      var newS = (((this.selection - 1) % n) + n) % n
-      // menuArray[newS].button.onInputOver.dispatch()
-      this.selection = newS
-    }
+    this.moveSelection(-1)
   },
 
   selectPress: function () {

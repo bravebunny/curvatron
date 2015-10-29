@@ -1,6 +1,6 @@
 /*eslint-disable*/
 /* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs,
-ButtonList, h2, w2, Adventure, numberPlayers:true, CanvasInput */
+ButtonList, h2, w2, Adventure, numberPlayers:true, CanvasInput, nonSteam */
 /*eslint-enable*/
 var editor = function (game) {
   this.game = game
@@ -160,10 +160,18 @@ editor.prototype = {
     this.tb.save.scale.set(0.4)
     this.tb.save.events.onInputOver.add(function (button) { this.showTooltip('save to computer', button) }.bind(this))
 
-    this.tb.upload = this.game.add.button(1500, baseH + 100, 'upload_button', this.upload, this)
+    this.tb.upload = this.game.add.button(1500, baseH + 100, 'upload_button', null, this)
     this.tb.upload.anchor.set(0.5, 0.5)
     this.tb.upload.scale.set(0.9)
-    this.tb.upload.events.onInputOver.add(function (button) { this.showTooltip('upload to workshop', button) }.bind(this))
+    var uploadTooltip = ''
+    if (nonSteam) {
+      uploadTooltip = 'upload disabled: steam needs to be open'
+      this.tb.upload.alpha = 0.5
+    } else {
+      uploadTooltip = 'upload to workshop'
+      this.tb.upload.onInputUp.add(this.upload)
+    }
+    this.tb.upload.events.onInputOver.add(function (button) { this.showTooltip(uploadTooltip, button) }.bind(this))
 
     this.tb.newPage = this.game.add.button(1650, baseH + 100, 'editorNewPage', this.auxNewPage, this)
     this.tb.newPage.anchor.setTo(0.5, 0.5)

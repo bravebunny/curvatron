@@ -1,56 +1,3 @@
-function buttonDown () {
-  this.tweenOut.onComplete.active = true
-  this.tween.start()
-}
-
-function buttonUp () {
-  this.tween.start()
-}
-
-function clickButton (button, callback, state, buttonArray) {
-  var s = button.scale
-  var tweenTime = 30
-
-  var tweenIn = button.game.add.tween(s).to({ x: s.x * 0.9, y: s.y * 0.9 }, tweenTime, Phaser.Easing.Linear.None, false)
-  var tweenOut = button.game.add.tween(s).to({ x: s.x, y: s.y }, tweenTime, Phaser.Easing.Linear.None, false)
-
-  var tweenOver = button.game.add.tween(s).to({ x: s.x * 1.2, y: s.y * 1.2 }, tweenTime * 2, Phaser.Easing.Linear.None, false)
-  var tweenOverOut = button.game.add.tween(s).to({ x: s.x, y: s.y }, tweenTime * 2, Phaser.Easing.Linear.None, false)
-
-  tweenOut.onComplete.add(function () {
-    if (!tweenOut.isRunning && !tweenIn.isRunning) {
-      callback.call(this)
-    }
-  }
-    , state)
-
-  button.onInputOver.add(function () {
-    tweenOut.onComplete.active = true
-    tweenOver.start()
-  })
-
-  button.onInputOut.add(function () {
-    tweenOut.onComplete.active = false
-    tweenOverOut.start()
-  })
-
-  button.onInputDown.add(buttonDown, {
-    tween: tweenIn,
-    tweenOut: tweenOut
-  })
-
-  button.onInputUp.add(buttonUp, {
-    tween: tweenOut
-  })
-}
-
-// + Jonas Raoni Soares Silva
-// @ http://jsfromhell.com/array/shuffle [v1.0]
-/*function shuffleArray (o) { // v1.0
-  for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x)
-    return o
-}*/
-
 function shuffleArray (o) { // v1.0
   for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x) {}
   return o
@@ -104,42 +51,6 @@ function setScreenFixed (w, h, game) {
   h2 = h / 2
 }
 
-function menuUpdate () {
-  for (var i = 0; i < menuArray.length; i++) {
-    var b = menuArray[i]
-    if (i == selection && !b.selected) b.select()
-    else if (i != selection && b.selected) b.deselect()
-  }
-}
-
-function selectDown () {
-  if (!pressingSelect) {
-    var newS = (selection + 1) % menuArray.length
-    // menuArray[newS].button.onInputOver.dispatch()
-    selection = newS
-  }
-
-}
-
-function selectUp () {
-  if (!pressingSelect) {
-    var n = menuArray.length
-    var newS = (((selection - 1) % n) + n) % n
-    // menuArray[newS].button.onInputOver.dispatch()
-    selection = newS
-  }
-}
-
-function selectPress () {
-  pressingSelect = true
-  menuArray[selection].button.onInputDown.dispatch()
-}
-
-function selectRelease () {
-  pressingSelect = false
-  menuArray[selection].button.onInputUp.dispatch()
-}
-
 function checkGamepads (game) {
   if (game.input.gamepad.supported && game.input.gamepad.active) {
     var preload = game.state.states['PreloadMenu']
@@ -160,4 +71,10 @@ function checkGamepads (game) {
       }
     }
   }
+}
+
+// http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+function shadeColor (color, percent) {
+  var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF
+  return '#' + (0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1)
 }

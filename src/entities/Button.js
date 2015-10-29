@@ -1,4 +1,4 @@
-/* global Phaser, colorHex */
+/* global Phaser, colorHex, shadeColor */
 var Button = function (iconName, text, callback, buttonList, context, game) {
   this.text = text
   this.iconName = iconName
@@ -19,6 +19,7 @@ var Button = function (iconName, text, callback, buttonList, context, game) {
   this.w = 400
   this.h = 100
   this.selected = false
+  this.enabled = true
 
   this.textColor = colorHex
 }
@@ -120,9 +121,11 @@ Button.prototype = {
   },
 
   select: function () {
-    this.selected = true
-    this.buttonList.selection = this.index
-    this.tween.over.start()
+    if (this.enabled) {
+      this.selected = true
+      this.buttonList.selection = this.index
+      this.tween.over.start()
+    }
   },
 
   deselect: function () {
@@ -157,6 +160,17 @@ Button.prototype = {
 
   show: function () {
     this.button.visible = true
-  }
+  },
 
+  enable: function () {
+    this.graphics.tint = parseInt(this.textColor.substring(1), 16)
+    this.button.inputEnabled = true
+    this.enabled = true
+  },
+
+  disable: function () {
+    this.graphics.tint = parseInt(shadeColor(this.textColor, 0.5).substring(1), 16)
+    this.button.inputEnabled = false
+    this.enabled = false
+  }
 }

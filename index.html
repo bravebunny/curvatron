@@ -52,6 +52,8 @@
 
     var greenworks = require('./greenworks')
     greenworks.initAPI()
+    if (greenworks.initAPI()) nonSteam = false
+    else nonSteam = true
 
     var gui = require('nw.gui')
     var win = gui.Window.get()

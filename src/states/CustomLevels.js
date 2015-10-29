@@ -1,34 +1,33 @@
-/*eslint-disable*/
-/* global ButtonList, w2, numberPlayers:true, menuMusic, Normal, Endless,
-OldSchool, Adventure, Creative */
-/*eslint-enable*/
+
+/* global ButtonList, nonSteam, w2, Adventure */
+
 var customLevels = function (game) {
-  this.ui = {}
   this.game = game
   this.buttons = null
 }
 
 customLevels.prototype = {
   create: function () {
-    var ui = this.ui
-
-    ui.title = this.game.add.text(w2, 100, 'custom levels', {
+    this.title = this.game.add.text(w2, 100, 'custom levels', {
       font: '150px dosis',
       fill: '#ffffff',
       align: 'center'
     })
-    ui.title.anchor.setTo(0.5, 0.5)
+    this.title.anchor.setTo(0.5, 0.5)
 
     this.buttons = new ButtonList(this, this.game)
 
-    this.buttons.add('steam_button', 'workshop', this.workshop)
+    var workshop = this.buttons.add('steam_button', 'workshop', this.workshop)
     this.buttons.add('editorOpen', 'open file', this.openFile)
     this.buttons.add('editor_button', 'level editor', this.editor)
     this.buttons.add('back_button', 'back', this.backPressed)
 
     this.buttons.create()
 
-    this.buttons.select(0)
+    if (nonSteam) {
+      workshop.disable()
+      this.buttons.select(1)
+    } else this.buttons.select(0)
   },
 
   update: function () {
@@ -52,7 +51,7 @@ customLevels.prototype = {
   },
 
   workshop: function () {
-    this.game.state.start('LevelSelector', true, false, true) //last argument makes the menu show workshop items
+    this.game.state.start('LevelSelector', true, false, true) // last argument makes the menu show workshop items
   },
 
   openFile: function () {
