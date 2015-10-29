@@ -107,7 +107,6 @@ levelSelector.prototype = {
       }.bind(this), function (err) {
         console.log('download errir: ' + err)
       })
-
     } else {
       this.game.state.start('PreloadGame', true, false, mode, 'assets/levels/level1')
     }

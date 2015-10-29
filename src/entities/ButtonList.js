@@ -134,5 +134,11 @@ ButtonList.prototype = {
 
   getButton: function (i) {
     return this.buttons[i]
+  },
+
+  setTextSize: function (size) {
+    for (var i = 0; i < this.buttons.length; i++) {
+      this.buttons[i].setTextSize(size)
+    }
   }
 }

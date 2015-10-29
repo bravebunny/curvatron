@@ -30,26 +30,6 @@ customLevels.prototype = {
     } else this.buttons.select(0)
   },
 
-  update: function () {
-    this.buttons.update()
-  },
-
-  up: function () {
-    this.buttons.selectUp()
-  },
-
-  down: function () {
-    this.buttons.selectDown()
-  },
-
-  selectPress: function () {
-    this.buttons.selectPress()
-  },
-
-  selectRelease: function () {
-    this.buttons.selectRelease()
-  },
-
   workshop: function () {
     this.game.state.start('LevelSelector', true, false, true) // last argument makes the menu show workshop items
   },
@@ -68,6 +48,26 @@ customLevels.prototype = {
 
   editor: function () {
     this.game.state.start('Editor')
+  },
+
+  update: function () {
+    this.buttons.update()
+  },
+
+  up: function () {
+    this.buttons.selectUp()
+  },
+
+  down: function () {
+    this.buttons.selectDown()
+  },
+
+  selectPress: function () {
+    this.buttons.selectPress()
+  },
+
+  selectRelease: function () {
+    this.buttons.selectRelease()
   },
 
   backPressed: function () {

@@ -41,6 +41,8 @@ Button.prototype = {
     this.graphics.endFill()
     // this.graphics.anchor.setTo(0.5,0.5)
 
+    if (!this.callback) this.graphics.tint = parseInt(shadeColor(this.textColor, 0.8).substring(1), 16)
+
     var offset = 40
     if (this.iconName == null) offset = 0
 
@@ -86,7 +88,7 @@ Button.prototype = {
 
     this.tween.release.onComplete.add(function () {
       this.selected = false
-      if (!this.tween.release.isRunning && !this.tween.press.isRunning) {
+      if (!this.tween.release.isRunning && !this.tween.press.isRunning && this.callback) {
         this.callback.call(this.context)
       }
     }, this)
@@ -101,14 +103,16 @@ Button.prototype = {
     // tweenOverOut.start()
     }, this)
 
-    this.button.onInputDown.add(this.buttonDown, {
-      tween: this.tween.press,
-      tweenOut: this.tween.release
-    }, this)
+    if (this.callback) { // only animate clicks if there is a callback
+      this.button.onInputDown.add(this.buttonDown, {
+        tween: this.tween.press,
+        tweenOut: this.tween.release
+      }, this)
 
-    this.button.onInputUp.add(this.buttonUp, {
-      tween: this.tween.release
-    }, this)
+      this.button.onInputUp.add(this.buttonUp, {
+        tween: this.tween.release
+      }, this)
+    }
   },
 
   buttonDown: function () {
@@ -169,8 +173,12 @@ Button.prototype = {
   },
 
   disable: function () {
-    this.graphics.tint = parseInt(shadeColor(this.textColor, 0.5).substring(1), 16)
+    this.graphics.tint = parseInt(shadeColor(this.textColor, 0.7).substring(1), 16)
     this.button.inputEnabled = false
     this.enabled = false
+  },
+
+  setTextSize: function (size) {
+    this.label.fontSize = size
   }
 }
