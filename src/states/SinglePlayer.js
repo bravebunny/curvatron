@@ -31,7 +31,6 @@ singlePlayer.prototype = {
     this.buttons.add('creative_button', 'creative', this.creative)
 
     this.buttons.create()
-
     this.buttons.select(1)
   },
 
