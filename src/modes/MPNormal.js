@@ -1,6 +1,6 @@
 /*eslint-disable*/
 /* global spawnPowers:true, players, totalTime, PowerUp, w2,
-h2, countdown, colorPlayers */
+h2, countdown, colorPlayers, adjustScreen */
 /*eslint-enable*/
 var MPNormal = function (nPlayers, game) {
   this.game = game
@@ -113,6 +113,10 @@ MPNormal.prototype = {
       })
       textWinner.anchor.setTo(0.5, 0.5)
     }
+  },
+
+  setScreen: function () {
+    adjustScreen(this.game)
   },
 
   getHighScore: function () {

@@ -244,6 +244,10 @@ Normal.prototype = {
     }
   },
 
+  setScreen: function () {
+    adjustScreen(this.game)
+  },
+
   render: function () {
     // call renderGroup on each of the alive members
     // this.obstacleGroup.forEachAlive(this.renderGroup, this)

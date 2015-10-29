@@ -56,31 +56,34 @@ singlePlayer.prototype = {
   },
 
   playNormalGame: function () {
-    numberPlayers = 0
     var mode = new Normal(this.game)
-    this.game.state.start('PreloadGame', true, false, mode)
+    this.play(mode)
   },
 
   playEndlessGame: function () {
-    numberPlayers = 0
-    // var mode = new Creative(this.game)
     var mode = new Endless(this.game)
-    this.game.state.start('PreloadGame', true, false, mode)
+    this.play(mode)
   },
 
   playOldSchoolGame: function () {
-    numberPlayers = 0
     var mode = new OldSchool(this.game)
-    this.game.state.start('PreloadGame', true, false, mode)
+    this.play(mode)
   },
 
   adventure: function () {
-    this.state.start('LevelSelector', true, false)
+    this.state.start('LevelSelector')
   },
 
   creative: function () {
-    numberPlayers = 0
     var mode = new Creative(this.game)
+    this.play(mode)
+  },
+
+  play: function (mode) {
+    if (mode.setScreen) {
+      mode.setScreen()
+    }
+    numberPlayers = 0
     this.game.state.start('PreloadGame', true, false, mode)
   },
 

@@ -1,5 +1,5 @@
 /*eslint-disable*/
-/* global players, scale:true */
+/* global players, scale:true, adjustScreen */
 /*eslint-enable*/
 var Creative = function (game) {
   this.sp = true
@@ -22,6 +22,10 @@ Creative.prototype = {
     screenShotSprite.input.useHandCursor = true
     screenShotSprite.scale.set(0.5)
     screenShotSprite.alpha = 0.2
+  },
+
+  setScreen: function () {
+    adjustScreen(this.game)
   },
 
   takeScreenShot: function () {

@@ -4,7 +4,7 @@
   scale
 */
 /*eslint-enable*/
-var Adventure = function (game, testing) {
+var Adventure = function (game, testing, items, index) {
   this.sp = true
   this.game = game
   this.spawnPowers = true
@@ -13,6 +13,8 @@ var Adventure = function (game, testing) {
   this.layer = null
   this.powerText = null
   this.name = 'adventure'
+  this.items = items
+  this.index = index
 
   this.mapW = 60
   this.mapH = 34
@@ -107,27 +109,8 @@ Adventure.prototype = {
     return this.score
   },
 
-  getHighScore: function () {
-    var score = parseInt(localStorage.getItem('highScore'), 10)
-    if (isNaN(score)) {
-      return 0
-    } else {
-      return score
-    }
-  },
-
   setScore: function (score) {
     this.score = score
-  },
-
-  setHighScore: function (score) {
-    localStorage.setItem('highScore', score)
-  },
-
-  submitScore: function () {
-    if (this.score > this.getHighScore()) {
-      this.setHighScore(this.score)
-    }
   },
 
   collect: function (player, power) {
@@ -169,10 +152,8 @@ Adventure.prototype = {
   },
 
   nextLevel: function () {
-    /*
-    var mode = new Adventure(this.game, this.level + 1)
-    this.game.state.start('PreloadGame', true, false, mode, this.level + 1) */
-    // TODO
+    this.index++
+    this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
   }
 
 }

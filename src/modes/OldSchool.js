@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex:true, keys, colorHexDark:true, bgColor:true, mute:true, ButtonList,
-clickButton, localStorage, PowerUp, OldPlayer, modesLB */
+clickButton, localStorage, PowerUp, OldPlayer, modesLB, adjustScreen */
 /*eslint-enable*/
 var OldSchool = function (game) {
   this.sp = true
@@ -49,6 +49,10 @@ OldSchool.prototype = {
 
   update: function () {
     this.player.update()
+  },
+
+  setScreen: function () {
+    adjustScreen(this.game)
   },
 
   erasesTrail: function () {},

@@ -34,6 +34,7 @@ multiplayer.prototype = {
 
   play: function () {
     var mode = new MPNormal(this.nPlayers, this.game)
+    mode.setScreen()
     this.game.state.start('PreloadGame', true, false, mode)
   },
 

@@ -12,6 +12,10 @@ Endless.prototype = {
 
   update: function () {},
 
+  setScreen: function () {
+    adjustScreen(this.game)
+  },
+
   erasesTrail: function () {
     return !this.player.ready
   },

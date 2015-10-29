@@ -45,7 +45,6 @@ levelSelector.prototype = {
         for (var i = 0; i < items.length; i++) {
           (function (i) {
             this.buttons.add('accept_button', items[i].title, function () {
-              console.log(i)
               this.playWorkshopLevel(i)
             })
           }.bind(this))(i)
@@ -59,12 +58,13 @@ levelSelector.prototype = {
 
   getAdventureLevels: function () {
     var fs = require('fs')
-    var files = fs.readdirSync('assets/levels')
-    for (var i = 0; i < files.length; i++) {
+    this.items = fs.readdirSync('assets/levels')
+    for (var i = 0; i < this.items.length; i++) {
       (function (i) {
         this.buttons.add('accept_button', 'level ' + i, function () {
-          console.log(i)
-          this.playLocalLevel(files[i])
+          var next = null
+          if (this.items[i + 1]) next = this.items[i + 1]
+          this.playLocalLevel(i)
         })
       }.bind(this))(i)
     }
@@ -109,22 +109,21 @@ levelSelector.prototype = {
 
   playWorkshopLevel: function (level) {
     var mode = new Adventure(this.game, false)
-    if (this.workshop) {
-      var greenworks = require('./greenworks')
-      var file = this.items[level].file
-      greenworks.ugcDownloadItem(file, 'saves', function () {
-        this.game.state.start('PreloadGame', true, false, mode, 'saves/customLevel')
-      }.bind(this), function (err) {
-        console.log('download errir: ' + err)
-      })
-    } else {
-      this.game.state.start('PreloadGame', true, false, mode, 'assets/levels/level1')
-    }
+    var greenworks = require('./greenworks')
+    var file = this.items[level].file
+    greenworks.ugcDownloadItem(file, 'saves', function () {
+      mode.setScreen()
+      this.game.state.start('PreloadGame', true, false, mode, 'saves/customLevel')
+    }.bind(this), function (err) {
+      console.log('download errir: ' + err)
+    })
   },
 
-  playLocalLevel: function (level) {
-    var mode = new Adventure(this.game, false)
-    this.game.state.start('PreloadGame', true, false, mode, 'assets/levels/' + level)
+  playLocalLevel: function (i) {
+    var levelPath = 'assets/levels/' + this.items[i]
+    var mode = new Adventure(this.game, false, this.items, i)
+    mode.setScreen()
+    this.game.state.start('PreloadGame', true, false, mode, levelPath)
   },
 
   backPressed: function () {

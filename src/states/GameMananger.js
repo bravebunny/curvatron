@@ -1,5 +1,5 @@
 /*eslint-disable*/
-/* global leaderboardButton:true, moveSounds:true, tempLabel:true, bmd:true,
+/* global moveSounds:true, tempLabel:true, bmd:true,
 menuMusic, pauseSprite, colisionMargin, scale:true, players:true, gameOver:true,
 muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
@@ -33,10 +33,6 @@ gameMananger.prototype = {
     scale = 1
     if (!this.mode.sp) {
       scale = (-1 / 24) * this.mode.nPlayers + 7 / 12
-    }
-
-    if (this.mode.setScreen) {
-      this.mode.setScreen()
     }
 
     players = []
@@ -405,6 +401,9 @@ gameMananger.prototype = {
   },
 
   restart: function () {
+    if (this.mode.setScreen) {
+      this.mode.setScreen()
+    }
     this.state.restart(true, false, this.mode)
   },
 
@@ -412,10 +411,6 @@ gameMananger.prototype = {
     if (!paused) {
       this.backPressed()
     }
-  },
-
-  leaderboard: function () {
-    // TODO leaderboard
   },
 
   muteSound: function () {
