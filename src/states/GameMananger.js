@@ -364,7 +364,11 @@ gameMananger.prototype = {
       }
 
       if (gameOver) {
-        this.state.start('Menu')
+        if (this.mode.testing) {
+          this.state.start('Editor', true, false, true)
+        } else {
+          this.state.start('Menu')
+        }
       }
       ui.overlay.width = w2 * 2
       ui.overlay.height = h2 * 2

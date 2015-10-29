@@ -487,12 +487,12 @@ editor.prototype = {
     var fs = require('fs')
     fs.writeFile('tempLevel', this.generateFile(), function (err) {
       if (err) throw err
-      console.log('It\'s saved!')
-    })
+      numberPlayers = 0
+      var mode = new Adventure(this.game, true)
+      this.game.state.start('PreloadGame', true, false, mode, 'tempLevel')
+    }.bind(this))
 
-    numberPlayers = 0
-    var mode = new Adventure(this.game, true)
-    this.game.state.start('PreloadGame', true, false, mode, 'tempLevel')
+
   },
 
   showDialog: function (text) {
