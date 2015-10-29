@@ -58,8 +58,10 @@ Adventure.prototype = {
 
     this.score = 0
 
-    this.map = this.game.add.tilemap('blank')
-    this.map.addTilesetImage('Pastel') // Preloaded tileset
+    this.map = this.game.add.tilemap()
+    this.map.addTilesetImage('block')
+    this.layer = this.map.create('obstacles', this.mapW, this.mapH, this.tileSize, this.tileSize)
+    this.layer.resizeWorld()
 
     var levelArray = this.game.cache.getText('level').split('')
 

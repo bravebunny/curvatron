@@ -54,10 +54,10 @@ editor.prototype = {
     this.obstacleGroup = this.game.add.group()
     this.lastPoint = null
 
-    this.map = this.game.add.tilemap('blank') // Preloaded tilemap
-    this.map.addTilesetImage('Pastel') // Preloaded tileset
-
-    this.layer = this.map.createLayer('obstacles') // layer[0]
+    this.map = this.game.add.tilemap()
+    this.map.addTilesetImage('block')
+    this.layer = this.map.create('obstacles', this.mapW, this.mapH, this.tileSize, this.tileSize)
+    this.layer.resizeWorld()
     this.map.setCollisionByExclusion([], true, this.layer)
 
     this.game.canvas.oncontextmenu = function (e) { e.preventDefault() }

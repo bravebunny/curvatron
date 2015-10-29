@@ -61,8 +61,7 @@ preloadMenu.prototype = {
     this.game.load.image('pointSuper', 'assets/sprites/game/singleplayer/powerHS.png')
     this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png')
     this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100)
-    this.game.load.image('Pastel', 'assets/levels/Pastel.png') // loading the tileset image
-    this.game.load.tilemap('blank', 'assets/levels/blank.json', null, Phaser.Tilemap.TILED_JSON) // loading the tilemap file
+    this.game.load.image('block', 'assets/sprites/game/block.png')
 
     this.game.load.image('overlay', 'assets/sprites/game/overlay.png')
 
