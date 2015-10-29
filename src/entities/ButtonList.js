@@ -1,4 +1,4 @@
-/* global w2, Button, colorHex */
+/* global w2, Button, DoubleButton, colorHex */
 var ButtonList = function (context, game) {
   this.context = context
   this.game = game
@@ -68,8 +68,9 @@ ButtonList.prototype = {
     }
   },
 
-  add: function (icon, text, callback) {
-    var button = new Button(icon, text, callback, this, this.context, this.game)
+  add: function (icon, text, callback1, callback2) {
+    button = new Button(icon, text, callback1, this, this.context, this.game)
+    button.addSecondCallback(callback2)
     this.buttons.push(button)
     return button
   },

@@ -3,6 +3,7 @@ var Button = function (iconName, text, callback, buttonList, context, game) {
   this.text = text
   this.iconName = iconName
   this.callback = callback
+  this.callback2 = null
   this.context = context
   this.game = game
   this.buttonList = buttonList
@@ -89,7 +90,8 @@ Button.prototype = {
     this.tween.release.onComplete.add(function () {
       this.selected = false
       if (!this.tween.release.isRunning && !this.tween.press.isRunning && this.callback) {
-        this.callback.call(this.context)
+        if (this.callback2 && this.game.input.x > this.x) this.callback2.call(this.context)
+        else this.callback.call(this.context)
       }
     }, this)
 
@@ -180,5 +182,9 @@ Button.prototype = {
 
   setTextSize: function (size) {
     this.label.fontSize = size
+  },
+
+  addSecondCallback: function (callback) {
+    this.callback2 = callback
   }
 }
