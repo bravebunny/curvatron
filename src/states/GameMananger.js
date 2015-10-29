@@ -317,7 +317,7 @@ gameMananger.prototype = {
       this.deathButtons.show()
       this.deathButtons.select(0)
 
-      if (this.mode.sp) {
+      if (this.mode.sp && this.mode.getHighScore) {
         var spAuxLabel = this.add.sprite(w2, bottomY + 150, 'aux-stat')
         spAuxLabel.scale.set(0.9, 0.9)
         spAuxLabel.anchor.setTo(0.5, 0.5)

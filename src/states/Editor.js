@@ -169,7 +169,7 @@ editor.prototype = {
       this.tb.upload.alpha = 0.5
     } else {
       uploadTooltip = 'upload to workshop'
-      this.tb.upload.onInputUp.add(this.upload)
+      this.tb.upload.onInputUp.add(this.upload, this)
     }
     this.tb.upload.events.onInputOver.add(function (button) { this.showTooltip(uploadTooltip, button) }.bind(this))
 
@@ -491,8 +491,6 @@ editor.prototype = {
       var mode = new Adventure(this.game, true)
       this.game.state.start('PreloadGame', true, false, mode, 'tempLevel')
     }.bind(this))
-
-
   },
 
   showDialog: function (text) {
@@ -542,6 +540,8 @@ editor.prototype = {
   },
 
   confirmUpload: function () {
+     // Steam only alows files with titles up to 128 chars to be uploaded to the workshop
+    this.textInput.value(this.textInput.value().substring(0, 128))
     var greenworks = require('./greenworks')
     greenworks.saveTextToFile('customLevel', this.generateFile(), function () {
       console.log('success save')
@@ -552,7 +552,7 @@ editor.prototype = {
         var nwPath = process.execPath
         var nwDir = path.dirname(nwPath)
         console.log(nwDir + '\\tempScreenshot.png')
-        greenworks.publishWorkshopFile('customLevel', 'tempScreenshot.png', this.textInput._value, '', function () {
+        greenworks.publishWorkshopFile('customLevel', 'tempScreenshot.png', this.textInput.value(), '', function () {
           console.log('success publish')
         }, function (err) { console.log('failure publish: ' + err) })
       }.bind(this), function (err) { console.log('failure share: ' + err) })
