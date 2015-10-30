@@ -137,12 +137,18 @@ Adventure.prototype = {
 
   createPower: function () {
     if (this.pointPositions[this.score]) {
-      var powerup = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
+      var pointName
+      if (this.score >= this.pointPositions.length - 1) pointName = 'pointSuper'
+      else pointName = 'point'
+      var powerup = new PowerUp(this.game, pointName, this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
       powerup.create()
 
-      var number = this.pointPositions.length - this.score - 1
-      if (number > 0) {
-        this.powerText.setText(this.pointPositions.length - this.score - 1)
+      var number
+      if (this.testing) number = this.score + 1
+      else number = this.pointPositions.length - this.score - 1
+
+      if (number > 0 || this.testing) {
+        this.powerText.setText(number)
         this.powerText.x = powerup.sprite.x
         this.powerText.y = powerup.sprite.y + 2 * scale
       } else {
