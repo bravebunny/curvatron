@@ -63,6 +63,8 @@ gameMananger.prototype = {
     var ui = this.ui
     ui.graphics = this.add.graphics(w2, h2)
 
+    if (this.mode.setColors) this.mode.setColors()
+
     groupPowers = this.add.group()
     if (this.mode.sp && this.mode.getHighScore) {
       countdown = false

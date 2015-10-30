@@ -1,5 +1,5 @@
 /* global points:true, modesLB, h2, w2, players, colorHex,
-shuffleArray, localStorage, scale, PowerUp, Phaser
+shuffleArray, localStorage, scale, PowerUp, Phaser, adjustScreen
 */
 var Normal = function (game) {
   this.sp = true
@@ -99,7 +99,7 @@ Normal.prototype = {
       }
 
       if (this.getScore() % 5 === 4) {
-        this.player.growth += 2
+        this.player.growth += 5
       }
     }
 
@@ -126,13 +126,11 @@ Normal.prototype = {
     localStorage.setItem('ballsScore', ballsScore + 1)
 
     if (powerSprite.name === 'shrink') {
-      if (!this.gridIsFull()) {
-        this.createObstacle()
+      for (var i = 0; i < 3; i++) {
+        if (!this.gridIsFull()) {
+          this.createObstacle()
+        }
       }
-      if (!this.gridIsFull()) {
-        this.createObstacle()
-      }
-
       this.shrink = null
     }
 

@@ -22,9 +22,6 @@ var OldSchool = function (game) {
 
 OldSchool.prototype = {
   create: function () {
-    colorHex = '#8eb367'
-    colorHexDark = '#475933'
-
     collectSound = this.game.add.audio('sfx_collectOld')
     killSound = this.game.add.audio('sfx_killOld')
 
@@ -109,6 +106,10 @@ OldSchool.prototype = {
       ballsScore = 0
     }
     localStorage.setItem('ballsScore', ballsScore + 1)
-  }
+  },
 
+  setColors: function () {
+    colorHex = '#8eb367'
+    colorHexDark = '#475933'
+  }
 }
