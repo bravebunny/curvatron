@@ -38,7 +38,7 @@ customLevels.prototype = {
     open(function (fileName) {
       var fs = require('fs')
       fs.readFile(fileName, 'utf8', function (error, data) {
-        if (error) throw error
+        if (error) console.log('error reading file: ' + error)
         var mode = new Adventure(this.game, false)
         this.game.state.start('PreloadGame', true, false, mode, fileName)
       }.bind(this))

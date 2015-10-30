@@ -485,8 +485,8 @@ editor.prototype = {
 
   test: function () {
     var fs = require('fs')
-    fs.writeFile('tempLevel', this.generateFile(), function (err) {
-      if (err) throw err
+    fs.writeFile('tempLevel', this.generateFile(), function (error) {
+      if (error) console.log('error writing file: ' + error)
       numberPlayers = 0
       var mode = new Adventure(this.game, true)
       this.game.state.start('PreloadGame', true, false, mode, 'tempLevel')
@@ -522,13 +522,13 @@ editor.prototype = {
       var nwPath = process.execPath
       var nwDir = path.dirname(nwPath) + '\\saves\\tempScreenshot.png'
 
-      fs.writeFile('saves/tempScreenshot.png', png, 'base64', function (err) {
-        if (err) throw err
+      fs.writeFile('saves/tempScreenshot.png', png, 'base64', function (error) {
+        if (error) console.log('error writing file: ' + error)
         console.log('screenshot save success')
         var greenworks = require('./greenworks')
         greenworks.saveFilesToCloud([nwDir], function () {
-          console.log('success save2cloud')
-        }, function (err) { console.log('failure save2cloud: ' + err) })
+          console.log('success saving to cloud')
+        }, function (error) { console.log('error saving to cloud: ' + error) })
       })
     }.bind(this))
     this.tb.bg.y = 0
@@ -554,9 +554,9 @@ editor.prototype = {
         console.log(nwDir + '\\tempScreenshot.png')
         greenworks.publishWorkshopFile('customLevel', 'tempScreenshot.png', this.textInput.value(), '', function () {
           console.log('success publish')
-        }, function (err) { console.log('failure publish: ' + err) })
-      }.bind(this), function (err) { console.log('failure share: ' + err) })
-    }.bind(this), function (err) { console.log('failure save: ' + err) })
+        }, function (error) { console.log('error publishing: ' + error) })
+      }.bind(this), function (error) { console.log('error sharing: ' + error) })
+    }.bind(this), function (error) { console.log('error saving: ' + error) })
   },
 
   confirm: function () {
@@ -568,7 +568,7 @@ editor.prototype = {
       open(function (fileName) {
         var fs = require('fs')
         fs.readFile(fileName, 'utf8', function (error, data) {
-          if (error) throw error
+          if (error) console.log('error reading file: ' + error)
           this.levelArray = data.split('').map(function (val) {
             var retVal = parseInt(val, 36)
             if (isNaN(retVal)) {
@@ -579,22 +579,6 @@ editor.prototype = {
           this.loadFromArray()
         }.bind(this))
       }.bind(this))
-      /*
-      var greenworks = require('./greenworks')
-      greenworks.ugcSynchronizeItems('dirdirdir', function () {
-        console.log('success sync')
-        greenworks.readTextFromFile('savedfile', function (data) {
-          console.log('success read: ' + data)
-          this.levelArray = data.split('').map(function (val) {
-            var retVal = parseInt(val, 36)
-            if (isNaN(retVal)) {
-              retVal = val
-            }
-            return retVal
-          })
-        }.bind(this), function (err) { console.log('failure read: ' + err) })
-        this.loadFromArray()
-      }.bind(this), function (err) { console.log('failure read: ' + err) })*/
     } else if (this.newPage) {
       this.newPage = false
       this.state.restart(true, false, this.mode)

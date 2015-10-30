@@ -47,6 +47,7 @@ Screenshot.prototype = {
 
     this.twitter.getRequestToken(function (error, requestToken, requestTokenSecret, results) {
       if (error) {
+        console.log('error requesting twitter token: ' + error)
         this.tweetSuccess = -1
       } else {
         this.rToken = requestToken
@@ -65,6 +66,7 @@ Screenshot.prototype = {
 
     this.twitter.getAccessToken(this.rToken, this.rTokenSecret, oauthVerifier, function (error, accessToken, accessTokenSecret, results) {
       if (error) {
+        console.log('error getting twitter access token: ' + error)
         this.tweetSuccess = -1
       } else {
         aToken = accessToken
@@ -76,8 +78,10 @@ Screenshot.prototype = {
         }
 
         this.twitter.uploadMedia(params, aToken, aTokenSecret, function (error, response) {
-          if (error) this.tweetSuccess = -1
-          else {
+          if (error) {
+            console.log('error uploading media to twitter: ' + error)
+            this.tweetSuccess = -1
+          } else {
             this.twitter.statuses('update', {
               status: this.tweetMessage,
               media_ids: response.media_id_string

@@ -59,7 +59,8 @@ levelSelector.prototype = {
         this.loadingText.visible = false
         this.createButtons()
       }.bind(this),
-      function (err) {
+      function (error) {
+        console.log('error getting workshop items: ' + error)
         this.loadingText.text = 'connection error'
         this.createButtons()
       })
@@ -121,8 +122,8 @@ levelSelector.prototype = {
     greenworks.ugcDownloadItem(file, 'saves', function () {
       mode.setScreen()
       this.game.state.start('PreloadGame', true, false, mode, 'saves/customLevel')
-    }.bind(this), function (err) {
-      console.log('error downloading from workshop: ' + err)
+    }.bind(this), function (error) {
+      console.log('error downloading from workshop: ' + error)
       this.backPressed()
     }.bind(this))
   },
