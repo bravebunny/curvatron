@@ -89,7 +89,7 @@ Button.prototype = {
 
     this.tween.release.onComplete.add(function () {
       this.selected = false
-      if (!this.tween.release.isRunning && !this.tween.press.isRunning && this.callback) {
+      if (this.enabled && !this.tween.release.isRunning && !this.tween.press.isRunning && this.callback) {
         if (this.callback2 && this.game.input.x > this.x) this.callback2.call(this.context)
         else this.callback.call(this.context)
       }
@@ -108,22 +108,26 @@ Button.prototype = {
     if (this.callback) { // only animate clicks if there is a callback
       this.button.onInputDown.add(this.buttonDown, {
         tween: this.tween.press,
-        tweenOut: this.tween.release
+        tweenOut: this.tween.release,
+        button: this
       }, this)
 
       this.button.onInputUp.add(this.buttonUp, {
-        tween: this.tween.release
+        tween: this.tween.release,
+        button: this
       }, this)
     }
   },
 
   buttonDown: function () {
-    this.tweenOut.onComplete.active = true
-    this.tween.start()
+    if (this.button.enabled) {
+      this.tweenOut.onComplete.active = true
+      this.tween.start()
+    }
   },
 
   buttonUp: function () {
-    this.tween.start()
+    if (this.button.enabled) this.tween.start()
   },
 
   select: function () {
@@ -169,14 +173,14 @@ Button.prototype = {
   },
 
   enable: function () {
-    this.graphics.tint = parseInt(this.textColor.substring(1), 16)
-    this.button.inputEnabled = true
+    this.graphics.tint = 0xFFFFFE // weird bug, for some reason 0xFFFFFF doesn't work
+    // this.button.inputEnabled = true // commented because mouse cursor wouldn't change back
     this.enabled = true
   },
 
   disable: function () {
     this.graphics.tint = parseInt(shadeColor(this.textColor, 0.7).substring(1), 16)
-    this.button.inputEnabled = false
+    // this.button.inputEnabled = false
     this.enabled = false
   },
 

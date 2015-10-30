@@ -1,4 +1,4 @@
-/* global w2, Button, DoubleButton, colorHex */
+/* global w2, Button, colorHex */
 var ButtonList = function (context, game) {
   this.context = context
   this.game = game
@@ -11,6 +11,7 @@ var ButtonList = function (context, game) {
   this.pressingUp = false
   this.pressingDown = false
   this.visible = false
+  this.enabled = true
 
   this.textColor = colorHex
 }
@@ -69,7 +70,7 @@ ButtonList.prototype = {
   },
 
   add: function (icon, text, callback1, callback2) {
-    button = new Button(icon, text, callback1, this, this.context, this.game)
+    var button = new Button(icon, text, callback1, this, this.context, this.game)
     button.addSecondCallback(callback2)
     this.buttons.push(button)
     return button
@@ -92,21 +93,25 @@ ButtonList.prototype = {
   },
 
   selectDown: function () {
-    this.moveSelection(1)
+    if (this.visible) this.moveSelection(1)
   },
 
   selectUp: function () {
-    this.moveSelection(-1)
+    if (this.visible) this.moveSelection(-1)
   },
 
   selectPress: function () {
-    this.pressingSelect = true
-    this.buttons[this.selection].button.onInputDown.dispatch()
+    if (this.visible) {
+      this.pressingSelect = true
+      this.buttons[this.selection].button.onInputDown.dispatch()
+    }
   },
 
   selectRelease: function () {
-    this.pressingSelect = false
-    this.buttons[this.selection].button.onInputUp.dispatch()
+    if (this.visible) {
+      this.pressingSelect = false
+      this.buttons[this.selection].button.onInputUp.dispatch()
+    }
   },
 
   select: function (selection) {
@@ -140,6 +145,20 @@ ButtonList.prototype = {
   setTextSize: function (size) {
     for (var i = 0; i < this.buttons.length; i++) {
       this.buttons[i].setTextSize(size)
+    }
+  },
+
+  disable: function () {
+    this.enabled = false
+    for (var i = 0; i < this.buttons.length; i++) {
+      this.buttons[i].disable()
+    }
+  },
+
+  enable: function () {
+    this.enabled = true
+    for (var i = 0; i < this.buttons.length; i++) {
+      this.buttons[i].enable()
     }
   }
 }

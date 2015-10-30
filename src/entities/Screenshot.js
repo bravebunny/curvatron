@@ -6,6 +6,8 @@ var Screenshot = function (game) {
   this.blob = null
   this.twitter = null
   this.tweetMessage = '#Curvatron'
+  this.tweetSuccess = 0
+  this.tweeting = false
 }
 
 Screenshot.prototype = {
@@ -35,6 +37,7 @@ Screenshot.prototype = {
   },
 
   share: function () {
+    this.tweeting = true
     var TwitterAPI = require('node-twitter-api')
     this.twitter = new TwitterAPI({
       consumerKey: 'NwssUgdW5A1dKhtzExUFc5AtQ',
@@ -44,7 +47,7 @@ Screenshot.prototype = {
 
     this.twitter.getRequestToken(function (error, requestToken, requestTokenSecret, results) {
       if (error) {
-        console.log(error)
+        this.tweetSuccess = -1
       } else {
         this.rToken = requestToken
         this.rTokenSecret = requestTokenSecret
@@ -62,7 +65,7 @@ Screenshot.prototype = {
 
     this.twitter.getAccessToken(this.rToken, this.rTokenSecret, oauthVerifier, function (error, accessToken, accessTokenSecret, results) {
       if (error) {
-        console.log(error)
+        this.tweetSuccess = -1
       } else {
         aToken = accessToken
         aTokenSecret = accessTokenSecret
@@ -73,7 +76,7 @@ Screenshot.prototype = {
         }
 
         this.twitter.uploadMedia(params, aToken, aTokenSecret, function (error, response) {
-          if (error) console.log(error)
+          if (error) this.tweetSuccess = -1
           else {
             this.twitter.statuses('update', {
               status: this.tweetMessage,
@@ -82,8 +85,9 @@ Screenshot.prototype = {
               aToken,
               aTokenSecret,
               function (error, data, response) {
-                if (error) console.log(error)
-              }
+                if (error) this.tweetSuccess = -1
+                this.tweetSuccess = 1
+              }.bind(this)
             )
           }
         }.bind(this))

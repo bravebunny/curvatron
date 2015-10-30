@@ -110,7 +110,7 @@ gameMananger.prototype = {
     bmd.smoothed = false
 
     this.screenshot = new Screenshot(this.game)
-    this.screenshot.tweetMessage = 'My score in the ' + this.mode.name + ' mode of #Curvatron'
+    this.screenshot.tweetMessage = 'Can you beat my score in the ' + this.mode.name + ' mode of #Curvatron ?'
 
     // Choose snake locations
     var nPlayers = 0
@@ -142,7 +142,7 @@ gameMananger.prototype = {
     }
 
     ui.overlay = this.add.button(0, 0, 'overlay', function () {
-      if (gameOver) {
+      if (gameOver && !this.shareButtons.visible) {
         this.restart()
       }
     }, this)
@@ -162,6 +162,21 @@ gameMananger.prototype = {
       audioText = 'audio: on'
     }
 
+    this.shareButtons = new ButtonList(this, this.game)
+    this.shareButtons.add('twitter_button', 'send tweet', this.screenshot.share.bind(this.screenshot))
+    this.shareButtons.add('cancel_button', 'cancel', this.cancelShare)
+    this.shareButtons.textColor = colorHexDark
+    this.shareButtons.create()
+    this.shareButtons.hide()
+
+    this.shareText = this.add.text(w2, 150, '', {
+      font: '80px dosis',
+      fill: '#ffffff',
+      align: 'center'
+    })
+    this.shareText.anchor.setTo(0.5, 0.5)
+    this.shareText.visible = false
+
     this.pauseButtons = new ButtonList(this, this.game)
     this.pauseButtons.add('resume_button', 'resume', this.backPressed)
     this.pauseButtons.add('restart_button', 'restart', this.restart)
@@ -179,7 +194,7 @@ gameMananger.prototype = {
     this.deathButtons = new ButtonList(this, this.game)
     this.deathButtons.add('restart_button', 'restart', this.restart)
     if (this.mode.getScore) {
-      this.deathButtons.add('twitter_button', 'share score', this.screenshot.share.bind(this.screenshot))
+      this.deathButtons.add('twitter_button', 'share score', this.share)
       this.deathButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
     }
     if (this.mode.testing) {
@@ -227,6 +242,7 @@ gameMananger.prototype = {
         }
       } else {
         this.deathButtons.update()
+        this.shareButtons.update()
       }
       this.countdownText.alpha = 1
     } else {
@@ -243,7 +259,29 @@ gameMananger.prototype = {
       players[i].update()
     }
 
+
     this.screenshot.update()
+    if (this.screenshot.tweeting) {
+      this.shareText.visible = true
+      this.shareText.setText('sending tweet...')
+      this.screenshot.tweeting = false
+      this.shareButtons.disable()
+    }
+    if (this.screenshot.tweetSuccess !== 0) {
+      if (this.screenshot.tweetSuccess === 1) {
+        this.shareText.setText('tweet sent successfully!')
+      } else if (this.screenshot.tweetSuccess === -1) {
+        this.shareText.setText('connection error')
+      }
+      this.cancelShare()
+      this.screenshot.tweetSuccess = 0
+      this.shareButtons.enable()
+    }
+    if (this.screenshot.popup && !this.screenshot.popup.top) {
+      this.screenshot.popup = null
+      this.shareText.visible = false
+      this.shareButtons.enable()
+    }
   },
 
   updateCountdown: function () {
@@ -354,6 +392,11 @@ gameMananger.prototype = {
   },
 
   backPressed: function () {
+    if (this.shareButtons.enabled && this.shareButtons.visible) {
+      this.cancelShare()
+      return
+    }
+
     var ui = this.ui
     if (!paused && !this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_B)) { // pause
       this.game.tweens.pauseAll()
@@ -398,6 +441,7 @@ gameMananger.prototype = {
       ui.overlay.inputEnabled = true
 
       this.pauseButtons.hide()
+      this.shareText.visible = false
       paused = false
     }
   },
@@ -407,6 +451,17 @@ gameMananger.prototype = {
       this.mode.setScreen()
     }
     this.state.restart(true, false, this.mode)
+  },
+
+  share: function () {
+    this.deathButtons.hide()
+    this.shareButtons.show()
+    this.shareButtons.select(1)
+  },
+
+  cancelShare: function () {
+    this.deathButtons.show()
+    this.shareButtons.hide()
   },
 
   touchPauseButton: function () {
@@ -443,23 +498,27 @@ gameMananger.prototype = {
   },
 
   up: function () {
-    if (paused) this.pauseButtons.selectUp()
-    else if (gameOver) this.deathButtons.selectUp()
+    this.pauseButtons.selectUp()
+    this.deathButtons.selectUp()
+    this.shareButtons.selectUp()
   },
 
   down: function () {
-    if (paused) this.pauseButtons.selectDown()
-    else if (gameOver) this.deathButtons.selectDown()
+    this.pauseButtons.selectDown()
+    this.deathButtons.selectDown()
+    this.shareButtons.selectDown()
   },
 
   selectPress: function () {
-    if (paused) this.pauseButtons.selectPress()
-    else if (gameOver) this.deathButtons.selectPress()
+    this.pauseButtons.selectPress()
+    this.deathButtons.selectPress()
+    this.shareButtons.selectPress()
   },
 
   selectRelease: function () {
-    if (paused) this.pauseButtons.selectRelease()
-    else if (gameOver) this.deathButtons.selectRelease()
+    this.pauseButtons.selectRelease()
+    this.deathButtons.selectRelease()
+    this.shareButtons.selectRelease()
   },
 
   renderGroup: function (member) {
