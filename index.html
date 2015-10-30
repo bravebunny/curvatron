@@ -55,18 +55,6 @@
     if (greenworks.initAPI()) nonSteam = false
     else nonSteam = true
 
-    greenworks.on('game-overlay-activated', function(is_active) {
-      if (is_active)
-        log('game overlay is activated');
-      else
-        log('game overlay is deactivated');
-    });
-
-    greenworks.on('steam-servers-connected', function() { log('connected')});
-    greenworks.on('steam-servers-disconnected', function() { log('disconnected')});
-    greenworks.on('steam-server-connect-failure', function() { log('connected failure')});
-    greenworks.on('steam-shutdown', function() { log('shutdown')});
-
     var gui = require('nw.gui')
     var win = gui.Window.get()
     if (localStorage.getItem('fullscreen') === 'false') {
