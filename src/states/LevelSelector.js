@@ -27,7 +27,6 @@ levelSelector.prototype = {
     this.containerY = 300
 
     this.buttons = new ButtonList(this, this.game)
-    this.buttons.add('back_button', 'back', this.backPressed)
 
     if (this.workshop) this.getWorkshopLevels()
     else this.getAdventureLevels()
@@ -62,8 +61,6 @@ levelSelector.prototype = {
     for (var i = 0; i < this.items.length; i++) {
       (function (i) {
         this.buttons.add('accept_button', 'level ' + i, function () {
-          var next = null
-          if (this.items[i + 1]) next = this.items[i + 1]
           this.playLocalLevel(i)
         })
       }.bind(this))(i)
@@ -132,9 +129,31 @@ levelSelector.prototype = {
 
   up: function () {
     this.buttons.selectUp()
+    if (this.buttons.length() > 7) {
+      if (this.buttons.selection < this.buttons.length() - 1) {
+        if (this.containerScrollBar.y > this.containerY - 100) {
+          this.buttons.setY(this.buttons.y + 125)
+          this.containerScrollBar.y = -(this.buttons.y - 300) * ((2 * h2 - this.containerY + 100) / ((this.buttons.length() + 1) * 125)) + this.containerY - 100
+        }
+      } else {
+        this.buttons.setY(this.buttons.y + 125 * this.buttons.length)
+        this.containerScrollBar.y = h2 * 2 - this.containerScrollBar.height
+      }
+    }
   },
 
   down: function () {
+    if (this.buttons.length() > 7) {
+      if (this.buttons.selection < this.buttons.length() - 1) {
+        if (this.containerScrollBar.y < h2 * 2 - this.containerScrollBar.height) {
+          this.buttons.setY(this.buttons.y - 125)
+          this.containerScrollBar.y = -(this.buttons.y - 300) * ((2 * h2 - this.containerY + 100) / ((this.buttons.length() + 1) * 125)) + this.containerY - 100
+        }
+      } else {
+        this.buttons.setY(this.buttons.y - 125 * this.buttons.length)
+        this.containerScrollBar.y = this.containerY - 100
+      }
+    }
     this.buttons.selectDown()
   },
 

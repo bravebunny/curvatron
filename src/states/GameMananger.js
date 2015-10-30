@@ -259,7 +259,6 @@ gameMananger.prototype = {
       players[i].update()
     }
 
-
     this.screenshot.update()
     if (this.screenshot.tweeting) {
       this.shareText.visible = true
