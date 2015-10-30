@@ -152,8 +152,11 @@ Adventure.prototype = {
   },
 
   nextLevel: function () {
-    this.index++
-    this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
+    if (this.testing) this.game.state.start('Editor', true, false, true)
+    else {
+      this.index++
+      this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
+    }
   }
 
 }
