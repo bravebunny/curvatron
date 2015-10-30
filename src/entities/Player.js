@@ -35,7 +35,7 @@ Player.prototype = {
 	create: function () {
 		this.orientation = Math.abs(window.orientation) - 90 == 0 ? "landscape" : "portrait";
 		this.sprite = this.game.add.sprite(this.x, this.y, 'player' + this.id);
-		this.sprite.name = "" + this.id; 
+		this.sprite.name = "" + this.id;
 
 		this.sprite.anchor.setTo(.5,.5);
 		this.trail = this.game.make.sprite(0, 0, 'trail' + this.id);
@@ -52,7 +52,7 @@ Player.prototype = {
 		} else {
 			this.color = Phaser.Color.hexToColor("#FFFFFF");
 		}
-		
+
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		this.sprite.scale.set(scale);
 		//this.sprite.body.setSize(20,20,0,0);
@@ -68,10 +68,10 @@ Player.prototype = {
 				this.playerMobileButton.height = this.game.height/2;
 				this.playerMobileButton.onInputDown.add(this.click, this);
 			} else {
-				this.playerMobileButton = this.game.add.button(this.x,h2,"overlay",null,this);	
+				this.playerMobileButton = this.game.add.button(this.x,h2,"overlay",null,this);
 				this.playerMobileButton.width = this.game.width/2;
 				this.playerMobileButton.height = this.game.height;
-				this.playerMobileButton.onInputDown.add(this.click, this);	
+				this.playerMobileButton.onInputDown.add(this.click, this);
 	    	}
 	    		this.playerMobileButton.alpha = 0;
 	    		this.playerMobileButton.anchor.setTo(0.5,0.5);
@@ -87,122 +87,170 @@ Player.prototype = {
 	},
 
 	update: function () {
-		if (!this.paused && paused) {
-			this.paused = true;
-			this.pause();
-		} else if (this.paused && !paused) {
-			this.paused = false;
-			this.unpause();
-		}
+    if (!this.paused && paused) {
+      this.paused = true
+      this.pause()
+    } else if (this.paused && !paused) {
+      this.paused = false
+      this.unpause()
+    }
 
-		if (this.showKeyTime <= totalTime && !this.dead && !paused && this.mode.sp) {
-			this.showKey();
-		}
+    if (this.showKeyTime <= totalTime && !this.dead && !paused && this.mode.sp) {
+      this.showKey()
+    }
 
-		if (!this.paused) {
+    if (!this.paused) {
+      var ctx = bmd.ctx
 
-			if (!this.sprite.alive) {
-				this.kill();
-			}
+      // erase trail from front
+      if (this.dead && this.frameCount === 0 && this.trailArray[0]) {
+        var trailEnd = this.trailArray.pop()
+        ctx.clearRect(trailEnd.x - 10 * scale, trailEnd.y - 10 * scale, 20 * scale, 20 * scale)
+      }
+      var trail = this.trailArray
+      if (trail.length > 1) {
+        if (this.mode.sp) {
+          ctx.strokeStyle = '#FFFFFF'
+        } else {
+          ctx.strokeStyle = colorPlayers[this.id]
+        }
+        ctx.lineWidth = 16 * scale
+        ctx.lineCap = 'round'
 
-			this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300*this.speed*scale, this.sprite.body.velocity);
-			this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed;
-			this.frameCount = (this.frameCount + 1) % 1/(this.speed*scale);
+        var len = trail.length
+        var distance = Math.sqrt(Math.pow(trail[len - 2].x - trail[len - 1].x, 2) + Math.pow(trail[len - 2].y - trail[len - 1].y, 2))
 
-			var xx = Math.cos(this.sprite.rotation)*18*scale + this.sprite.x;
-			var yy = Math.sin(this.sprite.rotation)*18*scale + this.sprite.y;
+        if (distance < 100) {
+          ctx.beginPath()
+          ctx.moveTo(trail[len - 2].x, trail[len - 2].y)
+          ctx.lineTo(trail[len - 1].x, trail[len - 1].y)
+          ctx.stroke()
+        }
+      }
+      if (!this.sprite.alive) {
+        this.kill()
+      }
 
-			if (!this.dead) {		
-				//Create trail
-				if (this.frameCount == 0 && !this.dead) {
-					trailPiece = {"x": this.sprite.x,"y": this.sprite.y, "n": 1};
-					this.trailArray.push(trailPiece);
-					bmd.draw(this.trail, this.sprite.x, this.sprite.y);
-				}
-
-				//collision detection
-				if (!this.mode.noCollisions) {
-					var collSize = 12*scale;
-					for (var i = 0; i < players.length; i++) {
-						for (var j = 0; j < this.trailArray.length; j++) {
-							var curTrail = players[i].trailArray[j];
-							if (curTrail && curTrail.x-collSize < xx && curTrail.x+collSize > xx &&
-								 	curTrail.y-collSize < yy && curTrail.y+collSize > yy) {
-								 	this.kill();
-							}
-						}
-					}
-				}
-
-			}
-			this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this);
-
-			if(this.mode.obstacleGroup){
-				if(this.game.physics.arcade.overlap(this.sprite, this.mode.obstacleGroup, this.kill, null, this)){
-				}
-			}
-
-			for (var i = 0; i < players.length; i++) {
-				if (i != this.id) {
-					this.game.physics.arcade.overlap(this.sprite, players[i].sprite, this.kill, null, this);
-				}
-			}
-
-			var trailPiece = null;
-			var ctx = bmd.context;
+      var xx = Math.cos(this.sprite.rotation) * 30 * scale + this.sprite.x
+      var yy = Math.sin(this.sprite.rotation) * 30 * scale + this.sprite.y
 
 
-			//erase trail from behind
-			if (this.trailArray.length >= this.size && this.frameCount == 0 && this.trailArray[0] || this.dead) {
-				if (this.mode.erasesTrail() || this.dead) {
-					var nRemove = 1;
-					if (this.shrink) {
-						if (this.trailArray.length <= this.size) {
-							this.shrink = false;
-						} else {
-							nRemove = 4;
-						}
-					}
-					for (var i = 0; i < nRemove && this.trailArray.length > 0; i++) {
-						trailPiece = this.trailArray.shift();
-						ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
-					}
+      xx = Math.cos(this.sprite.rotation) * 18 * scale + this.sprite.x
+      yy = Math.sin(this.sprite.rotation) * 18 * scale + this.sprite.y
 
-					if (this.trailArray.length > 0) {
-						bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y);
-					}
-				}
-			}
+      // player movement
+      this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300 * this.speed * scale, this.sprite.body.velocity)
+      this.sprite.body.angularVelocity = this.direction * 200 * this.angularVelocity * this.speed
+      this.frameCount = (this.frameCount + 1) % 1 / (this.speed * scale)
 
+      if (!this.dead) {
+        // Add to trail
+        if (this.frameCount === 0 && !this.dead) {
+          var trailPiece = {'x': this.sprite.x, 'y': this.sprite.y, 'n': 1}
+          this.trailArray.push(trailPiece)
+        // bmd.draw(this.trail, this.sprite.x, this.sprite.y)
+        }
 
-			//erase trail from front
-			if (this.dead && this.frameCount == 0 && this.trailArray[0]) {
-				trailPiece = this.trailArray.pop();
-		    	ctx.clearRect(trailPiece.x-10*scale, trailPiece.y-10*scale, 20*scale, 20*scale);
-				
-				if (this.trailArray.length > 0) {
-					trailPiece = this.trailArray[this.trailArray.length -1];
-					bmd.draw(this.trail, trailPiece.x, trailPiece.y);
-				}
-			}
+        // collision detection
+        if (!this.mode.noCollisions) {
+          var collSize = 12 * scale
+          for (var i = 0; i < players.length; i++) {
+            for (var j = 0; j < this.trailArray.length; j++) {
+              var curTrail = players[i].trailArray[j]
+              if (curTrail && curTrail.x - collSize < xx && curTrail.x + collSize > xx &&
+                curTrail.y - collSize < yy && curTrail.y + collSize > yy) {
+                this.kill()
+              }
+            }
+          }
+        }
+      } else if (this.trailArray.length > 1) {
+        // move the head backwards when dead
+        this.sprite.position.set(this.trailArray[len - 1].x, this.trailArray[len - 1].y)
+      } else if (this.sprite !== null) {
+        this.sprite.kill()
+      }
 
+      this.game.physics.arcade.overlap(this.sprite, groupPowers, this.collect, null, this)
 
-			//Border's collisions
-			if ((xx+colisionMargin*scale) <= borders[0]) {
-				this.sprite.x = borders[1]-Math.cos(this.sprite.rotation)*30*scale;
-			} else if ((xx-colisionMargin*scale)>=borders[1]) {
-				this.sprite.x = borders[0]-Math.cos(this.sprite.rotation)*30*scale;
-			}
+      if (this.mode.obstacleGroup) {
+        if (this.game.physics.arcade.overlap(this.sprite, this.mode.obstacleGroup, this.kill, null, this)) {
+        }
+      }
 
-			if ((yy+colisionMargin*scale)<=borders[2]) {
-				this.sprite.y = borders[3]-Math.sin(this.sprite.rotation)*30*scale;
-			} else if ((yy-colisionMargin*scale)>=borders[3]) {
-				this.sprite.y = borders[2]-Math.sin(this.sprite.rotation)*30*scale;
-			}
-		}
+      for (i = 0; i < players.length; i++) {
+        if (i !== this.id) {
+          this.game.physics.arcade.overlap(this.sprite, players[i].sprite, this.kill, null, this)
+        }
+      }
 
+      trailPiece = null
+      ctx = bmd.context
 
-	},
+      // erase trail from behind
+      if (this.trailArray.length >= this.size && this.frameCount === 0 && this.trailArray[0] || this.dead) {
+        if (this.mode.erasesTrail() || this.dead) {
+          var nRemove = 1
+          if (this.shrink) {
+            if (this.trailArray.length <= this.size) {
+              this.shrink = false
+            } else {
+              nRemove = 4
+            }
+          }
+          for (i = 0; i < nRemove && this.trailArray.length > 0; i++) {
+            trailPiece = this.trailArray.shift()
+            ctx.clearRect(trailPiece.x - 10 * scale, trailPiece.y - 10 * scale, 20 * scale, 20 * scale)
+          }
+
+        /*
+        if (this.trailArray.length > 0) {
+          bmd.draw(this.trail, this.trailArray[0].x, this.trailArray[0].y)
+        }*/
+        }
+      }
+
+      // redraw erased trail
+      if (trail[1]) {
+        /*
+        var trailInBounds =
+        trail[0].x < this.game.width &&
+          trail[0].x > 0 &&
+          trail[0].y < this.game.height &&
+          trail[0].y > 0 */
+        // if (trailInBounds) {
+        if (this.mode.sp) {
+          ctx.strokeStyle = '#FFFFFF'
+        } else {
+          ctx.strokeStyle = colorPlayers[this.id]
+        }
+
+        distance = Math.sqrt(Math.pow(trail[0].x - trail[1].x, 2) + Math.pow(trail[0].y - trail[1].y, 2))
+
+        if (distance < 100) {
+          ctx.beginPath()
+          ctx.moveTo(trail[0].x, trail[0].y)
+          ctx.lineTo(trail[1].x, trail[1].y)
+          ctx.stroke()
+        }
+
+        // }
+      }
+
+      // Border's collisions
+      if ((xx + colisionMargin * scale) <= borders[0]) {
+        this.sprite.x = borders[1] - Math.cos(this.sprite.rotation) * 30 * scale
+      } else if ((xx - colisionMargin * scale) >= borders[1]) {
+        this.sprite.x = borders[0] - Math.cos(this.sprite.rotation) * 30 * scale
+      }
+
+      if ((yy + colisionMargin * scale) <= borders[2]) {
+        this.sprite.y = borders[3] - Math.sin(this.sprite.rotation) * 30 * scale
+      } else if ((yy - colisionMargin * scale) >= borders[3]) {
+        this.sprite.y = borders[2] - Math.sin(this.sprite.rotation) * 30 * scale
+      }
+    }
+  },
 
 
 	keyPressed: function () {
@@ -223,7 +271,7 @@ Player.prototype = {
 			}
 			if (this.keyText.alpha == 1) {
 				this.textTween = this.game.add.tween(this.keyText).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-				
+
 				if (mobile && this.mode.sp) {
 					this.game.add.tween(this.touch).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
 					this.game.add.tween(this.touch).to( { y: this.touch.y + 100 }, 1000, Phaser.Easing.Circular.In, true);
@@ -264,9 +312,9 @@ Player.prototype = {
 			var x1 = w2 - 65 , x2 = w2 + 65,
          	y1 = h2 - 65, y2 = h2 + 65;
 		}
-    if (!(this.game.input.position.x > x1 
-    	&& this.game.input.position.x < x2 
-    	&& this.game.input.position.y > y1 
+    if (!(this.game.input.position.x > x1
+    	&& this.game.input.position.x < x2
+    	&& this.game.input.position.y > y1
     	&& this.game.input.position.y < y2 )){
     		this.keyPressed();
     }
@@ -276,9 +324,9 @@ Player.prototype = {
     else if(this.mode.leaderboardID == null){
     	var x11 = w2*0.5 - 100 - 61, x22 = w2*0.5 - 100 + 61;
 
-	   	if (!(this.game.input.position.x > x11 
-	    	&& this.game.input.position.x < x22 
-	    	&& this.game.input.position.y > y1 
+	   	if (!(this.game.input.position.x > x11
+	    	&& this.game.input.position.x < x22
+	    	&& this.game.input.position.y > y1
 	    	&& this.game.input.position.y < y2 )){
 	   		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
 	    	this.keyPressed();
@@ -305,11 +353,11 @@ Player.prototype = {
 			if (!mute) {
 				killSound.play();
 			}
-			
+
 			if (this.mode.kill) {
 				this.mode.kill();
 			}
-			
+
 		}
 
 		if (other && !this.mode.sp) {
@@ -317,7 +365,7 @@ Player.prototype = {
 			var otherPlayer = players[parseInt(other.name)];
 			if(thisPlayer.score >= otherPlayer.score){
 				otherPlayer.kill();
-			} 
+			}
 			if(thisPlayer.score <= otherPlayer.score){
 				thisPlayer.kill();
 			}
@@ -364,7 +412,7 @@ Player.prototype = {
 			  		if (!this.mode.sp) {
 			  			this.keyText.visible = false;
 			  		}
-			  		
+
 			  	}
 			}
 
@@ -405,7 +453,7 @@ Player.prototype = {
 						this.touch.angle = 90;
 						this.touch.y += 200;
 					}
-					
+
 					this.touch.anchor.setTo(.5, .5);
 					this.touch.alpha = 0;
 					this.game.add.tween(this.touch).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);

@@ -7,7 +7,7 @@ var boot = function (game) {
 	firstTime = true;
 	iapDone = false;
 };
-  
+
 boot.prototype = {
 
 	preload: function () {
@@ -25,7 +25,7 @@ boot.prototype = {
   	} else {
   		platform = "desktop";
   	}
-  	
+
     console.log(JSON.stringify(platform));
 
   	w2 = this.game.world.width/2;
@@ -57,7 +57,7 @@ boot.prototype = {
 
 	  	this.physics.startSystem(Phaser.Physics.ARCADE);
 
-	  	this.stage.smoothed = false;
+	  	this.stage.smoothed = true;
 
 		if (mobile) {
 			Cocoon.App.exitCallback(
@@ -110,5 +110,5 @@ boot.prototype = {
 			}
 		}
   	}
-  	
+
 };
