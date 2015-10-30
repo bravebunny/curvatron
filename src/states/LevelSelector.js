@@ -27,6 +27,7 @@ levelSelector.prototype = {
     this.containerY = 300
 
     this.buttons = new ButtonList(this, this.game)
+    this.buttons.add('back_button', 'back', this.backPressed)
 
     if (this.workshop) this.getWorkshopLevels()
     else this.getAdventureLevels()
@@ -34,6 +35,13 @@ levelSelector.prototype = {
 
   getWorkshopLevels: function () {
     // get subscribed levels from worskhop
+    this.loadingText = this.add.text(w2, 400, 'fetching levels...', {
+      font: '80px dosis',
+      fill: '#ffffff',
+      align: 'center'
+    })
+    this.loadingText.anchor.set(0.5)
+
     var greenworks = require('./greenworks')
     greenworks.ugcGetUserItems(
       greenworks.UGCMatchingType.Items,
@@ -48,10 +56,12 @@ levelSelector.prototype = {
             })
           }.bind(this))(i)
         }
+        this.loadingText.visible = false
         this.createButtons()
       }.bind(this),
       function (err) {
-        console.log('item get error: ' + err)
+        this.loadingText.text = 'connection error'
+        this.createButtons()
       })
   },
 
@@ -112,8 +122,9 @@ levelSelector.prototype = {
       mode.setScreen()
       this.game.state.start('PreloadGame', true, false, mode, 'saves/customLevel')
     }.bind(this), function (err) {
-      console.log('download errir: ' + err)
-    })
+      console.log('error downloading from workshop: ' + err)
+      this.backPressed()
+    }.bind(this))
   },
 
   playLocalLevel: function (i) {
