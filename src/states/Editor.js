@@ -489,6 +489,9 @@ editor.prototype = {
       if (error) console.log('error writing file: ' + error)
       numberPlayers = 0
       var mode = new Adventure(this.game, true)
+      if (mode.setScreen) {
+        mode.setScreen()
+      }
       this.game.state.start('PreloadGame', true, false, mode, 'tempLevel')
     }.bind(this))
   },

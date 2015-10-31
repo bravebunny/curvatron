@@ -86,9 +86,10 @@ Adventure.prototype = {
     this.layer = this.map.createLayer('obstacles') // layer[0]
     this.map.setCollisionByIndex(0)
 
-    this.point = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
-    this.createPower()
-
+    if (this.pointPositions.length > 0) {
+      this.point = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
+      this.createPower()
+    }
     // this.map.setCollisionByExclusion([], true, this.layer)
   },
 
