@@ -308,6 +308,7 @@ editor.prototype = {
           switch (this.tool) {
             case 'draw':
               if (this.levelArray[index] === this.values.empty) {
+                this.map.putTile(0, lineX, lineY)
                 this.levelArray[index] = this.values.wall
               }
               break
