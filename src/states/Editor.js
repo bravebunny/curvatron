@@ -21,6 +21,10 @@ var editor = function (game) {
   this.levelArray = []
   this.maxPoints = 32
   this.textInput = null
+  this.defaults = {
+    mapW: 60,
+    mapH: 34
+  }
 
   // reserved values in the level file
   // the remaining ones can be used for the points
@@ -43,9 +47,10 @@ editor.prototype = {
     this.selectedPoint = 1
     this.points = []
     this.pointPositions = []
-    this.mapW = 60
-    this.mapH = 34
     this.tileSize = 32
+    this.scale = 1
+    this.mapW = this.defaults.mapW * this.scale
+    this.mapH = this.defaults.mapH * this.scale
     this.mouseWasDown = false
 
     // change outer background color
@@ -57,8 +62,9 @@ editor.prototype = {
     this.map = this.game.add.tilemap()
     this.map.addTilesetImage('block')
     this.layer = this.map.create('obstacles', this.mapW, this.mapH, this.tileSize, this.tileSize)
+    this.layer.scale.set(1 / this.scale)
+    this.layer.resize(baseW * this.scale, baseW * this.scale)
     this.layer.resizeWorld()
-    this.map.setCollisionByExclusion([], true, this.layer)
 
     this.game.canvas.oncontextmenu = function (e) { e.preventDefault() }
 
@@ -68,12 +74,13 @@ editor.prototype = {
     this.marker.drawRect(0, 0, this.tileSize, this.tileSize)
     this.marker.lineStyle(2, 0x000000, 1)
     this.marker.drawRect(0, 0, this.tileSize - 2, this.tileSize - 2)
+    this.marker.scale.set(1 / this.scale)
 
     // grid overlay
     var gridBMD = this.game.add.bitmapData(this.game.width, this.game.height)
     var gridImage = gridBMD.addToWorld()
     gridImage.alpha = 0.3
-    var gridSize = this.tileSize * 3
+    var gridSize = this.tileSize * 3 / this.scale
     gridImage.inputEnabled = true
     gridImage.events.onInputOver.add(function (button) { this.showTooltip('', button) }.bind(this))
 
@@ -273,11 +280,11 @@ editor.prototype = {
 
     if (pointerY < this.tb.bg.y) {
       // cursor square to mark drawing position
-      this.marker.x = this.layer.getTileX(pointerX) * this.tileSize
-      this.marker.y = this.layer.getTileY(pointerY) * this.tileSize
+      this.marker.x = this.layer.getTileX(pointerX * this.scale) * this.tileSize / this.scale
+      this.marker.y = this.layer.getTileY(pointerY * this.scale) * this.tileSize / this.scale
 
-      var x = this.marker.x + this.tileSize / 2
-      var y = this.marker.y + this.tileSize / 2
+      var x = this.marker.x * this.scale + this.tileSize / 2
+      var y = this.marker.y * this.scale + this.tileSize / 2
       var tileX = this.layer.getTileX(x)
       var tileY = this.layer.getTileY(y)
 
@@ -301,7 +308,6 @@ editor.prototype = {
           switch (this.tool) {
             case 'draw':
               if (this.levelArray[index] === this.values.empty) {
-                this.map.putTile(0, lineX, lineY)
                 this.levelArray[index] = this.values.wall
               }
               break
@@ -604,5 +610,20 @@ editor.prototype = {
         }
       }
     }
+  },
+
+  setScreen: function () {
+    var game = this.game
+    var w = baseW
+    var h = baseH
+    game.width = w
+    game.height = h
+    game.canvas.width = w
+    game.canvas.height = h
+    game.renderer.resize(w, h)
+    game.scale.width = w
+    game.scale.height = h
+    game.camera.setSize(w, h)
+    game.scale.refresh()
   }
 }

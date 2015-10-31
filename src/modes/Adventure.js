@@ -89,7 +89,6 @@ Adventure.prototype = {
 
     this.point = new PowerUp(this.game, 'point', this, 0, 0)
     this.createPower()
-    // this.map.setCollisionByExclusion([], true, this.layer)
   },
 
   setScreen: function () {
@@ -101,13 +100,9 @@ Adventure.prototype = {
     game.canvas.width = w
     game.canvas.height = h
     game.renderer.resize(w, h)
-    /*game.stage.width = w
-    game.stage.height = h*/
     game.scale.width = w
     game.scale.height = h
-    //game.world.setBounds(0, 0, w, h)
     game.camera.setSize(w, h)
-    //game.camera.setBoundsToWorld()
     game.scale.refresh()
   },
 
