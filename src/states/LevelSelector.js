@@ -136,7 +136,8 @@ levelSelector.prototype = {
   },
 
   backPressed: function () {
-    this.game.state.start('Menu')
+    if (this.workshop) this.game.state.start('CustomLevels')
+    else this.game.state.start('SinglePlayer')
   },
 
   up: function () {
