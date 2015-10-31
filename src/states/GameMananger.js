@@ -41,7 +41,6 @@ gameMananger.prototype = {
     paused = false
     totalTime = 0
     pauseTween = null
-    borders = [0, this.game.width, 0, this.game.height]
     bmd = null
     nextBallHigh = 0
 
@@ -105,11 +104,6 @@ gameMananger.prototype = {
     }
     */
 
-    // create BitmapData
-    bmd = this.add.bitmapData(this.game.width, this.game.height)
-    bmd.addToWorld()
-    bmd.smoothed = false
-
     this.screenshot = new Screenshot(this.game)
     this.screenshot.tweetMessage = 'Can you beat my score in the ' + this.mode.name + ' mode of #Curvatron ?'
 
@@ -142,6 +136,14 @@ gameMananger.prototype = {
       players[i].create()
     }
 
+    if (this.mode.setCamera) this.mode.setCamera()
+    borders = [0, this.game.world.width, 0, this.game.world.height]
+
+    // create BitmapData
+    bmd = this.add.bitmapData(this.game.world.width, this.game.world.height)
+    bmd.addToWorld()
+    bmd.smoothed = false
+
     ui.overlay = this.add.button(0, 0, 'overlay', function () {
       if (gameOver && !this.shareButtons.visible) {
         this.restart()
@@ -149,6 +151,7 @@ gameMananger.prototype = {
     }, this)
     ui.overlay.scale.set(0)
     ui.overlay.alpha = 0.5
+    ui.overlay.fixedToCamera = true
 
     if (!mute) {
       menuMusic.volume = 1
@@ -521,8 +524,16 @@ gameMananger.prototype = {
     this.shareButtons.selectRelease()
   },
 
-  renderGroup: function (member) {
-    // this.game.debug.body(member)
+ render: function () {
+    /*if (this.game.camera.deadzone) {
+      var zone = this.game.camera.deadzone
+
+      this.game.context.fillStyle = 'rgba(255,255,255,0.2)'
+      this.game.context.fillRect(zone.x, zone.y, zone.width, zone.height)
+
+      this.game.debug.cameraInfo(this.game.camera, 32, 32)
+      this.game.debug.spriteCoords(players[0].sprite, 32, 500)
+    }*/
   }
 
 }

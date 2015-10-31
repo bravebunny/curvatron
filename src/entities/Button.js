@@ -65,6 +65,7 @@ Button.prototype = {
     this.button = this.game.add.button(x, y)
     // this.icon.hitArea = new Phaser.Rectangle(-80, -80, w, h)
     this.button.input.useHandCursor = true
+    this.button.fixedToCamera = true
 
     // clickButton(this.button, this.callback, this.context, menuArray, this.index)
     this.button.addChild(this.graphics)

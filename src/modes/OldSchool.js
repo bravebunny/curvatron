@@ -18,6 +18,7 @@ var OldSchool = function (game) {
   this.gridded = true
   this.countPoints = true
   this.powerText = null
+  this.name = 'old school'
 }
 
 OldSchool.prototype = {

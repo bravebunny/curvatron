@@ -15,6 +15,7 @@ var Adventure = function (game, testing, items, index) {
   this.name = 'adventure'
   this.items = items
   this.index = index
+  this.margin = 400
 
   this.mapW = 60
   this.mapH = 34
@@ -86,21 +87,43 @@ Adventure.prototype = {
     this.layer = this.map.createLayer('obstacles') // layer[0]
     this.map.setCollisionByIndex(0)
 
-    if (this.pointPositions.length > 0) {
-      this.point = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
-      this.createPower()
-    }
+    this.point = new PowerUp(this.game, 'point', this, 0, 0)
+    this.createPower()
     // this.map.setCollisionByExclusion([], true, this.layer)
   },
 
   setScreen: function () {
-    setScreenFixed(baseW, baseH, this.game)
+    var game = this.game
+    var w = baseW
+    var h = baseH
+    game.width = w
+    game.height = h
+    game.canvas.width = w
+    game.canvas.height = h
+    game.renderer.resize(w, h)
+    /*game.stage.width = w
+    game.stage.height = h*/
+    game.scale.width = w
+    game.scale.height = h
+    //game.world.setBounds(0, 0, w, h)
+    game.camera.setSize(w, h)
+    //game.camera.setBoundsToWorld()
+    game.scale.refresh()
   },
 
   update: function () {
     if (this.game.physics.arcade.collide(players[0].sprite, this.layer)) {
       players[0].kill()
     }
+  },
+
+  setCamera: function () {
+    this.game.world.setBounds(0, 4, this.mapW * this.tileSize, this.mapH * this.tileSize - 8)
+    this.game.camera.follow(players[0].sprite)
+    var m = this.margin
+    var w = 2 * w2
+    var h = 2 * h2
+    this.game.camera.deadzone = new Phaser.Rectangle(m, m, w - 2 * m, h - 2 * m)
   },
 
   erasesTrail: function () {

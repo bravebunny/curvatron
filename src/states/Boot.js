@@ -61,39 +61,5 @@ boot.prototype = {
     this.game.input.gamepad.start()
 
     this.state.start('PreloadMenu')
-  },
-
-  resize: function () {
-    if ((this.state.current !== 'GameMananger') && (this.state.current !== 'PreloadMenu') && (this.state.current !== 'PreloadGame')) {
-      var winW = window.innerWidth
-      var winH = window.innerHeight
-      var winRatio = winW / winH
-      var height = Math.round(Math.sqrt(baseArea / winRatio))
-      var width = Math.round(winRatio * height)
-
-      var game = this.game
-
-      game.width = width
-      game.height = height
-      game.canvas.width = width
-      game.canvas.height = height
-      game.renderer.resize(width, height)
-      this.stage.width = width
-      this.stage.height = height
-      this.scale.width = width
-      this.scale.height = height
-      this.world.setBounds(0, 0, width, height)
-      this.camera.setSize(width, height)
-      this.camera.setBoundsToWorld()
-      this.scale.refresh()
-
-      w2 = this.game.width / 2
-      h2 = this.game.height / 2
-
-      if (this.state.states[this.game.state.current].setPositions) {
-        this.state.states[this.game.state.current].setPositions()
-      }
-    }
   }
-
 }

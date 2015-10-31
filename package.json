@@ -5,7 +5,8 @@
     "window": {
         "title": "Curvatron",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "toolbar": true
     },
     "version": "0.1.0",
     "app_name": "curvatron",
