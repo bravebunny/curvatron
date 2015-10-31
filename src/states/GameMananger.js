@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex, Player, keys, colorHexDark, bgColor:true, mute:true, ButtonList,
-clickButton, localStorage, saveAs, countdown:true, Screenshot */
+clickButton, localStorage, saveAs, countdown:true, Screenshot , groupPointEffects:true*/
 /*eslint-enable*/
 var gameMananger = function (game) {
   tempLabel = null
@@ -66,6 +66,7 @@ gameMananger.prototype = {
     if (this.mode.setColors) this.mode.setColors()
 
     groupPowers = this.add.group()
+    groupPointEffects = this.add.group()
     if (this.mode.sp && this.mode.getHighScore) {
       countdown = false
       tempLabel = this.add.sprite(w2, h2, 'score')
@@ -88,7 +89,7 @@ gameMananger.prototype = {
 
       if (!this.mode.sp) {
         // Generate powers
-        this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.mode.createPower, this.mode)
+        this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 1, this.mode.createPower, this.mode)
       }
     }
 

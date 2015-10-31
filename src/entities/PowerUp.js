@@ -1,4 +1,4 @@
-/* global scale, w2, h2, Phaser, groupPowers
+/* global scale, w2, h2, Phaser, groupPowers, groupPointEffects, colorHex
 */
 var PowerUp = function (game, type, mode, x, y) {
   this.mode = mode
@@ -6,6 +6,7 @@ var PowerUp = function (game, type, mode, x, y) {
   this.type = type
   this.sprite = null
   this.spriteTween = null
+  this.effectSprite = null
   this.x = x
   this.y = y
   this.size = 1
@@ -35,19 +36,53 @@ PowerUp.prototype = {
       this.y = this.game.rnd.integerInRange(32 / scale, 2 * h2 - 32 / scale)
     }
 
-    this.sprite = this.game.add.sprite(this.x, this.y, this.type)
-    if (this.type === 'shrink') {
-      var anim = this.sprite.animations.add('timed')
-      anim.play(1.5, false, true)
+    if (!this.sprite) {
+      console.log('created point')
+      this.effectSprite = this.game.add.sprite(this.x, this.y, this.type)
+      this.sprite = this.game.add.sprite(this.x, this.y, this.type)
+      this.sprite.anchor.setTo(0.5, 0.5)
+      this.effectSprite.anchor.setTo(0.5, 0.5)
+      this.sprite.scale.set((this.size / 2) * scale)
+      this.effectSprite.scale.set((this.size / 2) * scale)
+      this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE)
+      this.game.physics.enable(this.effectSprite, Phaser.Physics.ARCADE)
+      this.sprite.context = this
+      this.effectSprite.context = this
+      groupPowers.add(this.sprite)
+      groupPointEffects.add(this.effectSprite)
+
+      this.text = this.game.add.text(0, 0, '1', {
+        font: '20px dosis',
+        fill: colorHex,
+        align: 'center'
+      })
+      this.text.anchor.setTo(0.5, 0.5)
+    } else {
+      this.sprite.x = this.x
+      this.sprite.y = this.y
+      this.sprite.loadTexture(this.type)
+      this.effectSprite.visible = true
     }
 
-    this.sprite.anchor.setTo(0.5, 0.5)
-    this.sprite.scale.set((this.size / 2) * scale)
-    this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE)
+    if (!this.mode.sp || this.type === 'shrink') {
+      this.sprite.alpha = 0
+    }
+
+    if (this.type === 'shrink') {
+      this.effectSprite.x = this.x
+      this.effectSprite.y = this.y
+      var anim = this.effectSprite.animations.add('timed')
+      anim.play(1.5, false, true)
+    } else {
+      var pointText = ''
+      if (this.mode.getPointText) pointText = this.mode.getPointText()
+      this.text.setText(pointText)
+      this.text.x = this.x
+      this.text.y = this.y + 2 * scale
+    }
 
     this.sprite.name = this.type
 
-    groupPowers.add(this.sprite)
     if (this.mode.sp) {
       this.spriteTween = this.game.add.sprite(this.x, this.y, this.type)
       this.spriteTween.anchor.setTo(0.5, 0.5)
@@ -73,6 +108,17 @@ PowerUp.prototype = {
 
   setScale: function (s) {
     this.sprite.scale.setTo(s)
+  },
+
+  getEffectSprite: function () {
+    return this.effectSprite
+  },
+
+  resetEffect: function () {
+    this.effectSprite.scale.set((this.size / 2) * scale)
+    this.effectSprite.x = this.x
+    this.effectSprite.y = this.y
+    if (this.type === 'shrink') this.effectSprite.visible = false
   },
 
   render: function () {

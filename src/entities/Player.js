@@ -102,23 +102,7 @@ Player.prototype = {
       if (this.dead && this.frameCount === 0 && this.trailArray[0]) {
         var trailEnd = this.trailArray.pop()
         ctx.clearRect(trailEnd.x - 10 * scale, trailEnd.y - 10 * scale, 20 * scale, 20 * scale)
-
-      /*
-      if (this.trailArray.length > 0) {
-        trailPiece = this.trailArray[this.trailArray.length -1]
-        bmd.draw(this.trail, trailPiece.x, trailPiece.y)
-      }*/
       }
-
-      // TODO prevent lines crossing the screen
-      // Draw trail bmd line
-      /*
-      var inBounds =
-      this.sprite.x < this.game.width + 8 * scale &&
-      this.sprite.x > -8 * scale &&
-      this.sprite.y < this.game.height + 8 * scale &&
-      this.sprite.y > -8 * scale */
-
       var trail = this.trailArray
       if (trail.length > 1) {
         if (this.mode.sp) {
@@ -138,47 +122,7 @@ Player.prototype = {
           ctx.lineTo(trail[len - 1].x, trail[len - 1].y)
           ctx.stroke()
         }
-
-      /*
-        for (var i = 1; i < this.trailArray.length; i++) {
-        var x = this.trailArray[i].x
-        var y = this.trailArray[i].y
-
-        if (x < -4 || y < -4 || y > 2*h2+4 || x > 2*w2+4) {
-          ctx.stroke()
-          ctx.beginPath()
-        } else {
-          ctx.lineTo(this.trailArray[i].x ,this.trailArray[i].y)
-        }
-      }*/
       }
-
-      // Draw trail bmd circles
-      /*
-      if (this.trailArray[0]) {
-        bmd.dirty = true
-        //bmd.clear()
-        bmd.ctx.clearRect(0, 0, bmd.canvas.width, bmd.canvas.height)
-
-        for (var i = 0; i < this.trailArray.length; i++) {
-          var x = this.trailArray[i].x
-          var y = this.trailArray[i].y
-          //bmd.draw(this.trail, x, y)
-          bmd.circle(x, y, 8*scale, "rgba(255,255,255,1)")
-        }
-
-      }*/
-
-      // Draw trail graphics
-      /*
-      this.graphics.clear()
-      this.graphics.lineStyle(16*scale, 0xffffff, 1)
-      if (this.trailArray[0]) {
-        this.graphics.moveTo(this.trailArray[0].x ,this.trailArray[0].y)
-        for (var i = 1; i < this.trailArray.length; i++) {
-          this.graphics.lineTo(this.trailArray[i].x ,this.trailArray[i].y)
-        }
-      }*/
       if (!this.sprite.alive) {
         this.kill()
       }
@@ -187,16 +131,11 @@ Player.prototype = {
       var yy = Math.sin(this.sprite.rotation) * 30 * scale + this.sprite.y
 
       // make the last eaten point follow the player
-
       if (this.eatenPoint !== null) {
         var point = this.eatenPoint
         var x = lerp(xx, point.x, 0.85)
         var y = lerp(yy, point.y, 0.85)
         this.eatenPoint.position.setTo(x, y)
-
-        if (this.game.physics.arcade.distanceBetween(this.eatenPoint, this.sprite) <= 1) {
-          this.eatenPoint = null
-        }
       }
 
       xx = Math.cos(this.sprite.rotation) * 18 * scale + this.sprite.x
@@ -427,16 +366,17 @@ Player.prototype = {
         collectSound.play()
       }
 
+      this.eatenPoint = power.context.getEffectSprite()
+
       if (this.mode.collect) {
         this.mode.collect(player, power, this)
       }
 
-      this.eatenPoint = power
-
       // this.game.add.tween(power).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true)
-      var powerTween = this.game.add.tween(power.scale).to({x: 0, y: 0}, 300, Phaser.Easing.Linear.None, true)
+      var powerTween = this.game.add.tween(this.eatenPoint.scale).to({x: 0, y: 0}, 300, Phaser.Easing.Linear.None, true)
       powerTween.onComplete.add(function () {
-        power.destroy()
+        if (this.mode.sp) this.eatenPoint.context.resetEffect()
+        this.eatenPoint = null
         this.collectSemaphore = 0
       }, this)
     }

@@ -86,6 +86,7 @@ Adventure.prototype = {
     this.layer = this.map.createLayer('obstacles') // layer[0]
     this.map.setCollisionByIndex(0)
 
+    this.point = new PowerUp(this.game, 'point', this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
     this.createPower()
 
     // this.map.setCollisionByExclusion([], true, this.layer)
@@ -140,20 +141,19 @@ Adventure.prototype = {
       var pointName
       if (this.score >= this.pointPositions.length - 1) pointName = 'pointSuper'
       else pointName = 'point'
-      var powerup = new PowerUp(this.game, pointName, this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
-      powerup.create()
+      this.point.x = this.pointPositions[this.score].x
+      this.point.y = this.pointPositions[this.score].y
+      this.point.type = pointName
+      this.point.create()
+    }
+  },
 
-      var number
-      if (this.testing) number = this.score + 1
-      else number = this.pointPositions.length - this.score - 1
-
-      if (number > 0 || this.testing) {
-        this.powerText.setText(number)
-        this.powerText.x = powerup.sprite.x
-        this.powerText.y = powerup.sprite.y + 2 * scale
-      } else {
-        this.powerText.visible = false
-      }
+  getPointText: function () {
+    if (this.testing) return this.score + 1
+    else {
+      var number = this.pointPositions.length - this.score - 1
+      if (number > 0) return number
+      else return ''
     }
   },
 
