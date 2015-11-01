@@ -33,6 +33,10 @@ var Player = function (id, x, y, key, mode, game) {
   this.shrinkAmount = 200
   this.collectSemaphore = 0
   this.eatenPoint = null
+
+  this.inputTimes = []
+  this.autoMode = false
+  this.totalTime = 0
 }
 
 Player.prototype = {
@@ -96,8 +100,13 @@ Player.prototype = {
     }
 
     if (!this.paused) {
-      var ctx = bmd.ctx
+      this.totalTime += this.game.time.physicsElapsedMS
+      if (this.autoMode && (this.totalTime - 15) >= this.inputTimes[0]) {
+        this.inputTimes.shift()
+        this.keyPressed()
+      }
 
+      var ctx = bmd.ctx
       // erase trail from front
       if (this.dead && this.frameCount === 0 && this.trailArray[0]) {
         var trailEnd = this.trailArray.pop()
@@ -261,13 +270,15 @@ Player.prototype = {
         this.ready = true
         this.showOneKey = true
         this.showKeyTime = 2 + totalTime
-        if (!this.dead) {
-          if (this.direction === 1 && !gameOver && !paused) {
+        if (!this.dead && !gameOver && !paused) {
+          if (this.autoMode) console.log(this.totalTime)
+          else this.inputTimes.push(this.totalTime)
+          if (this.direction === 1) {
             this.direction = -1
             if (!mute && !paused) {
               moveSounds[0].play()
             }
-          } else if (!gameOver && !paused) {
+          } else {
             this.direction = 1
             if (!mute) {
               moveSounds[1].play()
@@ -306,26 +317,12 @@ Player.prototype = {
       this.game.input.position.y < y2)) {
       this.keyPressed()
     }
-
-  // do not work :(
-  /*
-      else if(this.mode.leaderboardID == null){
-        var x11 = w2*0.5 - 100 - 61, x22 = w2*0.5 - 100 + 61
-
-         if (!(this.game.input.position.x > x11
-          && this.game.input.position.x < x22
-          && this.game.input.position.y > y1
-          && this.game.input.position.y < y2 )){
-           console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-          this.keyPressed()
-         }
-       }
-     */
   },
 
   kill: function (player, other) {
     this.keyText.destroy()
     if (!this.dead) {
+      console.log(this.inputTimes)
       if (this.mode.sp) {
         var deathScore = parseInt(localStorage.getItem('deathScore'), 10)
         if (isNaN(deathScore)) {
@@ -445,6 +442,11 @@ Player.prototype = {
 
   clearInput: function () {
     this.game.input.keyboard.removeKey(this.key)
+  },
+
+  setInputTimes: function (times) {
+    this.autoMode = true
+    this.inputTimes = times
   },
 
   render: function () {

@@ -37,7 +37,6 @@ PowerUp.prototype = {
     }
 
     if (!this.sprite) {
-      console.log('created point')
       this.effectSprite = this.game.add.sprite(this.x, this.y, this.type)
       this.sprite = this.game.add.sprite(this.x, this.y, this.type)
       this.sprite.anchor.setTo(0.5, 0.5)
