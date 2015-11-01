@@ -94,7 +94,6 @@ Adventure.prototype = {
       }
     }
 
-    this.layer = this.map.createLayer('obstacles') // layer[0]
     this.map.setCollisionByIndex(0)
 
     this.point = new PowerUp(this.game, 'point', this, 0, 0)

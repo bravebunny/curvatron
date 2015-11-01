@@ -612,7 +612,7 @@ editor.prototype = {
       }.bind(this))
     } else if (this.newPage) {
       if (this.changeScale) {
-        if (this.scale < 2) this.scale += 0.5
+        if (this.scale < 3) this.scale += 0.5
         else this.scale = 1
       }
       this.newPage = false
