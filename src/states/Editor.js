@@ -14,7 +14,6 @@ var editor = function (game) {
   this.confirmButtons = null
   this.open = false
   this.newPage = false
-  this.changeScale = false
   this.exit = false
   this.dialogText = null
   this.returning = false
@@ -54,6 +53,7 @@ editor.prototype = {
     this.mapW = this.defaults.mapW * this.scale
     this.mapH = this.defaults.mapH * this.scale
     this.mouseWasDown = false
+    this.changeScale = false
 
     // change outer background color
     document.body.style.background = colorHexDark
