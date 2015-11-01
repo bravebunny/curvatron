@@ -187,7 +187,7 @@ gameMananger.prototype = {
     this.ui.audioButton = this.pauseButtons.add(audioButton, audioText, this.muteSound)
 
     if (this.mode.testing) {
-      this.pauseButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true) })
+      this.pauseButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true, this.mode.scale) })
     } else {
       this.pauseButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
@@ -202,7 +202,7 @@ gameMananger.prototype = {
       this.deathButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
     }
     if (this.mode.testing) {
-      this.deathButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true) })
+      this.deathButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true, this.mode.scale) })
     } else {
       this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
@@ -409,7 +409,7 @@ gameMananger.prototype = {
 
       if (gameOver) {
         if (this.mode.testing) {
-          this.state.start('Editor', true, false, true)
+          this.state.start('Editor', true, false, true, this.mode.scale)
         } else {
           this.state.start('Menu')
         }

@@ -17,6 +17,12 @@ var Adventure = function (game, testing, items, index) {
   this.index = index
   this.margin = 400
 
+  this.scale = 1
+  this.defaults = {
+    mapW: 60,
+    mapH: 34,
+    length: 60 * 34
+  }
   this.mapW = 60
   this.mapH = 34
   this.tileSize = 32
@@ -61,12 +67,16 @@ Adventure.prototype = {
 
     this.score = 0
 
+    var levelArray = this.game.cache.getText('level').split('')
+
+    this.scale = Math.sqrt(levelArray.length / this.defaults.length)
+    this.mapW = this.defaults.mapW * this.scale
+    this.mapH = this.defaults.mapH * this.scale
+
     this.map = this.game.add.tilemap()
     this.map.addTilesetImage('block')
     this.layer = this.map.create('obstacles', this.mapW, this.mapH, this.tileSize, this.tileSize)
     this.layer.resizeWorld()
-
-    var levelArray = this.game.cache.getText('level').split('')
 
     for (var x = 0; x < this.mapW; x++) {
       for (var y = 0; y < this.mapH; y++) {
@@ -177,7 +187,7 @@ Adventure.prototype = {
   },
 
   nextLevel: function () {
-    if (this.testing) this.game.state.start('Editor', true, false, true)
+    if (this.testing) this.game.state.start('Editor', true, false, true, this.scale)
     else {
       this.index++
       this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
