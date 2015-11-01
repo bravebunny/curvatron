@@ -16,7 +16,10 @@ levelSelector.prototype = {
   },
 
   create: function () {
-    this.title = this.game.add.text(w2, 100, 'Level Selector', {
+    var name
+    if (this.workshop) name = 'workshop levels'
+    else name = 'adventure'
+    this.title = this.game.add.text(w2, 100, name, {
       font: '150px dosis',
       fill: '#ffffff',
       align: 'center'
@@ -27,6 +30,7 @@ levelSelector.prototype = {
     this.containerY = 300
 
     this.buttons = new ButtonList(this, this.game)
+    /* for (var i = 0; i < 200; i++) */
     this.buttons.add('back_button', 'back', this.backPressed)
 
     if (this.workshop) this.getWorkshopLevels()
@@ -81,10 +85,11 @@ levelSelector.prototype = {
 
   createButtons: function () {
     this.buttons.create()
+    this.buttons.setScrolling(true)
     this.buttons.select(1)
 
     var barHeight = 2 * h2 - this.containerY + 100
-    var draggyHeight = Math.min(barHeight * (7 / this.buttons.length()), barHeight)
+    var draggyHeight = Math.min(barHeight * (7 / (this.buttons.length() + 1)), barHeight)
 
     this.containerScrollBar = this.game.add.sprite(this.containerX, this.containerY - 100, 'scroll_button')
     this.containerScrollBar.scale.set(50, draggyHeight)
@@ -142,7 +147,7 @@ levelSelector.prototype = {
 
   up: function () {
     this.buttons.selectUp()
-    if (this.buttons.length() > 7) {
+    if (this.buttons.length() > 6) {
       if (this.buttons.selection < this.buttons.length() - 1) {
         if (this.containerScrollBar.y > this.containerY - 100) {
           this.buttons.setY(this.buttons.y + 125)
@@ -156,7 +161,7 @@ levelSelector.prototype = {
   },
 
   down: function () {
-    if (this.buttons.length() > 7) {
+    if (this.buttons.length() > 6) {
       if (this.buttons.selection < this.buttons.length() - 1) {
         if (this.containerScrollBar.y < h2 * 2 - this.containerScrollBar.height) {
           this.buttons.setY(this.buttons.y - 125)

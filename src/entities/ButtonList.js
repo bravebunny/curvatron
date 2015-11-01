@@ -56,6 +56,12 @@ ButtonList.prototype = {
     }
   },
 
+  setScrolling (isScrolling) {
+    for (var i = 0; i < this.buttons.length; i++) {
+      this.buttons[i].button.fixedToCamera = !isScrolling
+    }
+  },
+
   setMask: function (mask) {
     for (var i = 0; i < this.buttons.length; i++) {
       var b = this.buttons[i]
