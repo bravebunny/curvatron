@@ -14,6 +14,7 @@ var editor = function (game) {
   this.confirmButtons = null
   this.open = false
   this.newPage = false
+  this.changeScale = false
   this.exit = false
   this.dialogText = null
   this.returning = false
@@ -36,8 +37,10 @@ var editor = function (game) {
 }
 
 editor.prototype = {
-  init: function (returning) {
+  init: function (returning, scale) {
     this.returning = returning
+    if (scale) this.scale = scale
+    else this.scale = 1
   },
 
   create: function () {
@@ -48,7 +51,6 @@ editor.prototype = {
     this.points = []
     this.pointPositions = []
     this.tileSize = 32
-    this.scale = 1
     this.mapW = this.defaults.mapW * this.scale
     this.mapH = this.defaults.mapH * this.scale
     this.mouseWasDown = false
@@ -152,10 +154,22 @@ editor.prototype = {
     this.tb.start.scale.set(0.6)
     this.tb.start.events.onInputOver.add(function (button) { this.showTooltip('change start position', button) }.bind(this))
 
-    this.tb.test = this.game.add.button(1050, baseH + 100, 'resume_button', this.test, this)
+    this.tb.test = this.game.add.button(900, baseH + 100, 'resume_button', this.test, this)
     this.tb.test.anchor.setTo(0.5, 0.5)
     this.tb.test.scale.set(0.8)
     this.tb.test.events.onInputOver.add(function (button) { this.showTooltip('test level', button) }.bind(this))
+
+    this.tb.scale = this.game.add.button(1050, baseH + 100, 'fullscreen_button', this.auxChangeScale, this)
+    this.tb.scale.anchor.setTo(0.5, 0.5)
+    this.tb.scale.scale.set(0.8)
+    this.tb.scale.events.onInputOver.add(function (button) { this.showTooltip('change level scale', button) }.bind(this))
+
+    this.tb.scaleText = this.game.add.text(this.tb.scale.x, this.tb.scale.y, (this.scale - 1) * 2 + 1, {
+      font: '40px dosis',
+      fill: '#FFFFFF',
+      align: 'center'
+    })
+    this.tb.scaleText.anchor.set(0.5)
 
     this.tb.open = this.game.add.button(1200, baseH + 100, 'editorOpen', this.auxOpen, this)
     this.tb.open.anchor.set(0.5, 0.5)
@@ -475,6 +489,12 @@ editor.prototype = {
     saveAs(blob, 'curvatron_level')
   },
 
+  auxChangeScale: function () {
+    this.changeScale = true
+    this.newPage = true
+    this.showDialog('current level will be deleted. change scale?')
+  },
+
   auxNewPage: function () {
     this.newPage = true
     this.showDialog('all unsaved progress will be lost. clear screen?')
@@ -588,8 +608,12 @@ editor.prototype = {
         }.bind(this))
       }.bind(this))
     } else if (this.newPage) {
+      if (this.changeScale) {
+        if (this.scale < 3) this.scale += 0.5
+        else this.scale = 1
+      }
       this.newPage = false
-      this.state.restart(true, false, this.mode)
+      this.state.restart(true, false, false, this.scale)
     } else if (this.exit) {
       this.exit = false
       this.state.start('Menu')
