@@ -524,8 +524,9 @@ gameMananger.prototype = {
     this.shareButtons.selectRelease()
   },
 
- render: function () {
-    /*if (this.game.camera.deadzone) {
+  render: function () {
+    /*
+    if (this.game.camera.deadzone) {
       var zone = this.game.camera.deadzone
 
       this.game.context.fillStyle = 'rgba(255,255,255,0.2)'

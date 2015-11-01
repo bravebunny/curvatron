@@ -130,6 +130,7 @@ editor.prototype = {
     this.tb.pointText.anchor.set(0.5)
 
     this.start = this.game.add.sprite(w2, h2, 'editorStart')
+    this.start.scale.set(1 / this.scale)
     this.start.anchor.set(0.5, 0.05)
     this.start.visible = false
     // this.start.scale.set(0.9)
@@ -280,10 +281,10 @@ editor.prototype = {
       if (point) {
         if (i === this.selectedPoint) {
           point.alpha = 1
-          point.scale.set(0.7)
+          point.scale.set(0.7 / this.scale)
         } else {
           point.alpha = 0.3
-          point.scale.set(0.5)
+          point.scale.set(0.5 / this.scale)
         }
       }
     }
@@ -386,8 +387,8 @@ editor.prototype = {
   },
 
   createPoint: function (tileX, tileY, i) {
-    var x = tileX * this.tileSize + this.tileSize / 2
-    var y = tileY * this.tileSize + this.tileSize / 2
+    var x = (tileX * this.tileSize + this.tileSize / 2) / this.scale
+    var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
     if (this.points[i] == null) {
       this.points[i] = this.game.add.sprite(x, y, 'point')
       this.game.world.sendToBack(this.points[i])
@@ -400,8 +401,10 @@ editor.prototype = {
   },
 
   createStart: function (x, y) {
+    var tileX = (x * this.tileSize + this.tileSize / 2) / this.scale
+    var tileY = (y * this.tileSize + this.tileSize / 2) / this.scale
     if (!this.start.visible) this.start.visible = true
-    this.start.position.set(x * this.tileSize + this.tileSize / 2, y * this.tileSize + this.tileSize / 2)
+    this.start.position.set(tileX, tileY)
     var lp = this.lastStartPosition
     var index = x * this.mapH + y
     if (lp !== null && lp !== index) this.levelArray[lp] = 0
