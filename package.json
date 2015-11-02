@@ -10,5 +10,8 @@
     },
     "version": "0.1.0",
     "app_name": "curvatron",
-    "chromium-args": "--data-path='./saves/' --in-process-gpu --disable-transparency"
+    "chromium-args": "--data-path='./saves/' --in-process-gpu --disable-transparency",
+    "scripts": {
+      "start": "nw"
+    }
 }
