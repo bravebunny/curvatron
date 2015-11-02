@@ -16,6 +16,6 @@
     },
     "dependencies": {
       "nw": "0.12.3",
-      "node-twitter-api": "1.6.1",
+      "node-twitter-api": "1.6.1"
     }
 }
