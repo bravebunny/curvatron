@@ -13,5 +13,9 @@
     "chromium-args": "--data-path='./saves/' --in-process-gpu --disable-transparency",
     "scripts": {
       "start": "nw"
+    },
+    "dependencies": {
+      "nw": "0.12.3",
+      "node-twitter-api": "1.6.1",
     }
 }
