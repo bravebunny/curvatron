@@ -101,7 +101,7 @@ Player.prototype = {
 
     if (!this.paused) {
       this.totalTime += this.game.time.physicsElapsedMS
-      if (this.autoMode && (this.totalTime - 15) >= this.inputTimes[0]) {
+      if (this.autoMode && (this.totalTime) >= this.inputTimes[0]) {
         this.inputTimes.shift()
         this.keyPressed()
       }
@@ -294,6 +294,7 @@ Player.prototype = {
           }
         }
       }
+      this.update()
     }
   },
 
