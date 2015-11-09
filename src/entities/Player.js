@@ -294,7 +294,7 @@ Player.prototype = {
           }
         }
       }
-      this.update()
+    if (this.sprite.body) this.update()
     }
   },
 
