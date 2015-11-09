@@ -173,6 +173,7 @@ OldPlayer.prototype = {
         this.sprite.y = borders[2] - Math.sin(this.sprite.rotation) * 30 * scale
       }
     }
+    this.sprite.bringToTop()
   },
 
   keyPressed: function () {
