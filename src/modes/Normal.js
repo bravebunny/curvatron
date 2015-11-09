@@ -1,4 +1,4 @@
-/* global points:true, modesLB, h2, w2, players, colorHex,
+/* global points:true, modesLB, h2, w2, players,
 shuffleArray, localStorage, scale, PowerUp, Phaser, adjustScreen
 */
 var Normal = function (game) {

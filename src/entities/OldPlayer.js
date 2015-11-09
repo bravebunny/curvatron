@@ -30,6 +30,7 @@ var OldPlayer = function (x, y, mode, game) {
   this.showKeyTime = 0
   this.showOneKey = true
   this.touch = null
+  this.collectSemaphore = 0
   this.orientation = null
   this.color = Phaser.Color.hexToColor('#FFFFFF')
 }
@@ -235,18 +236,20 @@ OldPlayer.prototype = {
   },
 
   collect: function (player, power) {
-    if (!mute) {
-      collectSound.play()
+    if (this.collectSemaphore === 0) {
+      this.collectSemaphore = 1
+      if (!mute) {
+        collectSound.play()
+      }
+      if (power.name === 'old_point') {
+        this.killTrail = false
+        this.growth = 60 * power.scale.x
+        this.score = this.score + power.scale.x
+      }
+      this.mode.collect(player, power, this)
+      this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function () { this.collectSemaphore = 0 }, this)
+      // because we are using overlap, this function is called two times, so we need a delay
     }
-    if (power.name === 'old_point') {
-      this.killTrail = false
-      this.growth = 60 * power.scale.x
-      this.score = this.score + power.scale.x
-    }
-
-    this.mode.collect(player, power, this)
-
-    power.destroy()
   },
 
   showKey: function () {

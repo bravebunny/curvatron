@@ -18,6 +18,7 @@ var OldSchool = function (game) {
   this.gridded = true
   this.countPoints = true
   this.powerText = null
+  this.powerup = null
   this.name = 'old school'
 }
 
@@ -42,6 +43,7 @@ OldSchool.prototype = {
     this.player.create()
     players[0] = this.player
 
+    this.powerup = new PowerUp(this.game, 'old_point', this)
     this.createPower(false)
   },
 
@@ -69,13 +71,18 @@ OldSchool.prototype = {
   },
 
   createPower: function (high) {
-    var name = 'old_point'
-    if (high) name = 'old_pointSuper'
-    var powerup = new PowerUp(this.game, name, this)
-    powerup.create()
-    this.powerText.setText(this.score + 1)
-    this.powerText.x = powerup.sprite.x
-    this.powerText.y = powerup.sprite.y + 2 * scale
+    if (this.powerup.effectSprite) this.powerup.effectSprite.alpha = 0 // only to hide the effectSprite created on point nº1
+    this.powerup.type = 'old_point'
+    if (high) this.powerup.type = 'old_pointSuper'
+    var x = this.game.rnd.integerInRange(32 / scale, 2 * w2 - 32 / scale)
+    var y = this.game.rnd.integerInRange(32 / scale, 2 * h2 - 32 / scale)
+    this.powerup.x = x
+    this.powerup.y = y
+    this.powerup.create()
+  },
+
+  getPointText: function () {
+    return this.score + 1
   },
 
   setScore: function (score) {
