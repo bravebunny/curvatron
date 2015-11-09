@@ -65,7 +65,6 @@ menu.prototype = {
       align: 'center'
     })
     ui.title.anchor.setTo(0.5, 0.5)
-
     this.buttons = new ButtonList(this, this.game)
 
     this.buttons.add('singleplayer_button', 'single player', this.singlePlayer)
