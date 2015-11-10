@@ -72,6 +72,7 @@ Player.prototype = {
 
     if (this.mode.sp) {
       this.game.input.onDown.add(this.keyPressed, this)
+      this.game.input.onUp.add(this.keyUp, this)
       this.game.input.keyboard.addCallbacks(this, this.keyPressed, this.keyUp)
       this.game.input.gamepad.onDownCallback = this.keyPressed.bind(this)
     } else {
