@@ -37,6 +37,7 @@ var Player = function (id, x, y, key, mode, game) {
   this.inputTimes = []
   this.autoMode = false
   this.totalTime = 0
+  this.keyUpVar = true
 }
 
 Player.prototype = {
@@ -71,7 +72,7 @@ Player.prototype = {
 
     if (this.mode.sp) {
       this.game.input.onDown.add(this.keyPressed, this)
-      this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this)
+      this.game.input.keyboard.addCallbacks(this, this.keyPressed, this.keyUp)
       this.game.input.gamepad.onDownCallback = this.keyPressed.bind(this)
     } else {
       if (this.key.indexOf(',') !== -1) { // this means it is a controller button
@@ -95,7 +96,7 @@ Player.prototype = {
       this.unpause()
     }
 
-    if (this.showKeyTime <= totalTime && !this.dead && !paused && this.mode.sp) {
+    if (this.showKeyTime <= totalTime && !this.dead && !paused) {
       this.showKey()
     }
 
@@ -264,12 +265,19 @@ Player.prototype = {
     }
   },
 
+  keyUp: function () {
+    this.keyUpVar = true
+  },
+
   keyPressed: function () {
-    if (!countdown) {
+    if (!countdown && this.keyUpVar) {
       if (!this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
         this.ready = true
-        this.showOneKey = true
-        this.showKeyTime = 2 + totalTime
+        if (this.mode.sp) this.keyUpVar = false
+        else {
+          this.showOneKey = true
+          this.showKeyTime = 2 + totalTime
+        }
         if (!this.dead && !gameOver && !paused) {
           if (this.autoMode) console.log(this.totalTime)
           else this.inputTimes.push(this.totalTime)
@@ -284,7 +292,7 @@ Player.prototype = {
               moveSounds[1].play()
             }
           }
-          if (this.keyText.alpha === 1) {
+          if (!this.mode.sp && this.keyText.alpha === 1) {
             this.textTween = this.game.add.tween(this.keyText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
 
             if (tempLabel !== null) {
@@ -382,7 +390,7 @@ Player.prototype = {
 
   showKey: function () {
     // Show player's key
-    if (this.showOneKey) {
+    if (!this.mode.sp && this.showOneKey) {
       var keyX = Math.round(Math.cos(this.sprite.rotation + Math.PI / 2 * this.direction) * 88 * scale) + this.sprite.x
       var keyY = Math.round(Math.sin(this.sprite.rotation + Math.PI / 2 * this.direction) * 88 * scale) + this.sprite.y
       this.showOneKey = false
