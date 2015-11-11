@@ -303,7 +303,7 @@ Player.prototype = {
           }
         }
       }
-    if (this.sprite.body) this.update()
+      if (this.sprite.body) this.update()
     }
   },
 
@@ -330,7 +330,7 @@ Player.prototype = {
   },
 
   kill: function (player, other) {
-    this.keyText.destroy()
+    if (this.keyText) this.keyText.destroy()
     if (!this.dead) {
       console.log(this.inputTimes)
       if (this.mode.sp) {
