@@ -20,15 +20,12 @@ var OldPlayer = function (x, y, mode, game) {
   this.key = keys[0]
   this.killTrail = false
   this.dead = false
-  this.ready = false
   this.growth = 60
   this.lastTrailLength = 0
   this.keyText = null
   this.paused = false
   this.textTween = null
   this.trailArray = []
-  this.showKeyTime = 0
-  this.showOneKey = true
   this.touch = null
   this.collectSemaphore = 0
   this.orientation = null
@@ -50,8 +47,6 @@ OldPlayer.prototype = {
     // this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale
     this.game.input.onDown.add(this.keyPressed, this)
 
-    this.showKey()
-
     this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this)
   },
 
@@ -61,11 +56,6 @@ OldPlayer.prototype = {
       this.pause()
     } else if (this.paused && !paused) {
       this.paused = false
-      this.unpause()
-    }
-
-    if (this.showKeyTime <= totalTime && !this.dead && !paused) {
-      this.showKey()
     }
 
     if (!this.paused) {
@@ -178,9 +168,6 @@ OldPlayer.prototype = {
   },
 
   keyPressed: function () {
-    this.ready = true
-    this.showOneKey = true
-    this.showKeyTime = 2 + totalTime
     if (!this.dead) {
       if (this.direction === 1 && !gameOver && !paused) {
         this.direction = -1
@@ -191,12 +178,8 @@ OldPlayer.prototype = {
         this.direction = 1
         this.distance = this.maxDistance
       }
-      if (this.keyText.alpha === 1) {
-        this.textTween = this.game.add.tween(this.keyText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
-
-        this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
-        this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
-      }
+      this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
+      this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
     }
   },
 
@@ -215,7 +198,6 @@ OldPlayer.prototype = {
   },
 
   kill: function (player, other) {
-    this.keyText.destroy()
     if (!this.dead) {
       var deathScore = parseInt(localStorage.getItem('deathScore'), 10)
       if (isNaN(deathScore)) {
@@ -252,40 +234,12 @@ OldPlayer.prototype = {
     }
   },
 
-  showKey: function () {
-    // Show player's key
-    if (this.showOneKey) {
-      var keyX = this.sprite.x + 65
-      var keyY = this.sprite.y + 65
-      this.showOneKey = false
-      if (this.keyText) {
-        this.textTween = this.game.add.tween(this.keyText).to({ alpha: 1 }, 500, Phaser.Easing.Linear.None, true)
-        this.keyText.x = keyX
-        this.keyText.y = keyY
-      } else {
-        this.keyText = this.game.add.text(keyX, keyY, String.fromCharCode(this.key), {
-          font: '60px dosis',
-          fill: colorHexDark,
-          align: 'center'
-        })
-        this.keyText.scale.set(scale)
-        this.keyText.anchor.setTo(0.5, 0.5)
-      }
-    }
-  },
-
   pause: function () {
     if (this.mode.submitScore) {
       this.mode.submitScore()
     }
     if (this.textTween) {
       this.textTween.pause()
-    }
-  },
-
-  unpause: function () {
-    if (this.textTween) {
-      this.textTween.resume()
     }
   },
 
