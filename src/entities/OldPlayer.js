@@ -6,8 +6,7 @@
 var OldPlayer = function (x, y, mode, game) {
   this.game = game
   this.mode = mode
-  this.sprite = game.add.sprite(x, y, 'old_player')
-  this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE)
+  this.sprite
 
   this.direction = 1
   this.distance = 0
@@ -30,24 +29,26 @@ var OldPlayer = function (x, y, mode, game) {
   this.collectSemaphore = 0
   this.orientation = null
   this.color = Phaser.Color.hexToColor('#FFFFFF')
+  this.keyUpVar = true
 }
 
 OldPlayer.prototype = {
   create: function () {
     this.orientation = Math.abs(window.orientation) - 90 === 0 ? 'landscape' : 'portrait'
+
+    this.sprite = this.game.add.sprite(this.x, this.y, 'old_player')
     this.sprite.anchor.setTo(0.5, 0.5)
+    this.sprite.scale.set(scale)
 
     this.trail = this.game.make.sprite(0, 0, 'old_trail')
     this.trail.anchor.set(0.5)
-
-    this.sprite.scale.set(scale)
-    // this.sprite.body.setSize(20,20,0,0)
     this.lastTrailLength = this.growth
 
-    // this.sprite.body.angularVelocity = this.direction*200*this.angularVelocity*this.speed*scale
-    this.game.input.onDown.add(this.keyPressed, this)
+    this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE)
 
-    this.input = this.game.input.keyboard.addKey(this.key).onDown.add(this.keyPressed, this)
+    this.game.input.onDown.add(this.keyPressed, this)
+    this.game.input.onUp.add(this.keyUp, this)
+    this.input = this.game.input.keyboard.addCallbacks(this, this.keyPressed, this.keyUp)
   },
 
   update: function () {
@@ -164,11 +165,11 @@ OldPlayer.prototype = {
         this.sprite.y = borders[2] - Math.sin(this.sprite.rotation) * 30 * scale
       }
     }
-    this.sprite.bringToTop()
   },
 
   keyPressed: function () {
-    if (!this.dead) {
+    if (!this.dead && this.keyUpVar) {
+      this.keyUpVar = false
       if (this.direction === 1 && !gameOver && !paused) {
         this.direction = -1
         this.sprite.height *= -1
@@ -181,6 +182,10 @@ OldPlayer.prototype = {
       this.game.add.tween(tempLabel).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
       this.game.add.tween(tempLabelText).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true)
     }
+  },
+
+  keyUp: function () {
+    this.keyUpVar = true
   },
 
   click: function () {
