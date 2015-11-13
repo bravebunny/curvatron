@@ -102,12 +102,22 @@ preloadMenu.prototype = {
 
   create: function () {
     this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.keys.down, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.S).onDown.add(this.keys.down, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.keys.up, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.W).onDown.add(this.keys.up, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(this.keys.left, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.A).onDown.add(this.keys.left, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(this.keys.right, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.D).onDown.add(this.keys.right, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.keys.selectPress, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onUp.add(this.keys.selectRelease, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(this.keys.selectPress, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onUp.add(this.keys.selectRelease, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.E).onDown.add(this.keys.selectPress, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.E).onUp.add(this.keys.selectRelease, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.Q).onDown.add(this.keys.backPressed, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.keys.backPressed, this)
+    this.game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE).onDown.add(this.keys.backPressed, this)
     this.game.input.resetLocked = true
 
     this.game.state.start('Menu')
