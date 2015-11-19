@@ -172,10 +172,20 @@ Adventure.prototype = {
       var pointName
       if (this.score >= this.pointPositions.length - 1) pointName = 'pointSuper'
       else pointName = 'point'
-      this.point.x = this.pointPositions[this.score].x
-      this.point.y = this.pointPositions[this.score].y
-      this.point.type = pointName
-      this.point.create()
+      var powerup = new PowerUp(this.game, pointName, this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
+      powerup.create()
+
+      var number
+      if (this.testing) number = this.score + 1
+      else number = this.pointPositions.length - this.score - 1
+
+      if (number > 0 || this.testing) {
+        this.powerText.setText(number)
+        this.powerText.x = powerup.sprite.x
+        this.powerText.y = powerup.sprite.y + 2 * scale
+      } else {
+        this.powerText.visible = false
+      }
     }
   },
 

@@ -10,7 +10,7 @@ var Normal = function (game) {
   this.obstacleGroup = null
   this.cellSize = 64
   this.countPoints = true
-  this.point = null
+  this.powerText = null
   this.name = 'normal'
 }
 
@@ -28,6 +28,13 @@ Normal.prototype = {
     this.player = players[0]
     this.shrink = null
 
+    this.powerText = this.game.add.text(0, 0, '1', {
+      font: '20px dosis',
+      fill: colorHex,
+      align: 'center'
+    })
+    this.powerText.anchor.setTo(0.5, 0.5)
+
     // create grid points
     for (var i = 0; i < this.columns; i++) {
       for (var j = 0; j < this.rows; j++) {
@@ -44,8 +51,6 @@ Normal.prototype = {
     }
     this.pointsObs = shuffleArray(this.pointsObs)
 
-    this.shrink = new PowerUp(this.game, 'shrink', this, 0, 0)
-    this.point = new PowerUp(this.game, 'point', this, 0, 0)
     this.createPower('point')
   },
 
@@ -126,7 +131,7 @@ Normal.prototype = {
           this.createObstacle()
         }
       }
-      // this.shrink = null
+      this.shrink = null
     }
 
     if (powerSprite.name.indexOf('point') > -1) {
@@ -165,18 +170,11 @@ Normal.prototype = {
       }
     }
 
-    var powerup = this.point
+    var powerup = new PowerUp(this.game, type, this, x, y)
     if (type === 'shrink') {
-      powerup = this.shrink
-      this.shrink.x = x
-      this.shrink.y = y
-      this.shrink.create()
-    } else {
-      this.point.type = type
-      this.point.x = x
-      this.point.y = y
-      this.point.create()
+      this.shrink = powerup
     }
+    powerup.create()
 
     for (var i = 0; i < this.pointsObs.length; i++) {
       if (JSON.stringify(this.pointsObs[i]) === JSON.stringify(this.lastPoint)) {
@@ -184,10 +182,12 @@ Normal.prototype = {
         break
       }
     }
-  },
 
-  getPointText: function () {
-    return this.score + 1
+    if (type !== 'shrink') {
+      this.powerText.setText(this.score + 1)
+      this.powerText.x = powerup.sprite.x
+      this.powerText.y = powerup.sprite.y + 2 * scale
+    }
   },
 
   createObstacle: function () {

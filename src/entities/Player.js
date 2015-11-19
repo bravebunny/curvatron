@@ -147,6 +147,10 @@ Player.prototype = {
         var x = lerp(xx, point.x, 0.85)
         var y = lerp(yy, point.y, 0.85)
         this.eatenPoint.position.setTo(x, y)
+
+        if (this.game.physics.arcade.distanceBetween(this.eatenPoint, this.sprite) <= 1) {
+          this.eatenPoint = null
+        }
       }
 
       xx = Math.cos(this.sprite.rotation) * 18 * scale + this.sprite.x
@@ -373,17 +377,16 @@ Player.prototype = {
         collectSound.play()
       }
 
-      this.eatenPoint = power.context.getEffectSprite()
-
       if (this.mode.collect) {
         this.mode.collect(player, power, this)
       }
 
+      this.eatenPoint = power
+
       // this.game.add.tween(power).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true)
-      var powerTween = this.game.add.tween(this.eatenPoint.scale).to({x: 0, y: 0}, 300, Phaser.Easing.Linear.None, true)
+      var powerTween = this.game.add.tween(power.scale).to({x: 0, y: 0}, 300, Phaser.Easing.Linear.None, true)
       powerTween.onComplete.add(function () {
-        if (this.mode.sp) this.eatenPoint.context.resetEffect()
-        this.eatenPoint = null
+        power.destroy()
         this.collectSemaphore = 0
       }, this)
     }
