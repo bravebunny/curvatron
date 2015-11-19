@@ -189,7 +189,9 @@ gameMananger.prototype = {
     }
     this.pauseButtons.add('restart_button', 'restart', this.restart)
     this.ui.audioButton = this.pauseButtons.add(audioButton, audioText, this.muteSound)
-
+    if (this.mode.file) {
+      this.pauseButtons.add('steam_button', 'workshop page', this.showWorkshop)
+    }
     if (this.mode.testing) {
       this.pauseButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true, this.mode.scale) })
     } else {
@@ -480,6 +482,13 @@ gameMananger.prototype = {
   touchPauseButton: function () {
     if (!paused) {
       this.backPressed()
+    }
+  },
+
+  showWorkshop: function () {
+    if (this.mode.file) {
+      var greenworks = require('./greenworks')
+      greenworks.ugcShowOverlay(this.mode.file)
     }
   },
 

@@ -26,6 +26,7 @@ var Adventure = function (game, testing, items, index) {
   this.mapW = 60
   this.mapH = 34
   this.tileSize = 32
+  this.file = null
 
   this.testing = testing
 
