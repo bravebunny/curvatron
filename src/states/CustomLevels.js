@@ -20,17 +20,23 @@ customLevels.prototype = {
     this.buttons.add('back_button', 'back', this.backPressed)
     var workshop = this.buttons.add('steam_button', 'workshop', this.workshop)
     this.buttons.add('editorOpen', 'open file', this.openFile)
-    this.buttons.add('editor_button', 'level editor', this.editor)
+    this.buttons.add('editor_button', 'create level', this.editor)
+    var myLevels = this.buttons.add('editor_button', 'my levels', this.myLevels)
     this.buttons.create()
 
     if (nonSteam) {
       workshop.disable()
+      myLevels.disable()
       this.buttons.select(2)
     } else this.buttons.select(1)
   },
 
   workshop: function () {
-    this.game.state.start('LevelSelector', true, false, true) // last argument makes the menu show workshop items
+    this.game.state.start('LevelSelector', true, false, 'workshop levels') // last argument makes the menu show workshop items
+  },
+
+  myLevels: function () {
+    this.game.state.start('LevelSelector', true, false, 'my levels') // last argument makes the menu show workshop items
   },
 
   openFile: function () {

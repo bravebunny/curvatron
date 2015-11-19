@@ -70,7 +70,7 @@ singlePlayer.prototype = {
   },
 
   adventure: function () {
-    this.state.start('LevelSelector')
+    this.state.start('LevelSelector', true, false, 'adventure')
   },
 
   creative: function () {

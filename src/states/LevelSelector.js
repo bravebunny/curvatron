@@ -7,19 +7,20 @@ var levelSelector = function (game) {
   this.containerX = 0
   this.containerY = 0
   this.items = null
-  this.workshop = false
+  this.type = false
 }
 
 levelSelector.prototype = {
-  init: function (workshop) {
-    this.workshop = workshop
+  init: function (type) {
+    this.type = type
+    // possible type values:
+    // 'workshop levels'
+    // 'adventure'
+    // 'my levels'
   },
 
   create: function () {
-    var name
-    if (this.workshop) name = 'workshop levels'
-    else name = 'adventure'
-    this.title = this.game.add.text(w2, 100, name, {
+    this.title = this.game.add.text(w2, 100, this.type, {
       font: '150px dosis',
       fill: '#ffffff',
       align: 'center'
@@ -33,11 +34,19 @@ levelSelector.prototype = {
     /* for (var i = 0; i < 200; i++) */
     this.buttons.add('back_button', 'back', this.backPressed)
 
-    if (this.workshop) this.getWorkshopLevels()
-    else this.getAdventureLevels()
+    switch (this.type) {
+      case 'workshop levels':
+        this.getWorkshopLevels('Subscribed')
+        break
+      case 'adventure':
+        this.getAdventureLevels()
+        break
+      case 'my levels':
+        this.getWorkshopLevels('Published')
+    }
   },
 
-  getWorkshopLevels: function () {
+  getWorkshopLevels: function (listType) {
     // get subscribed levels from worskhop
     this.loadingText = this.add.text(w2, 400, 'fetching levels...', {
       font: '80px dosis',
@@ -50,7 +59,7 @@ levelSelector.prototype = {
     greenworks.ugcGetUserItems(
       greenworks.UGCMatchingType.Items,
       greenworks.UserUGCListSortOrder.SubscriptionDateDesc,
-      greenworks.UserUGCList.Subscribed,
+      greenworks.UserUGCList[listType],
       function (items) {
         this.items = items
         for (var i = 0; i < items.length; i++) {
@@ -141,8 +150,15 @@ levelSelector.prototype = {
   },
 
   backPressed: function () {
-    if (this.workshop) this.game.state.start('CustomLevels')
-    else this.game.state.start('SinglePlayer')
+    switch (this.type) {
+      case 'workshop levels':
+      case 'my levels':
+        this.game.state.start('CustomLevels')
+        break
+      case 'adventure':
+        this.game.state.start('SinglePlayer')
+        break
+    }
   },
 
   up: function () {
