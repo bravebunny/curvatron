@@ -70,6 +70,9 @@ levelSelector.prototype = {
           }.bind(this))(i)
         }
         this.loadingText.visible = false
+        if (this.items.length === 0) {
+          this.buttons.add('steam_button', 'get new levels', this.workshopOverlay)
+        }
         this.createButtons()
       }.bind(this),
       function (error) {
@@ -127,6 +130,12 @@ levelSelector.prototype = {
       this.buttons.setY(300 + (this.containerY - 100 - this.containerScrollBar.y) / ((2 * h2 - this.containerY + 100) / ((this.buttons.length() + 1) * 125)))
       this.buttons.update()
     }
+  },
+
+  workshopOverlay: function () {
+    var greenworks = require('./greenworks')
+    // greenworks.ugcShowOverlay()
+    greenworks.activateGameOverlayToWebPage('http://steamcommunity.com/workshop/browse/?appid=404700&browsesort=trend&section=readytouseitems')
   },
 
   playWorkshopLevel: function (level) {
