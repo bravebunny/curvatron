@@ -49,10 +49,11 @@ Button.prototype = {
 
     // Button label
     this.label = this.game.add.text(offset, 0, this.text, {
-      font: '60px dosis',
-      fill: this.textColor
+      fill: this.textColor,
+      font: '60px dosis'
     })
     this.label.anchor.setTo(0.5, 0.5)
+    this.initFontSize()
 
     // Button icon
     this.icon = this.game.add.sprite(-w / 2 + 30, 0, this.iconName)
@@ -120,6 +121,13 @@ Button.prototype = {
     }
   },
 
+  initFontSize: function () {
+    if (this.label.width > this.w - 100) {
+      this.label.width = this.w - 100
+      this.label.scale.y = this.label.scale.x
+    }
+  },
+
   buttonDown: function () {
     if (this.button.enabled) {
       this.tweenOut.onComplete.active = true
@@ -150,6 +158,7 @@ Button.prototype = {
 
   setText: function (text) {
     this.label.text = text
+    this.initFontSize()
   },
 
   setPosition: function (x, y) {
