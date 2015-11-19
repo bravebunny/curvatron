@@ -27,7 +27,6 @@ singlePlayer.prototype = {
     this.buttons.add('adventure_button', 'adventure', this.adventure)
     this.buttons.add('collecting_button', 'normal', this.playNormalGame)
     this.buttons.add('endless_button', 'endless', this.playEndlessGame)
-    this.buttons.add('oldSchool_button', 'old school', this.playOldSchoolGame)
     this.buttons.add('creative_button', 'creative', this.creative)
 
     this.buttons.create()
@@ -61,11 +60,6 @@ singlePlayer.prototype = {
 
   playEndlessGame: function () {
     var mode = new Endless(this.game)
-    this.play(mode)
-  },
-
-  playOldSchoolGame: function () {
-    var mode = new OldSchool(this.game)
     this.play(mode)
   },
 

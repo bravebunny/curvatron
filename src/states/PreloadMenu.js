@@ -14,7 +14,6 @@ preloadMenu.prototype = {
     this.game.load.image('editor_button', 'assets/sprites/gui/main/editor.png')
 
     this.game.load.image('endless_button', 'assets/sprites/gui/singleplayer/endless.png')
-    this.game.load.image('oldSchool_button', 'assets/sprites/gui/singleplayer/oldSchool.png')
     this.game.load.image('collecting_button', 'assets/sprites/gui/singleplayer/collecting.png')
     this.game.load.image('adventure_button', 'assets/sprites/gui/singleplayer/adventure.png')
     this.game.load.image('creative_button', 'assets/sprites/gui/singleplayer/creative.png')
@@ -41,7 +40,6 @@ preloadMenu.prototype = {
     this.game.load.image('scroll_button', 'assets/sprites/gui/navigation/scrollButton.png')
 
     this.game.load.image('deaths-stats', 'assets/sprites/gui/stats/deaths-stats.png')
-    this.game.load.image('old-stats', 'assets/sprites/gui/stats/old-stats.png')
     this.game.load.image('score-stat', 'assets/sprites/gui/stats/score-stat.png')
     this.game.load.image('total-stats', 'assets/sprites/gui/stats/total-stats.png')
     this.game.load.image('aux-stat', 'assets/sprites/gui/stats/aux-stat.png')
@@ -66,14 +64,6 @@ preloadMenu.prototype = {
     this.game.load.image('overlay', 'assets/sprites/game/overlay.png')
 
     this.game.load.audio('dream', 'assets/music/dream.ogg')
-
-    // oldSchool
-    this.game.load.image('old_point', 'assets/sprites/game/oldschool/point.png')
-    this.game.load.image('old_player', 'assets/sprites/game/oldschool/player.png')
-    this.game.load.image('old_pointSuper', 'assets/sprites/game/oldschool/power.png')
-    this.game.load.image('old_trail', 'assets/sprites/game/oldschool/trail.png')
-    this.game.load.audio('sfx_collectOld', 'assets/sfx/collectOld.ogg')
-    this.game.load.audio('sfx_killOld', 'assets/sfx/killOld.ogg')
 
     // multiplayer
     this.game.load.image('pointMP', 'assets/sprites/game/multiplayer/pointMP.png')
