@@ -21,6 +21,8 @@ var editor = function (game) {
   this.levelArray = []
   this.maxPoints = 32
   this.textInput = null
+  this.fileHandle = null
+  this.justUploaded = false
   this.defaults = {
     mapW: 60,
     mapH: 34
@@ -211,8 +213,8 @@ editor.prototype = {
     this.selector.drawRect(-60, -60, 120, 120)
 
     this.uploadButtons = new ButtonList(this, this.game)
-    this.uploadButtons.add('upload_button', 'upload', this.confirmUpload)
-    this.uploadButtons.add('cancel_button', 'cancel', this.cancel)
+    this.confirmUploadButton = this.uploadButtons.add('upload_button', 'upload', this.confirmUpload)
+    this.cancelUploadButton = this.uploadButtons.add('cancel_button', 'cancel', this.cancel)
     this.uploadButtons.textColor = colorHexDark
     this.uploadButtons.create()
     this.uploadButtons.hide()
@@ -256,6 +258,14 @@ editor.prototype = {
     })
     this.dialogText.anchor.setTo(0.5, 0.5)
     this.dialogText.visible = false
+
+    this.uploadText = this.add.text(w2, 550, '', {
+      font: '80px dosis',
+      fill: '#ffffff',
+      align: 'center'
+    })
+    this.uploadText.anchor.setTo(0.5, 0.5)
+    this.uploadText.visible = false
 
     if (this.returning) {
       this.loadFromArray()
@@ -493,24 +503,32 @@ editor.prototype = {
   },
 
   auxChangeScale: function () {
-    this.changeScale = true
-    this.newPage = true
-    this.showDialog('current level will be deleted. change scale?')
+    if (this.uploadText.text !== 'uploading...') {
+      this.changeScale = true
+      this.newPage = true
+      this.showDialog('current level will be deleted. change scale?')
+    }
   },
 
   auxNewPage: function () {
-    this.newPage = true
-    this.showDialog('all unsaved progress will be lost. clear screen?')
+    if (this.uploadText.text !== 'uploading...') {
+      this.newPage = true
+      this.showDialog('all unsaved progress will be lost. clear screen?')
+    }
   },
 
   auxExit: function () {
-    this.exit = true
-    this.showDialog('all unsaved progress will be lost. exit?')
+    if (this.uploadText.text !== 'uploading...') {
+      this.exit = true
+      this.showDialog('all unsaved progress will be lost. exit?')
+    }
   },
 
   auxOpen: function () {
-    this.open = true
-    this.showDialog('all unsaved progress will be lost. chose another project?')
+    if (this.uploadText.text !== 'uploading...') {
+      this.open = true
+      this.showDialog('all unsaved progress will be lost. chose another project?')
+    }
   },
 
   test: function () {
@@ -533,13 +551,19 @@ editor.prototype = {
   },
 
   cancel: function () {
-    this.confirmButtons.hide()
-    this.uploadButtons.hide()
-    this.dialogText.visible = false
-    this.tb.bg.y = baseH
-    this.inputImage.visible = false
-    this.textInput.selectText()
-    this.textInput.blur()
+    if (this.uploadText.text !== 'uploading...') {
+      this.uploadText.visible = false
+      this.confirmButtons.hide()
+      this.uploadButtons.hide()
+      this.dialogText.visible = false
+      this.tb.bg.y = baseH
+      this.inputImage.visible = false
+      this.textInput.selectText()
+      this.textInput.blur()
+      this.confirmUploadButton.setText('upload')
+      this.cancelUploadButton.setText('cancel')
+      this.justUploaded = false
+    }
   },
 
   upload: function () {
@@ -571,23 +595,37 @@ editor.prototype = {
   },
 
   confirmUpload: function () {
-     // Steam only alows files with titles up to 128 chars to be uploaded to the workshop
-    this.textInput.value(this.textInput.value().substring(0, 128))
     var greenworks = require('./greenworks')
-    greenworks.saveTextToFile('customLevel', this.generateFile(), function () {
-      console.log('success save')
-      greenworks.fileShare('customLevel', function () {
-        console.log('success share')
-        var path = require('path')
-        var process = require('process')
-        var nwPath = process.execPath
-        var nwDir = path.dirname(nwPath)
-        console.log(nwDir + '\\tempScreenshot.png')
-        greenworks.publishWorkshopFile('customLevel', 'tempScreenshot.png', this.textInput.value(), '', function () {
-          console.log('success publish')
-        }, function (error) { console.log('error publishing: ' + error) })
-      }.bind(this), function (error) { console.log('error sharing: ' + error) })
-    }.bind(this), function (error) { console.log('error saving: ' + error) })
+    if (this.justUploaded) {
+      greenworks.ugcShowOverlay(this.fileHandle)
+      this.backPressed()
+    } else {
+      this.uploadButtons.disable()
+      this.uploadText.text = 'uploading...'
+      this.uploadText.visible = true
+       // Steam only alows files with titles up to 128 chars to be uploaded to the workshop
+      this.textInput.value(this.textInput.value().substring(0, 128))
+      greenworks.saveTextToFile('customLevel', this.generateFile(), function () {
+        console.log('success save')
+        greenworks.fileShare('customLevel', function () {
+          console.log('success share')
+          var path = require('path')
+          var process = require('process')
+          var nwPath = process.execPath
+          var nwDir = path.dirname(nwPath)
+          console.log(nwDir + '\\tempScreenshot.png')
+          greenworks.publishWorkshopFile('customLevel', 'tempScreenshot.png', this.textInput.value(), '', function (fileHandle) {
+            this.uploadButtons.enable()
+            this.uploadText.text = 'uploaded!'
+            this.fileHandle = fileHandle
+            this.justUploaded = true
+            this.confirmUploadButton.setText('open in workshop')
+            this.cancelUploadButton.setText('back')
+            console.log('success publish: ' + fileHandle)
+          }.bind(this), function (error) { console.log('error publishing: ' + error) })
+        }.bind(this), function (error) { console.log('error sharing: ' + error) })
+      }.bind(this), function (error) { console.log('error saving: ' + error) })
+    }
   },
 
   confirm: function () {
