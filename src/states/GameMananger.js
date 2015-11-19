@@ -243,7 +243,9 @@ gameMananger.prototype = {
       } */
 
       if (!gameOver) {
-        this.game.canvas.style.cursor = 'none'
+        if (this.game.canvas.style.cursor !== 'none') {
+          this.game.canvas.style.cursor = 'none'
+        }
         // Give crown
         if (this.mode.update) {
           this.mode.update()
@@ -366,6 +368,9 @@ gameMananger.prototype = {
       }
 
       this.deathButtons.show()
+      if (this.game.canvas.style.cursor !== 'auto') {
+        this.game.canvas.style.cursor = 'auto'
+      }
       this.deathButtons.select(0)
 
       if (this.mode.sp && this.mode.getHighScore) {
@@ -411,7 +416,6 @@ gameMananger.prototype = {
     var ui = this.ui
     if (!paused && !this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_B)) { // pause
       if (this.mode.name === 'creative') this.screenshot.snap()
-      this.game.canvas.style.cursor = 'auto'
       this.game.tweens.pauseAll()
       if (this.mode.pause) {
         this.mode.pause()
@@ -438,6 +442,9 @@ gameMananger.prototype = {
       }
 
       this.pauseButtons.show()
+      if (this.game.canvas.style.cursor !== 'auto') {
+        this.game.canvas.style.cursor = 'auto'
+      }
       this.pauseButtons.select(0)
     } else { // unpause
       this.game.tweens.resumeAll()
@@ -477,6 +484,9 @@ gameMananger.prototype = {
     if (this.mode.name === 'creative') this.pauseButtons.show()
     else this.deathButtons.show()
     this.shareButtons.hide()
+    if (this.game.canvas.style.cursor !== 'auto') {
+      this.game.canvas.style.cursor = 'auto'
+    }
   },
 
   touchPauseButton: function () {
