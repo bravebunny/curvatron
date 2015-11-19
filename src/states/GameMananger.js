@@ -114,8 +114,8 @@ gameMananger.prototype = {
     }
     for (var i = 0; i <= nPlayers; i++) {
       players[i] = new Player(i,
-        Math.cos((2 * Math.PI / (nPlayers + 1)) * i) * (w2 - 200) + w2,
-        Math.sin((2 * Math.PI / (nPlayers + 1)) * i) * (h2 - 100) + h2,
+        Math.cos((2 * Math.PI / (nPlayers + 1)) * i + Math.PI) * (w2 - 200) + w2,
+        Math.sin((2 * Math.PI / (nPlayers + 1)) * i + Math.PI) * (h2 - 100) + h2,
         keys[i], this.mode, this.game)
     }
 
