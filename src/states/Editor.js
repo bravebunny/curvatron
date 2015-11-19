@@ -551,6 +551,7 @@ editor.prototype = {
   },
 
   cancel: function () {
+    this.game.input.keyboard.enabled = true
     if (this.uploadText.text !== 'uploading...') {
       this.uploadText.visible = false
       this.confirmButtons.hide()
@@ -567,6 +568,7 @@ editor.prototype = {
   },
 
   upload: function () {
+    this.game.input.keyboard.enabled = false
     this.game.canvas.toBlob(function (blob) {
       var fs = require('fs')
       var png = this.game.canvas.toDataURL()
@@ -595,6 +597,7 @@ editor.prototype = {
   },
 
   confirmUpload: function () {
+    this.game.input.keyboard.enabled = true
     var greenworks = require('./greenworks')
     if (this.justUploaded) {
       greenworks.ugcShowOverlay(this.fileHandle)
