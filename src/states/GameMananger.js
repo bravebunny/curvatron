@@ -237,6 +237,7 @@ gameMananger.prototype = {
       } */
 
       if (!gameOver) {
+        this.game.canvas.style.cursor = 'none'
         // Give crown
         if (this.mode.update) {
           this.mode.update()
@@ -402,6 +403,7 @@ gameMananger.prototype = {
 
     var ui = this.ui
     if (!paused && !this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_B)) { // pause
+      this.game.canvas.style.cursor = 'auto'
       this.game.tweens.pauseAll()
       if (this.mode.pause) {
         this.mode.pause()
