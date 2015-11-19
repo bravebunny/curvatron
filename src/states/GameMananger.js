@@ -104,7 +104,8 @@ gameMananger.prototype = {
     */
 
     this.screenshot = new Screenshot(this.game)
-    this.screenshot.tweetMessage = 'Can you beat my score in the ' + this.mode.name + ' mode of #Curvatron ?'
+    if (this.mode.name === 'creative') this.screenshot.tweetMessage = 'I made art with #Curvatron'
+    else this.screenshot.tweetMessage = 'Can you beat my score in the ' + this.mode.name + ' mode of #Curvatron ?'
 
     // Choose snake locations
     var nPlayers = 0
@@ -182,6 +183,10 @@ gameMananger.prototype = {
 
     this.pauseButtons = new ButtonList(this, this.game)
     this.pauseButtons.add('resume_button', 'resume', this.backPressed)
+    if (this.mode.name === 'creative') {
+      this.pauseButtons.add('twitter_button', 'share picture', this.share)
+      this.pauseButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
+    }
     this.pauseButtons.add('restart_button', 'restart', this.restart)
     this.ui.audioButton = this.pauseButtons.add(audioButton, audioText, this.muteSound)
 
@@ -252,6 +257,7 @@ gameMananger.prototype = {
     } else {
       this.countdownText.alpha = 0
       this.pauseButtons.update()
+      if (this.mode.name === 'creative') this.shareButtons.update()
     }
 
     // Update players
@@ -402,6 +408,7 @@ gameMananger.prototype = {
 
     var ui = this.ui
     if (!paused && !this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_B)) { // pause
+      if (this.mode.name === 'creative') this.screenshot.snap()
       this.game.canvas.style.cursor = 'auto'
       this.game.tweens.pauseAll()
       if (this.mode.pause) {
@@ -458,13 +465,15 @@ gameMananger.prototype = {
   },
 
   share: function () {
-    this.deathButtons.hide()
+    if (this.mode.name === 'creative') this.pauseButtons.hide()
+    else this.deathButtons.hide()
     this.shareButtons.show()
     this.shareButtons.select(1)
   },
 
   cancelShare: function () {
-    this.deathButtons.show()
+    if (this.mode.name === 'creative') this.pauseButtons.show()
+    else this.deathButtons.show()
     this.shareButtons.hide()
   },
 
