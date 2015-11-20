@@ -70,6 +70,12 @@ Player.prototype = {
 
     this.sprite.body.angularVelocity = this.direction * 200 * this.angularVelocity * this.speed * scale
 
+    this.game.input.onDown.dispose()
+    this.game.input.onUp.dispose()
+    this.game.input.keyboard.onDownCallback = null
+    this.game.input.keyboard.onUpCallback = null
+    this.game.input.gamepad.onDownCallback = null
+    this.game.input.gamepad.onUpCallback = null
     if (this.mode.sp) {
       this.game.input.onDown.add(this.keyPressed, this)
       this.game.input.onUp.add(this.keyUp, this)
@@ -313,28 +319,6 @@ Player.prototype = {
     }
   },
 
-  click: function () {
-    var x1, x2, y1, y2
-    if (this.mode.sp) {
-      // pause button
-      x1 = 2 * w2 - 100 - 61
-      x2 = 2 * w2 - 100 + 61
-      y1 = 100 - 61
-      y2 = 100 + 61
-    } else {
-      x1 = w2 - 65
-      x2 = w2 + 65
-      y1 = h2 - 65
-      y2 = h2 + 65
-    }
-    if (!(this.game.input.position.x > x1 &&
-      this.game.input.position.x < x2 &&
-      this.game.input.position.y > y1 &&
-      this.game.input.position.y < y2)) {
-      this.keyPressed()
-    }
-  },
-
   kill: function (player, other) {
     if (this.keyText) this.keyText.destroy()
     if (!this.dead) {
@@ -423,7 +407,7 @@ Player.prototype = {
   },
 
   pause: function () {
-    if (this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_START)) {
+    if (this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_START) && this.mode.sp) {
       this.direction *= -1
     }
     if (this.mode.submitScore) {

@@ -514,8 +514,8 @@ gameMananger.prototype = {
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()
       }
-      localStorage.setItem('mute', mute)
     }
+    localStorage.setItem('mute', mute)
   },
 
   /*
