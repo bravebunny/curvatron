@@ -1,5 +1,5 @@
 
-/* global ButtonList, nonSteam, w2, Adventure */
+/* global ButtonList, nonSteam, w2 */
 
 var customLevels = function (game) {
   this.game = game
@@ -18,11 +18,10 @@ customLevels.prototype = {
     this.buttons = new ButtonList(this, this.game)
 
     this.buttons.add('back_button', 'back', this.backPressed)
-    var workshop = this.buttons.add('steam_button', 'play levels', this.workshop)
+    var workshop = this.buttons.add('resume_button', 'play community levels', this.workshop)
     var getLevels = this.buttons.add('steam_button', 'download levels', this.workshopOverlay)
-    this.buttons.add('editorOpen', 'level from file', this.openFile)
-    this.buttons.add('editor_button', 'create level', this.editor)
-    var myLevels = this.buttons.add('steam_button', 'my levels', this.myLevels)
+    this.buttons.add('editor_button', 'create new level', this.editor)
+    var myLevels = this.buttons.add('singleplayer_button', 'my published levels', this.myLevels)
     this.buttons.create()
 
     if (nonSteam) {
@@ -45,17 +44,6 @@ customLevels.prototype = {
 
   myLevels: function () {
     this.game.state.start('LevelSelector', true, false, 'my levels') // last argument makes the menu show workshop items
-  },
-
-  openFile: function () {
-    openFile(function (fileName) {
-      var fs = require('fs')
-      fs.readFile(fileName, 'utf8', function (error, data) {
-        if (error) console.log('error reading file: ' + error)
-        var mode = new Adventure(this.game, false)
-        this.game.state.start('PreloadGame', true, false, mode, fileName)
-      }.bind(this))
-    }.bind(this))
   },
 
   editor: function () {

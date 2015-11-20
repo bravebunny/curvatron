@@ -71,7 +71,8 @@ levelSelector.prototype = {
         }
         this.loadingText.visible = false
         if (this.items.length === 0) {
-          this.buttons.add('steam_button', 'get new levels', this.workshopOverlay)
+          if (this.type === 'my levels') this.buttons.add('editor_button', 'create new level', function () { this.game.state.start('Editor') })
+          else this.buttons.add('steam_button', 'get new levels', this.workshopOverlay)
         }
         this.createButtons()
       }.bind(this),
@@ -106,6 +107,7 @@ levelSelector.prototype = {
     this.containerScrollBar = this.game.add.sprite(this.containerX, this.containerY - 100, 'scroll_button')
     this.containerScrollBar.scale.set(50, draggyHeight)
     this.containerScrollBar.anchor.set(1, 0)
+    if (draggyHeight === barHeight) this.containerScrollBar.visible = false
 
     this.scrollMask = this.game.add.graphics(0, 0)
     this.scrollMask.beginFill(0xffffff)
