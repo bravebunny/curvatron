@@ -302,6 +302,7 @@ gameMananger.prototype = {
       this.countdownCounter--
       this.countdownText.setText(this.countdownCounter)
       if (this.countdownCounter === 0) {
+        this.countdownText.setText('go')
         countdown = false
       }
       if (this.countdownCounter === -1) {
