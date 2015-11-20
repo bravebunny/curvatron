@@ -135,7 +135,6 @@ setKeys.prototype = {
   },
 
   onPressedGamepad: function (button, gamepad) {
-    console.log(arguments)
     if (changingKeys && button !== Phaser.Gamepad.XBOX360_START) {
       keys[this.selectedPlayer] = (gamepad + 1) + ',' + button
       this.setGamepadIcon()

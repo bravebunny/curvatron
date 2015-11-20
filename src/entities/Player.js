@@ -106,7 +106,7 @@ Player.prototype = {
       this.totalTime += this.game.time.physicsElapsedMS
       if (this.autoMode && (this.totalTime) >= this.inputTimes[0]) {
         this.inputTimes.shift()
-        this.keyPressed()
+        //this.keyPressed()
       }
 
       var ctx = bmd.ctx
