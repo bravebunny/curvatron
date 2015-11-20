@@ -212,11 +212,13 @@ Adventure.prototype = {
       manager.shareText.visible = true
       manager.endGame()
       manager.twitterButton.enable()
-    }
-    if (!this.file) {
-      var unlocks = localStorage.getItem('unlocks')
-      if (unlocks === null) unlocks = 0
-      localStorage.setItem('unlocks', unlocks + 1)
+      if (!this.file) {
+        var unlocks = localStorage.getItem('unlocks')
+        if (unlocks === null) unlocks = 0
+        else unlocks = parseInt(unlocks, 10)
+        localStorage.setItem('unlocks', ++unlocks)
+        if (unlocks > this.index) manager.nextButton.enable()
+      }
     }
   },
 

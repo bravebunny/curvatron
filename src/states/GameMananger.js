@@ -208,8 +208,14 @@ gameMananger.prototype = {
     this.pauseButtons.hide()
 
     this.deathButtons = new ButtonList(this, this.game)
-    if (this.mode.items) this.deathButtons.add('resume_button', 'next level', this.mode.playNextLevel.bind(this.mode))
     this.deathButtons.add('restart_button', 'restart', this.restart)
+    if (this.mode.items) {
+      this.nextButton = this.deathButtons.add('resume_button', 'next level', this.mode.playNextLevel.bind(this.mode))
+      var unlocks = localStorage.getItem('unlocks')
+      if (unlocks === null) unlocks = 0
+      else unlocks = parseInt(unlocks, 10)
+      if (unlocks <= this.mode.index) this.nextButton.disable()
+    }
     if (this.mode.getScore) {
       if (this.mode.file) this.twitterButton = this.deathButtons.add('twitter_button', 'share', this.share)
       else this.twitterButton = this.deathButtons.add('twitter_button', 'share score', this.share)
