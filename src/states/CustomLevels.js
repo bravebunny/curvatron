@@ -18,11 +18,11 @@ customLevels.prototype = {
     this.buttons = new ButtonList(this, this.game)
 
     this.buttons.add('back_button', 'back', this.backPressed)
-    var getLevels = this.buttons.add('steam_button', 'get new levels', this.workshopOverlay)
     var workshop = this.buttons.add('steam_button', 'play levels', this.workshop)
+    var getLevels = this.buttons.add('steam_button', 'download levels', this.workshopOverlay)
     this.buttons.add('editorOpen', 'level from file', this.openFile)
     this.buttons.add('editor_button', 'create level', this.editor)
-    var myLevels = this.buttons.add('editor_button', 'my levels', this.myLevels)
+    var myLevels = this.buttons.add('steam_button', 'my levels', this.myLevels)
     this.buttons.create()
 
     if (nonSteam) {

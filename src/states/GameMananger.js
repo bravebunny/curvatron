@@ -105,7 +105,12 @@ gameMananger.prototype = {
 
     this.screenshot = new Screenshot(this.game)
     if (this.mode.name === 'creative') this.screenshot.tweetMessage = 'I made art with #Curvatron'
-    else this.screenshot.tweetMessage = 'Can you beat my score in the ' + this.mode.name + ' mode of #Curvatron ?'
+    else if (this.mode.name === 'adventure') {
+      var title = this.mode.title.substring(0, 100)
+      this.screenshot.tweetMessage = 'I beat the level \"' + title + '\" in #Curvatron !'
+    } else {
+      this.screenshot.tweetMessage = 'Can you beat my score in the ' + this.mode.name + ' mode of #Curvatron ?'
+    }
 
     // Choose snake locations
     var nPlayers = 0
@@ -180,6 +185,7 @@ gameMananger.prototype = {
     })
     this.shareText.anchor.setTo(0.5, 0.5)
     this.shareText.visible = false
+    this.shareText.fixedToCamera = true
 
     this.pauseButtons = new ButtonList(this, this.game)
     this.pauseButtons.add('resume_button', 'resume', this.backPressed)
@@ -202,18 +208,23 @@ gameMananger.prototype = {
     this.pauseButtons.hide()
 
     this.deathButtons = new ButtonList(this, this.game)
+    if (this.mode.items) this.deathButtons.add('resume_button', 'next level', this.mode.playNextLevel.bind(this.mode))
     this.deathButtons.add('restart_button', 'restart', this.restart)
     if (this.mode.getScore) {
-      this.deathButtons.add('twitter_button', 'share score', this.share)
+      if (this.mode.file) this.twitterButton = this.deathButtons.add('twitter_button', 'share', this.share)
+      else this.twitterButton = this.deathButtons.add('twitter_button', 'share score', this.share)
       this.deathButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
     }
     if (this.mode.testing) {
       this.deathButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true, this.mode.scale) })
+    } else if (this.mode.file) {
+      this.deathButtons.add('exit_button', 'more levels', function () { this.state.start('LevelSelector', true, false, 'workshop levels') })
     } else {
       this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
     this.deathButtons.textColor = colorHexDark
     this.deathButtons.create()
+    if (this.mode.name === 'adventure') this.twitterButton.disable()
     this.deathButtons.hide()
 
     if (!this.mode.sp) {
@@ -313,27 +324,29 @@ gameMananger.prototype = {
 
   endGame: function () {
     if (this.mode.getScore) {
-      var tempLabel = this.add.sprite(w2, h2, 'aux-stat')
-      tempLabel.scale.set(0.9, 0.9)
-      tempLabel.anchor.setTo(0.5, 0.5)
-      tempLabel.alpha = 0.5
+      if (this.mode.name !== 'adventure') {
+        var tempLabel = this.add.sprite(w2, h2, 'aux-stat')
+        tempLabel.scale.set(0.9, 0.9)
+        tempLabel.anchor.setTo(0.5, 0.5)
+        tempLabel.alpha = 0.5
 
-      var tempText = this.add.text(w2, h2 - 10, this.mode.getScore().toString(), {
-        font: '90px dosis',
-        fill: colorHex,
-        align: 'center'
-      })
-      tempText.anchor.setTo(0.5, 0.5)
-      tempText.alpha = 0.7
-
-      if (this.mode.name) {
-        var modeName = this.add.text(w2, h2 + 45, this.mode.name, {
-          font: '40px dosis',
+        var tempText = this.add.text(w2, h2 - 10, this.mode.getScore().toString(), {
+          font: '90px dosis',
           fill: colorHex,
           align: 'center'
         })
-        modeName.anchor.setTo(0.5, 0.5)
-        modeName.alpha = 0.5
+        tempText.anchor.setTo(0.5, 0.5)
+        tempText.alpha = 0.7
+
+        if (this.mode.name) {
+          var modeName = this.add.text(w2, h2 + 45, this.mode.name, {
+            font: '40px dosis',
+            fill: colorHex,
+            align: 'center'
+          })
+          modeName.anchor.setTo(0.5, 0.5)
+          modeName.alpha = 0.5
+        }
       }
 
       this.screenshot.snap()

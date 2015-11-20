@@ -143,7 +143,7 @@ levelSelector.prototype = {
     var greenworks = require('./greenworks')
     var file = this.items[level].file
     mode.file = this.items[level].publishedFileId
-    console.log(this.items)
+    mode.title = this.items[level].title
     greenworks.ugcDownloadItem(file, 'saves', function () {
       mode.setScreen()
       this.game.state.start('PreloadGame', true, false, mode, 'saves/customLevel')

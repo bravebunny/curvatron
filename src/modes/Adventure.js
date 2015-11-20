@@ -1,7 +1,7 @@
 /*eslint-disable*/
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
-  scale
+  scale, gameover:true, ButtonList
 */
 /*eslint-enable*/
 var Adventure = function (game, testing, items, index) {
@@ -26,7 +26,9 @@ var Adventure = function (game, testing, items, index) {
   this.mapW = 60
   this.mapH = 34
   this.tileSize = 32
+
   this.file = null
+  this.title = 'adventure'
 
   this.testing = testing
 
@@ -100,8 +102,11 @@ Adventure.prototype = {
     this.point = new PowerUp(this.game, 'point', this, 0, 0)
     this.createPower()
 
-    // debug stuff.
-    // this.player.setInputTimes([516.6666666666669, 866.6666666666661, 1316.666666666667, 1683.3333333333353, 1883.3333333333362, 2266.6666666666683, 2450, 3249.9999999999927, 3483.333333333324, 3883.3333333333203, 4466.666666666659, 4766.666666666664, 5100.000000000004, 5283.33333333334, 5766.666666666682, 6066.666666666688, 6866.666666666702, 7416.666666666712, 8033.33333333339, 8416.666666666719, 8700.000000000042, 9183.333333333358, 9949.999999999996, 10299.999999999984, 10833.333333333298, 11283.333333333281, 11833.333333333261, 12383.333333333241, 12616.666666666566])
+    this.finishButtons = new ButtonList(this, this.game)
+    this.finishButtons.add('restart_button', 'restart', this.backPressed)
+    this.finishButtons.add('steam_button', 'workshop page', this.showWorkshop)
+    this.finishButtons.create()
+    this.finishButtons.hide()
   },
 
   setScreen: function () {
@@ -200,11 +205,20 @@ Adventure.prototype = {
   },
 
   nextLevel: function () {
+
     if (this.testing) this.game.state.start('Editor', true, false, true, this.scale)
     else {
-      this.index++
-      this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
+      var manager = this.game.state.states['GameMananger']
+      manager.shareText.setText('level completed')
+      manager.shareText.visible = true
+      manager.endGame()
+      manager.twitterButton.enable()
     }
+  },
+
+  playNextLevel: function () {
+    this.index++
+    this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
   }
 
 }
