@@ -66,8 +66,6 @@ function checkGamepads (game) {
         pad.getButton(Phaser.Gamepad.XBOX360_A).onUp.add(keys.selectRelease, preload)
         pad.getButton(Phaser.Gamepad.XBOX360_B).onDown.add(keys.backPressed, preload)
         pad.getButton(Phaser.Gamepad.XBOX360_START).onDown.add(keys.backPressed, preload)
-        pad.getButton(Phaser.Gamepad.XBOX360_B).onUp.add(keys.backReleased, preload)
-        pad.getButton(Phaser.Gamepad.XBOX360_START).onUp.add(keys.backReleased, preload)
       }
     }
   }

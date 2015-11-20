@@ -75,6 +75,7 @@ Player.prototype = {
       this.game.input.onUp.add(this.keyUp, this)
       this.game.input.keyboard.addCallbacks(this, this.keyPressed, this.keyUp)
       this.game.input.gamepad.onDownCallback = this.keyPressed.bind(this)
+      this.game.input.gamepad.onUpCallback = this.keyUp.bind(this)
     } else {
       if (this.key.indexOf(',') !== -1) { // this means it is a controller button
         var gamepad = parseInt(this.key.split(',')[0], 10)
@@ -336,7 +337,6 @@ Player.prototype = {
   kill: function (player, other) {
     if (this.keyText) this.keyText.destroy()
     if (!this.dead) {
-      console.log(this.inputTimes)
       if (this.mode.sp) {
         var deathScore = parseInt(localStorage.getItem('deathScore'), 10)
         if (isNaN(deathScore)) {
