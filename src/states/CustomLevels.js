@@ -48,8 +48,7 @@ customLevels.prototype = {
   },
 
   openFile: function () {
-    var open = require('nw-open-file')
-    open(function (fileName) {
+    openFile(function (fileName) {
       var fs = require('fs')
       fs.readFile(fileName, 'utf8', function (error, data) {
         if (error) console.log('error reading file: ' + error)

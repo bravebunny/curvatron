@@ -308,7 +308,8 @@ Player.prototype = {
           }
         }
       }
-      if (this.sprite.body) this.update()
+      // needed for replay system, but causes tail flickering. disabled for now.
+      // if (this.sprite.body) this.update()
     }
   },
 
