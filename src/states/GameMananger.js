@@ -331,18 +331,18 @@ gameMananger.prototype = {
   endGame: function () {
     if (this.mode.getScore) {
       if (this.mode.name !== 'adventure') {
-        var tempLabel = this.add.sprite(w2, h2, 'aux-stat')
-        tempLabel.scale.set(0.9, 0.9)
-        tempLabel.anchor.setTo(0.5, 0.5)
-        tempLabel.alpha = 0.5
+        var ssLabel = this.add.sprite(w2, h2, 'aux-stat')
+        ssLabel.scale.set(0.9, 0.9)
+        ssLabel.anchor.setTo(0.5, 0.5)
+        ssLabel.alpha = 0.5
 
-        var tempText = this.add.text(w2, h2 - 10, this.mode.getScore().toString(), {
+        var ssText = this.add.text(w2, h2 - 10, this.mode.getScore().toString(), {
           font: '90px dosis',
           fill: colorHex,
           align: 'center'
         })
-        tempText.anchor.setTo(0.5, 0.5)
-        tempText.alpha = 0.7
+        ssText.anchor.setTo(0.5, 0.5)
+        ssText.alpha = 0.7
 
         if (this.mode.name) {
           var modeName = this.add.text(w2, h2 + 45, this.mode.name, {
@@ -357,8 +357,8 @@ gameMananger.prototype = {
 
       this.screenshot.snap()
 
-      if (tempLabel) tempLabel.kill()
-      if (tempText) tempText.kill()
+      if (ssLabel) ssLabel.kill()
+      if (ssText) ssText.kill()
       if (modeName) modeName.kill()
     }
 

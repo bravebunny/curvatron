@@ -1,5 +1,5 @@
 /* global points:true, modesLB, h2, w2, players,
-shuffleArray, localStorage, scale, PowerUp, Phaser, adjustScreen
+shuffleArray, localStorage, scale, PowerUp, Phaser, adjustScreen, colorHex
 */
 var Normal = function (game) {
   this.sp = true
