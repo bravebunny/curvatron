@@ -1,4 +1,4 @@
-/* global ButtonList, w2, h2, Adventure, Phaser */
+/* global ButtonList, w2, h2, Adventure, Phaser, localStorage */
 var levelSelector = function (game) {
   this.title = null
   this.buttons = null
@@ -84,13 +84,18 @@ levelSelector.prototype = {
   },
 
   getAdventureLevels: function () {
+    var unlocks = localStorage.getItem('unlocks')
+    if (unlocks === null) unlocks = 0
+    else unlocks = parseInt(unlocks, 10)
     var fs = require('fs')
     this.items = fs.readdirSync('assets/levels')
     for (var i = 0; i < this.items.length; i++) {
       (function (i) {
-        this.buttons.add('accept_button', 'level ' + i, function () {
+        var button = this.buttons.add('resume_button', 'level ' + i, function () {
           this.playLocalLevel(i)
         })
+        if (unlocks < 0) button.disable()
+        unlocks--
       }.bind(this))(i)
     }
     this.createButtons()

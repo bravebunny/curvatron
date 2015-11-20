@@ -205,7 +205,6 @@ Adventure.prototype = {
   },
 
   nextLevel: function () {
-
     if (this.testing) this.game.state.start('Editor', true, false, true, this.scale)
     else {
       var manager = this.game.state.states['GameMananger']
@@ -213,6 +212,11 @@ Adventure.prototype = {
       manager.shareText.visible = true
       manager.endGame()
       manager.twitterButton.enable()
+    }
+    if (!this.file) {
+      var unlocks = localStorage.getItem('unlocks')
+      if (unlocks === null) unlocks = 0
+      localStorage.setItem('unlocks', unlocks + 1)
     }
   },
 

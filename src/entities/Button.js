@@ -41,6 +41,7 @@ Button.prototype = {
     this.graphics.drawCircle(w, h / 2, h)
     this.graphics.endFill()
     // this.graphics.anchor.setTo(0.5,0.5)
+    if (!this.enabled) this.disable()
 
     if (!this.callback) this.graphics.tint = parseInt(shadeColor(this.textColor, 0.8).substring(1), 16)
 
@@ -183,13 +184,13 @@ Button.prototype = {
   },
 
   enable: function () {
-    this.graphics.tint = 0xFFFFFE // weird bug, for some reason 0xFFFFFF doesn't work
+    if (this.graphics) this.graphics.tint = 0xFFFFFE // weird bug, for some reason 0xFFFFFF doesn't work
     // this.button.inputEnabled = true // commented because mouse cursor wouldn't change back
     this.enabled = true
   },
 
   disable: function () {
-    this.graphics.tint = parseInt(shadeColor(this.textColor, 0.7).substring(1), 16)
+    if (this.graphics) this.graphics.tint = parseInt(shadeColor(this.textColor, 0.7).substring(1), 16)
     // this.button.inputEnabled = false
     this.enabled = false
   },

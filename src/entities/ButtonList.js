@@ -141,7 +141,11 @@ ButtonList.prototype = {
   },
 
   length: function () {
-    return this.buttons.length
+    var count = 0
+    for (var i = 0; i < this.buttons.length; i++) {
+      if (this.buttons[i].enabled) count++
+    }
+    return count
   },
 
   getButton: function (i) {
