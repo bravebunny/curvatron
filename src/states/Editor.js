@@ -82,11 +82,11 @@ editor.prototype = {
 
     // grid overlay
     var gridBMD = this.game.add.bitmapData(this.game.width, this.game.height)
-    var gridImage = gridBMD.addToWorld()
-    gridImage.alpha = 0.3
+    this.gridImage = gridBMD.addToWorld()
+    this.gridImage.alpha = 0.3
     var gridSize = this.tileSize * 3 / this.scale
-    gridImage.inputEnabled = true
-    gridImage.events.onInputOver.add(function (button) { this.showTooltip('', button) }.bind(this))
+    this.gridImage.inputEnabled = true
+    this.gridImage.events.onInputOver.add(function (button) { this.showTooltip('', button) }.bind(this))
 
     this.overlay = gridBMD.ctx
     this.overlay.strokeStyle = '#FFFFFF'
@@ -241,7 +241,7 @@ editor.prototype = {
       borderWidth: 0,
       innerShadow: '0px',
       padding: 10,
-      onsubmit: this.confirmUpload
+      onsubmit: this.confirmUpload.bind(this)
     })
 
     this.confirmButtons = new ButtonList(this, this.game)
@@ -568,32 +568,54 @@ editor.prototype = {
   },
 
   upload: function () {
-    this.game.input.keyboard.enabled = false
-    this.game.canvas.toBlob(function (blob) {
-      var fs = require('fs')
-      var png = this.game.canvas.toDataURL()
-      png = png.replace(/^data:image\/png;base64,/, '')
+    if (!this.uploadButtons.visible) {
+      this.uploadButtons.show()
+      this.uploadButtons.disable()
+      this.game.input.keyboard.enabled = false
+      this.game.canvas.toBlob(function (blob) {
+        var fs = require('fs')
 
-      var path = require('path')
-      var process = require('process')
-      var nwPath = process.execPath
-      var nwDir = path.dirname(nwPath) + '\\saves\\tempScreenshot.png'
+        setScreenFixed(baseW, baseH, this.game)
+        this.gridImage.visible = false
+        this.marker.visible = false
+        this.game.updateRender()
 
-      fs.writeFile('saves/tempScreenshot.png', png, 'base64', function (error) {
-        if (error) console.log('error writing file: ' + error)
-        console.log('screenshot save success')
-        var greenworks = require('./greenworks')
-        greenworks.saveFilesToCloud([nwDir], function () {
-          console.log('success saving to cloud')
-        }, function (error) { console.log('error saving to cloud: ' + error) })
-      })
-    }.bind(this))
-    this.tb.bg.y = 0
-    this.uploadButtons.show()
-    this.uploadButtons.select(1)
-    this.textInput.focus()
-    this.inputImage.visible = true
-    this.textInput.selectText()
+        var png = this.game.canvas.toDataURL()
+
+        setScreenFixed(baseW, baseH + 200, this.game)
+        this.gridImage.visible = true
+        this.marker.visible = true
+
+        png = png.replace(/^data:image\/png;base64,/, '')
+
+        var path = require('path')
+        var process = require('process')
+        var nwPath = process.execPath
+        var nwDir = path.dirname(nwPath) + '\\saves\\tempScreenshot.png'
+
+        fs.writeFile('saves/tempScreenshot.png', png, 'base64', function (error) {
+          if (error) {
+            this.uploadText.text = 'connection error!'
+            console.log('error writing file: ' + error)
+          }
+          console.log('screenshot save success')
+          var greenworks = require('./greenworks')
+          greenworks.saveFilesToCloud([nwDir], function (error) {
+            if (error) {
+              this.uploadText.text = 'connection error!'
+              this.uploadText.visible = true
+            }
+            console.log('success saving screenshot to cloud')
+            this.uploadButtons.enable()
+            this.tb.bg.y = 0
+            this.uploadButtons.select(1)
+            this.textInput.focus()
+            this.inputImage.visible = true
+            this.textInput.selectText()
+          }.bind(this), function (error) { console.log('error saving to cloud: ' + error) })
+        }.bind(this))
+      }.bind(this))
+    }
   },
 
   confirmUpload: function () {
@@ -625,9 +647,21 @@ editor.prototype = {
             this.confirmUploadButton.setText('open in workshop')
             this.cancelUploadButton.setText('back')
             console.log('success publish: ' + fileHandle)
-          }.bind(this), function (error) { console.log('error publishing: ' + error) })
-        }.bind(this), function (error) { console.log('error sharing: ' + error) })
-      }.bind(this), function (error) { console.log('error saving: ' + error) })
+          }.bind(this), function (error) {
+            console.log('error publishing: ' + error)
+            this.uploadButtons.enable()
+            this.uploadText.text = 'connection error!'
+          }.bind(this))
+        }.bind(this), function (error) {
+          console.log('error sharing: ' + error)
+          this.uploadButtons.enable()
+          this.uploadText.text = 'connection error!'
+        }.bind(this))
+      }.bind(this), function (error) {
+        console.log('error saving: ' + error)
+        this.uploadButtons.enable()
+        this.uploadText.text = 'connection error!'
+      }.bind(this))
     }
   },
 
