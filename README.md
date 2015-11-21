@@ -2,6 +2,9 @@
 
 Single button snake, for up to 8 players. Trickier than it looks.
 
+## Requirements
+[npm](https://www.npmjs.com/)
+
 ## Install
 Run the following commands:
 ```
