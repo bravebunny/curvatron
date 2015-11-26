@@ -83,6 +83,7 @@ preloadMenu.prototype = {
     this.game.load.image('editorsave', 'assets/sprites/gui/editor/save.png')
     this.game.load.image('editorNewPage', 'assets/sprites/gui/editor/newPage.png')
     this.game.load.image('editorExit', 'assets/sprites/gui/editor/exit.png')
+    this.game.load.image('menu_button', 'assets/sprites/gui/editor/menu.png')
     this.game.load.image('editorOpen', 'assets/sprites/gui/editor/open.png')
     this.game.load.image('upload_button', 'assets/sprites/gui/editor/upload.png')
     this.game.load.image('steam_button', 'assets/sprites/gui/editor/steam.png')

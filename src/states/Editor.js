@@ -157,12 +157,7 @@ editor.prototype = {
     this.tb.start.scale.set(0.6)
     this.tb.start.events.onInputOver.add(function (button) { this.showTooltip('change start position', button) }.bind(this))
 
-    this.tb.test = this.game.add.button(900, baseH + 100, 'resume_button', this.test, this)
-    this.tb.test.anchor.setTo(0.5, 0.5)
-    this.tb.test.scale.set(0.8)
-    this.tb.test.events.onInputOver.add(function (button) { this.showTooltip('test level', button) }.bind(this))
-
-    this.tb.scale = this.game.add.button(1050, baseH + 100, 'fullscreen_button', this.auxChangeScale, this)
+    this.tb.scale = this.game.add.button(1650, baseH + 100, 'fullscreen_button', this.auxChangeScale, this)
     this.tb.scale.anchor.setTo(0.5, 0.5)
     this.tb.scale.scale.set(0.8)
     this.tb.scale.events.onInputOver.add(function (button) { this.showTooltip('change level scale', button) }.bind(this))
@@ -174,43 +169,29 @@ editor.prototype = {
     })
     this.tb.scaleText.anchor.set(0.5)
 
-    this.tb.open = this.game.add.button(1200, baseH + 100, 'editorOpen', this.auxOpen, this)
-    this.tb.open.anchor.set(0.5, 0.5)
-    this.tb.open.scale.set(0.8)
-    this.tb.open.events.onInputOver.add(function (button) { this.showTooltip('import level', button) }.bind(this))
-
-    this.tb.save = this.game.add.button(1350, baseH + 100, 'editorsave', this.save, this)
-    this.tb.save.anchor.set(0.5, 0.5)
-    this.tb.save.scale.set(0.4)
-    this.tb.save.events.onInputOver.add(function (button) { this.showTooltip('save to computer', button) }.bind(this))
-
-    this.tb.upload = this.game.add.button(1500, baseH + 100, 'upload_button', null, this)
-    this.tb.upload.anchor.set(0.5, 0.5)
-    this.tb.upload.scale.set(0.9)
-    var uploadTooltip = ''
-    if (nonSteam) {
-      uploadTooltip = 'upload disabled: steam needs to be open'
-      this.tb.upload.alpha = 0.5
-    } else {
-      uploadTooltip = 'upload to workshop'
-      this.tb.upload.onInputUp.add(this.upload, this)
-    }
-    this.tb.upload.events.onInputOver.add(function (button) { this.showTooltip(uploadTooltip, button) }.bind(this))
-
-    this.tb.newPage = this.game.add.button(1650, baseH + 100, 'editorNewPage', this.auxNewPage, this)
-    this.tb.newPage.anchor.setTo(0.5, 0.5)
-    this.tb.newPage.scale.set(0.4)
-    this.tb.newPage.events.onInputOver.add(function (button) { this.showTooltip('clear page', button) }.bind(this))
-
-    this.tb.exit = this.game.add.button(1800, baseH + 100, 'editorExit', this.auxExit, this)
-    this.tb.exit.anchor.setTo(0.5, 0.5)
-    this.tb.exit.scale.set(0.8)
-    this.tb.exit.events.onInputOver.add(function (button) { this.showTooltip('exit to menu', button) }.bind(this))
+    this.tb.menu = this.game.add.button(1800, baseH + 100, 'menu_button', this.menu, this)
+    this.tb.menu.anchor.setTo(0.5, 0.5)
+    this.tb.menu.scale.set(0.8)
+    this.tb.menu.events.onInputOver.add(function (button) { this.showTooltip('open menu', button) }.bind(this))
 
     // square that shows the selected tool
     this.selector = this.game.add.graphics()
     this.selector.lineStyle(10, 0xFFFFFF, 1)
     this.selector.drawRect(-60, -60, 120, 120)
+
+    this.menuButtons = new ButtonList(this, this.game)
+    this.menuButtons.add('back_button', 'cancel', this.backPressed)
+    this.menuButtons.add('resume_button', 'test level', this.test)
+    this.menuButtons.add('editorOpen', 'import level', this.auxOpen)
+    this.menuButtons.add('editorsave', 'save to computer', this.save)
+    var uploadButton = this.menuButtons.add('upload_button', 'upload to workshop', this.upload)
+    if (nonSteam) uploadButton.disable()
+    this.menuButtons.add('editorNewPage', 'clear level', this.auxNewPage)
+    this.menuButtons.add('editorExit', 'exit to menu', this.auxExit)
+    this.menuButtons.setY(150)
+    this.menuButtons.textColor = colorHexDark
+    this.menuButtons.create()
+    this.menuButtons.hide()
 
     this.uploadButtons = new ButtonList(this, this.game)
     this.confirmUploadButton = this.uploadButtons.add('upload_button', 'upload', this.confirmUpload)
@@ -240,8 +221,7 @@ editor.prototype = {
       borderRadius: 0,
       borderWidth: 0,
       innerShadow: '0px',
-      padding: 10,
-      onsubmit: this.confirmUpload.bind(this)
+      padding: 10
     })
 
     this.confirmButtons = new ButtonList(this, this.game)
@@ -387,6 +367,7 @@ editor.prototype = {
 
     this.confirmButtons.update()
     this.uploadButtons.update()
+    this.menuButtons.update()
   },
 
   showTooltip: function (name, button) {
@@ -460,7 +441,7 @@ editor.prototype = {
     if (this.tb.bg.y === 0) { // true if confirmation menu is open
       this.cancel()
     } else {
-      this.auxExit()
+      this.menu()
     }
   },
 
@@ -473,19 +454,23 @@ editor.prototype = {
   },
 
   up: function () {
-    if (this.confirmButtons.visible) this.confirmButtons.selectUp()
+    this.confirmButtons.selectUp()
+    this.menuButtons.selectUp()
   },
 
   down: function () {
-    if (this.confirmButtons.visible) this.confirmButtons.selectDown()
+    this.confirmButtons.selectDown()
+    this.menuButtons.selectDown()
   },
 
   selectPress: function () {
-    if (this.confirmButtons.visible) this.confirmButtons.selectPress()
+    this.confirmButtons.selectPress()
+    this.menuButtons.selectPress()
   },
 
   selectRelease: function () {
-    if (this.confirmButtons.visible) this.confirmButtons.selectRelease()
+    this.confirmButtons.selectRelease()
+    this.menuButtons.selectRelease()
   },
 
   generateFile: function () {
@@ -542,7 +527,14 @@ editor.prototype = {
     }.bind(this))
   },
 
+  menu: function () {
+    this.tb.bg.y = 0
+    this.menuButtons.show()
+    this.menuButtons.select(0)
+  },
+
   showDialog: function (text) {
+    this.menuButtons.hide()
     this.dialogText.text = text
     this.dialogText.visible = true
     this.tb.bg.y = 0
@@ -564,12 +556,14 @@ editor.prototype = {
       this.confirmUploadButton.setText('upload')
       this.cancelUploadButton.setText('cancel')
       this.justUploaded = false
+      this.menuButtons.hide()
     }
   },
 
   upload: function () {
     if (!this.uploadButtons.visible) {
       this.uploadButtons.show()
+      this.menuButtons.hide()
       this.uploadButtons.disable()
       this.game.input.keyboard.enabled = false
       this.game.canvas.toBlob(function (blob) {
