@@ -107,6 +107,8 @@ Adventure.prototype = {
     this.finishButtons.add('steam_button', 'workshop page', this.showWorkshop)
     this.finishButtons.create()
     this.finishButtons.hide()
+
+    this.createAlbumElements('Raconte moi une histoire', 'M83', 'steam_button')
   },
 
   setScreen: function () {
@@ -225,6 +227,20 @@ Adventure.prototype = {
   playNextLevel: function () {
     this.index++
     this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
+  },
+
+  createAlbumElements: function (Name, Author, Image) {
+    var textS = Name + '\n' + Author
+    var image = this.game.add.sprite(w2 * 0.15, h2 * 3, Image)
+    image.anchor.setTo(0.5, 0.5)
+    var text = this.game.add.text(w2 * 0.3, h2 * 3, textS, {
+      font: '60px dosis',
+      fill: '#ffffff'})
+    text.scale.set(scale)
+    text.anchor.setTo(0, 0.5)
+
+    this.game.add.tween(image).to({ y: h2 * 1.7 }, 1000, Phaser.Easing.Linear.None, true)
+    this.game.add.tween(text).to({ y: h2 * 1.7 }, 1000, Phaser.Easing.Linear.None, true)
   }
 
 }
