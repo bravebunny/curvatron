@@ -114,7 +114,7 @@ Adventure.prototype = {
     this.finishButtons.create()
     this.finishButtons.hide()
 
-    this.createAlbumElements('Raconte moi une histoire', 'M83', 'steam_button')
+    this.createAlbumElements('steam_button', 'Raconte moi une histoire', 'M83', 'https://www.google.pt/search?q=sitegen&oq=site&aqs=chrome.0.69i59j69i57j69i65j69i60l3.1370j0j7&sourceid=chrome&es_sm=93&ie=UTF-8')
   },
 
   setScreen: function () {
@@ -238,8 +238,8 @@ Adventure.prototype = {
     this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
   },
 
-  createAlbumElements: function (name, author, image) {
-    var text = name + '\n' + author
+  createAlbumElements: function (image, name, author, site) {
+    var text = name + '\n' + author + '\n' + site
     this.image = this.game.add.sprite(0, 0, image) // [hard-coded] probably we need to change the coordinates
     this.image.anchor.setTo(0, 0.5)
     this.image.fixedToCamera = true
@@ -258,13 +258,15 @@ Adventure.prototype = {
   },
 
   deleteAlbumElements: function () {
-    this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
-    var aux = this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
-    aux.onComplete.add(function () {
-      this.image.kill
-      this.albumText.kill
+    this.game.time.events.add(Phaser.Timer.SECOND * 1, function () {
+      this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+      var aux = this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+      aux.onComplete.add(function () {
+        this.image.kill
+        this.albumText.kill
+      }, this)
+      this.albumDeleted = true
     }, this)
-    this.albumDeleted = true
   }
 
 }
