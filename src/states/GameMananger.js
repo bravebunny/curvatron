@@ -242,13 +242,9 @@ gameMananger.prototype = {
       this.countdownText.anchor.setTo(0.5, 0.5)
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCountdown, this)
     }
-
-    this.rotator = new Rotator(this.game, 600, 600)
-    this.rotator.create()
   },
 
   update: function () {
-    this.rotator.update()
     this.game.forceSingleUpdate = true
     if (!paused) {
       if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !mute) {
