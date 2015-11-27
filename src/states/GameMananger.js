@@ -4,7 +4,7 @@ menuMusic, pauseSprite, colisionMargin, scale:true, players:true, gameOver:true,
 muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
-colorHex, Player, keys, colorHexDark, bgColor:true, mute:true, ButtonList,
+colorHex, Player, keys, colorHexDark, bgColor:true, muteMusic:true, muteSoundEffects:true, ButtonList,
 clickButton, localStorage, saveAs, countdown:true, Screenshot */
 /*eslint-enable*/
 var gameMananger = function (game) {
@@ -159,17 +159,26 @@ gameMananger.prototype = {
     ui.overlay.alpha = 0.5
     ui.overlay.fixedToCamera = true
 
-    if (!mute) {
+    if (!muteMusic) {
       menuMusic.volume = 1
     }
 
-    var audioButton, audioText
-    if (mute) {
-      audioButton = 'audiooff_button'
-      audioText = 'audio: off'
+    var musicButton, musicText
+    if (muteMusic) {
+      musicButton = 'audiooff_button'
+      musicText = 'music: off'
     } else {
-      audioButton = 'audio_button'
-      audioText = 'audio: on'
+      musicButton = 'audio_button'
+      musicText = 'music: on'
+    }
+
+    var soundEffectsButton, soundEffectsText
+    if (muteSoundEffects) {
+      soundEffectsButton = 'audiooff_button'
+      soundEffectsText = 'sound effects: off'
+    } else {
+      soundEffectsButton = 'audio_button'
+      soundEffectsText = 'sound effects: on'
     }
 
     this.shareButtons = new ButtonList(this, this.game)
@@ -195,7 +204,8 @@ gameMananger.prototype = {
       this.pauseButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
     }
     this.pauseButtons.add('restart_button', 'restart', this.restart)
-    this.ui.audioButton = this.pauseButtons.add(audioButton, audioText, this.muteSound)
+    this.ui.musicButton = this.pauseButtons.add(musicButton, musicText, this.muteMusic)
+    this.ui.soundEffectsButton = this.pauseButtons.add(soundEffectsButton, soundEffectsText, this.muteSoundEffects)
     if (this.mode.file) {
       this.pauseButtons.add('steam_button', 'workshop page', this.showWorkshop)
     }
@@ -248,7 +258,7 @@ gameMananger.prototype = {
   update: function () {
     this.game.forceSingleUpdate = true
     if (!paused) {
-      if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !mute) {
+      if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !muteMusic) {
         menuMusic.fadeOut(2000)
       }
       if (!countdown) {
@@ -370,7 +380,7 @@ gameMananger.prototype = {
         this.mode.endGame(bottomY)
       }
 
-      if (!mute) {
+      if (!muteMusic) {
         menuMusic.play()
         menuMusic.volume = 1
       }
@@ -523,20 +533,33 @@ gameMananger.prototype = {
     }
   },
 
-  muteSound: function () {
-    if (mute) {
-      this.ui.audioButton.setIcon('audio_button')
-      this.ui.audioButton.setText('audio: on ')
-      mute = false
+  muteMusic: function () {
+    if (muteMusic) {
+      this.ui.musicButton.setIcon('audio_button')
+      this.ui.musicButton.setText('audio: on ')
+      muteMusic = false
     } else {
-      this.ui.audioButton.setIcon('audiooff_button')
-      this.ui.audioButton.setText('audio: off')
-      mute = true
+      this.ui.musicButton.setIcon('audiooff_button')
+      this.ui.musicButton.setText('audio: off')
+      muteMusic = true
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()
       }
     }
-    localStorage.setItem('mute', mute)
+    localStorage.setItem('muteMusic', muteMusic)
+  },
+
+  muteSoundEffects: function () {
+    if (muteSoundEffects) {
+      this.ui.soundEffectsButton.setIcon('audio_button')
+      this.ui.soundEffectsButton.setText('sound effects: on ')
+      muteSoundEffects = false
+    } else {
+      this.ui.soundEffectsButton.setIcon('audiooff_button')
+      this.ui.soundEffectsButton.setText('sound effects: off')
+      muteSoundEffects = true
+    }
+    localStorage.setItem('muteSoundEffects', muteSoundEffects)
   },
 
   /*

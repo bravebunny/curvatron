@@ -1,7 +1,7 @@
 /*eslint-disable*/
 /* global Phaser, maxPlayers:true, keys:true, menuMusic:true, setScreenFixed,
 baseH, changeColor:true, chosenColor:true, colorHex:true, bgColors,
-colorHexDark:true, bgColorsDark, bgColor:true, mute, w2, ButtonList,
+colorHexDark:true, bgColorsDark, bgColor:true, muteMusic, w2, ButtonList,
 localStorage, checkGamepads, defaultKeys:true */
 /*eslint-enable*/
 var menu = function (game) {
@@ -51,7 +51,7 @@ menu.prototype = {
     if (menuMusic === null) {
       menuMusic = this.add.audio('dream')
     }
-    if (!menuMusic.isPlaying && !mute) {
+    if (!menuMusic.isPlaying && !muteMusic) {
       menuMusic.loop = true
       menuMusic.play()
       menuMusic.volume = 1

@@ -1,8 +1,8 @@
 /*eslint-disable*/
 /* global scale, w2, h2, groupPowers, borders, paused, Phaser
   totalTime, bmd, colisionMargin, gameOver, tempLabel, tempLabelText,
-  pauseSprite, localStorage, mute, killSound, collectSound, players,
-  colorPlayers, moveSounds, pauseTween:true, lerp, countdown
+  pauseSprite, localStorage, muteMusic, killSound, collectSound, players,
+  colorPlayers, moveSounds, muteSoundEffects:true, pauseTween:true, lerp, countdown
 */
 /*eslint-enable*/
 var Player = function (id, x, y, key, mode, game) {
@@ -47,7 +47,6 @@ Player.prototype = {
     var spriteName = 'player'
     if (!this.mode.sp) spriteName += this.id
 
-    this.orientation = Math.abs(window.orientation) - 90 === 0 ? 'landscape' : 'portrait'
     this.sprite = this.game.add.sprite(this.x, this.y, spriteName)
     this.sprite.name = '' + this.id
 
@@ -295,12 +294,12 @@ Player.prototype = {
           else this.inputTimes.push(this.totalTime)
           if (this.direction === 1) {
             this.direction = -1
-            if (!mute && !paused) {
+            if (!muteSoundEffects && !paused) {
               moveSounds[0].play()
             }
           } else {
             this.direction = 1
-            if (!mute) {
+            if (!muteSoundEffects) {
               moveSounds[1].play()
             }
           }
@@ -333,7 +332,7 @@ Player.prototype = {
         this.dead = true
       }
 
-      if (!mute) {
+      if (!muteMusic) {
         killSound.play()
       }
 
@@ -357,7 +356,7 @@ Player.prototype = {
   collect: function (player, power) {
     if (this.collectSemaphore === 0) {
       this.collectSemaphore = 1
-      if (!mute) {
+      if (!muteMusic) {
         collectSound.play()
       }
 

@@ -1,8 +1,9 @@
-/* global ButtonList, w2, mute:true, menuMusic:true, localStorage  */
+/* global ButtonList, w2, muteMusic:true, muteSoundEffects:true, menuMusic:true, localStorage  */
 var settings = function (game) {
   this.game = game
   this.title = null
-  this.audio = null
+  this.music = null
+  this.soundEffects = null
   this.fullscreen = null
   this.buttons = null
 }
@@ -19,14 +20,16 @@ settings.prototype = {
     this.buttons = new ButtonList(this, this.game)
 
     this.buttons.add('back_button', 'back', this.backPressed)
-    this.audio = this.buttons.add('audio_button', 'audio: on ', this.toggleAudio)
+    this.music = this.buttons.add('audio_button', 'audio: on ', this.toggleMusic)
+    this.soundEffects = this.buttons.add('audio_button', 'sound effects: on ', this.toggleSoundEffects)
     this.fullscreen = this.buttons.add('fullscreen_button', 'fullscreen', this.toggleFullscreen)
     this.buttons.add('setkeys_button', 'controls', this.controls)
 
     this.buttons.create()
     this.buttons.select(1)
 
-    this.updateAudioButton()
+    this.updateMusicButton()
+    this.updateSoundEffectsButton()
     this.updateScreenButton()
   },
 
@@ -34,29 +37,43 @@ settings.prototype = {
     this.state.start('SetKeys', true, false, 'Settings')
   },
 
-  toggleAudio: function () {
-    mute = !mute
-    localStorage.setItem('mute', mute)
-    this.updateAudioButton()
+  toggleMusic: function () {
+    muteMusic = !muteMusic
+    localStorage.setItem('muteMusic', muteMusic)
+    this.updateMusicButton()
   },
 
-  updateAudioButton: function () {
-    if (!mute) {
-      this.audio.setIcon('audio_button')
-      this.audio.setText('audio: on ')
-      // this.game.sound.mute = false
+  toggleSoundEffects: function () {
+    muteSoundEffects = !muteSoundEffects
+    localStorage.setItem('muteSoundEffects', muteSoundEffects)
+    this.updateSoundEffectsButton()
+  },
+
+  updateMusicButton: function () {
+    if (!muteMusic) {
+      this.music.setIcon('audio_button')
+      this.music.setText('music: on ')
       menuMusic.loop = true
       menuMusic.volume = 1
       if (!menuMusic.isPlaying) {
         menuMusic.play()
       }
     } else {
-      this.audio.setIcon('audiooff_button')
-      this.audio.setText('audio: off')
-      // this.game.sound.mute = true
+      this.music.setIcon('audiooff_button')
+      this.music.setText('music: off')
       if (menuMusic.isPlaying) {
         menuMusic.stop()
       }
+    }
+  },
+
+  updateSoundEffectsButton: function () {
+    if (!muteSoundEffects) {
+      this.soundEffects.setIcon('audio_button')
+      this.soundEffects.setText('sound effects: on ')
+    } else {
+      this.soundEffects.setIcon('audiooff_button')
+      this.soundEffects.setText('sound effects: off')
     }
   },
 

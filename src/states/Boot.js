@@ -1,5 +1,5 @@
 /*eslint-disable*/
-/* global playCounter:true, w2:true, h2:true, changeColor:true, mute:true,
+/* global playCounter:true, w2:true, h2:true, changeColor:true, muteMusic:true, muteSoundEffects:true
 firstTime:true, bgColors:true, bgColorsDark:true, Phaser, colorPlayers:true,
 colorHex:true, colorHexDark:true, baseArea:true, chosenColor:true
 modesLB:true, localStorage, scale:true, changingKeys:true */
@@ -9,11 +9,11 @@ var boot = function (game) {
   w2 = 0
   h2 = 0
   changeColor = false
-  mute = false
+  muteMusic = false
+  muteSoundEffects = false
   firstTime = true
   scale = 1
   changingKeys = false
-  pressingBack = false
 }
 
 boot.prototype = {
@@ -27,8 +27,12 @@ boot.prototype = {
 
     this.game.stage.disableVisibilityChange = true
 
-    if (localStorage.getItem('mute') === 'true') {
-      mute = true
+    if (localStorage.getItem('muteMusic') === 'true') {
+      muteMusic = true
+    }
+
+    if (localStorage.getItem('muteSoundEffects') === 'true') {
+      muteSoundEffects = true
     }
 
     // Background colors
