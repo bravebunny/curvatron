@@ -27,6 +27,7 @@ var gameMananger = function (game) {
 gameMananger.prototype = {
   init: function (mode) {
     this.mode = mode
+    countdown = false
   },
 
   create: function () {

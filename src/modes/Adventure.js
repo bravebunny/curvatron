@@ -17,6 +17,10 @@ var Adventure = function (game, testing, items, index) {
   this.index = index
   this.margin = 400
 
+  this.image = null
+  this.albumText = null
+  this.albumDeleted = false
+
   this.scale = 1
   this.defaults = {
     mapW: 60,
@@ -45,6 +49,8 @@ Adventure.prototype = {
     this.score = 0
     this.pointPositions = []
     this.player = players[0]
+
+    this.albumDeleted = false
 
     // redo bitmapData
     bmd = null
@@ -127,6 +133,9 @@ Adventure.prototype = {
   },
 
   update: function () {
+    if (players[0].ready && !this.albumDeleted) {
+      this.deleteAlbumElements()
+    }
     if (this.game.physics.arcade.collide(players[0].sprite, this.layer)) {
       players[0].kill()
     }
@@ -229,18 +238,33 @@ Adventure.prototype = {
     this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
   },
 
-  createAlbumElements: function (Name, Author, Image) {
-    var textS = Name + '\n' + Author
-    var image = this.game.add.sprite(w2 * 0.15, h2 * 3, Image)
-    image.anchor.setTo(0.5, 0.5)
-    var text = this.game.add.text(w2 * 0.3, h2 * 3, textS, {
+  createAlbumElements: function (name, author, image) {
+    var text = name + '\n' + author
+    this.image = this.game.add.sprite(0, 0, image) // [hard-coded] probably we need to change the coordinates
+    this.image.anchor.setTo(0, 0.5)
+    this.image.fixedToCamera = true
+    this.image.cameraOffset.setTo(100, h2 * 2.5)
+
+    this.albumText = this.game.add.text(0, 0, text, {
       font: '60px dosis',
       fill: '#ffffff'})
-    text.scale.set(scale)
-    text.anchor.setTo(0, 0.5)
+    this.albumText.scale.set(scale)
+    this.albumText.anchor.setTo(0, 0.5)
+    this.albumText.fixedToCamera = true
+    this.albumText.cameraOffset.setTo(130 + this.image.width, h2 * 2.5)
 
-    this.game.add.tween(image).to({ y: h2 * 1.7 }, 1000, Phaser.Easing.Linear.None, true)
-    this.game.add.tween(text).to({ y: h2 * 1.7 }, 1000, Phaser.Easing.Linear.None, true)
+    this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 1.7 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+    this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 1.7 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+  },
+
+  deleteAlbumElements: function () {
+    this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+    var aux = this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+    aux.onComplete.add(function () {
+      this.image.kill
+      this.albumText.kill
+    }, this)
+    this.albumDeleted = true
   }
 
 }
