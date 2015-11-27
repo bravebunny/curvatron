@@ -332,7 +332,7 @@ Player.prototype = {
         this.dead = true
       }
 
-      if (!muteMusic) {
+      if (!muteSoundEffects) {
         killSound.play()
       }
 
@@ -356,7 +356,7 @@ Player.prototype = {
   collect: function (player, power) {
     if (this.collectSemaphore === 0) {
       this.collectSemaphore = 1
-      if (!muteMusic) {
+      if (!muteSoundEffects) {
         collectSound.play()
       }
 
