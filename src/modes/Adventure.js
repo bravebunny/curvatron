@@ -53,17 +53,8 @@ Adventure.prototype = {
 
     this.albumDeleted = false
 
-    // redo bitmapData
-    bmd = null
-    bmd = this.game.add.bitmapData(this.game.width, this.game.height)
-    bmd.addToWorld()
-    bmd.smoothed = false
-
     w2 = this.game.width / 2
     h2 = this.game.height / 2
-
-    bmd.width = 2 * w2
-    bmd.height = 2 * h2
 
     players[0].x = w2
     players[0].y = h2
@@ -131,6 +122,14 @@ Adventure.prototype = {
     game.scale.height = h
     game.camera.setSize(w, h)
     game.scale.refresh()
+  },
+
+  createBMD: function () {
+    // redo bitmapData
+    bmd = null
+    bmd = this.game.add.bitmapData(2 * w2, 2 * h2 + this.tileSize / 2)
+    bmd.addToWorld()
+    bmd.smoothed = false
   },
 
   update: function () {

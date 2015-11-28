@@ -156,10 +156,13 @@ gameMananger.prototype = {
     borders = [0, this.game.world.width, 0, this.game.world.height]
 
     // create BitmapData
-    bmd = this.add.bitmapData(this.game.world.width, this.game.world.height)
-    bmd.addToWorld()
-    bmd.smoothed = false
-
+    if (this.mode.createBMD) this.mode.createBMD()
+    else {
+      bmd = this.add.bitmapData(this.game.world.width, this.game.world.height)
+      bmd.addToWorld()
+      bmd.smoothed = false
+    }
+    
     ui.overlay = this.add.button(0, 0, 'overlay', function () {
       if (gameOver && !this.shareButtons.visible) {
         this.restart()
