@@ -211,7 +211,7 @@ Normal.prototype = {
     tweenObstacle.alpha = 0.0
 
     var obstacleTween1 = this.game.add.tween(obstacle.scale).to({x: 0.5, y: 0.5}, 4000, Phaser.Easing.Quadratic.In, true)
-    // var obstacleTween2 = this.game.add.tween(obstacle).to({ alpha: 0.25 }, 2000, Phaser.Easing.Linear.None, true)
+    this.game.add.tween(obstacle).to({ alpha: 0.25 }, 2000, Phaser.Easing.Linear.None, true)
     var obstacleTween3 = this.game.add.tween(tweenObstacle.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Linear.None, false)
     var obstacleTween4 = this.game.add.tween(tweenObstacle).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, false)
     obstacleTween1.onComplete.add(function () {
