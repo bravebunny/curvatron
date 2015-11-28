@@ -1,4 +1,5 @@
-/* global ButtonList, w2, muteMusic:true, muteSoundEffects:true, menuMusic:true, localStorage  */
+/* global ButtonList, w2, muteMusic:true, muteSoundEffects:true, menuMusic:true,
+localStorage, showMouse:true  */
 var settings = function (game) {
   this.game = game
   this.title = null
@@ -23,6 +24,7 @@ settings.prototype = {
     this.music = this.buttons.add('audio_button', 'audio: on ', this.toggleMusic)
     this.soundEffects = this.buttons.add('audio_button', 'sound effects: on ', this.toggleSoundEffects)
     this.fullscreen = this.buttons.add('fullscreen_button', 'fullscreen', this.toggleFullscreen)
+    this.showMouse = this.buttons.add('mouse_button', 'show cursor in game: on', this.toggleShowMouse)
     this.buttons.add('setkeys_button', 'controls', this.controls)
 
     this.buttons.create()
@@ -31,6 +33,7 @@ settings.prototype = {
     this.updateMusicButton()
     this.updateSoundEffectsButton()
     this.updateScreenButton()
+    this.updateShowMouseButton()
   },
 
   controls: function () {
@@ -94,6 +97,22 @@ settings.prototype = {
     } else {
       this.fullscreen.setText('fullscreen')
       this.fullscreen.setIcon('fullscreen_button')
+    }
+  },
+
+  toggleShowMouse: function () {
+    showMouse = !showMouse
+    localStorage.setItem('showMouse', showMouse)
+    this.updateShowMouseButton()
+  },
+
+  updateShowMouseButton: function () {
+    if (showMouse) {
+      this.showMouse.setText('show cursor in game: on')
+      this.showMouse.setIcon('mouse_button')
+    } else {
+      this.showMouse.setText('show cursor in game: off')
+      this.showMouse.setIcon('mouseoff_button')
     }
   },
 

@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex, Player, keys, colorHexDark, bgColor:true, muteMusic:true, muteSoundEffects:true, ButtonList,
-clickButton, localStorage, saveAs, countdown:true, Screenshot, Rotator, Horizontal, Vertical */
+clickButton, localStorage, saveAs, countdown:true, Screenshot, Rotator, Horizontal, Vertical, showMouse */
 /*eslint-enable*/
 var gameMananger = function (game) {
   tempLabel = null
@@ -291,7 +291,7 @@ gameMananger.prototype = {
       } */
 
       if (!gameOver) {
-        if (this.game.canvas.style.cursor !== 'none') {
+        if (this.game.canvas.style.cursor !== 'none' && !showMouse) {
           this.game.canvas.style.cursor = 'none'
         }
         // Give crown

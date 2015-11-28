@@ -2,7 +2,7 @@
 /* global playCounter:true, w2:true, h2:true, changeColor:true, muteMusic:true, muteSoundEffects:true
 firstTime:true, bgColors:true, bgColorsDark:true, Phaser, colorPlayers:true,
 colorHex:true, colorHexDark:true, baseArea:true, chosenColor:true
-modesLB:true, localStorage, scale:true, changingKeys:true */
+modesLB:true, localStorage, scale:true, changingKeys:true, showMouse:true */
 /*eslint-enable*/
 var boot = function (game) {
   playCounter = 0
@@ -11,6 +11,7 @@ var boot = function (game) {
   changeColor = false
   muteMusic = false
   muteSoundEffects = false
+  showMouse = false
   firstTime = true
   scale = 1
   changingKeys = false
@@ -33,6 +34,10 @@ boot.prototype = {
 
     if (localStorage.getItem('muteSoundEffects') === 'true') {
       muteSoundEffects = true
+    }
+
+    if (localStorage.getItem('showMouse') === 'true') {
+      showMouse = true
     }
 
     // Background colors
