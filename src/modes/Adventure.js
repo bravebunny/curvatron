@@ -268,6 +268,7 @@ Adventure.prototype = {
   },
 
   deleteAlbumElements: function () {
+    this.albumDeleted = true
     this.game.time.events.add(Phaser.Timer.SECOND * 1, function () {
       this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       this.game.add.tween(this.albumBg.cameraOffset).to({ y: h2 * 4 }, 1000, Phaser.Easing.Sinusoidal.In, true)
@@ -276,7 +277,6 @@ Adventure.prototype = {
         this.image.kill
         this.albumText.kill
       }, this)
-      this.albumDeleted = true
     }, this)
   }
 
