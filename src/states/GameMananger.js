@@ -93,14 +93,14 @@ gameMananger.prototype = {
     }
 
     // Remove this //////////////////////////////////
-    this.rotatorObst = new Rotator(this.game, w2, h2)
+    /*this.rotatorObst = new Rotator(this.game, w2, h2)
     this.rotatorObst.create()
 
     this.horizontalObst = new Horizontal(this.game, w2 * 0.5, h2 + 300)
     this.horizontalObst.create()
 
     this.verticalObst = new Vertical(this.game, w2 / 0.7, h2)
-    this.verticalObst.create()
+    this.verticalObst.create()*/
     //////////////////////////////////////////////////
     /*
     pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this)
@@ -162,7 +162,7 @@ gameMananger.prototype = {
       bmd.addToWorld()
       bmd.smoothed = false
     }
-    
+
     ui.overlay = this.add.button(0, 0, 'overlay', function () {
       if (gameOver && !this.shareButtons.visible) {
         this.restart()
@@ -271,9 +271,9 @@ gameMananger.prototype = {
   update: function () {
 
     // Remove this //////////////////////////////////
-    this.rotatorObst.update()
+    /*this.rotatorObst.update()
     this.horizontalObst.update()
-    this.verticalObst.update()
+    this.verticalObst.update()*/
     ////////////////////////////////////////////////////
 
     this.game.forceSingleUpdate = true

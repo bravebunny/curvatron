@@ -227,7 +227,7 @@ Adventure.prototype = {
         var unlocks = localStorage.getItem('unlocks')
         if (unlocks === null) unlocks = 0
         else unlocks = parseInt(unlocks, 10)
-        localStorage.setItem('unlocks', ++unlocks)
+        localStorage.setItem('unlocks', this.index + 1)
         if (unlocks > this.index) manager.nextButton.enable()
       }
     }
