@@ -20,6 +20,7 @@ var Adventure = function (game, testing, items, index) {
   this.image = null
   this.albumText = null
   this.albumDeleted = false
+  this.albumBg = null
 
   this.scale = 1
   this.defaults = {
@@ -114,7 +115,7 @@ Adventure.prototype = {
     this.finishButtons.create()
     this.finishButtons.hide()
 
-    this.createAlbumElements('steam_button', 'Raconte moi une histoire', 'M83', 'https://www.google.pt/search?q=sitegen&oq=site&aqs=chrome.0.69i59j69i57j69i65j69i60l3.1370j0j7&sourceid=chrome&es_sm=93&ie=UTF-8')
+    this.createAlbumElements('steam_button', 'Raconte moi une histoire', 'M83', 'www.bravebunny.co/cenas&cenas&morecenas')
   },
 
   setScreen: function () {
@@ -239,6 +240,14 @@ Adventure.prototype = {
   },
 
   createAlbumElements: function (image, name, author, site) {
+    this.albumBg = this.game.add.sprite(0, 0, 'overlay')
+    this.albumBg.anchor.setTo(0, 0.5)
+    this.albumBg.fixedToCamera = true
+    this.albumBg.cameraOffset.setTo(80, h2 * 4)
+    this.albumBg.width = w2 * 1.5
+    this.albumBg.height = 2 * h2
+    this.albumBg.alpha = 0.4
+
     var text = name + '\n' + author + '\n' + site
     this.image = this.game.add.sprite(0, 0, image) // [hard-coded] probably we need to change the coordinates
     this.image.anchor.setTo(0, 0.5)
@@ -253,13 +262,15 @@ Adventure.prototype = {
     this.albumText.fixedToCamera = true
     this.albumText.cameraOffset.setTo(130 + this.image.width, h2 * 2.5)
 
-    this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 1.7 }, 1000, Phaser.Easing.Sinusoidal.In, true)
-    this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 1.7 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+    this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 1.75 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+    this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 1.75 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+    this.game.add.tween(this.albumBg.cameraOffset).to({ y: h2 * 2.48 }, 1100, Phaser.Easing.Sinusoidal.In, true)
   },
 
   deleteAlbumElements: function () {
     this.game.time.events.add(Phaser.Timer.SECOND * 1, function () {
       this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+      this.game.add.tween(this.albumBg.cameraOffset).to({ y: h2 * 4 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       var aux = this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       aux.onComplete.add(function () {
         this.image.kill
