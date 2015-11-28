@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex, Player, keys, colorHexDark, bgColor:true, muteMusic:true, muteSoundEffects:true, ButtonList,
-clickButton, localStorage, saveAs, countdown:true, Screenshot */
+clickButton, localStorage, saveAs, countdown:true, Screenshot, Rotator, Horizontal, Vertical */
 /*eslint-enable*/
 var gameMananger = function (game) {
   tempLabel = null
@@ -92,6 +92,16 @@ gameMananger.prototype = {
       }
     }
 
+    // Remove this //////////////////////////////////
+    this.rotatorObst = new Rotator(this.game, w2, h2)
+    this.rotatorObst.create()
+
+    this.horizontalObst = new Horizontal(this.game, w2 * 0.5, h2 + 300)
+    this.horizontalObst.create()
+
+    this.verticalObst = new Vertical(this.game, w2 / 0.7, h2)
+    this.verticalObst.create()
+    //////////////////////////////////////////////////
     /*
     pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this)
     pauseSprite.anchor.setTo(0.5, 0.5)
@@ -256,6 +266,13 @@ gameMananger.prototype = {
   },
 
   update: function () {
+
+    // Remove this //////////////////////////////////
+    this.rotatorObst.update()
+    this.horizontalObst.update()
+    this.verticalObst.update()
+    ////////////////////////////////////////////////////
+
     this.game.forceSingleUpdate = true
     if (!paused) {
       if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !muteMusic) {

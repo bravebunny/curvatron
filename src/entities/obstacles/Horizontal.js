@@ -11,6 +11,8 @@ var Horizontal = function (game, x, y) {
   this.h = 30 * scale
   this.dist = 150 * scale
   this.sprite = null
+
+  this.spriteAxis = null
 }
 
 Horizontal.prototype = {
@@ -20,6 +22,12 @@ Horizontal.prototype = {
     this.sprite = this.game.add.sprite(this.x - this.dist, this.y, bmd)
     this.sprite.anchor.set(0.5)
     this.game.physics.arcade.enable(this.sprite)
+
+    var bmdAxis = this.game.add.bitmapData(this.w * 2.5, this.h * 0.7)
+    bmdAxis.fill(0xFF, 0xFF, 0xFF, 1)
+    this.spriteAxis = this.game.add.sprite(this.x, this.y, bmdAxis)
+    this.spriteAxis.alpha = 0.2
+    this.spriteAxis.anchor.set(0.5)
 
     var tween = this.game.add.tween(this.sprite.position).to({ x: this.x + this.dist }, 1500, Phaser.Easing.Sinusoidal.InOut, true)
     tween.yoyo(true)
