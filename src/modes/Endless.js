@@ -1,3 +1,5 @@
+/* global players, adjustScreen, localStorage*/
+
 var Endless = function (game) {
   this.sp = true
   this.game = game
@@ -25,7 +27,7 @@ Endless.prototype = {
   },
 
   getHighScore: function () {
-    var score = parseInt(localStorage.getItem('survivalScore'))
+    var score = parseInt(localStorage.getItem('survivalScore'), 10) // is the radix, 10 -> for decimal
     if (isNaN(score)) {
       return 0
     } else {

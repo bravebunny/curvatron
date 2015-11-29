@@ -14,7 +14,7 @@ preloadGame.prototype = {
   },
 
   preload: function () {
-    //adjustScreen(this.game)
+    // adjustScreen(this.game)
     if (this.level != null) {
       // this.game.load.text('level', 'assets/levels/level' + this.level)
       this.game.load.text('level', this.level)

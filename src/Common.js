@@ -1,3 +1,5 @@
+/* global baseArea, Phaser */
+
 function shuffleArray (o) { // v1.0
   for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x) {}
   return o
@@ -82,13 +84,13 @@ function log (msg) {
 }
 
 function openFile (cb) {
-	var el = window.document.createElement('input')
-	el.type = 'file'
-	el.style.display = 'none'
-	window.document.body.appendChild(el)
-	el.addEventListener('change', function(evt) {
-			window.document.body.removeChild(el)
-			cb(this.value)
-	})
-	el.click()
+  var el = window.document.createElement('input')
+  el.type = 'file'
+  el.style.display = 'none'
+  window.document.body.appendChild(el)
+  el.addEventListener('change', function (evt) {
+    window.document.body.removeChild(el)
+    cb(this.value)
+  })
+  el.click()
 }

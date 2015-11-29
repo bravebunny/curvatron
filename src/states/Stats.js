@@ -26,15 +26,13 @@ stats.prototype = {
     if (!ds) ds = 0
 
     this.buttons = new ButtonList(this, this.game)
-    var back = this.buttons.add('back_button', 'back', this.backPressed)
+    this.buttons.add('back_button', 'back', this.backPressed)
     this.buttons.add('collecting_button', 'classic best: ' + hs)
     this.buttons.add('endless_button', 'evergrowing best: ' + ss)
     this.buttons.add('deaths-stats', 'total deaths: ' + ds)
     this.buttons.add('total-stats', 'total points: ' + bs)
 
     this.buttons.create()
-    //this.buttons.setTextSize(30)
-    //back.setTextSize(60)
     this.buttons.select(0)
   },
 

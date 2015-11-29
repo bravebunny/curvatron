@@ -93,7 +93,7 @@ gameMananger.prototype = {
     }
 
     // Remove this //////////////////////////////////
-    /*this.rotatorObst = new Rotator(this.game, w2, h2)
+    /* this.rotatorObst = new Rotator(this.game, w2, h2)
     this.rotatorObst.create()
 
     this.horizontalObst = new Horizontal(this.game, w2 * 0.5, h2 + 300)
@@ -101,7 +101,7 @@ gameMananger.prototype = {
 
     this.verticalObst = new Vertical(this.game, w2 / 0.7, h2)
     this.verticalObst.create()*/
-    //////////////////////////////////////////////////
+    // ////////////////////////////////////////////// //
     /*
     pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this)
     pauseSprite.anchor.setTo(0.5, 0.5)
@@ -269,12 +269,11 @@ gameMananger.prototype = {
   },
 
   update: function () {
-
     // Remove this //////////////////////////////////
-    /*this.rotatorObst.update()
+    /* this.rotatorObst.update()
     this.horizontalObst.update()
     this.verticalObst.update()*/
-    ////////////////////////////////////////////////////
+    // ////////////////////////////////////////////// //
 
     this.game.forceSingleUpdate = true
     if (!paused) {

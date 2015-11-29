@@ -1,7 +1,7 @@
-var image = new Array()
-var author = new Array()
-var music = new Array()
-var site = new Array()
+var image = []
+var author = []
+var music = []
+var site = []
 
 function getAlbumMusic (index) {
   return [image[index], author[index], music[index], site[index]]
