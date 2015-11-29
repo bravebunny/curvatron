@@ -108,6 +108,12 @@ editor.prototype = {
     }
     this.overlay.stroke()
 
+    this.start = this.game.add.sprite(w2, h2, 'editorStart')
+    this.start.scale.set(1 / this.scale)
+    this.start.anchor.set(0.5, 0.05)
+    this.start.visible = false
+    // this.start.scale.set(0.9)
+
     // toolbar background
     this.tb.bg = this.game.add.sprite(0, baseH, 'overlay')
     this.tb.bg.width = baseW
@@ -131,13 +137,6 @@ editor.prototype = {
     })
     this.tb.pointText.anchor.set(0.5)
 
-    this.start = this.game.add.sprite(w2, h2, 'editorStart')
-    this.start.scale.set(1 / this.scale)
-    this.start.anchor.set(0.5, 0.05)
-    this.start.visible = false
-    // this.start.scale.set(0.9)
-
-    // toolbar icons
     this.tb.right = this.game.add.button(300, baseH + 100, 'editorArrow', this.pointInc, this)
     this.tb.right.anchor.set(0.5, 0.5)
     this.tb.right.scale.set(0.4)
