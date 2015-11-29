@@ -1,7 +1,7 @@
 /*eslint-disable*/
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
-  scale, gameover:true, ButtonList
+  scale, gameover:true, ButtonList, getAlbumMusic
 */
 /*eslint-enable*/
 var Adventure = function (game, testing, items, index) {
@@ -106,7 +106,8 @@ Adventure.prototype = {
     this.finishButtons.create()
     this.finishButtons.hide()
 
-    this.createAlbumElements('steam_button', 'Raconte moi une histoire', 'M83', 'www.bravebunny.co/cenas&cenas&morecenas')
+    var albumElements = getAlbumMusic(this.index)
+    this.createAlbumElements(albumElements[0], albumElements[1], albumElements[2], albumElements[3])
   },
 
   setScreen: function () {
