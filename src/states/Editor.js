@@ -1,6 +1,7 @@
 /*eslint-disable*/
 /* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs,
-ButtonList, h2, w2, Adventure, numberPlayers:true, CanvasInput, nonSteam , openFile */
+ButtonList, h2, w2, Adventure, numberPlayers:true, CanvasInput, nonSteam,
+openFile, Rotator, Vertical, Horizontal */
 /*eslint-enable*/
 var editor = function (game) {
   this.game = game
@@ -464,14 +465,22 @@ editor.prototype = {
     var x = (tileX * this.tileSize + this.tileSize / 2) / this.scale
     var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
     if (this.obstacles[i] == null) {
-      this.obstacles[i] = this.game.add.sprite(x, y, 'point')
+      this.obstacles[i] = this.createObstacleObj(this.obsType, x, y)
       this.game.world.sendToBack(this.obstacles[i])
-      this.obstacles[i].anchor.set(0.5)
-      this.obstacles[i].inputEnabled = true
     } else {
       this.levelArray[this.obsPositions[i]] = 0
-      this.obstacles[i].position.set(x, y)
+      this.obstacles[i].setPosition(x, y)
     }
+  },
+
+  createObstacleObj: function (val, x, y) {
+    var obs = null
+    if (val === this.values.vertical) obs = new Vertical(this.game, x, y)
+    else if (val === this.values.horizontal) obs = new Horizontal(this.game, x, y)
+    else if (val === this.values.rotator) obs = new Rotator(this.game, x, y)
+    obs.create()
+    obs.stop()
+    return obs
   },
 
   createStart: function (x, y) {

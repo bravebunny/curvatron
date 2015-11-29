@@ -29,12 +29,24 @@ Horizontal.prototype = {
     this.spriteAxis.alpha = 0.2
     this.spriteAxis.anchor.set(0.5)
 
-    var tween = this.game.add.tween(this.sprite.position).to({ x: this.x + this.dist }, 1500, Phaser.Easing.Sinusoidal.InOut, true)
-    tween.yoyo(true)
-    tween.repeat(-1)
+    this.tween = this.game.add.tween(this.sprite.position).to({ x: this.x + this.dist }, 1500, Phaser.Easing.Sinusoidal.InOut, true)
+    this.tween.yoyo(true)
+    this.tween.repeat(-1)
   },
 
   update: function () {
     this.game.physics.arcade.overlap(this.sprite, players[0].sprite, players[0].kill, null, players[0])
+  },
+
+  setPosition: function (x, y) {
+    this.y = y
+    this.x = x
+    this.sprite.position.set(x, y)
+    this.spriteAxis.position.set(x, y)
+  },
+
+  stop: function () {
+    this.tween.stop()
+    this.sprite.position.set(this.x, this.y)
   }
 }

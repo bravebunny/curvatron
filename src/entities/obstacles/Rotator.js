@@ -39,5 +39,16 @@ Rotator.prototype = {
     this.spriteAxis.angle += 2
 
     this.game.physics.arcade.overlap(this.sprite, players[0].sprite, players[0].kill, null, players[0])
+  },
+
+  setPosition: function (x, y) {
+    this.y = y
+    this.x = x
+    this.sprite.position.rotate(x, y, 2, true, this.dist)
+    spriteAxis.position.set(x, y)
+  },
+
+  stop: function () {
+
   }
 }
