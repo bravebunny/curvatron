@@ -125,14 +125,6 @@ Adventure.prototype = {
     game.scale.refresh()
   },
 
-  createBMD: function () {
-    // redo bitmapData
-    bmd = null
-    bmd = this.game.add.bitmapData(2 * w2, 2 * h2 + this.tileSize / 2)
-    bmd.addToWorld()
-    bmd.smoothed = false
-  },
-
   update: function () {
     if (players[0].ready && !this.albumDeleted) {
       this.deleteAlbumElements()
