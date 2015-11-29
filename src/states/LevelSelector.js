@@ -130,6 +130,8 @@ levelSelector.prototype = {
       this.containerY - 100,
       2 * w2,
       barHeight)
+
+    this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
   },
 
   update: function () {
@@ -177,6 +179,11 @@ levelSelector.prototype = {
         this.game.state.start('SinglePlayer')
         break
     }
+  },
+
+  mouseWheel: function (event) {
+    if (this.game.input.mouse.wheelDelta > 0) this.up()
+    else if (this.game.input.mouse.wheelDelta < 0) this.down()
   },
 
   up: function () {
