@@ -220,8 +220,8 @@ Adventure.prototype = {
         var unlocks = localStorage.getItem('unlocks')
         if (unlocks === null) unlocks = 0
         else unlocks = parseInt(unlocks, 10)
-        localStorage.setItem('unlocks', this.index + 1)
-        if (unlocks > this.index) manager.nextButton.enable()
+        if (unlocks < this.index + 1) localStorage.setItem('unlocks', this.index + 1)
+        if (localStorage.getItem('unlocks') > this.index) manager.nextButton.enable()
       }
     }
   },
