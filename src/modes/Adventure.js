@@ -1,7 +1,7 @@
 /*eslint-disable*/
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
-  scale, gameover:true, ButtonList, getAlbumMusic
+  scale, gameover:true, ButtonList, getAlbumMusic, Vertical, Horizontal, Rotator
 */
 /*eslint-enable*/
 var Adventure = function (game, testing, items, index) {
@@ -39,6 +39,9 @@ var Adventure = function (game, testing, items, index) {
 
   this.values = {
     start: 35,
+    rotator: 34,
+    horizontal: 33,
+    vertical: 32,
     wall: 1,
     empty: 0
   }
@@ -50,6 +53,7 @@ Adventure.prototype = {
     this.score = 0
     this.pointPositions = []
     this.player = players[0]
+    this.obstacles = []
 
     this.albumDeleted = false
 
@@ -81,11 +85,26 @@ Adventure.prototype = {
 
     for (var x = 0; x < this.mapW; x++) {
       for (var y = 0; y < this.mapH; y++) {
+        var worldX = x * this.tileSize + this.tileSize / 2
+        var worldY = y * this.tileSize + this.tileSize / 2
         var val = parseInt(levelArray[x * this.mapH + y], 36)
+
         if (val === this.values.wall) this.map.putTile(0, x, y)
         else if (val === this.values.start) {
-          players[0].x = x * this.tileSize + this.tileSize / 2
-          players[0].y = y * this.tileSize + this.tileSize / 2 + 5
+          players[0].x = worldX
+          players[0].y = worldY + 5
+        } else if (val === this.values.vertical) {
+          var vert = new Vertical(this.game, worldX, worldY)
+          vert.create()
+          this.obstacles.push(vert)
+        } else if (val === this.values.horizontal) {
+          var hor = new Horizontal(this.game, worldX, worldY)
+          hor.create()
+          this.obstacles.push(hor)
+        } else if (val === this.values.rotator) {
+          var rot = new Rotator(this.game, worldX, worldY)
+          rot.create()
+          this.obstacles.push(rot)
         } else if (val > 1) {
           this.pointPositions[val - 2] = {}
           var point = this.pointPositions[val - 2]
@@ -107,7 +126,7 @@ Adventure.prototype = {
     this.finishButtons.hide()
 
     var albumElements = getAlbumMusic(this.index)
-    this.createAlbumElements(albumElements.image, albumElements.author, albumElements.music, albumElements.site)
+    if (!this.testing) this.createAlbumElements(albumElements.image, albumElements.author, albumElements.music, albumElements.site)
   },
 
   setScreen: function () {
@@ -126,12 +145,14 @@ Adventure.prototype = {
   },
 
   update: function () {
-    if (players[0].ready && !this.albumDeleted) {
+    if (players[0].ready && !this.albumDeleted && !this.testing) {
       this.deleteAlbumElements()
     }
     if (this.game.physics.arcade.collide(players[0].sprite, this.layer)) {
       players[0].kill()
     }
+    var obs = this.obstacles
+    for (var i = 0; i < obs.length; i++) obs[i].update()
   },
 
   setCamera: function () {

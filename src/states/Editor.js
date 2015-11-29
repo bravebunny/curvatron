@@ -1,6 +1,6 @@
 /*eslint-disable*/
 /* global setScreenFixed, baseW, baseH, Phaser, colorHexDark, Blob, saveAs,
-ButtonList, h2, w2, Adventure, numberPlayers:true, CanvasInput, nonSteam */
+ButtonList, h2, w2, Adventure, numberPlayers:true, CanvasInput, nonSteam , openFile */
 /*eslint-enable*/
 var editor = function (game) {
   this.game = game
@@ -19,7 +19,8 @@ var editor = function (game) {
   this.returning = false
   this.fileName = null
   this.levelArray = []
-  this.maxPoints = 32
+  this.maxPoints = 29
+  this.maxObs = 100
   this.textInput = null
   this.fileHandle = null
   this.justUploaded = false
@@ -32,6 +33,9 @@ var editor = function (game) {
   // the remaining ones can be used for the points
   this.values = {
     start: 35,
+    rotator: 34,
+    horizontal: 33,
+    vertical: 32,
     wall: 1,
     empty: 0
   }
@@ -49,8 +53,11 @@ editor.prototype = {
     // variables that need to be reset
     this.tool = 'draw' // draw, erase, point, start
     this.selectedPoint = 1
+    this.selectedObs = 1
     this.points = []
+    this.obstacles = []
     this.pointPositions = []
+    this.obsPositions = []
     this.tileSize = 32
     this.mapW = this.defaults.mapW * this.scale
     this.mapH = this.defaults.mapH * this.scale
@@ -155,6 +162,52 @@ editor.prototype = {
     this.tb.start.anchor.set(0.5, 0.5)
     this.tb.start.scale.set(0.6)
     this.tb.start.events.onInputOver.add(function (button) { this.showTooltip('change start position', button) }.bind(this))
+
+    // toolbar icons
+    this.tb.leftObs = this.game.add.button(900, baseH + 100, 'editorArrow', this.obsDec, this)
+    this.tb.leftObs.anchor.set(0.5, 0.5)
+    this.tb.leftObs.scale.set(-0.4, 0.4)
+
+    this.tb.obstacle = this.game.add.button(1000, baseH + 100, 'editorPoint', this.obstacleTool, this)
+    this.tb.obstacle.anchor.set(0.5)
+    this.tb.obstacle.scale.set(0.4)
+    this.tb.obstacle.events.onInputOver.add(this.showObstacles, this)
+
+    this.tb.obsText = this.game.add.text(this.tb.obstacle.x, this.tb.obstacle.y, this.selectedObs, {
+      font: '60px dosis',
+      fill: colorHexDark,
+      align: 'center'
+    })
+    this.tb.obsText.anchor.set(0.5)
+
+    this.tb.obsMenu = this.game.add.sprite(this.tb.obstacle.x, baseH, 'overlay')
+    this.tb.obsMenu.width = 300
+    this.tb.obsMenu.height = 500
+    this.tb.obsMenu.alpha = 0.5
+    this.tb.obsMenu.visible = false
+    this.tb.obsMenu.anchor.set(0.5, 1)
+    this.tb.obsMenu.inputEnabled = true
+
+    this.tb.obs = {}
+
+    this.tb.obs.vertical = this.game.add.button(1000, baseH - 100, 'editorPoint', this.verticalTool, this)
+    this.tb.obs.vertical.anchor.set(0.5)
+    this.tb.obs.vertical.scale.set(0.4)
+    this.tb.obs.vertical.visible = false
+
+    this.tb.obs.horizontal = this.game.add.button(1000, baseH - 250, 'editorPoint', this.horizontalTool, this)
+    this.tb.obs.horizontal.anchor.set(0.5)
+    this.tb.obs.horizontal.scale.set(0.4)
+    this.tb.obs.horizontal.visible = false
+
+    this.tb.obs.rotator = this.game.add.button(1000, baseH - 400, 'editorPoint', this.rotatorTool, this)
+    this.tb.obs.rotator.anchor.set(0.5)
+    this.tb.obs.rotator.scale.set(0.4)
+    this.tb.obs.rotator.visible = false
+
+    this.tb.rightObs = this.game.add.button(1100, baseH + 100, 'editorArrow', this.obsInc, this)
+    this.tb.rightObs.anchor.set(0.5, 0.5)
+    this.tb.rightObs.scale.set(0.4)
 
     this.tb.scale = this.game.add.button(1650, baseH + 100, 'fullscreen_button', this.auxChangeScale, this)
     this.tb.scale.anchor.setTo(0.5, 0.5)
@@ -265,6 +318,14 @@ editor.prototype = {
     var pointerX = this.game.input.activePointer.worldX
     var pointerY = this.game.input.activePointer.worldY
 
+    var obs = this.tb.obsMenu
+
+    if (this.tb.obsMenu.visible && (pointerX < obs.x - obs.width / 2 ||
+    pointerX > obs.x + obs.width / 2 ||
+    pointerY < baseH - obs.height)) {
+      this.hideObstacles()
+    }
+
     for (var i = 0; i < this.points.length; i++) {
       var point = this.points[i]
       if (point) {
@@ -282,7 +343,7 @@ editor.prototype = {
     this.selector.x = this.tb[this.tool].x
     this.selector.y = this.tb[this.tool].y
 
-    if (pointerY < this.tb.bg.y) {
+    if (pointerY < this.tb.bg.y && !this.tb.obsMenu.visible) {
       // cursor square to mark drawing position
       this.marker.x = this.layer.getTileX(pointerX * this.scale) * this.tileSize / this.scale
       this.marker.y = this.layer.getTileY(pointerY * this.scale) * this.tileSize / this.scale
@@ -351,6 +412,15 @@ editor.prototype = {
               }
               break
 
+            case 'obstacle':
+              if (this.levelArray[tileX * this.mapH + tileY] === this.values.empty) {
+                this.createObstacle(tileX, tileY, this.selectedObs)
+                this.levelArray[tileX * this.mapH + tileY] = this.obsType
+                this.obsPositions[this.selectedObs] = tileX * this.mapH + tileY
+                // this.pointsGrid[this.selectedPoint] = [tileX, this.layer.getTileX(y)]
+              }
+              break
+
             case 'start':
               if (this.levelArray[tileX * this.mapH + tileY] === this.values.empty) {
                 this.levelArray[tileX * this.mapH + tileY] = this.values.start
@@ -390,6 +460,20 @@ editor.prototype = {
     }
   },
 
+  createObstacle: function (tileX, tileY, i) {
+    var x = (tileX * this.tileSize + this.tileSize / 2) / this.scale
+    var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
+    if (this.obstacles[i] == null) {
+      this.obstacles[i] = this.game.add.sprite(x, y, 'point')
+      this.game.world.sendToBack(this.obstacles[i])
+      this.obstacles[i].anchor.set(0.5)
+      this.obstacles[i].inputEnabled = true
+    } else {
+      this.levelArray[this.obsPositions[i]] = 0
+      this.obstacles[i].position.set(x, y)
+    }
+  },
+
   createStart: function (x, y) {
     var tileX = (x * this.tileSize + this.tileSize / 2) / this.scale
     var tileY = (y * this.tileSize + this.tileSize / 2) / this.scale
@@ -417,6 +501,10 @@ editor.prototype = {
     this.tool = 'point'
   },
 
+  obstacleTool: function () {
+    this.tool = 'obstacle'
+  },
+
   pointDec: function () {
     if (this.selectedPoint > 1) {
       this.selectedPoint--
@@ -434,6 +522,54 @@ editor.prototype = {
       this.selectedPoint = 1
     }
     this.tb.pointText.text = this.selectedPoint
+  },
+
+  obsDec: function () {
+    if (this.selectedObs > 1) {
+      this.selectedObs--
+    } else if (this.obstacles.length > 0) {
+      if (this.obstacles.length < this.maxObs) this.selectedObs = this.obstacles.length
+      else this.selectedObs = this.maxObs
+    }
+    this.tb.obsText.text = this.selectedObs
+  },
+
+  obsInc: function () {
+    if (this.selectedObs < this.obstacles.length && this.selectedObs < this.maxObs) {
+      this.selectedObs++
+    } else {
+      this.selectedObs = 1
+    }
+    this.tb.obsText.text = this.selectedObs
+  },
+
+  showObstacles: function () {
+    this.tb.obsMenu.visible = true
+    this.tb.obs.vertical.visible = true
+    this.tb.obs.horizontal.visible = true
+    this.tb.obs.rotator.visible = true
+  },
+
+  hideObstacles: function () {
+    this.tb.obsMenu.visible = false
+    this.tb.obs.vertical.visible = false
+    this.tb.obs.horizontal.visible = false
+    this.tb.obs.rotator.visible = false
+  },
+
+  verticalTool: function () {
+    this.obstacleTool()
+    this.obsType = this.values.vertical
+  },
+
+  horizontalTool: function () {
+    this.obstacleTool()
+    this.obsType = this.values.horizontal
+  },
+
+  rotatorTool: function () {
+    this.obstacleTool()
+    this.obsType = this.values.rotator
   },
 
   backPressed: function () {
