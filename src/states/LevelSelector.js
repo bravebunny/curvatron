@@ -44,6 +44,7 @@ levelSelector.prototype = {
       case 'my levels':
         this.getWorkshopLevels('Published')
     }
+    this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
   },
 
   getWorkshopLevels: function (listType) {
@@ -130,8 +131,6 @@ levelSelector.prototype = {
       this.containerY - 100,
       2 * w2,
       barHeight)
-
-    this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
   },
 
   update: function () {

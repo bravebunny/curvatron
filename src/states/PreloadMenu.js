@@ -106,9 +106,6 @@ preloadMenu.prototype = {
     this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onUp.add(this.keys.selectRelease, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(this.keys.selectPress, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onUp.add(this.keys.selectRelease, this)
-    this.game.input.keyboard.addKey(Phaser.Keyboard.E).onDown.add(this.keys.selectPress, this)
-    this.game.input.keyboard.addKey(Phaser.Keyboard.E).onUp.add(this.keys.selectRelease, this)
-    this.game.input.keyboard.addKey(Phaser.Keyboard.Q).onDown.add(this.keys.backPressed, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.ESC).onDown.add(this.keys.backPressed, this)
     this.game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE).onDown.add(this.keys.backPressed, this)
     this.game.input.resetLocked = true
