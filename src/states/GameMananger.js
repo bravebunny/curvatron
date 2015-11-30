@@ -175,6 +175,9 @@ gameMananger.prototype = {
 
     if (!muteMusic) {
       menuMusic.volume = 1
+      if(this.mode.music) this.mode.music.play()
+    } else {
+      if(this.mode.music) this.mode.music.stop()
     }
 
     var musicButton, musicText
@@ -476,6 +479,7 @@ gameMananger.prototype = {
         if (this.mode.testing) {
           this.state.start('Editor', true, false, true, this.mode.scale)
         } else {
+          if (this.mode.music) this.mode.music.stop()
           this.state.start('Menu')
         }
       }
@@ -558,10 +562,12 @@ gameMananger.prototype = {
       this.ui.musicButton.setIcon('audio_button')
       this.ui.musicButton.setText('audio: on ')
       muteMusic = false
+      if(this.mode.music) this.mode.music.play()
     } else {
       this.ui.musicButton.setIcon('audiooff_button')
       this.ui.musicButton.setText('audio: off')
       muteMusic = true
+      if(this.mode.music) this.mode.music.stop()
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()
       }

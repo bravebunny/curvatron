@@ -1,7 +1,7 @@
 /*eslint-disable*/
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
-  scale, gameover:true, ButtonList, musicList, Vertical, Horizontal, Rotator
+  scale, gameover:true, ButtonList, musicList, Vertical, Horizontal, Rotator, muteMusic
 */
 /*eslint-enable*/
 var Adventure = function (game, testing, items, index) {
@@ -22,6 +22,7 @@ var Adventure = function (game, testing, items, index) {
   this.albumDeleted = false
   this.albumBg = null
   this.music = null
+  this.albumCreated = false
 
   this.scale = 1
   this.defaults = {
@@ -50,7 +51,7 @@ var Adventure = function (game, testing, items, index) {
 
 Adventure.prototype = {
   preload: function () {
-    if(!this.testing) {
+    if (!this.testing) {
       var music = musicList[this.index]
       this.game.load.image('cover_image', 'assets/music/covers/' + music.file + '.png')
       this.game.load.audio('level_music', 'assets/music/soundtrack/' + music.file + '.ogg')
@@ -63,10 +64,9 @@ Adventure.prototype = {
     this.pointPositions = []
     this.player = players[0]
     this.obstacles = []
-    this.music = this.game.add.audio('level_music')
-    this.music.play()
 
     this.albumDeleted = false
+    this.albumCreated = false
 
     w2 = this.game.width / 2
     h2 = this.game.height / 2
@@ -136,7 +136,12 @@ Adventure.prototype = {
     this.finishButtons.create()
     this.finishButtons.hide()
 
-    if (!this.testing) this.createAlbumElements()
+    if (!this.testing) {
+      this.music = this.game.add.audio('level_music')
+      if (!muteMusic) {
+        this.createAlbumElements()
+      }
+    }
   },
 
   setScreen: function () {
@@ -155,7 +160,7 @@ Adventure.prototype = {
   },
 
   update: function () {
-    if (players[0].ready && !this.albumDeleted && !this.testing) {
+    if (players[0].ready && !this.albumDeleted && !this.testing && this.albumCreated) {
       this.deleteAlbumElements()
     }
     if (this.game.physics.arcade.collide(players[0].sprite, this.layer)) {
@@ -263,6 +268,7 @@ Adventure.prototype = {
   },
 
   createAlbumElements: function () {
+    this.albumCreated = true
     var album = musicList[this.index]
     var title = album.title
     var author = album.author
