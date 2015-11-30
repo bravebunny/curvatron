@@ -126,7 +126,7 @@ Adventure.prototype = {
     this.finishButtons.hide()
 
     var albumElements = getAlbumMusic(this.index)
-    if (!this.testing) this.createAlbumElements(albumElements.image, albumElements.author, albumElements.music, albumElements.site)
+    if (!this.testing && albumElements) this.createAlbumElements(albumElements.image, albumElements.author, albumElements.music, albumElements.site)
   },
 
   setScreen: function () {
