@@ -64,5 +64,11 @@ Rotator.prototype = {
     this.game.world.sendToBack(this.sprite)
     this.game.world.sendToBack(this.spriteAxis)
     if (this.circle) this.game.world.sendToBack(this.circle)
+  },
+
+  destroy: function () {
+    this.sprite.destroy()
+    this.spriteAxis.destroy()
+    if (this.circle) this.circle.destroy()
   }
 }

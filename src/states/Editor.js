@@ -64,6 +64,7 @@ editor.prototype = {
     this.mapH = this.defaults.mapH * this.scale
     this.mouseWasDown = false
     this.changeScale = false
+    this.obsType = this.values.vertical
 
     // change outer background color
     document.body.style.background = colorHexDark
@@ -169,20 +170,19 @@ editor.prototype = {
     this.tb.leftObs.anchor.set(0.5, 0.5)
     this.tb.leftObs.scale.set(-0.4, 0.4)
 
-    this.tb.obstacle = this.game.add.button(1000, baseH + 100, 'editorPoint', this.obstacleTool, this)
+    this.tb.obstacle = this.game.add.button(1000, baseH + 100, 'vertical_button', this.obstacleTool, this)
     this.tb.obstacle.anchor.set(0.5)
-    this.tb.obstacle.scale.set(0.4)
     this.tb.obstacle.events.onInputOver.add(this.showObstacles, this)
 
-    this.tb.obsText = this.game.add.text(this.tb.obstacle.x, this.tb.obstacle.y, this.selectedObs, {
+    this.tb.obsText = this.game.add.text(this.tb.obstacle.x - 90, this.tb.obstacle.y + 70, this.selectedObs, {
       font: '60px dosis',
-      fill: colorHexDark,
+      fill: "#FFFFFF",
       align: 'center'
     })
     this.tb.obsText.anchor.set(0.5)
 
     this.tb.obsMenu = this.game.add.sprite(this.tb.obstacle.x, baseH, 'overlay')
-    this.tb.obsMenu.width = 300
+    this.tb.obsMenu.width = 200
     this.tb.obsMenu.height = 500
     this.tb.obsMenu.alpha = 0.5
     this.tb.obsMenu.visible = false
@@ -191,19 +191,16 @@ editor.prototype = {
 
     this.tb.obs = {}
 
-    this.tb.obs.vertical = this.game.add.button(1000, baseH - 100, 'editorPoint', this.verticalTool, this)
+    this.tb.obs.vertical = this.game.add.button(1000, baseH - 100, 'vertical_button', this.verticalTool, this)
     this.tb.obs.vertical.anchor.set(0.5)
-    this.tb.obs.vertical.scale.set(0.4)
     this.tb.obs.vertical.visible = false
 
-    this.tb.obs.horizontal = this.game.add.button(1000, baseH - 250, 'editorPoint', this.horizontalTool, this)
+    this.tb.obs.horizontal = this.game.add.button(1000, baseH - 250, 'horizontal_button', this.horizontalTool, this)
     this.tb.obs.horizontal.anchor.set(0.5)
-    this.tb.obs.horizontal.scale.set(0.4)
     this.tb.obs.horizontal.visible = false
 
-    this.tb.obs.rotator = this.game.add.button(1000, baseH - 400, 'editorPoint', this.rotatorTool, this)
+    this.tb.obs.rotator = this.game.add.button(1000, baseH - 400, 'rotator_button', this.rotatorTool, this)
     this.tb.obs.rotator.anchor.set(0.5)
-    this.tb.obs.rotator.scale.set(0.4)
     this.tb.obs.rotator.visible = false
 
     this.tb.rightObs = this.game.add.button(1100, baseH + 100, 'editorArrow', this.obsInc, this)
@@ -464,11 +461,21 @@ editor.prototype = {
   createObstacle: function (tileX, tileY, i) {
     var x = (tileX * this.tileSize + this.tileSize / 2) / this.scale
     var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
+
     if (this.obstacles[i] == null) {
       this.obstacles[i] = this.createObstacleObj(this.obsType, x, y)
       this.obstacles[i].sendToBack()
+      this.obstacles[i].type = this.obsType
     } else {
       this.levelArray[this.obsPositions[i]] = 0
+
+      if (this.obstacles[i].type !== this.obsType) {
+        this.obstacles[i].destroy()
+        this.obstacles[i] = this.createObstacleObj(this.obsType, x, y)
+        this.obstacles[i].sendToBack()
+        this.obstacles[i].type = this.obsType
+      }
+
       this.obstacles[i].setPosition(x, y)
     }
   },
@@ -569,16 +576,19 @@ editor.prototype = {
   verticalTool: function () {
     this.obstacleTool()
     this.obsType = this.values.vertical
+    this.tb.obstacle.loadTexture('vertical_button')
   },
 
   horizontalTool: function () {
     this.obstacleTool()
     this.obsType = this.values.horizontal
+    this.tb.obstacle.loadTexture('horizontal_button')
   },
 
   rotatorTool: function () {
     this.obstacleTool()
     this.obsType = this.values.rotator
+    this.tb.obstacle.loadTexture('rotator_button')
   },
 
   backPressed: function () {
@@ -590,11 +600,13 @@ editor.prototype = {
   },
 
   left: function () {
-    this.pointDec()
+    if (this.tool === 'point') this.pointDec()
+    else if (this.tool === 'obstacle') this.obsDec()
   },
 
   right: function () {
-    this.pointInc()
+    if (this.tool === 'point') this.pointInc()
+    else if (this.tool === 'obstacle') this.obsInc()
   },
 
   up: function () {

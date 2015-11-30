@@ -53,5 +53,10 @@ Horizontal.prototype = {
   sendToBack: function () {
     this.game.world.sendToBack(this.sprite)
     this.game.world.sendToBack(this.spriteAxis)
+  },
+
+  destroy: function () {
+    this.sprite.destroy()
+    this.spriteAxis.destroy()
   }
 }
