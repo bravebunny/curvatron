@@ -462,20 +462,20 @@ editor.prototype = {
     var x = (tileX * this.tileSize + this.tileSize / 2) / this.scale
     var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
     var obs = this.obstacles[i]
-    if (obs == null) {
+    if (i > this.obstacles.length - 1) {
       obs = this.createObstacleObj(type, x, y)
       obs.sendToBack()
       obs.type = type
+      this.obstacles[i] = obs
     } else {
       this.levelArray[this.obsPositions[i]] = 0
-
       if (obs.type !== type) {
         obs.destroy()
         obs = this.createObstacleObj(type, x, y)
         obs.sendToBack()
         obs.type = type
+        this.obstacles[i] = obs
       }
-
       obs.setPosition(x, y)
     }
   },
@@ -849,9 +849,9 @@ editor.prototype = {
   },
 
   loadFromArray: function () {
+    var obsCounter = 0
     for (var x = 0; x < this.mapW; x++) {
       for (var y = 0; y < this.mapH; y++) {
-        var obsCounter = 1
         var index = x * this.mapH + y
         var val = this.levelArray[index]
         if (val === this.values.wall) this.map.putTile(0, x, y) // load walls
