@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex, Player, keys, colorHexDark, bgColor:true, muteMusic:true, muteSoundEffects:true, ButtonList,
-clickButton, localStorage, saveAs, countdown:true, Screenshot, showMouse */
+clickButton, localStorage, saveAs, countdown:true, Screenshot, showMouse*/
 /*eslint-enable*/
 var gameMananger = function (game) {
   tempLabel = null
@@ -22,6 +22,7 @@ var gameMananger = function (game) {
   this.countdownCounter = 3
   this.countdownText = 0
   this.screenshot = null
+  this.restarting = false
 }
 
 gameMananger.prototype = {
@@ -175,9 +176,9 @@ gameMananger.prototype = {
 
     if (!muteMusic) {
       menuMusic.volume = 1
-      if(this.mode.music) this.mode.music.play()
+    /*  if (this.mode.music && !this.mode.music.isPlaying) this.mode.music.play()
     } else {
-      if(this.mode.music) this.mode.music.stop()
+      if (this.mode.music) this.mode.music.stop()*/
     }
 
     var musicButton, musicText
@@ -270,6 +271,7 @@ gameMananger.prototype = {
       this.countdownText.anchor.setTo(0.5, 0.5)
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCountdown, this)
     }
+    this.restarting = false
   },
 
   update: function () {
@@ -404,8 +406,10 @@ gameMananger.prototype = {
       }
 
       if (!muteMusic) {
-        menuMusic.play()
-        menuMusic.volume = 1
+        if (!this.mode.music) {
+          menuMusic.play()
+          menuMusic.volume = 1
+        }
       }
       ui.overlay.inputEnabled = false
       if (this.mode.sp) {
@@ -522,6 +526,7 @@ gameMananger.prototype = {
   },
 
   restart: function () {
+    this.restarting = true
     if (this.mode.setScreen) {
       this.mode.setScreen()
     }
@@ -562,12 +567,12 @@ gameMananger.prototype = {
       this.ui.musicButton.setIcon('audio_button')
       this.ui.musicButton.setText('audio: on ')
       muteMusic = false
-      if(this.mode.music) this.mode.music.play()
+      if (this.mode.music) this.mode.music.play()
     } else {
       this.ui.musicButton.setIcon('audiooff_button')
       this.ui.musicButton.setText('audio: off')
       muteMusic = true
-      if(this.mode.music) this.mode.music.stop()
+      if (this.mode.music) this.mode.music.stop()
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()
       }
@@ -597,6 +602,7 @@ gameMananger.prototype = {
     for (var i = 0; i < players.length; i++) {
       players[i].clearInput()
     }
+    if (this.mode.music && !this.restarting) this.mode.music.stop()
   },
 
   up: function () {

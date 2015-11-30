@@ -1,7 +1,8 @@
 /*eslint-disable*/
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
-  scale, gameover:true, ButtonList, musicList, Vertical, Horizontal, Rotator, muteMusic
+  scale, gameover:true, ButtonList, musicList, Vertical, Horizontal, Rotator,
+  muteMusic, restarting:true
 */
 /*eslint-enable*/
 var Adventure = function (game, testing, items, index) {
@@ -38,6 +39,7 @@ var Adventure = function (game, testing, items, index) {
   this.title = 'adventure'
 
   this.testing = testing
+  this.restarting = false
 
   this.values = {
     start: 35,
@@ -137,10 +139,14 @@ Adventure.prototype = {
     this.finishButtons.hide()
 
     if (!this.testing) {
-      this.music = this.game.add.audio('level_music')
+      if (this.music == null) this.music = this.game.add.audio('level_music')
       if (!muteMusic) {
-        this.createAlbumElements()
-      }
+        if (!this.restarting) this.createAlbumElements()
+        this.restarting = true
+        if (!this.music.isPlaying) {
+          this.music.play()
+        }
+      } else this.music.stop()
     }
   },
 
@@ -264,6 +270,7 @@ Adventure.prototype = {
 
   playNextLevel: function () {
     this.index++
+    this.restarting = false
     this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
   },
 
