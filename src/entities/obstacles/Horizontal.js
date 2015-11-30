@@ -47,6 +47,11 @@ Horizontal.prototype = {
 
   stop: function () {
     this.tween.stop()
-    this.sprite.position.set(this.x, this.y)
+    this.setPosition(this.x, this.y)
+  },
+
+  sendToBack: function () {
+    this.game.world.sendToBack(this.sprite)
+    this.game.world.sendToBack(this.spriteAxis)
   }
 }

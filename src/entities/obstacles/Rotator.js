@@ -44,11 +44,25 @@ Rotator.prototype = {
   setPosition: function (x, y) {
     this.y = y
     this.x = x
-    this.sprite.position.rotate(x, y, 2, true, this.dist)
-    spriteAxis.position.set(x, y)
+    this.sprite.position.set(x + this.dist, y)
+    this.spriteAxis.position.set(x, y)
+    if (this.circle) this.circle.position.set(x, y)
   },
 
   stop: function () {
+    this.setPosition(this.x, this.y)
+    this.circle = this.game.add.graphics(this.x, this.y)
+    this.circle.lineStyle(this.size * scale)
+    this.circle.lineColor = 0xFFFFFF
+    this.circle.drawCircle(0, 0, this.dist * 2.05)
+    this.circle.alpha = 0.2
 
+    this.circle.endFill()
+  },
+
+  sendToBack: function () {
+    this.game.world.sendToBack(this.sprite)
+    this.game.world.sendToBack(this.spriteAxis)
+    if (this.circle) this.game.world.sendToBack(this.circle)
   }
 }

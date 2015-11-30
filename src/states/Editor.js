@@ -466,7 +466,7 @@ editor.prototype = {
     var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
     if (this.obstacles[i] == null) {
       this.obstacles[i] = this.createObstacleObj(this.obsType, x, y)
-      this.game.world.sendToBack(this.obstacles[i])
+      this.obstacles[i].sendToBack()
     } else {
       this.levelArray[this.obsPositions[i]] = 0
       this.obstacles[i].setPosition(x, y)
