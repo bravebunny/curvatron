@@ -51,13 +51,15 @@ Rotator.prototype = {
 
   stop: function () {
     this.setPosition(this.x, this.y)
-    this.circle = this.game.add.graphics(this.x, this.y)
-    this.circle.lineStyle(this.size * scale)
-    this.circle.lineColor = 0xFFFFFF
-    this.circle.drawCircle(0, 0, this.dist * 2.05)
+    var graphics = this.game.add.graphics(0, 0)
+    graphics.lineStyle(this.size * scale)
+    graphics.lineColor = 0xFFFFFF
+    graphics.drawCircle(0, 0, this.dist * 2.05)
+    graphics.endFill()
+    this.circle = this.game.add.sprite(this.x, this.y, graphics.generateTexture())
+    this.circle.anchor.set(0.5)
     this.circle.alpha = 0.2
-
-    this.circle.endFill()
+    graphics.destroy()
   },
 
   sendToBack: function () {
