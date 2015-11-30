@@ -14,8 +14,6 @@ var ButtonList = function (context, game) {
   this.enabled = true
 
   this.textColor = colorHex
-
-  this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
 }
 
 ButtonList.prototype = {
@@ -38,11 +36,6 @@ ButtonList.prototype = {
         else if (i !== this.selection && b.selected) b.deselect()
       }
     }
-  },
-
-  mouseWheel: function (event) {
-    if (this.game.input.mouse.wheelDelta > 0) this.selectUp()
-    else if (this.game.input.mouse.wheelDelta < 0) this.selectDown()
   },
 
   setX: function (x) {
