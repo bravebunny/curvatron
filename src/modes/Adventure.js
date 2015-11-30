@@ -1,7 +1,7 @@
 /*eslint-disable*/
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
-  scale, gameover:true, ButtonList, getAlbumMusic, Vertical, Horizontal, Rotator
+  scale, gameover:true, ButtonList, musicList, Vertical, Horizontal, Rotator
 */
 /*eslint-enable*/
 var Adventure = function (game, testing, items, index) {
@@ -21,6 +21,7 @@ var Adventure = function (game, testing, items, index) {
   this.albumText = null
   this.albumDeleted = false
   this.albumBg = null
+  this.music = null
 
   this.scale = 1
   this.defaults = {
@@ -48,12 +49,20 @@ var Adventure = function (game, testing, items, index) {
 }
 
 Adventure.prototype = {
+  preload: function () {
+    var music = musicList[this.index]
+    this.game.load.image('cover_image', 'assets/music/covers/' + music.file + '.png')
+    this.game.load.audio('level_music', 'assets/music/soundtrack/' + music.file + '.ogg')
+  },
+
   create: function () {
     // varialbes that need to be reset on startup
     this.score = 0
     this.pointPositions = []
     this.player = players[0]
     this.obstacles = []
+    /* this.music = this.game.add.audio('level_music')
+    this.music.play()*/
 
     this.albumDeleted = false
 
@@ -125,8 +134,7 @@ Adventure.prototype = {
     this.finishButtons.create()
     this.finishButtons.hide()
 
-    var albumElements = getAlbumMusic(this.index)
-    if (!this.testing && albumElements) this.createAlbumElements(albumElements.image, albumElements.author, albumElements.music, albumElements.site)
+    if (!this.testing) this.createAlbumElements()
   },
 
   setScreen: function () {
@@ -252,7 +260,12 @@ Adventure.prototype = {
     this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
   },
 
-  createAlbumElements: function (image, name, author, site) {
+  createAlbumElements: function () {
+    var album = musicList[this.index]
+    var title = album.title
+    var author = album.author
+    var site = album.site
+
     this.albumBg = this.game.add.sprite(0, 0, 'overlay')
     this.albumBg.anchor.setTo(0, 0.5)
     this.albumBg.fixedToCamera = true
@@ -261,8 +274,8 @@ Adventure.prototype = {
     this.albumBg.height = 2 * h2
     this.albumBg.alpha = 0.4
 
-    var text = name + '\n' + author + '\n' + site
-    this.image = this.game.add.sprite(0, 0, image) // [hard-coded] probably we need to change the coordinates
+    var text = title + '\n' + author + '\n' + site
+    this.image = this.game.add.sprite(0, 0, 'cover_image') // [hard-coded] probably we need to change the coordinates
     this.image.anchor.setTo(0, 0.5)
     this.image.fixedToCamera = true
     this.image.cameraOffset.setTo(100, h2 * 2.5)

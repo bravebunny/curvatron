@@ -1,9 +1,5 @@
 var musicList = []
 
-function getAlbumMusic (index) {
-  return musicList[index]
-}
-
 musicList.push({
   file: 'lpchip',
   title: 'LPchip',

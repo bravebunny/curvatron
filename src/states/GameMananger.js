@@ -30,6 +30,10 @@ gameMananger.prototype = {
     countdown = false
   },
 
+  preload: function () {
+    if (this.mode.preload) this.mode.preload()
+  },
+
   create: function () {
     scale = 1
     if (!this.mode.sp) {
