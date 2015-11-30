@@ -429,7 +429,8 @@ gameMananger.prototype = {
       if (this.game.canvas.style.cursor !== 'auto') {
         this.game.canvas.style.cursor = 'auto'
       }
-      this.deathButtons.select(0)
+      if (!this.mode.levelComplete) this.deathButtons.select(0)
+      else this.deathButtons.select(1)
 
       if (this.mode.sp && this.mode.getHighScore) {
         var spAuxLabel = this.add.sprite(w2, bottomY + 150, 'aux-stat')

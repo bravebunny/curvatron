@@ -40,6 +40,7 @@ var Adventure = function (game, testing, items, index) {
 
   this.testing = testing
   this.restarting = false
+  this.levelComplete = false
 
   this.values = {
     start: 35,
@@ -69,6 +70,7 @@ Adventure.prototype = {
 
     this.albumDeleted = false
     this.albumCreated = false
+    this.levelComplete = false
 
     w2 = this.game.width / 2
     h2 = this.game.height / 2
@@ -253,6 +255,7 @@ Adventure.prototype = {
   nextLevel: function () {
     if (this.testing) this.game.state.start('Editor', true, false, true, this.scale)
     else {
+      this.levelComplete = true
       var manager = this.game.state.states['GameMananger']
       manager.shareText.setText('level completed')
       manager.shareText.visible = true
