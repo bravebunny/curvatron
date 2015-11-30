@@ -412,7 +412,7 @@ editor.prototype = {
 
             case 'obstacle':
               if (this.levelArray[tileX * this.mapH + tileY] === this.values.empty) {
-                this.createObstacle(tileX, tileY, this.selectedObs)
+                this.createObstacle(tileX, tileY, this.obsType, this.selectedObs)
                 this.levelArray[tileX * this.mapH + tileY] = this.obsType
                 this.obsPositions[this.selectedObs] = tileX * this.mapH + tileY
                 // this.pointsGrid[this.selectedPoint] = [tileX, this.layer.getTileX(y)]
@@ -458,25 +458,25 @@ editor.prototype = {
     }
   },
 
-  createObstacle: function (tileX, tileY, i) {
+  createObstacle: function (tileX, tileY, type, i) {
     var x = (tileX * this.tileSize + this.tileSize / 2) / this.scale
     var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
-
-    if (this.obstacles[i] == null) {
-      this.obstacles[i] = this.createObstacleObj(this.obsType, x, y)
-      this.obstacles[i].sendToBack()
-      this.obstacles[i].type = this.obsType
+    var obs = this.obstacles[i]
+    if (obs == null) {
+      obs = this.createObstacleObj(type, x, y)
+      obs.sendToBack()
+      obs.type = type
     } else {
       this.levelArray[this.obsPositions[i]] = 0
 
-      if (this.obstacles[i].type !== this.obsType) {
-        this.obstacles[i].destroy()
-        this.obstacles[i] = this.createObstacleObj(this.obsType, x, y)
-        this.obstacles[i].sendToBack()
-        this.obstacles[i].type = this.obsType
+      if (obs.type !== type) {
+        obs.destroy()
+        obs = this.createObstacleObj(type, x, y)
+        obs.sendToBack()
+        obs.type = type
       }
 
-      this.obstacles[i].setPosition(x, y)
+      obs.setPosition(x, y)
     }
   },
 
@@ -851,11 +851,18 @@ editor.prototype = {
   loadFromArray: function () {
     for (var x = 0; x < this.mapW; x++) {
       for (var y = 0; y < this.mapH; y++) {
+        var obsCounter = 1
         var index = x * this.mapH + y
         var val = this.levelArray[index]
         if (val === this.values.wall) this.map.putTile(0, x, y) // load walls
         else if (val === this.values.start) this.createStart(x, y)
-        else if (val > this.values.wall) { // load points
+        else if (val === this.values.vertical) {
+          this.createObstacle(x, y, val, obsCounter++)
+        } else if (val === this.values.horizontal) {
+          this.createObstacle(x, y, val, obsCounter++)
+        } else if (val === this.values.rotator) {
+          this.createObstacle(x, y, val, obsCounter++)
+        } else if (val > this.values.wall) { // load points
           this.pointPositions[val - 1] = index
           this.levelArray[index] = 2
           this.createPoint(x, y, val - 1)
