@@ -44,7 +44,6 @@ levelSelector.prototype = {
       case 'my levels':
         this.getWorkshopLevels('Published')
     }
-    this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
   },
 
   getWorkshopLevels: function (listType) {
@@ -178,11 +177,6 @@ levelSelector.prototype = {
         this.game.state.start('SinglePlayer')
         break
     }
-  },
-
-  mouseWheel: function (event) {
-    if (this.game.input.mouse.wheelDelta > 0) this.up()
-    else if (this.game.input.mouse.wheelDelta < 0) this.down()
   },
 
   up: function () {
