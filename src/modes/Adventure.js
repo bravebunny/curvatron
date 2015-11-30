@@ -50,9 +50,11 @@ var Adventure = function (game, testing, items, index) {
 
 Adventure.prototype = {
   preload: function () {
-    var music = musicList[this.index]
-    this.game.load.image('cover_image', 'assets/music/covers/' + music.file + '.png')
-    this.game.load.audio('level_music', 'assets/music/soundtrack/' + music.file + '.ogg')
+    if(!this.testing) {
+      var music = musicList[this.index]
+      this.game.load.image('cover_image', 'assets/music/covers/' + music.file + '.png')
+      this.game.load.audio('level_music', 'assets/music/soundtrack/' + music.file + '.ogg')
+    }
   },
 
   create: function () {
@@ -61,8 +63,8 @@ Adventure.prototype = {
     this.pointPositions = []
     this.player = players[0]
     this.obstacles = []
-    /* this.music = this.game.add.audio('level_music')
-    this.music.play()*/
+    this.music = this.game.add.audio('level_music')
+    this.music.play()
 
     this.albumDeleted = false
 
