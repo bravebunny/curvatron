@@ -435,6 +435,18 @@ editor.prototype = {
                 if (this.selectedPoint >= pointN) {
                   this.pointDec()
                 }
+              } else if (this.levelArray[index] > 31) { // true if is a point
+                var obsN = this.obsPositions.indexOf(index)
+                this.obstacles[obsN].destroy()
+                for (var o = obsN; o < this.obstacles.length - 1; o++) {
+                  this.obsPositions[o] = this.obsPositions[o + 1]
+                  this.obstacles[o] = this.obstacles[o + 1]
+                }
+                this.obstacles = this.obstacles.slice(0, -1)
+                this.obsPositions = this.obsPositions.slice(0, -1)
+                if (this.selectedObs >= obsN) {
+                  this.obsDec()
+                }
               }
 
               if (this.levelArray[index] !== this.values.start) {
