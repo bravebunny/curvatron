@@ -82,8 +82,6 @@ editor.prototype = {
     this.layer.resize(baseW * this.scale, baseW * this.scale)
     this.layer.resizeWorld()
 
-    this.game.canvas.oncontextmenu = function (e) { e.preventDefault() }
-
     // the square that shows under the mouse to show what's selected
     this.marker = this.game.add.graphics()
     this.marker.lineStyle(2, 0xFFFFFF, 1)
@@ -476,6 +474,7 @@ editor.prototype = {
           case 'start':
             this.cursorStart.visible = true
             this.cursorStart.position.set(curX, curY)
+            break
           case 'draw':
           case 'erase':
             this.marker.visible = true
