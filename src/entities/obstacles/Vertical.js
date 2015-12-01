@@ -58,5 +58,17 @@ Vertical.prototype = {
   destroy: function () {
     this.sprite.destroy()
     this.spriteAxis.destroy()
+  },
+
+  hide: function () {
+    this.sprite.visible = false
+    this.spriteAxis.visible = false
+  },
+
+  show: function () {
+    this.sprite.alpha = 0.5
+    this.spriteAxis.alpha = 0.2
+    this.sprite.visible = true
+    this.spriteAxis.visible = true
   }
 }

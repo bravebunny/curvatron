@@ -70,5 +70,22 @@ Rotator.prototype = {
     this.sprite.destroy()
     this.spriteAxis.destroy()
     if (this.circle) this.circle.destroy()
+  },
+
+  hide: function () {
+    this.sprite.visible = false
+    this.spriteAxis.visible = false
+    if (this.circle) this.circle.visible = false
+  },
+
+  show: function () {
+    this.sprite.alpha = 0.5
+    this.spriteAxis.alpha = 0.2
+    this.sprite.visible = true
+    this.spriteAxis.visible = true
+    if (this.circle) {
+      this.circle.visible = true
+      this.circle.alpha = 0.2
+    }
   }
 }

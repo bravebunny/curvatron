@@ -25,6 +25,9 @@ var editor = function (game) {
   this.textInput = null
   this.fileHandle = null
   this.justUploaded = false
+  this.placedPoint = false
+  this.placedObs = false
+  this.cursorObj = null
   this.defaults = {
     mapW: 60,
     mapH: 34
@@ -176,7 +179,7 @@ editor.prototype = {
 
     this.tb.obsText = this.game.add.text(this.tb.obstacle.x - 90, this.tb.obstacle.y + 70, this.selectedObs, {
       font: '60px dosis',
-      fill: "#FFFFFF",
+      fill: '#FFFFFF',
       align: 'center'
     })
     this.tb.obsText.anchor.set(0.5)
@@ -228,6 +231,36 @@ editor.prototype = {
     this.selector = this.game.add.graphics()
     this.selector.lineStyle(10, 0xFFFFFF, 1)
     this.selector.drawRect(-60, -60, 120, 120)
+
+    this.cursorPoint = this.game.add.sprite(0, 0, 'point')
+    this.cursorPoint.alpha = 0.5
+    this.cursorPoint.anchor.set(0.5)
+    this.cursorPoint.scale.set(0.7 / this.scale)
+    this.cursorPoint.visible = false
+
+    var cursorVert = new Vertical(this.game, 0, 0)
+    var cursorHor = new Horizontal(this.game, 0, 0)
+    var cursorRot = new Rotator(this.game, 0, 0)
+    cursorVert.create()
+    cursorHor.create()
+    cursorRot.create()
+    cursorVert.stop()
+    cursorHor.stop()
+    cursorRot.stop()
+    cursorVert.hide()
+    cursorHor.hide()
+    cursorRot.hide()
+    this.cursorObs = {
+      32: cursorVert,
+      33: cursorHor,
+      34: cursorRot
+    }
+
+    this.cursorStart = this.game.add.sprite(0, 0, 'editorStart')
+    this.cursorStart.scale.set(1 / this.scale)
+    this.cursorStart.anchor.set(0.5, 0.05)
+    this.cursorStart.alpha = 0.5
+    this.cursorStart.visible = false
 
     this.menuButtons = new ButtonList(this, this.game)
     this.menuButtons.add('back_button', 'cancel', this.backPressed)
@@ -310,6 +343,8 @@ editor.prototype = {
     })
     this.tooltip.anchor.setTo(0.5, 0.5)
     this.tooltip.visible = false
+
+    this.game.input.onUp.add(this.releaseMouse, this)
   },
 
   update: function () {
@@ -337,7 +372,13 @@ editor.prototype = {
       }
     }
 
-    // save around selected tool in toolbar
+    // reset visibility of cursor objects
+    this.cursorStart.visible = false
+    this.cursorPoint.visible = false
+    this.marker.visible = false
+    this.cursorObs[this.obsType].hide()
+
+    // square around selected tool in toolbar
     this.selector.x = this.tb[this.tool].x
     this.selector.y = this.tb[this.tool].y
 
@@ -429,6 +470,24 @@ editor.prototype = {
         }
       } else {
         this.mouseWasDown = false
+        var curX = this.marker.x + this.tileSize / 2
+        var curY = this.marker.y + this.tileSize / 2
+        switch (this.tool) {
+          case 'start':
+            this.cursorStart.visible = true
+            this.cursorStart.position.set(curX, curY)
+          case 'draw':
+          case 'erase':
+            this.marker.visible = true
+            break
+          case 'point':
+            this.cursorPoint.visible = true
+            this.cursorPoint.position.set(curX, curY)
+            break
+          case 'obstacle':
+            this.cursorObs[this.obsType].setPosition(curX, curY)
+            this.cursorObs[this.obsType].show()
+        }
       }
     }
 
@@ -448,6 +507,7 @@ editor.prototype = {
     var x = (tileX * this.tileSize + this.tileSize / 2) / this.scale
     var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
     if (this.points[i] == null) {
+      this.placedPoint = true
       this.points[i] = this.game.add.sprite(x, y, 'point')
       this.game.world.sendToBack(this.points[i])
       this.points[i].anchor.set(0.5)
@@ -463,6 +523,7 @@ editor.prototype = {
     var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
     var obs = this.obstacles[i]
     if (i > this.obstacles.length - 1) {
+      this.placedObs = true
       obs = this.createObstacleObj(type, x, y)
       obs.sendToBack()
       obs.type = type
@@ -884,5 +945,15 @@ editor.prototype = {
     game.scale.height = h
     game.camera.setSize(w, h)
     game.scale.refresh()
+  },
+
+  releaseMouse: function () {
+    if (this.placedPoint) {
+      this.pointInc()
+      this.placedPoint = false
+    } else if (this.placedObs) {
+      this.obsInc()
+      this.placedObs = false
+    }
   }
 }
