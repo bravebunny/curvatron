@@ -203,6 +203,7 @@ Adventure.prototype = {
     this.score++
 
     if (this.score >= this.pointPositions.length) {
+      this.player.dead = true
       this.nextLevel()
     } else {
       this.createPower()

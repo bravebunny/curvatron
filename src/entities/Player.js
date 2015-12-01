@@ -332,7 +332,7 @@ Player.prototype = {
         this.dead = true
       }
 
-      if (!muteSoundEffects) {
+      if (!muteSoundEffects && !this.mode.levelComplete) {
         killSound.play()
       }
 
