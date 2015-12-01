@@ -57,8 +57,10 @@ gameMananger.prototype = {
     moveSounds[0] = this.add.audio('move0')
     moveSounds[1] = this.add.audio('move1')
     killSound = this.add.audio('kill')
-
+    finishSound = this.add.audio('sfx_finish')
+    startSound = this.add.audio('sfx_start')
     collectSound = this.add.audio('sfx_collect0')
+    if (!muteSoundEffects) startSound.play()
 
     this.initialTime = this.game.time.totalElapsedSeconds()
 

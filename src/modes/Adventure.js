@@ -256,6 +256,7 @@ Adventure.prototype = {
   nextLevel: function () {
     if (this.testing) this.game.state.start('Editor', true, false, true, this.scale)
     else {
+      if (!muteSoundEffects) finishSound.play()
       this.levelComplete = true
       var manager = this.game.state.states['GameMananger']
       manager.shareText.setText('level completed')

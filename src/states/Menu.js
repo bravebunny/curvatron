@@ -24,6 +24,7 @@ var menu = function (game) {
 
 menu.prototype = {
   create: function () {
+    pressSound = this.add.audio('sfx_press')
     setScreenFixed(baseH * 1.5, baseH, this.game)
 
     this.world.pivot.set(0, 0)

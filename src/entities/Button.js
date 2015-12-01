@@ -130,6 +130,7 @@ Button.prototype = {
   },
 
   buttonDown: function () {
+    if (!muteSoundEffects) pressSound.play()
     if (this.button.enabled) {
       this.tweenOut.onComplete.active = true
       this.tween.start()

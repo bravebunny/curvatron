@@ -50,11 +50,14 @@ preloadMenu.prototype = {
     this.game.load.image('score', 'assets/sprites/gui/stats/score-general.png')
     this.game.load.image('pauseButton', 'assets/sprites/gui/hud/pause.png')
     this.game.load.image('twitter_button', 'assets/sprites/gui/hud/twitter.png')
+
     this.game.load.audio('move0', 'assets/sfx/move0.ogg')
     this.game.load.audio('move1', 'assets/sfx/move1.ogg')
-    this.game.load.audio('move1', 'assets/sfx/move1.ogg')
+    this.game.load.audio('sfx_finish', 'assets/sfx/finish.ogg')
+    this.game.load.audio('sfx_start', 'assets/sfx/start.ogg')
+    this.game.load.audio('sfx_press', 'assets/sfx/press.ogg')
     this.game.load.audio('kill', 'assets/sfx/kill.ogg')
-    this.game.load.audio('sfx_collect0', 'assets/sfx/collect0.ogg')
+    this.game.load.audio('sfx_collect0', 'assets/sfx/collect.ogg')
 
     this.game.load.image('player', 'assets/sprites/game/singleplayer/player.png')
     this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png')
