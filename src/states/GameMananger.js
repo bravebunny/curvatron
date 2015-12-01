@@ -233,6 +233,7 @@ gameMananger.prototype = {
       this.pauseButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
     this.pauseButtons.textColor = colorHexDark
+    if (this.mode.name === 'creative') this.pauseButtons.setY(150)
     this.pauseButtons.create()
     this.pauseButtons.hide()
 
