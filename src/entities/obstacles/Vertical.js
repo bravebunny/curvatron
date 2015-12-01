@@ -1,5 +1,5 @@
 /*eslint-disable*/
-/* global scale, Phaser, players
+/* global Phaser, players
 */
 /*eslint-enable*/
 var Vertical = function (game, x, y) {
@@ -7,9 +7,9 @@ var Vertical = function (game, x, y) {
   this.x = x
   this.y = y
 
-  this.w = 32 * scale
-  this.h = 224 * scale
-  this.dist = 160 * scale
+  this.w = 32
+  this.h = 224
+  this.dist = 160
   this.sprite = null
 
   this.spriteAxis = null
@@ -70,5 +70,10 @@ Vertical.prototype = {
     this.spriteAxis.alpha = 0.2
     this.sprite.visible = true
     this.spriteAxis.visible = true
+  },
+
+  setScale: function (scale) {
+    this.sprite.scale.set(scale)
+    this.spriteAxis.scale.set(scale)
   }
 }

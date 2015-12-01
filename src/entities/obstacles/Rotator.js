@@ -1,5 +1,5 @@
 /*eslint-disable*/
-/* global scale, Phaser, players
+/* global Phaser, players
 */
 /*eslint-enable*/
 var Rotator = function (game, x, y) {
@@ -8,12 +8,12 @@ var Rotator = function (game, x, y) {
   this.y = y
 
   // Obstacle properties
-  this.size = 96 * scale
-  this.dist = 224 * scale
+  this.size = 96
+  this.dist = 224
   this.sprite = null
 
   // Axis properties
-  this.thickness = 16 * scale
+  this.thickness = 16
   this.spriteAxis = null
 }
 
@@ -50,7 +50,7 @@ Rotator.prototype = {
   stop: function () {
     this.setPosition(this.x, this.y)
     var graphics = this.game.add.graphics(0, 0)
-    graphics.lineStyle(this.size * scale)
+    graphics.lineStyle(this.size)
     graphics.lineColor = 0xFFFFFF
     graphics.drawCircle(0, 0, this.dist * 2.05)
     graphics.endFill()
@@ -87,5 +87,13 @@ Rotator.prototype = {
       this.circle.visible = true
       this.circle.alpha = 0.2
     }
+  },
+
+  setScale: function (scale) {
+    this.dist *= scale
+    this.sprite.position.set(this.x + this.dist, this.y)
+    this.sprite.scale.set(scale)
+    this.spriteAxis.scale.set(scale)
+    if (this.circle) this.circle.scale.set(scale)
   }
 }

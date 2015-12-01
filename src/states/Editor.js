@@ -248,6 +248,9 @@ editor.prototype = {
     cursorVert.hide()
     cursorHor.hide()
     cursorRot.hide()
+    cursorVert.setScale(1 / this.scale)
+    cursorHor.setScale(1 / this.scale)
+    cursorRot.setScale(1 / this.scale)
     this.cursorObs = {
       32: cursorVert,
       33: cursorHor,
@@ -468,8 +471,8 @@ editor.prototype = {
         }
       } else {
         this.mouseWasDown = false
-        var curX = this.marker.x + this.tileSize / 2
-        var curY = this.marker.y + this.tileSize / 2
+        var curX = this.marker.x + (this.tileSize / 2) / this.scale
+        var curY = this.marker.y + (this.tileSize / 2) / this.scale
         switch (this.tool) {
           case 'start':
             this.cursorStart.visible = true
@@ -547,6 +550,7 @@ editor.prototype = {
     else if (val === this.values.rotator) obs = new Rotator(this.game, x, y)
     obs.create()
     obs.stop()
+    obs.setScale(1 / this.scale)
     return obs
   },
 
