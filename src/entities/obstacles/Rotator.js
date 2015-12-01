@@ -6,16 +6,14 @@ var Rotator = function (game, x, y) {
   this.game = game
   this.x = x
   this.y = y
-  var axisDist = 200
 
   // Obstacle properties
-  this.size = 100 * scale
-  this.dist = axisDist * scale
+  this.size = 96 * scale
+  this.dist = 224 * scale
   this.sprite = null
 
   // Axis properties
-  this.w = axisDist * scale
-  this.h = 30 * scale
+  this.thickness = 16 * scale
   this.spriteAxis = null
 }
 
@@ -27,11 +25,11 @@ Rotator.prototype = {
     this.sprite.anchor.set(0.5)
     this.game.physics.arcade.enable(this.sprite)
 
-    var bmdAxis = this.game.add.bitmapData(this.w, this.h * 0.7)
+    var bmdAxis = this.game.add.bitmapData(this.dist, this.thickness)
     bmdAxis.fill(0xFF, 0xFF, 0xFF, 1)
     this.spriteAxis = this.game.add.sprite(this.x, this.y, bmdAxis)
     this.spriteAxis.alpha = 0.2
-    this.spriteAxis.anchor.y = 0.2
+    this.spriteAxis.anchor.y = 0.5
   },
 
   update: function () {

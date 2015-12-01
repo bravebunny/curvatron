@@ -7,9 +7,9 @@ var Horizontal = function (game, x, y) {
   this.x = x
   this.y = y
 
-  this.w = 200 * scale
-  this.h = 30 * scale
-  this.dist = 150 * scale
+  this.w = 224 * scale
+  this.h = 32 * scale
+  this.dist = 160 * scale
   this.sprite = null
 
   this.spriteAxis = null
@@ -23,7 +23,7 @@ Horizontal.prototype = {
     this.sprite.anchor.set(0.5)
     this.game.physics.arcade.enable(this.sprite)
 
-    var bmdAxis = this.game.add.bitmapData(this.w * 2.5, this.h * 0.7)
+    var bmdAxis = this.game.add.bitmapData(this.w + this.dist * 2, this.h * 0.7)
     bmdAxis.fill(0xFF, 0xFF, 0xFF, 1)
     this.spriteAxis = this.game.add.sprite(this.x, this.y, bmdAxis)
     this.spriteAxis.alpha = 0.2
