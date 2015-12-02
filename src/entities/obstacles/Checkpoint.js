@@ -1,5 +1,5 @@
 /*eslint-disable*/
-/* global Phaser, players, colorHex
+/* global Phaser, players, colorHex, savedCheckpoint: true
 */
 /*eslint-enable*/
 var Checkpoint = function (game, x, y) {
@@ -39,6 +39,8 @@ Checkpoint.prototype = {
     powerTween.onComplete.add(function () {
       power.destroy()
     }, this)
+    savedCheckpoint.savedSize = players[0].size
+    savedCheckpoint.position = {x: this.sprite.x, y: this.sprite.y}
   },
 
   setPosition: function (x, y) {},

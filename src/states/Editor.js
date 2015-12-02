@@ -239,22 +239,16 @@ editor.prototype = {
     var cursorVert = new Vertical(this.game, 0, 0)
     var cursorHor = new Horizontal(this.game, 0, 0)
     var cursorRot = new Rotator(this.game, 0, 0)
-    cursorVert.create()
-    cursorHor.create()
-    cursorRot.create()
-    cursorVert.stop()
-    cursorHor.stop()
-    cursorRot.stop()
-    cursorVert.hide()
-    cursorHor.hide()
-    cursorRot.hide()
-    cursorVert.setScale(1 / this.scale)
-    cursorHor.setScale(1 / this.scale)
-    cursorRot.setScale(1 / this.scale)
     this.cursorObs = {
       32: cursorVert,
       33: cursorHor,
       34: cursorRot
+    }
+    for (i = 32; i < 35; i++) {
+      this.cursorObs[i].create()
+      this.cursorObs[i].stop()
+      this.cursorObs[i].hide()
+      this.cursorObs[i].setScale(1 / this.scale)
     }
 
     this.cursorStart = this.game.add.sprite(0, 0, 'editorStart')

@@ -2,7 +2,8 @@
 /* global scale, w2, h2, groupPowers, borders, paused, Phaser
   totalTime, bmd, colisionMargin, gameOver, tempLabel, tempLabelText,
   pauseSprite, localStorage, muteMusic, killSound, collectSound, players,
-  colorPlayers, moveSounds, muteSoundEffects:true, pauseTween:true, lerp, countdown
+  colorPlayers, moveSounds, muteSoundEffects:true, pauseTween:true, lerp, countdown,
+  savedCheckpoint
 */
 /*eslint-enable*/
 var Player = function (id, x, y, key, mode, game) {
@@ -42,6 +43,11 @@ var Player = function (id, x, y, key, mode, game) {
 
 Player.prototype = {
   create: function () {
+    if (savedCheckpoint.savedSize) {
+      this.size = savedCheckpoint.savedSize
+      this.x = savedCheckpoint.position.x
+      this.y = savedCheckpoint.position.y
+    }
     this.graphics = this.game.add.graphics(0, 0)
 
     var spriteName = 'player'

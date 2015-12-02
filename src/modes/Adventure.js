@@ -65,7 +65,8 @@ Adventure.prototype = {
 
   create: function () {
     // varialbes that need to be reset on startup
-    this.score = 0
+    if (savedCheckpoint.score) this.score = savedCheckpoint.score
+    else this.score = 0
     this.pointPositions = []
     this.player = players[0]
     this.obstacles = []
@@ -87,8 +88,6 @@ Adventure.prototype = {
       align: 'center'
     })
     this.powerText.anchor.setTo(0.5, 0.5)
-
-    this.score = 0
 
     var levelArray = this.game.cache.getText('level').split('')
 
@@ -152,6 +151,9 @@ Adventure.prototype = {
         }
       } else this.music.stop()
     }
+
+    this.checkpoint = new Checkpoint(this.game, 500, 500)
+    this.checkpoint.create()
   },
 
   setScreen: function () {
@@ -213,6 +215,7 @@ Adventure.prototype = {
 
   collect: function (player, power) {
     this.score++
+    savedCheckpoint.score = this.score
 
     if (this.score >= this.pointPositions.length) {
       this.player.dead = true

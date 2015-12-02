@@ -18,7 +18,7 @@ var menu = function (game) {
   keys = []
   menuMusic = null
   this.ui = {}
-
+  savedCheckpoint = {}
   this.buttons = null; // eslint-disable-line
 }
 
