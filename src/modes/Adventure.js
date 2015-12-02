@@ -25,6 +25,7 @@ var Adventure = function (game, testing, items, index) {
   this.music = null
   this.albumCreated = false
   this.showAlbum = true
+  this.site = null
 
   this.scale = 1
   this.defaults = {
@@ -305,28 +306,44 @@ Adventure.prototype = {
     this.albumBg.fixedToCamera = true
     this.albumBg.cameraOffset.setTo(80, h2 * 4)
     this.albumBg.width = w2 * 1.0
-    this.albumBg.height = 2 * h2
+    this.albumBg.height = 1.8 * h2
     this.albumBg.alpha = 0.4
 
-    var text = title + '\n' + author + '\n' + site
+    var text = title + '\n' + author
     this.image = this.game.add.sprite(0, 0, 'cover_image') // [hard-coded] probably we need to change the coordinates
     this.image.anchor.setTo(0, 0.5)
     this.image.fixedToCamera = true
     this.image.cameraOffset.setTo(100, h2 * 2.5)
-    this.image.scale.set(0.8)
+    this.image.scale.set(0.7)
     this.image.alpha = 0.9
 
     this.albumText = this.game.add.text(0, 0, text, {
       font: '60px dosis',
       fill: '#ffffff'})
-    this.albumText.scale.set(scale * 0.8)
+    this.albumText.scale.set(scale * 0.7)
     this.albumText.anchor.setTo(0, 0.5)
     this.albumText.fixedToCamera = true
     this.albumText.cameraOffset.setTo(130 + this.image.width, h2 * 2.5)
 
-    this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 1.75 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+    this.site = this.game.add.text(0, 0, site, {
+      font: '50px dosis',
+      fill: '#ffffff'})
+    this.site.scale.set(scale * 0.7)
+    this.site.anchor.setTo(0, 0.5)
+    this.site.fixedToCamera = true
+    this.site.cameraOffset.setTo(130 + this.image.width, h2 * 2.5)
+
+
+    if (this.albumText.width > this.site) {
+      this.albumBg.width = this.albumText.width + this.image.width + 75
+    } else {
+      this.albumBg.width = this.site.width + this.image.width + 75
+    }
+
+    this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 1.80 }, 1000, Phaser.Easing.Sinusoidal.In, true)
     this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 1.75 }, 1000, Phaser.Easing.Sinusoidal.In, true)
     this.game.add.tween(this.albumBg.cameraOffset).to({ y: h2 * 2.48 }, 1100, Phaser.Easing.Sinusoidal.In, true)
+    this.game.add.tween(this.site.cameraOffset).to({ y: h2 * 1.90 }, 1100, Phaser.Easing.Sinusoidal.In, true)
   },
 
   deleteAlbumElements: function () {
@@ -334,6 +351,7 @@ Adventure.prototype = {
     this.game.time.events.add(Phaser.Timer.SECOND * 5, function () {
       this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       this.game.add.tween(this.albumBg.cameraOffset).to({ y: h2 * 4 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+      this.game.add.tween(this.site.cameraOffset).to({ y: h2 * 4 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       var aux = this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       aux.onComplete.add(function () {
         this.image.kill
