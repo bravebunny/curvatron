@@ -147,8 +147,6 @@ Adventure.prototype = {
     if (!this.testing) {
       if (this.music == null) this.music = this.game.add.audio('level_music')
       if (!muteMusic) {
-        //if (!this.restarting) this.createAlbumElements()
-        //this.restarting = true
         if (!this.music.isPlaying) {
           this.music.play()
         }
@@ -332,7 +330,6 @@ Adventure.prototype = {
     this.site.anchor.setTo(0, 0.5)
     this.site.fixedToCamera = true
     this.site.cameraOffset.setTo(130 + this.image.width, h2 * 2.5)
-
 
     if (this.albumText.width > this.site) {
       this.albumBg.width = this.albumText.width + this.image.width + 75

@@ -99,18 +99,7 @@ gameMananger.prototype = {
       }
     }
 
-    // Remove this //////////////////////////////////
-    /* this.rotatorObst = new Rotator(this.game, w2, h2)
-    this.rotatorObst.create()
-
-    this.horizontalObst = new Horizontal(this.game, w2 * 0.5, h2 + 300)
-    this.horizontalObst.create()
-
-    this.verticalObst = new Vertical(this.game, w2 / 0.7, h2)
-    this.verticalObst.create()*/
-    // ////////////////////////////////////////////// //
-    /*
-    pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this)
+    /* pauseSprite = this.add.button(2*w2 - 100, 100, 'pauseButton', this.touchPauseButton, this)
     pauseSprite.anchor.setTo(0.5, 0.5)
     pauseSprite.input.useHandCursor = true
     pauseSprite.scale.set(0.5)
@@ -118,8 +107,7 @@ gameMananger.prototype = {
     if (!this.mode.sp) {
       pauseSprite.position.set(w2, h2)
       pauseSprite.scale.set(0.8)
-    }
-    */
+    } */
 
     this.screenshot = new Screenshot(this.game)
     if (this.mode.name === 'creative') this.screenshot.tweetMessage = 'I made art with #Curvatron'
@@ -176,12 +164,7 @@ gameMananger.prototype = {
     ui.overlay.alpha = 0.5
     ui.overlay.fixedToCamera = true
 
-    if (!muteMusic) {
-      menuMusic.volume = 1
-    /*  if (this.mode.music && !this.mode.music.isPlaying) this.mode.music.play()
-    } else {
-      if (this.mode.music) this.mode.music.stop()*/
-    }
+    if (!muteMusic) menuMusic.volume = 1
 
     var musicButton, musicText
     if (muteMusic) {
@@ -280,12 +263,6 @@ gameMananger.prototype = {
   },
 
   update: function () {
-    // Remove this //////////////////////////////////
-    /* this.rotatorObst.update()
-    this.horizontalObst.update()
-    this.verticalObst.update()*/
-    // ////////////////////////////////////////////// //
-
     this.game.forceSingleUpdate = true
     if (!paused) {
       if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !muteMusic) {
@@ -434,7 +411,13 @@ gameMananger.prototype = {
       if (this.game.canvas.style.cursor !== 'auto') {
         this.game.canvas.style.cursor = 'auto'
       }
-      if (!this.mode.levelComplete) this.deathButtons.select(0)
+      if (!this.mode.levelComplete) {
+        this.deathButtons.select(0)
+        if (this.mode.index != null) {
+          this.shareText.setText('level ' + this.mode.index)
+          this.shareText.visible = true
+        }
+      }
       else this.deathButtons.select(1)
 
       if (this.mode.sp && this.mode.getHighScore) {
@@ -511,7 +494,13 @@ gameMananger.prototype = {
         this.game.canvas.style.cursor = 'auto'
       }
       this.pauseButtons.select(0)
-    } else { // unpause
+
+      if (this.mode.index != null) {
+        this.shareText.setText('level ' + this.mode.index)
+        this.shareText.visible = true
+      }
+
+    } else { //unpause
       this.game.tweens.resumeAll()
       ui.overlay.scale.set(0)
 
