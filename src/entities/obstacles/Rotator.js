@@ -45,18 +45,30 @@ Rotator.prototype = {
     this.sprite.position.set(x + this.dist, y)
     this.spriteAxis.position.set(x, y)
     if (this.circle) this.circle.position.set(x, y)
+    if (this.center) this.center.position.set(x, y)
   },
 
   stop: function () {
     this.setPosition(this.x, this.y)
+
     var graphics = this.game.add.graphics(0, 0)
     graphics.lineStyle(this.size)
     graphics.lineColor = 0xFFFFFF
     graphics.drawCircle(0, 0, this.dist * 2.05)
     graphics.endFill()
+
     this.circle = this.game.add.sprite(this.x, this.y, graphics.generateTexture())
     this.circle.anchor.set(0.5)
     this.circle.alpha = 0.2
+    graphics.destroy()
+
+    graphics = this.game.add.graphics(0, 0)
+    graphics.lineStyle(5)
+    graphics.lineColor = 0xFFFFFF
+    graphics.drawRect(this.x - 16, this.y - 16, 32, 32)
+    graphics.endFill()
+    this.center = this.game.add.sprite(this.x, this.y, graphics.generateTexture())
+    this.center.anchor.set(0.5)
     graphics.destroy()
   },
 
@@ -64,24 +76,28 @@ Rotator.prototype = {
     this.game.world.sendToBack(this.sprite)
     this.game.world.sendToBack(this.spriteAxis)
     if (this.circle) this.game.world.sendToBack(this.circle)
+    if (this.center) this.game.world.sendToBack(this.center)
   },
 
   destroy: function () {
     this.sprite.destroy()
     this.spriteAxis.destroy()
     if (this.circle) this.circle.destroy()
+    if (this.center) this.center.destroy()
   },
 
   hide: function () {
     this.sprite.visible = false
     this.spriteAxis.visible = false
     if (this.circle) this.circle.visible = false
+    if (this.center) this.center.visible = false
   },
 
   show: function () {
     this.sprite.visible = true
     this.spriteAxis.visible = true
     if (this.circle) this.circle.visible = true
+    if (this.center) this.center.visible = true
   },
 
   setScale: function (scale) {
@@ -90,11 +106,12 @@ Rotator.prototype = {
     this.sprite.scale.set(scale)
     this.spriteAxis.scale.set(scale)
     if (this.circle) this.circle.scale.set(scale)
+    if (this.center) this.center.scale.set(scale)
   },
 
   setAlpha: function (alpha) {
-    this.sprite.alpha = 1 * alpha
-    this.spriteAxis.alpha = 0.5 * alpha
-    if (this.circle) this.circle.alpha = 0.5 * alpha
+    this.sprite.alpha = 0.8 * alpha
+    this.spriteAxis.alpha = 0.4 * alpha
+    if (this.circle) this.circle.alpha = 0.4 * alpha
   }
 }

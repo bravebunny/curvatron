@@ -43,40 +43,58 @@ Vertical.prototype = {
     this.x = x
     this.sprite.position.set(x, y)
     this.spriteAxis.position.set(x, y)
+    if (this.center) this.center.position.set(x, y)
   },
 
   stop: function () {
     this.tween.stop()
     this.setPosition(this.x, this.y)
+
+    var graphics = this.game.add.graphics(0, 0)
+    graphics.lineStyle(5)
+    graphics.lineColor = 0xFFFFFF
+    graphics.drawRect(this.x - 16, this.y - 16, 32, 32)
+    graphics.endFill()
+
+    this.center = this.game.add.sprite(this.x, this.y, graphics.generateTexture())
+    this.center.anchor.set(0.5)
+
+    graphics.destroy()
   },
 
   sendToBack: function () {
     this.game.world.sendToBack(this.sprite)
     this.game.world.sendToBack(this.spriteAxis)
+    if (this.center) this.game.world.sendToBack(this.center)
   },
 
   destroy: function () {
     this.sprite.destroy()
     this.spriteAxis.destroy()
+    if (this.center) this.center.destroy()
   },
 
   hide: function () {
     this.sprite.visible = false
     this.spriteAxis.visible = false
+    if (this.center) this.center.visible = false
   },
 
   show: function () {
     this.sprite.visible = true
     this.spriteAxis.visible = true
+    if (this.center) this.center.visible = true
   },
 
   setScale: function (scale) {
     this.sprite.scale.set(scale)
     this.spriteAxis.scale.set(scale)
+    if (this.center) this.center.scale.set(scale)
   },
 
   setAlpha: function (alpha) {
-    this.sprite.alpha = 1 * alpha
-    this.spriteAxis.alpha = 0.5 * alpha
+    this.sprite.alpha = 0.8 * alpha
+    this.spriteAxis.alpha = 0.4 * alpha
+    if (this.circle) this.circle.alpha = 0.4 * alpha
   }
 }
