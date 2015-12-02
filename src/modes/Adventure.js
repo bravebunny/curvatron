@@ -24,6 +24,7 @@ var Adventure = function (game, testing, items, index) {
   this.albumBg = null
   this.music = null
   this.albumCreated = false
+  this.showAlbum = true
 
   this.scale = 1
   this.defaults = {
@@ -71,6 +72,7 @@ Adventure.prototype = {
     this.albumDeleted = false
     this.albumCreated = false
     this.levelComplete = false
+    this.showAlbum = true
 
     w2 = this.game.width / 2
     h2 = this.game.height / 2
@@ -144,8 +146,8 @@ Adventure.prototype = {
     if (!this.testing) {
       if (this.music == null) this.music = this.game.add.audio('level_music')
       if (!muteMusic) {
-        if (!this.restarting) this.createAlbumElements()
-        this.restarting = true
+        //if (!this.restarting) this.createAlbumElements()
+        //this.restarting = true
         if (!this.music.isPlaying) {
           this.music.play()
         }
@@ -169,7 +171,15 @@ Adventure.prototype = {
   },
 
   update: function () {
-    if (players[0].ready && !this.albumDeleted && !this.testing && this.albumCreated) {
+    if (this.music.isPlaying && this.showAlbum) {
+      this.showAlbum = false
+      if (!muteMusic) {
+        if (!this.restarting) this.createAlbumElements()
+        this.restarting = true
+      }
+    }
+
+    if (!this.albumDeleted && !this.testing && this.albumCreated) {
       this.deleteAlbumElements()
     }
     if (this.game.physics.arcade.collide(players[0].sprite, this.layer)) {
@@ -292,7 +302,7 @@ Adventure.prototype = {
     this.albumBg.anchor.setTo(0, 0.5)
     this.albumBg.fixedToCamera = true
     this.albumBg.cameraOffset.setTo(80, h2 * 4)
-    this.albumBg.width = w2 * 1.5
+    this.albumBg.width = w2 * 1.0
     this.albumBg.height = 2 * h2
     this.albumBg.alpha = 0.4
 
@@ -301,11 +311,13 @@ Adventure.prototype = {
     this.image.anchor.setTo(0, 0.5)
     this.image.fixedToCamera = true
     this.image.cameraOffset.setTo(100, h2 * 2.5)
+    this.image.scale.set(0.8)
+    this.image.alpha = 0.9
 
     this.albumText = this.game.add.text(0, 0, text, {
       font: '60px dosis',
       fill: '#ffffff'})
-    this.albumText.scale.set(scale)
+    this.albumText.scale.set(scale * 0.8)
     this.albumText.anchor.setTo(0, 0.5)
     this.albumText.fixedToCamera = true
     this.albumText.cameraOffset.setTo(130 + this.image.width, h2 * 2.5)
@@ -317,7 +329,7 @@ Adventure.prototype = {
 
   deleteAlbumElements: function () {
     this.albumDeleted = true
-    this.game.time.events.add(Phaser.Timer.SECOND * 1, function () {
+    this.game.time.events.add(Phaser.Timer.SECOND * 5, function () {
       this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       this.game.add.tween(this.albumBg.cameraOffset).to({ y: h2 * 4 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       var aux = this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
