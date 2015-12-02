@@ -1,5 +1,5 @@
 /*eslint-disable*/
-/* global Phaser
+/* global Phaser, players, colorHex
 */
 /*eslint-enable*/
 var Checkpoint = function (game, x, y) {
@@ -34,42 +34,26 @@ Checkpoint.prototype = {
   collect: function () {
     var power = this.sprite
     this.text.kill()
-    //this.game.add.tween(power).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true)
+    this.game.add.tween(power).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true)
     var powerTween = this.game.add.tween(power.scale).to({x: 0, y: 0}, 300, Phaser.Easing.Back.In, true)
     powerTween.onComplete.add(function () {
       power.destroy()
     }, this)
   },
 
-  setPosition: function (x, y) {
+  setPosition: function (x, y) {},
 
-  },
+  stop: function () {},
 
-  stop: function () {
+  sendToBack: function () {},
 
-  },
+  destroy: function () {},
 
-  sendToBack: function () {
+  hide: function () {},
 
-  },
+  show: function () {},
 
-  destroy: function () {
+  setScale: function (scale) {},
 
-  },
-
-  hide: function () {
-
-  },
-
-  show: function () {
-
-  },
-
-  setScale: function (scale) {
-
-  },
-
-  setAlpha: function (alpha) {
-
-  }
+  setAlpha: function (alpha) {}
 }

@@ -12,6 +12,7 @@ var ButtonList = function (context, game) {
   this.pressingDown = false
   this.visible = false
   this.enabled = true
+  this.distance = 125
 
   this.textColor = colorHex
 }
@@ -22,7 +23,7 @@ ButtonList.prototype = {
     for (var i = 0; i < this.buttons.length; i++) {
       var b = this.buttons[i]
       b.textColor = this.textColor
-      b.setPosition(this.x, this.y + i * 125)
+      b.setPosition(this.x, this.y + i * this.distance)
       b.setIndex(i)
       b.create()
     }
@@ -42,7 +43,7 @@ ButtonList.prototype = {
     this.x = x
     for (var i = 0; i < this.buttons.length; i++) {
       var b = this.buttons[i]
-      b.setPosition(this.x, this.y + i * 125)
+      b.setPosition(this.x, this.y + i * this.distance)
     }
   },
 
@@ -51,12 +52,12 @@ ButtonList.prototype = {
     if (this.visible) {
       for (var i = 0; i < this.buttons.length; i++) {
         var b = this.buttons[i]
-        b.setPosition(this.x, this.y + i * 125)
+        b.setPosition(this.x, this.y + i * this.distance)
       }
     }
   },
 
-  setScrolling (isScrolling) {
+  setScrolling: function (isScrolling) {
     for (var i = 0; i < this.buttons.length; i++) {
       this.buttons[i].button.fixedToCamera = !isScrolling
     }
@@ -170,5 +171,10 @@ ButtonList.prototype = {
     for (var i = 0; i < this.buttons.length; i++) {
       this.buttons[i].enable()
     }
+  },
+
+  centerVertically: function () {
+    var height = (this.length() - 1) * this.distance
+    this.setY(h2 - height / 2)
   }
 }

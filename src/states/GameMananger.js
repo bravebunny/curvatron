@@ -206,6 +206,7 @@ gameMananger.prototype = {
     this.shareButtons.add('cancel_button', 'cancel', this.cancelShare)
     this.shareButtons.textColor = colorHexDark
     this.shareButtons.create()
+    this.shareButtons.centerVertically()
     this.shareButtons.hide()
 
     this.shareText = this.add.text(w2, 150, '', {
@@ -235,7 +236,7 @@ gameMananger.prototype = {
       this.pauseButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
     this.pauseButtons.textColor = colorHexDark
-    if (this.mode.name === 'creative') this.pauseButtons.setY(150)
+    this.pauseButtons.centerVertically()
     this.pauseButtons.create()
     this.pauseButtons.hide()
 
@@ -261,6 +262,7 @@ gameMananger.prototype = {
       this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
     this.deathButtons.textColor = colorHexDark
+    this.deathButtons.centerVertically()
     this.deathButtons.create()
     if (this.mode.name === 'adventure') this.twitterButton.disable()
     this.deathButtons.hide()
