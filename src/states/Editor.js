@@ -373,6 +373,14 @@ editor.prototype = {
       }
     }
 
+    for (var e = 0; e < this.obstacles.length; e++) {
+      var obstacle = this.obstacles[e]
+      if (obstacle) {
+        if (e === this.selectedObs) obstacle.setAlpha(1)
+        else obstacle.setAlpha(0.3)
+      }
+    }
+
     // reset visibility of cursor objects
     this.cursorStart.visible = false
     this.cursorPoint.visible = false

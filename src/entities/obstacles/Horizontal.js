@@ -66,8 +66,6 @@ Horizontal.prototype = {
   },
 
   show: function () {
-    this.sprite.alpha = 0.5
-    this.spriteAxis.alpha = 0.2
     this.sprite.visible = true
     this.spriteAxis.visible = true
   },
@@ -75,5 +73,10 @@ Horizontal.prototype = {
   setScale: function (scale) {
     this.sprite.scale.set(scale)
     this.spriteAxis.scale.set(scale)
+  },
+
+  setAlpha: function (alpha) {
+    this.sprite.alpha = 1 * alpha
+    this.spriteAxis.alpha = 0.5 * alpha
   }
 }

@@ -79,14 +79,9 @@ Rotator.prototype = {
   },
 
   show: function () {
-    this.sprite.alpha = 0.5
-    this.spriteAxis.alpha = 0.2
     this.sprite.visible = true
     this.spriteAxis.visible = true
-    if (this.circle) {
-      this.circle.visible = true
-      this.circle.alpha = 0.2
-    }
+    if (this.circle) this.circle.visible = true
   },
 
   setScale: function (scale) {
@@ -95,5 +90,11 @@ Rotator.prototype = {
     this.sprite.scale.set(scale)
     this.spriteAxis.scale.set(scale)
     if (this.circle) this.circle.scale.set(scale)
+  },
+
+  setAlpha: function (alpha) {
+    this.sprite.alpha = 1 * alpha
+    this.spriteAxis.alpha = 0.5 * alpha
+    if (this.circle) this.circle.alpha = 0.5 * alpha
   }
 }
