@@ -802,9 +802,7 @@ editor.prototype = {
 
   upload: function () {
     if (!this.uploadButtons.visible) {
-      this.uploadButtons.show()
       this.menuButtons.hide()
-      this.uploadButtons.disable()
       this.game.input.keyboard.enabled = false
       this.game.canvas.toBlob(function (blob) {
         var fs = require('fs')
@@ -819,6 +817,8 @@ editor.prototype = {
         setScreenFixed(baseW, baseH + 200, this.game)
         this.gridImage.visible = true
         this.marker.visible = true
+        this.uploadButtons.show()
+        this.uploadButtons.disable()
 
         png = png.replace(/^data:image\/png;base64,/, '')
 
