@@ -36,14 +36,7 @@ menu.prototype = {
       keys = defaultKeys
     }
 
-    if (changeColor) {
-      chosenColor = this.game.rnd.integerInRange(0, 3)
-      colorHex = bgColors[chosenColor]
-      colorHexDark = bgColorsDark[chosenColor]
-      document.body.style.background = colorHex
-      this.stage.backgroundColor = colorHex
-      changeColor = false
-    }
+    if (changeColor) changeBGColor(this.game)
 
     bgColor = Phaser.Color.hexToColor(colorHex)
     this.stage.backgroundColor = colorHex

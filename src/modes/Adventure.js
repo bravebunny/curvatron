@@ -274,6 +274,7 @@ Adventure.prototype = {
   },
 
   playNextLevel: function () {
+    changeBGColor(this.game)
     this.index++
     this.restarting = false
     this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])

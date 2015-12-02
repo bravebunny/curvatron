@@ -94,3 +94,12 @@ function openFile (cb) {
   })
   el.click()
 }
+
+function changeBGColor (game) {
+  chosenColor = game.rnd.integerInRange(0, 3)
+  colorHex = bgColors[chosenColor]
+  colorHexDark = bgColorsDark[chosenColor]
+  document.body.style.background = colorHex
+  game.stage.backgroundColor = colorHex
+  changeColor = false
+}
