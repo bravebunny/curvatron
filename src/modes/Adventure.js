@@ -171,11 +171,13 @@ Adventure.prototype = {
   },
 
   update: function () {
-    if (this.music.isPlaying && this.showAlbum) {
-      this.showAlbum = false
-      if (!muteMusic) {
-        if (!this.restarting) this.createAlbumElements()
-        this.restarting = true
+    if (!this.testing) {
+      if (this.music.isPlaying && this.showAlbum) {
+        this.showAlbum = false
+        if (!muteMusic) {
+          if (!this.restarting) this.createAlbumElements()
+          this.restarting = true
+        }
       }
     }
 
