@@ -395,7 +395,7 @@ gameMananger.prototype = {
       }
       ui.overlay.inputEnabled = false
       if (this.mode.sp) {
-        this.game.time.events.add(Phaser.Timer.SECOND * 1, function () {
+        this.game.time.events.add(Phaser.Timer.SECOND * 0.4, function () {
           ui.overlay.inputEnabled = true
         }, this)
       }
