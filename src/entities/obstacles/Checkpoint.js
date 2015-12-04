@@ -2,8 +2,9 @@
 /* global Phaser, players, colorHex, savedCheckpoint: true
 */
 /*eslint-enable*/
-var Checkpoint = function (game, x, y) {
+var Checkpoint = function (game, mode, x, y) {
   this.game = game
+  this.mode = mode
   this.x = x
   this.y = y
 }
@@ -24,7 +25,6 @@ Checkpoint.prototype = {
   },
 
   update: function () {
-    console.log(this.text.alive)
     if (this.text.alive) {
       var player = players[0].sprite
       this.game.physics.arcade.overlap(this.sprite, player, this.collect, null, this)
@@ -41,6 +41,7 @@ Checkpoint.prototype = {
     }, this)
     savedCheckpoint.savedSize = players[0].size
     savedCheckpoint.position = {x: this.sprite.x, y: this.sprite.y}
+    savedCheckpoint.score = this.mode.score
   },
 
   setPosition: function (x, y) {},

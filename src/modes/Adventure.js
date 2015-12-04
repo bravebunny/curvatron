@@ -152,7 +152,7 @@ Adventure.prototype = {
       } else this.music.stop()
     }
 
-    this.checkpoint = new Checkpoint(this.game, 500, 500)
+    this.checkpoint = new Checkpoint(this.game, this, 900, 900)
     this.checkpoint.create()
   },
 
@@ -172,6 +172,7 @@ Adventure.prototype = {
   },
 
   update: function () {
+    this.checkpoint.update()
     if (!this.testing) {
       if (this.music.isPlaying && this.showAlbum) {
         this.showAlbum = false
@@ -215,7 +216,6 @@ Adventure.prototype = {
 
   collect: function (player, power) {
     this.score++
-    savedCheckpoint.score = this.score
 
     if (this.score >= this.pointPositions.length) {
       this.player.dead = true

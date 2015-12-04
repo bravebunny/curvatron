@@ -18,7 +18,6 @@ var menu = function (game) {
   keys = []
   menuMusic = null
   this.ui = {}
-  savedCheckpoint = {}
   this.buttons = null; // eslint-disable-line
 }
 
@@ -26,6 +25,7 @@ menu.prototype = {
   create: function () {
     pressSound = this.add.audio('sfx_press')
     setScreenFixed(baseH * 1.5, baseH, this.game)
+    savedCheckpoint = {}
 
     this.world.pivot.set(0, 0)
     this.world.angle = 0
