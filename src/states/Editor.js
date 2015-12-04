@@ -367,10 +367,10 @@ editor.prototype = {
       var point = this.points[i]
       if (point) {
         if (i === this.selectedPoint) {
-          point.alpha = 1
+          point.alpha = 0.5
           point.scale.set(0.7 / this.scale)
         } else {
-          point.alpha = 0.3
+          point.alpha = 1
           point.scale.set(0.5 / this.scale)
         }
       }
@@ -450,7 +450,7 @@ editor.prototype = {
                 if (this.selectedPoint >= pointN) {
                   this.pointDec()
                 }
-              } else if (this.levelArray[index] > 31) { // true if is a point
+              } else if (this.levelArray[index] > 31) { // true if is an obstacle
                 var obsN = this.obsPositions.indexOf(index)
                 this.obstacles[obsN].destroy()
                 for (var o = obsN; o < this.obstacles.length - 1; o++) {
@@ -950,7 +950,7 @@ editor.prototype = {
   },
 
   loadFromArray: function () {
-    var obsCounter = 0
+    var obsCounter = 1
     for (var x = 0; x < this.mapW; x++) {
       for (var y = 0; y < this.mapH; y++) {
         var index = x * this.mapH + y
@@ -959,10 +959,13 @@ editor.prototype = {
         else if (val === this.values.start) this.createStart(x, y)
         else if (val === this.values.vertical) {
           this.createObstacle(x, y, val, obsCounter++)
+          this.obsPositions.push(index)
         } else if (val === this.values.horizontal) {
           this.createObstacle(x, y, val, obsCounter++)
+          this.obsPositions.push(index)
         } else if (val === this.values.rotator) {
           this.createObstacle(x, y, val, obsCounter++)
+          this.obsPositions.push(index)
         } else if (val > this.values.wall) { // load points
           this.pointPositions[val - 1] = index
           this.levelArray[index] = 2
