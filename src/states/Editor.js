@@ -340,9 +340,18 @@ editor.prototype = {
     this.tooltip.visible = false
 
     this.game.input.onUp.add(this.releaseMouse, this)
+
+    this.game.input.onDown.add(function (e) {
+        if(this.game.input.activePointer.button === Phaser.Mouse.RIGHT_BUTTON) {
+            var x = this.layer.getTileX(this.game.input.activePointer.worldX)
+            var y = this.layer.getTileY(this.game.input.activePointer.worldY)
+            this.selectByTile(x, y)
+        }
+    }.bind(this))
   },
 
   update: function () {
+    //console.log(this.game.input.activePointer.button)
     var pointerX = this.game.input.activePointer.worldX
     var pointerY = this.game.input.activePointer.worldY
 
@@ -379,7 +388,9 @@ editor.prototype = {
     this.cursorStart.visible = false
     this.cursorPoint.visible = false
     this.marker.visible = false
-    this.cursorObs[this.obsType].hide()
+    this.cursorObs[this.values.vertical].hide()
+    this.cursorObs[this.values.horizontal].hide()
+    this.cursorObs[this.values.rotator].hide()
 
     // square around selected tool in toolbar
     this.selector.x = this.tb[this.tool].x
@@ -400,7 +411,7 @@ editor.prototype = {
         this.prevCursorY = tileY
       }
 
-      if (this.game.input.mousePointer.isDown) {
+      if (this.game.input.mousePointer.isDown && this.game.input.activePointer.button === Phaser.Mouse.LEFT_BUTTON) {
         this.mouseWasDown = true
         var line = new Phaser.Line(this.prevCursorX, this.prevCursorY, tileX, tileY)
         var linePoints = line.coordinatesOnLine()
@@ -414,6 +425,7 @@ editor.prototype = {
 
           switch (this.tool) {
             case 'draw':
+              this.marker.visible = true
               if (this.levelArray[index] === this.values.empty) {
                 this.map.putTile(0, lineX, lineY)
                 this.levelArray[index] = this.values.wall
@@ -421,6 +433,7 @@ editor.prototype = {
               break
 
             case 'erase':
+              this.marker.visible = true
               if (this.map.getTile(lineX, lineY) != null) {
                 this.map.removeTile(lineX, lineY)
               }
@@ -616,6 +629,16 @@ editor.prototype = {
       this.selectedPoint = 1
     }
     this.tb.pointText.text = this.selectedPoint
+  },
+
+  selectPoint: function (index) {
+    this.selectedPoint = index
+    this.tb.pointText.text = this.selectedPoint
+  },
+
+  selectObs: function (index) {
+    this.selectedObs = index
+    this.tb.obsText.text = this.selectedObs
   },
 
   obsDec: function () {
@@ -971,6 +994,30 @@ editor.prototype = {
     } else if (this.placedObs) {
       this.obsInc()
       this.placedObs = false
+    }
+  },
+
+  selectByTile: function (x, y) {
+    var index = x * this.mapH + y
+
+    var val = this.levelArray[index]
+    if (val === this.values.empty) this.eraseTool()
+    else if (val === this.values.wall) this.drawTool()
+    else if (val === this.values.horizontal) {
+      this.obstacleTool()
+      this.horizontalTool()
+      this.selectObs(this.obsPositions.indexOf(index))
+    } else if (val === this.values.vertical) {
+      this.obstacleTool()
+      this.verticalTool()
+      this.selectObs(this.obsPositions.indexOf(index))
+    } else if (val === this.values.rotator) {
+      this.obstacleTool()
+      this.rotatorTool()
+      this.selectObs(this.obsPositions.indexOf(index))
+    } else {
+      this.pointTool()
+      this.selectPoint(this.pointPositions.indexOf(index))
     }
   }
 }
