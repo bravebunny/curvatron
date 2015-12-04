@@ -23,6 +23,10 @@ var gameMananger = function (game) {
   this.countdownText = 0
   this.screenshot = null
   this.restarting = false
+
+  this.selectedMusic = 0
+  this.unlockedMusics = 10
+  this.musicButton = null
 }
 
 gameMananger.prototype = {
@@ -208,6 +212,9 @@ gameMananger.prototype = {
       this.pauseButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
     }
     this.pauseButtons.add('restart_button', 'restart', this.restart)
+    if (this.mode.sp && this.mode.name != 'adventure') {
+      this.musicButton = this.pauseButtons.add(null, '<    musica tal ' + this.selectedMusic + 1 + '     >', this.left, this.right)
+    }
     this.ui.musicButton = this.pauseButtons.add(musicButton, musicText, this.muteMusic)
     this.ui.soundEffectsButton = this.pauseButtons.add(soundEffectsButton, soundEffectsText, this.muteSoundEffects)
     if (this.mode.file) {
@@ -622,6 +629,24 @@ gameMananger.prototype = {
     this.pauseButtons.selectRelease()
     this.deathButtons.selectRelease()
     this.shareButtons.selectRelease()
+  },
+
+  left: function () {
+    if (this.selectedMusic === 0) {
+      this.selectedMusic = this.unlockedMusics
+    } else {
+      this.selectedMusic--
+    }
+    this.musicButton.setText('<    musica tal ' + (this.selectedMusic + 1) + '     >')
+  },
+
+  right: function () {
+    if (this.selectedMusic === this.unlockedMusics) {
+      this.selectedMusic = 0
+    } else {
+      this.selectedMusic++
+    }
+    this.musicButton.setText('<    musica tal ' + (this.selectedMusic + 1) + '     >')
   },
 
   render: function () {
