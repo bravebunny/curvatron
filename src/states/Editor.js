@@ -271,11 +271,11 @@ editor.prototype = {
       this.cursorObs[i].setScale(1 / this.scale)
     }
 
-    this.cursorStart = this.game.add.sprite(0, 0, 'editorStart')
-    this.cursorStart.scale.set(1 / this.scale)
-    this.cursorStart.anchor.set(0.5, 0.05)
-    this.cursorStart.alpha = 0.5
-    this.cursorStart.visible = false
+    this.cursorCheck = this.game.add.sprite(0, 0, 'editorStart')
+    this.cursorCheck.scale.set(1 / this.scale)
+    this.cursorCheck.anchor.set(0.5, 0.05)
+    this.cursorCheck.alpha = 0.5
+    this.cursorCheck.visible = false
 
     this.menuButtons = new ButtonList(this, this.game)
     this.menuButtons.add('back_button', 'cancel', this.backPressed)
@@ -382,6 +382,16 @@ editor.prototype = {
       this.hideObstacles()
     }
 
+    if (this.selectedCheck > 1 && !this.tb.checkpoint.cp) {
+      this.tb.checkpoint.loadTexture('editorCheckpoint')
+      this.cursorCheck.loadTexture('editorCheckpoint')
+      this.tb.checkpoint.cp = true
+    } else if (this.selectedCheck === 1 && this.tb.checkpoint.cp) {
+      this.tb.checkpoint.loadTexture('editorStart')
+      this.cursorCheck.loadTexture('editorStart')
+      this.tb.checkpoint.cp = false
+    }
+
     for (var i = 0; i < this.points.length; i++) {
       var point = this.points[i]
       if (point) {
@@ -404,7 +414,7 @@ editor.prototype = {
     }
 
     // reset visibility of cursor objects
-    this.cursorStart.visible = false
+    this.cursorCheck.visible = false
     this.cursorPoint.visible = false
     this.marker.visible = false
     this.cursorObs[this.values.vertical].hide()
@@ -413,7 +423,6 @@ editor.prototype = {
 
     // square around selected tool in toolbar
     var tool = this.tool
-    if (this.tool === 'start') tool = 'checkpoint'
     this.selector.x = this.tb[tool].x
     this.selector.y = this.tb[tool].y
 
@@ -507,17 +516,16 @@ editor.prototype = {
               }
               break
 
-            case 'start':
-              if (this.levelArray[index] === this.values.empty) {
-                this.levelArray[tileX * this.mapH + tileY] = this.values.start
-                this.createStart(tileX, tileY)
-              }
-              break
             case 'checkpoint':
               if (this.levelArray[index] === this.values.empty) {
-                this.createCheckpoint(tileX, tileY, this.selectedCheck)
-                this.levelArray[index] = this.values.checkpoint
-                this.checkPositions[this.selectedCheck] = index
+                if (this.selectedCheck > 1) {
+                  this.createCheckpoint(tileX, tileY, this.selectedCheck)
+                  this.levelArray[index] = this.values.checkpoint
+                  this.checkPositions[this.selectedCheck] = index
+                } else {
+                  this.levelArray[tileX * this.mapH + tileY] = this.values.start
+                  this.createStart(tileX, tileY)
+                }
               }
           }
         }
@@ -526,9 +534,9 @@ editor.prototype = {
         var curX = this.marker.x + (this.tileSize / 2) / this.scale
         var curY = this.marker.y + (this.tileSize / 2) / this.scale
         switch (this.tool) {
-          case 'start':
-            this.cursorStart.visible = true
-            this.cursorStart.position.set(curX, curY)
+          case 'checkpoint':
+            this.cursorCheck.visible = true
+            this.cursorCheck.position.set(curX, curY)
             break
           case 'draw':
           case 'erase':
@@ -614,6 +622,8 @@ editor.prototype = {
     var index = x * this.mapH + y
     if (lp !== null && lp !== index) this.levelArray[lp] = 0
     this.lastStartPosition = x * this.mapH + y
+    this.checkpoints[1] = this.start
+    this.placedCheck = true
   },
 
   createCheckpoint: function (tileX, tileY, i) {
@@ -623,18 +633,15 @@ editor.prototype = {
     console.log(check)
     if (check == null) {
       this.placedCheck = true
-      check = this.game.add.sprite(x, y, 'point')
+      check = this.game.add.sprite(x, y, 'editorCheckpoint')
+      check.scale.set(1 / this.scale)
+      check.anchor.set(0.5, 0.05)
       this.game.world.sendToBack(check)
-      check.anchor.set(0.5)
       this.checkpoints[i] = check
     } else {
       this.levelArray[this.checkPositions[i]] = 0
       check.position.set(x, y)
     }
-  },
-
-  startTool: function () {
-    this.tool = 'start'
   },
 
   checkpointTool: function () {
@@ -702,6 +709,11 @@ editor.prototype = {
   selectObs: function (index) {
     this.selectedObs = index
     this.tb.obsText.text = this.selectedObs
+  },
+
+  selectCheck: function (index) {
+    this.selectedCheck = index
+    this.tb.checkText.text = this.selectedCheck
   },
 
   obsDec: function () {
@@ -1015,14 +1027,20 @@ editor.prototype = {
 
   loadFromArray: function () {
     var obsCounter = 1
+    var checkCounter = 2
     this.obsPositions.push(-1)
+    this.checkPositions.push(-1)
+    this.checkPositions.push(-1)
     for (var x = 0; x < this.mapW; x++) {
       for (var y = 0; y < this.mapH; y++) {
         var index = x * this.mapH + y
         var val = this.levelArray[index]
         if (val === this.values.wall) this.map.putTile(0, x, y) // load walls
         else if (val === this.values.start) this.createStart(x, y)
-        else if (val === this.values.vertical) {
+        else if (val === this.values.checkpoint) {
+          this.createCheckpoint(x, y, checkCounter++)
+          this.checkPositions.push(index)
+        } else if (val === this.values.vertical) {
           this.createObstacle(x, y, val, obsCounter++)
           this.obsPositions.push(index)
         } else if (val === this.values.horizontal) {
@@ -1040,6 +1058,7 @@ editor.prototype = {
     }
     this.placedPoint = false
     this.placedObs = false
+    this.placedCheck = false
   },
 
   setScreen: function () {
@@ -1088,6 +1107,12 @@ editor.prototype = {
       this.obstacleTool()
       this.rotatorTool()
       this.selectObs(this.obsPositions.indexOf(index))
+    } else if (val === this.values.checkpoint) {
+      this.checkpointTool()
+      this.selectCheck(this.checkPositions.indexOf(index))
+    } else if (val === this.values.start) {
+      this.checkpointTool()
+      this.selectCheck(1)
     } else {
       this.pointTool()
       this.selectPoint(this.pointPositions.indexOf(index))
