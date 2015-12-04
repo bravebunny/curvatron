@@ -25,7 +25,6 @@ var editor = function (game) {
   this.textInput = null
   this.fileHandle = null
   this.justUploaded = false
-  this.placedPoint = false
   this.placedObs = false
   this.cursorObj = null
   this.defaults = {
@@ -68,6 +67,7 @@ editor.prototype = {
     this.mouseWasDown = false
     this.changeScale = false
     this.obsType = this.values.vertical
+    this.placedPoint = false
 
     // change outer background color
     document.body.style.background = colorHexDark
@@ -951,6 +951,7 @@ editor.prototype = {
 
   loadFromArray: function () {
     var obsCounter = 1
+    this.obsPositions.push(-1)
     for (var x = 0; x < this.mapW; x++) {
       for (var y = 0; y < this.mapH; y++) {
         var index = x * this.mapH + y
@@ -973,6 +974,8 @@ editor.prototype = {
         }
       }
     }
+    this.placedPoint = false
+    this.placedObs = false
   },
 
   setScreen: function () {
