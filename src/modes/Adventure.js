@@ -2,7 +2,7 @@
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
   scale, gameover:true, ButtonList, musicList, Vertical, Horizontal, Rotator,
-  muteMusic, restarting:true
+  muteMusic, restarting:true, Checkpoint
 */
 /*eslint-enable*/
 var Adventure = function (game, testing, items, index) {
@@ -49,6 +49,7 @@ var Adventure = function (game, testing, items, index) {
     rotator: 34,
     horizontal: 33,
     vertical: 32,
+    checkpoint: 31,
     wall: 1,
     empty: 0
   }
@@ -122,6 +123,10 @@ Adventure.prototype = {
           var rot = new Rotator(this.game, worldX, worldY)
           rot.create()
           this.obstacles.push(rot)
+        } else if (val === this.values.checkpoint) {
+          var check = new Checkpoint(this.game, this, worldX, worldY)
+          check.create()
+          this.obstacles.push(check)
         } else if (val > 1) {
           this.pointPositions[val - 2] = {}
           var point = this.pointPositions[val - 2]
@@ -151,9 +156,6 @@ Adventure.prototype = {
         }
       } else this.music.stop()
     }
-
-    this.checkpoint = new Checkpoint(this.game, this, 900, 900)
-    this.checkpoint.create()
   },
 
   setScreen: function () {
@@ -172,7 +174,6 @@ Adventure.prototype = {
   },
 
   update: function () {
-    this.checkpoint.update()
     if (!this.testing) {
       if (this.music.isPlaying && this.showAlbum) {
         this.showAlbum = false

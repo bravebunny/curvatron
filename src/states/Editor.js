@@ -20,12 +20,11 @@ var editor = function (game) {
   this.returning = false
   this.fileName = null
   this.levelArray = []
-  this.maxPoints = 29
+  this.maxPoints = 28
   this.maxObs = 10000
   this.textInput = null
   this.fileHandle = null
   this.justUploaded = false
-  this.placedObs = false
   this.cursorObj = null
   this.defaults = {
     mapW: 60,
@@ -39,6 +38,7 @@ var editor = function (game) {
     rotator: 34,
     horizontal: 33,
     vertical: 32,
+    checkpoint: 31,
     wall: 1,
     empty: 0
   }
@@ -53,14 +53,18 @@ editor.prototype = {
 
   create: function () {
     setScreenFixed(baseW, baseH + 200, this.game)
+    savedCheckpoint = {}
     // variables that need to be reset
     this.tool = 'draw' // draw, erase, point, start
     this.selectedPoint = 1
     this.selectedObs = 1
+    this.selectedCheck = 1
     this.points = []
     this.obstacles = []
+    this.checkpoints = []
     this.pointPositions = []
     this.obsPositions = []
+    this.checkPositions = []
     this.tileSize = 32
     this.mapW = this.defaults.mapW * this.scale
     this.mapH = this.defaults.mapH * this.scale
@@ -68,6 +72,8 @@ editor.prototype = {
     this.changeScale = false
     this.obsType = this.values.vertical
     this.placedPoint = false
+    this.placedObs = false
+    this.placedCheck = false
 
     // change outer background color
     document.body.style.background = colorHexDark
@@ -131,11 +137,21 @@ editor.prototype = {
     this.tb.bg.alpha = 0.5
 
     // toolbar icons
-    this.tb.left = this.game.add.button(100, baseH + 100, 'editorArrow', this.pointDec, this)
+    this.tb.draw = this.game.add.button(100, baseH + 100, 'editorDraw', this.drawTool, this)
+    this.tb.draw.anchor.set(0.5, 0.5)
+    this.tb.draw.scale.set(0.4)
+    this.tb.draw.events.onInputOver.add(function (button) { this.showTooltip('draw blocks', button) }.bind(this))
+
+    this.tb.erase = this.game.add.button(250, baseH + 100, 'editorErase', this.eraseTool, this)
+    this.tb.erase.anchor.set(0.5, 0.5)
+    this.tb.erase.scale.set(0.4)
+    this.tb.erase.events.onInputOver.add(function (button) { this.showTooltip('erase blocks', button) }.bind(this))
+
+    this.tb.left = this.game.add.button(370, baseH + 100, 'editorArrow', this.pointDec, this)
     this.tb.left.anchor.set(0.5, 0.5)
     this.tb.left.scale.set(-0.4, 0.4)
 
-    this.tb.point = this.game.add.button(200, baseH + 100, 'editorPoint', this.pointTool, this)
+    this.tb.point = this.game.add.button(460, baseH + 100, 'editorPoint', this.pointTool, this)
     this.tb.point.anchor.set(0.5)
     this.tb.point.scale.set(0.4)
     this.tb.point.events.onInputOver.add(function (button) { this.showTooltip('point', button) }.bind(this))
@@ -147,31 +163,35 @@ editor.prototype = {
     })
     this.tb.pointText.anchor.set(0.5)
 
-    this.tb.right = this.game.add.button(300, baseH + 100, 'editorArrow', this.pointInc, this)
+    this.tb.right = this.game.add.button(550, baseH + 100, 'editorArrow', this.pointInc, this)
     this.tb.right.anchor.set(0.5, 0.5)
     this.tb.right.scale.set(0.4)
 
-    this.tb.draw = this.game.add.button(450, baseH + 100, 'editorDraw', this.drawTool, this)
-    this.tb.draw.anchor.set(0.5, 0.5)
-    this.tb.draw.scale.set(0.4)
-    this.tb.draw.events.onInputOver.add(function (button) { this.showTooltip('draw blocks', button) }.bind(this))
+    this.tb.leftCheck = this.game.add.button(650, baseH + 100, 'editorArrow', this.checkDec, this)
+    this.tb.leftCheck.anchor.set(0.5, 0.5)
+    this.tb.leftCheck.scale.set(-0.4, 0.4)
 
-    this.tb.erase = this.game.add.button(600, baseH + 100, 'editorErase', this.eraseTool, this)
-    this.tb.erase.anchor.set(0.5, 0.5)
-    this.tb.erase.scale.set(0.4)
-    this.tb.erase.events.onInputOver.add(function (button) { this.showTooltip('erase blocks', button) }.bind(this))
+    this.tb.checkpoint = this.game.add.button(740, baseH + 100, 'editorStart', this.checkpointTool, this)
+    this.tb.checkpoint.anchor.set(0.5, 0.5)
+    this.tb.checkpoint.scale.set(0.6)
+    this.tb.checkpoint.events.onInputOver.add(function (button) { this.showTooltip('checkpoints', button) }.bind(this))
 
-    this.tb.start = this.game.add.button(750, baseH + 100, 'editorStart', this.startTool, this)
-    this.tb.start.anchor.set(0.5, 0.5)
-    this.tb.start.scale.set(0.6)
-    this.tb.start.events.onInputOver.add(function (button) { this.showTooltip('change start position', button) }.bind(this))
+    this.tb.checkText = this.game.add.text(this.tb.checkpoint.x - 90, this.tb.checkpoint.y + 70, this.selectedCheck, {
+      font: '60px dosis',
+      fill: '#FFFFFF',
+      align: 'center'
+    })
+    this.tb.checkText.anchor.set(0.5)
 
-    // toolbar icons
-    this.tb.leftObs = this.game.add.button(900, baseH + 100, 'editorArrow', this.obsDec, this)
+    this.tb.rightCheck = this.game.add.button(830, baseH + 100, 'editorArrow', this.checkInc, this)
+    this.tb.rightCheck.anchor.set(0.5, 0.5)
+    this.tb.rightCheck.scale.set(0.4)
+
+    this.tb.leftObs = this.game.add.button(930, baseH + 100, 'editorArrow', this.obsDec, this)
     this.tb.leftObs.anchor.set(0.5, 0.5)
     this.tb.leftObs.scale.set(-0.4, 0.4)
 
-    this.tb.obstacle = this.game.add.button(1000, baseH + 100, 'vertical_button', this.obstacleTool, this)
+    this.tb.obstacle = this.game.add.button(1020, baseH + 100, 'vertical_button', this.obstacleTool, this)
     this.tb.obstacle.anchor.set(0.5)
     this.tb.obstacle.events.onInputOver.add(this.showObstacles, this)
 
@@ -192,19 +212,19 @@ editor.prototype = {
 
     this.tb.obs = {}
 
-    this.tb.obs.vertical = this.game.add.button(1000, baseH - 100, 'vertical_button', this.verticalTool, this)
+    this.tb.obs.vertical = this.game.add.button(1020, baseH - 100, 'vertical_button', this.verticalTool, this)
     this.tb.obs.vertical.anchor.set(0.5)
     this.tb.obs.vertical.visible = false
 
-    this.tb.obs.horizontal = this.game.add.button(1000, baseH - 250, 'horizontal_button', this.horizontalTool, this)
+    this.tb.obs.horizontal = this.game.add.button(1020, baseH - 250, 'horizontal_button', this.horizontalTool, this)
     this.tb.obs.horizontal.anchor.set(0.5)
     this.tb.obs.horizontal.visible = false
 
-    this.tb.obs.rotator = this.game.add.button(1000, baseH - 400, 'rotator_button', this.rotatorTool, this)
+    this.tb.obs.rotator = this.game.add.button(1020, baseH - 400, 'rotator_button', this.rotatorTool, this)
     this.tb.obs.rotator.anchor.set(0.5)
     this.tb.obs.rotator.visible = false
 
-    this.tb.rightObs = this.game.add.button(1100, baseH + 100, 'editorArrow', this.obsInc, this)
+    this.tb.rightObs = this.game.add.button(1110, baseH + 100, 'editorArrow', this.obsInc, this)
     this.tb.rightObs.anchor.set(0.5, 0.5)
     this.tb.rightObs.scale.set(0.4)
 
@@ -342,16 +362,15 @@ editor.prototype = {
     this.game.input.onUp.add(this.releaseMouse, this)
 
     this.game.input.onDown.add(function (e) {
-        if(this.game.input.activePointer.button === Phaser.Mouse.RIGHT_BUTTON) {
-            var x = this.layer.getTileX(this.game.input.activePointer.worldX)
-            var y = this.layer.getTileY(this.game.input.activePointer.worldY)
-            this.selectByTile(x, y)
-        }
+      if (this.game.input.activePointer.button === Phaser.Mouse.RIGHT_BUTTON) {
+        var x = this.layer.getTileX(this.game.input.activePointer.worldX)
+        var y = this.layer.getTileY(this.game.input.activePointer.worldY)
+        this.selectByTile(x, y)
+      }
     }.bind(this))
   },
 
   update: function () {
-    //console.log(this.game.input.activePointer.button)
     var pointerX = this.game.input.activePointer.worldX
     var pointerY = this.game.input.activePointer.worldY
 
@@ -393,8 +412,10 @@ editor.prototype = {
     this.cursorObs[this.values.rotator].hide()
 
     // square around selected tool in toolbar
-    this.selector.x = this.tb[this.tool].x
-    this.selector.y = this.tb[this.tool].y
+    var tool = this.tool
+    if (this.tool === 'start') tool = 'checkpoint'
+    this.selector.x = this.tb[tool].x
+    this.selector.y = this.tb[tool].y
 
     if (pointerY < this.tb.bg.y && !this.tb.obsMenu.visible) {
       // cursor square to mark drawing position
@@ -470,30 +491,34 @@ editor.prototype = {
               break
 
             case 'point':
-              if (this.levelArray[tileX * this.mapH + tileY] === this.values.empty) {
+              if (this.levelArray[index] === this.values.empty) {
                 this.createPoint(tileX, tileY, this.selectedPoint)
                 // value is set as 2 temporarily, will be replaced later
-                this.levelArray[tileX * this.mapH + tileY] = 2
-                this.pointPositions[this.selectedPoint] = tileX * this.mapH + tileY
-                // this.pointsGrid[this.selectedPoint] = [tileX, this.layer.getTileX(y)]
+                this.levelArray[index] = 2
+                this.pointPositions[this.selectedPoint] = index
               }
               break
 
             case 'obstacle':
-              if (this.levelArray[tileX * this.mapH + tileY] === this.values.empty) {
+              if (this.levelArray[index] === this.values.empty) {
                 this.createObstacle(tileX, tileY, this.obsType, this.selectedObs)
-                this.levelArray[tileX * this.mapH + tileY] = this.obsType
-                this.obsPositions[this.selectedObs] = tileX * this.mapH + tileY
-                // this.pointsGrid[this.selectedPoint] = [tileX, this.layer.getTileX(y)]
+                this.levelArray[index] = this.obsType
+                this.obsPositions[this.selectedObs] = index
               }
               break
 
             case 'start':
-              if (this.levelArray[tileX * this.mapH + tileY] === this.values.empty) {
+              if (this.levelArray[index] === this.values.empty) {
                 this.levelArray[tileX * this.mapH + tileY] = this.values.start
                 this.createStart(tileX, tileY)
               }
               break
+            case 'checkpoint':
+              if (this.levelArray[index] === this.values.empty) {
+                this.createCheckpoint(tileX, tileY, this.selectedCheck)
+                this.levelArray[index] = this.values.checkpoint
+                this.checkPositions[this.selectedCheck] = index
+              }
           }
         }
       } else {
@@ -540,7 +565,6 @@ editor.prototype = {
       this.points[i] = this.game.add.sprite(x, y, 'point')
       this.game.world.sendToBack(this.points[i])
       this.points[i].anchor.set(0.5)
-      this.points[i].inputEnabled = true
     } else {
       this.levelArray[this.pointPositions[i]] = 0
       this.points[i].position.set(x, y)
@@ -592,8 +616,29 @@ editor.prototype = {
     this.lastStartPosition = x * this.mapH + y
   },
 
+  createCheckpoint: function (tileX, tileY, i) {
+    var x = (tileX * this.tileSize + this.tileSize / 2) / this.scale
+    var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
+    var check = this.checkpoints[i]
+    console.log(check)
+    if (check == null) {
+      this.placedCheck = true
+      check = this.game.add.sprite(x, y, 'point')
+      this.game.world.sendToBack(check)
+      check.anchor.set(0.5)
+      this.checkpoints[i] = check
+    } else {
+      this.levelArray[this.checkPositions[i]] = 0
+      check.position.set(x, y)
+    }
+  },
+
   startTool: function () {
     this.tool = 'start'
+  },
+
+  checkpointTool: function () {
+    this.tool = 'checkpoint'
   },
 
   drawTool: function () {
@@ -636,6 +681,24 @@ editor.prototype = {
     this.tb.pointText.text = this.selectedPoint
   },
 
+  checkDec: function () {
+    if (this.selectedCheck > 1) {
+      this.selectedCheck--
+    } else if (this.checkpoints.length > 0) {
+      this.selectedCheck = this.checkpoints.length
+    }
+    this.tb.checkText.text = this.selectedCheck
+  },
+
+  checkInc: function () {
+    if (this.selectedCheck < this.checkpoints.length) {
+      this.selectedCheck++
+    } else {
+      this.selectedCheck = 1
+    }
+    this.tb.checkText.text = this.selectedCheck
+  },
+
   selectObs: function (index) {
     this.selectedObs = index
     this.tb.obsText.text = this.selectedObs
@@ -645,14 +708,13 @@ editor.prototype = {
     if (this.selectedObs > 1) {
       this.selectedObs--
     } else if (this.obstacles.length > 0) {
-      if (this.obstacles.length < this.maxObs) this.selectedObs = this.obstacles.length
-      else this.selectedObs = this.maxObs
+      this.selectedObs = this.obstacles.length
     }
     this.tb.obsText.text = this.selectedObs
   },
 
   obsInc: function () {
-    if (this.selectedObs < this.obstacles.length && this.selectedObs < this.maxObs) {
+    if (this.selectedObs < this.obstacles.length) {
       this.selectedObs++
     } else {
       this.selectedObs = 1
@@ -703,11 +765,13 @@ editor.prototype = {
   left: function () {
     if (this.tool === 'point') this.pointDec()
     else if (this.tool === 'obstacle') this.obsDec()
+    else if (this.tool === 'checkpoint') this.checkDec()
   },
 
   right: function () {
     if (this.tool === 'point') this.pointInc()
     else if (this.tool === 'obstacle') this.obsInc()
+    else if (this.tool === 'checkpoint') this.checkInc()
   },
 
   up: function () {
@@ -1000,6 +1064,9 @@ editor.prototype = {
     } else if (this.placedObs) {
       this.obsInc()
       this.placedObs = false
+    } else if (this.placedCheck) {
+      this.checkInc()
+      this.placedCheck = false
     }
   },
 
