@@ -145,7 +145,7 @@ editor.prototype = {
     this.tb.erase = this.game.add.button(250, baseH + 100, 'editorErase', this.eraseTool, this)
     this.tb.erase.anchor.set(0.5, 0.5)
     this.tb.erase.scale.set(0.4)
-    this.tb.erase.events.onInputOver.add(function (button) { this.showTooltip('erase blocks', button) }.bind(this))
+    this.tb.erase.events.onInputOver.add(function (button) { this.showTooltip('eraser', button) }.bind(this))
 
     this.tb.left = this.game.add.button(370, baseH + 100, 'editorArrow', this.pointDec, this)
     this.tb.left.anchor.set(0.5, 0.5)
@@ -194,6 +194,7 @@ editor.prototype = {
     this.tb.obstacle = this.game.add.button(1020, baseH + 100, 'vertical_button', this.obstacleTool, this)
     this.tb.obstacle.anchor.set(0.5)
     this.tb.obstacle.events.onInputOver.add(this.showObstacles, this)
+    this.tb.obstacle.events.onInputOver.add(function (button) { this.showTooltip('moving obstacles', button) }.bind(this))
 
     this.tb.obsText = this.game.add.text(this.tb.obstacle.x - 90, this.tb.obstacle.y + 70, this.selectedObs, {
       font: '60px dosis',
@@ -215,14 +216,17 @@ editor.prototype = {
     this.tb.obs.vertical = this.game.add.button(1020, baseH - 100, 'vertical_button', this.verticalTool, this)
     this.tb.obs.vertical.anchor.set(0.5)
     this.tb.obs.vertical.visible = false
+    this.tb.obs.vertical.events.onInputOver.add(function (button) { this.showTooltip('vertical wall', button) }.bind(this))
 
     this.tb.obs.horizontal = this.game.add.button(1020, baseH - 250, 'horizontal_button', this.horizontalTool, this)
     this.tb.obs.horizontal.anchor.set(0.5)
     this.tb.obs.horizontal.visible = false
+    this.tb.obs.horizontal.events.onInputOver.add(function (button) { this.showTooltip('horizontal wall', button) }.bind(this))
 
     this.tb.obs.rotator = this.game.add.button(1020, baseH - 400, 'rotator_button', this.rotatorTool, this)
     this.tb.obs.rotator.anchor.set(0.5)
     this.tb.obs.rotator.visible = false
+    this.tb.obs.rotator.events.onInputOver.add(function (button) { this.showTooltip('rotating block', button) }.bind(this))
 
     this.tb.rightObs = this.game.add.button(1110, baseH + 100, 'editorArrow', this.obsInc, this)
     this.tb.rightObs.anchor.set(0.5, 0.5)
