@@ -63,6 +63,7 @@ preloadMenu.prototype = {
     this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png')
     this.game.load.image('pointSuper', 'assets/sprites/game/singleplayer/powerHS.png')
     this.game.load.image('point', 'assets/sprites/game/singleplayer/point.png')
+    this.game.load.image('checkpoint', 'assets/sprites/game/singleplayer/checkpoint.png')
     this.game.load.spritesheet('shrink', 'assets/sprites/game/singleplayer/shrink.png', 100, 100)
     this.game.load.image('block', 'assets/sprites/game/block.png')
 

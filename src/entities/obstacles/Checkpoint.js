@@ -11,7 +11,7 @@ var Checkpoint = function (game, mode, x, y) {
 
 Checkpoint.prototype = {
   create: function () {
-    this.sprite = this.game.add.sprite(this.x, this.y, 'point')
+    this.sprite = this.game.add.sprite(this.x, this.y, 'checkpoint')
     this.sprite.name = 'checkpoint'
     this.sprite.anchor.set(0.5)
     this.game.physics.arcade.enable(this.sprite)
