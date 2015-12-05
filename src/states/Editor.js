@@ -251,8 +251,9 @@ editor.prototype = {
 
     // square that shows the selected tool
     this.selector = this.game.add.graphics()
-    this.selector.lineStyle(10, 0xFFFFFF, 1)
+    this.selector.lineStyle(5, 0xFFFFFF, 1)
     this.selector.drawRect(-60, -60, 120, 120)
+    this.selector.alpha = 0.9
 
     this.cursorPoint = this.game.add.sprite(0, 0, 'point')
     this.cursorPoint.alpha = 0.5
@@ -273,6 +274,7 @@ editor.prototype = {
       this.cursorObs[i].stop()
       this.cursorObs[i].hide()
       this.cursorObs[i].setScale(1 / this.scale)
+      this.cursorObs[i].setAlpha(0.3)
     }
 
     this.cursorCheck = this.game.add.sprite(0, 0, 'editorStart')
@@ -409,11 +411,22 @@ editor.prototype = {
       }
     }
 
-    for (var e = 0; e < this.obstacles.length; e++) {
+    for (var e = 1; e < this.obstacles.length; e++) {
       var obstacle = this.obstacles[e]
       if (obstacle) {
-        if (e === this.selectedObs) obstacle.setAlpha(1)
-        else obstacle.setAlpha(0.3)
+        if (e === this.selectedObs) obstacle.setAlpha(0.3)
+        else obstacle.setAlpha(1)
+      }
+    }
+
+    if (this.selectedCheck === 1) this.start.alpha = 0.5
+    else this.start.alpha = 1
+
+    for (e = 2; e < this.checkpoints.length; e++) {
+      var c = this.checkpoints[e]
+      if (c) {
+        if (e === this.selectedCheck) c.alpha = 0.5
+        else c.alpha = 1
       }
     }
 
