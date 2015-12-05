@@ -126,7 +126,7 @@ editor.prototype = {
 
     this.start = this.game.add.sprite(w2, h2, 'editorStart')
     this.start.scale.set(1 / this.scale)
-    this.start.anchor.set(0.5, 0.05)
+    this.start.anchor.set(0.5, 0.1)
     this.start.visible = false
     // this.start.scale.set(0.9)
 
@@ -273,7 +273,7 @@ editor.prototype = {
 
     this.cursorCheck = this.game.add.sprite(0, 0, 'editorStart')
     this.cursorCheck.scale.set(1 / this.scale)
-    this.cursorCheck.anchor.set(0.5, 0.05)
+    this.cursorCheck.anchor.set(0.5, 0.1)
     this.cursorCheck.alpha = 0.5
     this.cursorCheck.visible = false
 
@@ -614,6 +614,7 @@ editor.prototype = {
   },
 
   createStart: function (x, y) {
+    if (this.checkpoints.length < 2) this.placedCheck = true
     var tileX = (x * this.tileSize + this.tileSize / 2) / this.scale
     var tileY = (y * this.tileSize + this.tileSize / 2) / this.scale
     if (!this.start.visible) this.start.visible = true
@@ -623,7 +624,6 @@ editor.prototype = {
     if (lp !== null && lp !== index) this.levelArray[lp] = 0
     this.lastStartPosition = x * this.mapH + y
     this.checkpoints[1] = this.start
-    this.placedCheck = true
   },
 
   createCheckpoint: function (tileX, tileY, i) {
@@ -635,7 +635,7 @@ editor.prototype = {
       this.placedCheck = true
       check = this.game.add.sprite(x, y, 'editorCheckpoint')
       check.scale.set(1 / this.scale)
-      check.anchor.set(0.5, 0.05)
+      check.anchor.set(0.5, 0.1)
       this.game.world.sendToBack(check)
       this.checkpoints[i] = check
     } else {
