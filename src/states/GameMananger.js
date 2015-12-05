@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex, Player, keys, colorHexDark, bgColor:true, muteMusic:true, muteSoundEffects:true, ButtonList,
-clickButton, localStorage, saveAs, countdown:true, Screenshot, showMouse*/
+clickButton, localStorage, saveAs, countdown:true, Screenshot, showMouse, musicList*/
 /*eslint-enable*/
 var gameMananger = function (game) {
   tempLabel = null
@@ -25,7 +25,7 @@ var gameMananger = function (game) {
   this.restarting = false
 
   this.selectedMusic = 0
-  this.unlockedMusics = 10
+  this.unlockedMusics = 0
   this.musicButton = null
 }
 
@@ -212,8 +212,8 @@ gameMananger.prototype = {
       this.pauseButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
     }
     this.pauseButtons.add('restart_button', 'restart', this.restart)
-    if (this.mode.sp && this.mode.name != 'adventure') {
-      this.musicButton = this.pauseButtons.add(null, '<    musica tal ' + this.selectedMusic + 1 + '     >', this.left, this.right)
+    if (this.mode.sp && this.mode.name !== 'adventure') {
+      this.musicButton = this.pauseButtons.add(null, '<    ' + musicList[this.selectedMusic].title + '    >', this.left, this.right)
     }
     this.ui.musicButton = this.pauseButtons.add(musicButton, musicText, this.muteMusic)
     this.ui.soundEffectsButton = this.pauseButtons.add(soundEffectsButton, soundEffectsText, this.muteSoundEffects)
@@ -251,6 +251,9 @@ gameMananger.prototype = {
     } else {
       this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
+
+    this.unlockedMusics = parseInt(localStorage.getItem('unlocks'),10)
+
     this.deathButtons.textColor = colorHexDark
     this.deathButtons.centerVertically()
     this.deathButtons.create()
@@ -507,7 +510,7 @@ gameMananger.prototype = {
         this.shareText.visible = true
       }
 
-    } else { //unpause
+    } else { // unpause
       this.game.tweens.resumeAll()
       ui.overlay.scale.set(0)
 
@@ -637,7 +640,10 @@ gameMananger.prototype = {
     } else {
       this.selectedMusic--
     }
-    this.musicButton.setText('<    musica tal ' + (this.selectedMusic + 1) + '     >')
+    this.musicButton.setText('<    ' + musicList[this.selectedMusic].title + '    >')
+    /*if (!muteMusic){
+      this.music = this.game.add.audio('level_music')
+    } */
   },
 
   right: function () {
@@ -646,7 +652,7 @@ gameMananger.prototype = {
     } else {
       this.selectedMusic++
     }
-    this.musicButton.setText('<    musica tal ' + (this.selectedMusic + 1) + '     >')
+    this.musicButton.setText('<    ' + musicList[this.selectedMusic].title + '    >')
   },
 
   render: function () {
