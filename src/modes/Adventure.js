@@ -58,6 +58,7 @@ var Adventure = function (game, testing, items, index) {
 
 Adventure.prototype = {
   preload: function () {
+    this.game.load.text('level', this.level)
     if (!this.testing) {
       var music = musicList[this.index]
       this.game.load.image('cover_image', 'assets/music/covers/' + music.file + '.png')
@@ -294,7 +295,22 @@ Adventure.prototype = {
     changeBGColor(this.game)
     this.index++
     this.restarting = false
-    this.game.state.start('PreloadGame', true, false, this, 'assets/levels/' + this.items[this.index])
+    this.level = 'assets/levels/' + this.items[this.index]
+    this.game.sound.remove(this.music)
+    this.music.stop()
+    this.music = null
+    this.game.cache.removeSound('level_music')
+    this.game.sound.removeByKey('level_music')
+    this.game.sound.destroy()
+    //this.game.cache.removeImage('cover_image')
+    this.game.cache.removeText('level')
+    this.game.state.restart()
+  },
+
+  shutdown: function () {
+    this.game.removeSound('level_music')
+    this.game.removeImage('cover_image')
+    this.game.removeText('level')
   },
 
   createAlbumElements: function () {
