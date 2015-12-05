@@ -335,7 +335,7 @@ Adventure.prototype = {
     this.site.fixedToCamera = true
     this.site.cameraOffset.setTo(130 + this.image.width, h2 * 2.5)
 
-    if (this.albumText.width > this.site) {
+    if (this.albumText.width > this.site.width) {
       this.albumBg.width = this.albumText.width + this.image.width + 75
     } else {
       this.albumBg.width = this.site.width + this.image.width + 75

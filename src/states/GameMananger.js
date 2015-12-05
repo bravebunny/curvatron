@@ -27,6 +27,7 @@ var gameMananger = function (game) {
   this.selectedMusic = 0
   this.unlockedMusics = 0
   this.musicButton = null
+  this.music = null
 }
 
 gameMananger.prototype = {
@@ -37,6 +38,12 @@ gameMananger.prototype = {
 
   preload: function () {
     if (this.mode.preload) this.mode.preload()
+    if (this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) {
+      this.unlockedMusics = parseInt(localStorage.getItem('unlocks'), 10)
+      var index = this.game.rnd.integerInRange(0, this.unlockedMusics)
+      this.game.load.audio('level_music', 'assets/music/soundtrack/' + musicList[index].file + '.ogg')
+      this.selectedMusic = index
+    }
   },
 
   create: function () {
@@ -168,7 +175,14 @@ gameMananger.prototype = {
     ui.overlay.alpha = 0.5
     ui.overlay.fixedToCamera = true
 
-    if (!muteMusic) menuMusic.volume = 1
+    if (this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) {
+      this.music = this.game.add.audio('level_music')
+    }
+
+    if (!muteMusic) {
+      menuMusic.volume = 1
+      if (this.music && !this.restarting) this.music.play()
+    }
 
     var musicButton, musicText
     if (muteMusic) {
@@ -214,6 +228,7 @@ gameMananger.prototype = {
     this.pauseButtons.add('restart_button', 'restart', this.restart)
     if (this.mode.sp && this.mode.name !== 'adventure') {
       this.musicButton = this.pauseButtons.add(null, '<    ' + musicList[this.selectedMusic].title + '    >', this.left, this.right)
+      if (muteMusic) this.musicButton.disable()
     }
     this.ui.musicButton = this.pauseButtons.add(musicButton, musicText, this.muteMusic)
     this.ui.soundEffectsButton = this.pauseButtons.add(soundEffectsButton, soundEffectsText, this.muteSoundEffects)
@@ -251,8 +266,6 @@ gameMananger.prototype = {
     } else {
       this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
-
-    this.unlockedMusics = parseInt(localStorage.getItem('unlocks'),10)
 
     this.deathButtons.textColor = colorHexDark
     this.deathButtons.centerVertically()
@@ -340,6 +353,10 @@ gameMananger.prototype = {
       this.shareText.visible = false
       this.shareButtons.enable()
     }
+
+    if (muteMusic && this.music && this.music.isPlaying) {
+      this.music.stop()
+    }
   },
 
   updateCountdown: function () {
@@ -399,6 +416,7 @@ gameMananger.prototype = {
 
       if (!muteMusic) {
         if (!this.mode.music) {
+          if (this.music) this.music.stop()
           menuMusic.play()
           menuMusic.volume = 1
         }
@@ -483,6 +501,7 @@ gameMananger.prototype = {
           this.state.start('Editor', true, false, true, this.mode.scale)
         } else {
           if (this.mode.music) this.mode.music.stop()
+          else if(this.music) this.music.stop()
           this.state.start('Menu')
         }
       }
@@ -570,14 +589,22 @@ gameMananger.prototype = {
   muteMusic: function () {
     if (muteMusic) {
       this.ui.musicButton.setIcon('audio_button')
-      this.ui.musicButton.setText('audio: on ')
+      this.ui.musicButton.setText('music: on ')
       muteMusic = false
       if (this.mode.music) this.mode.music.play()
+      else {
+        this.musicButton.enable()
+        if (this.music) this.music.play()
+      }
     } else {
       this.ui.musicButton.setIcon('audiooff_button')
-      this.ui.musicButton.setText('audio: off')
+      this.ui.musicButton.setText('music: off')
       muteMusic = true
       if (this.mode.music) this.mode.music.stop()
+      else {
+        this.musicButton.disable()
+        if (this.music && this.music.isPlaying) this.music.stop()
+      }
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()
       }
@@ -608,6 +635,7 @@ gameMananger.prototype = {
       players[i].clearInput()
     }
     if (this.mode.music && !this.restarting) this.mode.music.stop()
+    if(this.music && !this.restarting) this.music.stop()
   },
 
   up: function () {
@@ -641,9 +669,21 @@ gameMananger.prototype = {
       this.selectedMusic--
     }
     this.musicButton.setText('<    ' + musicList[this.selectedMusic].title + '    >')
-    /*if (!muteMusic){
-      this.music = this.game.add.audio('level_music')
-    } */
+    if (!muteMusic) {
+      if (this.music && this.music.isPlaying) {
+        this.music.stop()
+        this.cache.removeSound('level_music')
+      }
+      this.game.load.audio('level_music', 'assets/music/soundtrack/' + musicList[this.selectedMusic].file + '.ogg')
+      this.load.start()
+
+      if (!muteMusic) {
+        this.game.load.onLoadComplete.add(function () {
+          this.music = this.game.add.audio('level_music')
+          this.music.play()
+        }.bind(this))
+      }
+    }
   },
 
   right: function () {
@@ -653,6 +693,21 @@ gameMananger.prototype = {
       this.selectedMusic++
     }
     this.musicButton.setText('<    ' + musicList[this.selectedMusic].title + '    >')
+    if (!muteMusic) {
+      if (this.music && this.music.isPlaying) {
+        this.music.stop()
+        this.cache.removeSound('level_music')
+      }
+      this.game.load.audio('level_music', 'assets/music/soundtrack/' + musicList[this.selectedMusic].file + '.ogg')
+      this.load.start()
+
+      if (!muteMusic) {
+        this.game.load.onLoadComplete.add(function () {
+          this.music = this.game.add.audio('level_music')
+          this.music.play()
+        }.bind(this))
+      }
+    }
   },
 
   render: function () {
