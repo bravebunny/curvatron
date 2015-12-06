@@ -1,4 +1,4 @@
-/* global Phaser, colorHex, shadeColor */
+/* global Phaser, colorHex, shadeColor, muteSoundEffects, pressSound */
 var Button = function (iconName, text, callback, buttonList, context, game) {
   this.text = text
   this.iconName = iconName
@@ -132,8 +132,8 @@ Button.prototype = {
   },
 
   buttonDown: function () {
-    if (!muteSoundEffects) pressSound.play()
     if (this.button.enabled) {
+      if (!muteSoundEffects) pressSound.play()
       this.tweenOut.onComplete.active = true
       this.tween.start()
     }
