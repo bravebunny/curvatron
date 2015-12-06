@@ -2,7 +2,8 @@
 /* global players, baseW, baseH, Phaser, setScreenFixed, colorHex, bmd:true,
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
   scale, gameover:true, ButtonList, musicList, Vertical, Horizontal, Rotator,
-  muteMusic, restarting:true, Checkpoint
+  muteMusic, restarting:true, Checkpoint, finishSound, muteSoundEffects, savedCheckpoint
+  changeBGColor
 */
 /*eslint-enable*/
 var Adventure = function (game, testing, items, index) {

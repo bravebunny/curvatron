@@ -5,7 +5,7 @@ muteAudio:true, paused:true, totalTime:true, pauseTween:true, borders:true,
 colisionMargin:true, nextBallHigh:true, changeColor:true, killSound:true,
 collectSound:true, Phaser, w2, h2, groupPowers:true, tempLabelText:true,
 colorHex, Player, keys, colorHexDark, bgColor:true, muteMusic:true, muteSoundEffects:true, ButtonList,
-clickButton, localStorage, saveAs, countdown:true, Screenshot, showMouse, musicList*/
+clickButton, localStorage, saveAs, countdown:true, Screenshot, showMouse, musicList, finishSound:true*/
 /*eslint-enable*/
 var gameMananger = function (game) {
   tempLabel = null
@@ -24,7 +24,6 @@ var gameMananger = function (game) {
   this.screenshot = null
   this.restarting = false
 
-  this.selectedMusic = 0
   this.unlockedMusics = 0
   this.musicButton = null
   this.music = null
@@ -42,7 +41,6 @@ gameMananger.prototype = {
       this.unlockedMusics = parseInt(localStorage.getItem('unlocks'), 10)
       var index = this.game.rnd.integerInRange(0, this.unlockedMusics)
       this.game.load.audio('level_music', 'assets/music/soundtrack/' + musicList[index].file + '.ogg')
-      this.selectedMusic = index
     }
   },
 
@@ -69,7 +67,7 @@ gameMananger.prototype = {
     moveSounds[1] = this.add.audio('move1')
     killSound = this.add.audio('kill')
     finishSound = this.add.audio('sfx_finish')
-    startSound = this.add.audio('sfx_start')
+    var startSound = this.add.audio('sfx_start')
     collectSound = this.add.audio('sfx_collect0')
     if (!muteSoundEffects) startSound.play()
 
@@ -226,10 +224,6 @@ gameMananger.prototype = {
       this.pauseButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
     }
     this.pauseButtons.add('restart_button', 'restart', this.restart)
-    if (this.mode.sp && this.mode.name !== 'adventure') {
-      this.musicButton = this.pauseButtons.add(null, '<    ' + musicList[this.selectedMusic].title + '    >', this.left, this.right)
-      if (muteMusic) this.musicButton.disable()
-    }
     this.ui.musicButton = this.pauseButtons.add(musicButton, musicText, this.muteMusic)
     this.ui.soundEffectsButton = this.pauseButtons.add(soundEffectsButton, soundEffectsText, this.muteSoundEffects)
     if (this.mode.file) {
@@ -353,10 +347,6 @@ gameMananger.prototype = {
       this.shareText.visible = false
       this.shareButtons.enable()
     }
-
-    if (muteMusic && this.music && this.music.isPlaying) {
-      this.music.stop()
-    }
   },
 
   updateCountdown: function () {
@@ -414,13 +404,6 @@ gameMananger.prototype = {
         this.mode.endGame(bottomY)
       }
 
-      if (!muteMusic) {
-        if (!this.mode.music) {
-          if (this.music) this.music.stop()
-          menuMusic.play()
-          menuMusic.volume = 1
-        }
-      }
       ui.overlay.inputEnabled = false
       if (this.mode.sp) {
         this.game.time.events.add(Phaser.Timer.SECOND * 0.4, function () {
@@ -501,7 +484,7 @@ gameMananger.prototype = {
           this.state.start('Editor', true, false, true, this.mode.scale)
         } else {
           if (this.mode.music) this.mode.music.stop()
-          else if(this.music) this.music.stop()
+          else if (this.music) this.music.stop()
           this.state.start('Menu')
         }
       }
@@ -528,7 +511,6 @@ gameMananger.prototype = {
         this.shareText.setText('level ' + this.mode.index)
         this.shareText.visible = true
       }
-
     } else { // unpause
       this.game.tweens.resumeAll()
       ui.overlay.scale.set(0)
@@ -592,19 +574,13 @@ gameMananger.prototype = {
       this.ui.musicButton.setText('music: on ')
       muteMusic = false
       if (this.mode.music) this.mode.music.play()
-      else {
-        this.musicButton.enable()
-        if (this.music) this.music.play()
-      }
+      else if (this.music) this.music.play()
     } else {
       this.ui.musicButton.setIcon('audiooff_button')
       this.ui.musicButton.setText('music: off')
       muteMusic = true
       if (this.mode.music) this.mode.music.stop()
-      else {
-        this.musicButton.disable()
-        if (this.music && this.music.isPlaying) this.music.stop()
-      }
+      else if (this.music && this.music.isPlaying) this.music.stop()
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()
       }
@@ -625,17 +601,12 @@ gameMananger.prototype = {
     localStorage.setItem('muteSoundEffects', muteSoundEffects)
   },
 
-  /*
-  render: function(){
-    players[0].render()
-  }, */
-
   shutdown: function () {
     for (var i = 0; i < players.length; i++) {
       players[i].clearInput()
     }
     if (this.mode.music && !this.restarting) this.mode.music.stop()
-    if(this.music && !this.restarting) this.music.stop()
+    if (this.music && !this.restarting) this.music.stop()
   },
 
   up: function () {
@@ -660,54 +631,6 @@ gameMananger.prototype = {
     this.pauseButtons.selectRelease()
     this.deathButtons.selectRelease()
     this.shareButtons.selectRelease()
-  },
-
-  left: function () {
-    if (this.selectedMusic === 0) {
-      this.selectedMusic = this.unlockedMusics
-    } else {
-      this.selectedMusic--
-    }
-    this.musicButton.setText('<    ' + musicList[this.selectedMusic].title + '    >')
-    if (!muteMusic) {
-      if (this.music && this.music.isPlaying) {
-        this.music.stop()
-        this.cache.removeSound('level_music')
-      }
-      this.game.load.audio('level_music', 'assets/music/soundtrack/' + musicList[this.selectedMusic].file + '.ogg')
-      this.load.start()
-
-      if (!muteMusic) {
-        this.game.load.onLoadComplete.add(function () {
-          this.music = this.game.add.audio('level_music')
-          this.music.play()
-        }.bind(this))
-      }
-    }
-  },
-
-  right: function () {
-    if (this.selectedMusic === this.unlockedMusics) {
-      this.selectedMusic = 0
-    } else {
-      this.selectedMusic++
-    }
-    this.musicButton.setText('<    ' + musicList[this.selectedMusic].title + '    >')
-    if (!muteMusic) {
-      if (this.music && this.music.isPlaying) {
-        this.music.stop()
-        this.cache.removeSound('level_music')
-      }
-      this.game.load.audio('level_music', 'assets/music/soundtrack/' + musicList[this.selectedMusic].file + '.ogg')
-      this.load.start()
-
-      if (!muteMusic) {
-        this.game.load.onLoadComplete.add(function () {
-          this.music = this.game.add.audio('level_music')
-          this.music.play()
-        }.bind(this))
-      }
-    }
   },
 
   render: function () {
