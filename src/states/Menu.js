@@ -18,7 +18,7 @@ var menu = function (game) {
   keys = []
   menuMusic = null
   this.ui = {}
-  this.buttons = null; // eslint-disable-line
+  this.buttons = null
 }
 
 menu.prototype = {

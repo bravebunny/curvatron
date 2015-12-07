@@ -126,6 +126,7 @@ Normal.prototype = {
     localStorage.setItem('ballsScore', ballsScore + 1)
 
     if (powerSprite.name === 'shrink') {
+      shrinkSound.play()
       for (var i = 0; i < 3; i++) {
         if (!this.gridIsFull()) {
           this.createObstacle()

@@ -298,6 +298,7 @@ Adventure.prototype = {
     this.level = 'assets/levels/' + this.items[this.index]
     this.game.sound.remove(this.music)
     this.music.stop()
+    this.music.destroy()
     this.music = null
     this.game.cache.removeSound('level_music')
     this.game.sound.removeByKey('level_music')
