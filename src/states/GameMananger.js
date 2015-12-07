@@ -59,6 +59,16 @@ gameMananger.prototype = {
     bmd = null
     nextBallHigh = 0
 
+    // create sound effects
+    moveSounds = []
+    moveSounds[0] = this.add.audio('move0')
+    moveSounds[1] = this.add.audio('move1')
+    killSound = this.add.audio('kill')
+    finishSound = this.add.audio('sfx_finish')
+    shrinkSound = this.add.audio('shrink')
+    startSound = this.add.audio('sfx_start')
+    collectSound = this.add.audio('sfx_collect0')
+
     changeColor = true
     if (!muteSoundEffects) startSound.play()
 

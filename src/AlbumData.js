@@ -1,4 +1,5 @@
 var musicList = [
+  {file: 'je_taime_tu_me_manques', title: 'je t\'aime, tu me manques', author: 'unnq', site: 'soundcloud.com/unnq'},
   {file: 'lpchip', title: 'LPchip', author: 'LPchip', site: 'lpchip.nl'},
   {file: 'no_memory', title: 'No Memory', author: 'ShiggyBeatz', site: 'shiggybeatz.com'},
   {file: 'decembrr', title: 'Decembrr', author: 'VIAES', site: 'soundcloud.com/viaes'},
@@ -20,7 +21,6 @@ var musicList = [
   {file: 'julias_song', title: 'Julia\'s Song', author: 'K-o-m-o-d-o', site: 'k-o-m-o-d-o.bandcamp.com'},
   {file: 'pay_careful_attention', title: 'Pay Careful Attention', author: 'The Tin Pans', site: 'thetinpans.bandcamp.com'},
   {file: 'black_dog', title: 'Black Dog', author: 'Hanray', site: 'soundcloud.com/hanray-1'},
-  {file: 'je_taime_tu_me_manques', title: 'je t\'aime, tu me manques', author: 'unnq', site: 'soundcloud.com/unnq'},
   {file: 'aug14_2008', title: 'Aug14-2008', author: 'Steven Danglis', site: 'soundcloud.com/steven-danglis'},
   {file: 'yosemite', title: 'Yosemite', author: 'James S. Reid', site: 'thelabrats.net'},
   {file: 'the_overview_of_space', title: 'the overview of space', author: 'tobi', site: 'tobiwan.bandcamp.com'},

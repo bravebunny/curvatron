@@ -296,6 +296,7 @@ Adventure.prototype = {
     this.index++
     this.restarting = false
     this.level = 'assets/levels/' + this.items[this.index]
+    console.log(this.level)
     this.game.sound.remove(this.music)
     this.music.stop()
     this.music.destroy()
