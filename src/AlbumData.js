@@ -32,6 +32,6 @@ var musicList = [
   {file: 'firebox', title: 'Firebox', author: 'Signal-to-Noise', site: 'findyoursignal.com'},
   {file: 'orgone_vapors', title: 'orgone vapors', author: 'ephen', site: 'soundcloud.com/ephenager'},
   {file: 'what_the_night_did_to_you', title: 'What The Night Did To You', author: 'Drug Dealer', site: 'soundcloud.com/everbeast'},
-  {file: 'inertia_jungle', title: 'Inertia Jungle', author: 'Attik-Attak', site: 'soundcloud.com/attik-attack-1'}
+  {file: 'inertia_jungle', title: 'Inertia Jungle', author: 'Attik-Attak', site: 'soundcloud.com/attik-attack-1'},
   {file: 'trauma_and_torment_of_truth', title: 'Trauma and Torment of Truth', author: 'Kode of Bliss', site: 'soundcloud.com/kellybarnard'}
 ]
