@@ -485,7 +485,7 @@ editor.prototype = {
                 this.map.removeTile(lineX, lineY)
               }
 
-              if (this.levelArray[index] === 2) { // true if is a point
+              if (this.levelArray[index] === 2) { // point
                 var pointN = this.pointPositions.indexOf(index)
                 this.points[pointN].destroy()
                 for (var e = pointN; e < this.points.length - 1; e++) {
@@ -497,7 +497,19 @@ editor.prototype = {
                 if (this.selectedPoint >= pointN) {
                   this.pointDec()
                 }
-              } else if (this.levelArray[index] > 31) { // true if is an obstacle
+              } else if (this.levelArray[index] === 31) { // checkpoint
+                var checkN = this.checkPositions.indexOf(index)
+                this.checkpoints[checkN].destroy()
+                for (var c = checkN; c < this.checkpoints.length - 1; c++) {
+                  this.checkPositions[c] = this.checkPositions[c + 1]
+                  this.checkpoints[c] = this.checkpoints[c + 1]
+                }
+                this.obstacles = this.obstacles.slice(0, -1)
+                this.obsPositions = this.obsPositions.slice(0, -1)
+                if (this.selectedObs >= obsN) {
+                  this.obsDec()
+                }
+              } else if (this.levelArray[index] > 31) { // obstacle
                 var obsN = this.obsPositions.indexOf(index)
                 this.obstacles[obsN].destroy()
                 for (var o = obsN; o < this.obstacles.length - 1; o++) {
