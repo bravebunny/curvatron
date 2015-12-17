@@ -62,7 +62,7 @@ Adventure.prototype = {
     if (!this.testing) {
       var music = musicList[this.index]
       this.game.load.image('cover_image', 'assets/music/covers/' + music.file + '.png')
-      this.game.load.audio('level_music', 'assets/music/soundtrack/' + music.file + '.ogg')
+      //this.game.load.audio('level_music', 'assets/music/soundtrack/' + music.file + '.ogg')
     }
   },
 
@@ -151,7 +151,7 @@ Adventure.prototype = {
     this.finishButtons.hide()
 
     if (!this.testing) {
-      if (this.music == null) this.music = this.game.add.audio('level_music')
+      if (this.music == null) this.music = new buzz.sound('assets/music/soundtrack/' + musicList[this.index].file + '.ogg')
       if (!muteMusic) {
         if (!this.music.isPlaying) {
           this.music.play()
@@ -177,7 +177,7 @@ Adventure.prototype = {
 
   update: function () {
     if (!this.testing) {
-      if (this.music.isPlaying && this.showAlbum) {
+      if (/*this.music.isPlaying && */this.showAlbum) {
         this.showAlbum = false
         if (!muteMusic) {
           if (!this.restarting) this.createAlbumElements()
@@ -299,7 +299,7 @@ Adventure.prototype = {
     console.log(this.level)
     this.game.sound.remove(this.music)
     this.music.stop()
-    this.music.destroy()
+    //this.music.destroy()
     this.music = null
     this.game.cache.removeSound('level_music')
     this.game.sound.removeByKey('level_music')

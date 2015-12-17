@@ -10,6 +10,7 @@
     <script type="text/javascript" src="js/FileSaver.min.js"></script>
     <script type="text/javascript" src="js/canvas-toBlob.js"></script>
     <script type="text/javascript" src="js/CanvasInput.min.js"></script>
+    <script type="text/javascript" src="js/buzz.min.js"></script>
 
     <script type="text/javascript" src="src/states/Boot.js"></script>
     <script type="text/javascript" src="src/states/PreloadMenu.js"></script>
@@ -80,7 +81,7 @@
     var height = Math.round(Math.sqrt(baseArea/winRatio))
     var width =  Math.round(winRatio*height)
 
-    var game = new Phaser.Game(baseH, baseH, Phaser.CANVAS, "Curvatron")
+    game = new Phaser.Game(baseH, baseH, Phaser.CANVAS, "Curvatron")
     game.state.add("Boot",boot)
     game.state.add("PreloadMenu",preloadMenu)
     game.state.add("Menu",menu)
