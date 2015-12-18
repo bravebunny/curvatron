@@ -25,7 +25,7 @@ var musicList = [
   {file: 'yosemite', title: 'Yosemite', author: 'James S. Reid', site: 'thelabrats.net'},
   {file: 'the_overview_of_space', title: 'the overview of space', author: 'tobi', site: 'tobiwan.bandcamp.com'},
   {file: 'patter', title: 'Patter', author: 'Heat Legend', site: 'soundcloud.com/heatlegendmusic'},
-  {file: ' incandescence', title: 'Incandescence', author: 'Lachy', site: 'soundcloud.com/lstevprods'},
+  {file: 'incandescence', title: 'Incandescence', author: 'Lachy', site: 'soundcloud.com/lstevprods'},
   {file: 'yna', title: 'Yna', author: 'Ry JT', site: 'soundcloud.com/reble-t'},
   {file: 'mellow', title: 'Mellow', author: 'Kasse', site: 'soundcloud.com/spacholi'},
   {file: 'short_journey_home', title: 'Short Journey Home', author: 'Slowowls', site: 'soundcloud.com/slowowls'},

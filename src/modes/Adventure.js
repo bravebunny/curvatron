@@ -6,7 +6,7 @@
   changeBGColor
 */
 /*eslint-enable*/
-var Adventure = function (game, testing, items, index) {
+var Adventure = function (game, testing, items) {
   this.sp = true
   this.game = game
   this.spawnPowers = true
@@ -16,7 +16,7 @@ var Adventure = function (game, testing, items, index) {
   this.powerText = null
   this.name = 'adventure'
   this.items = items
-  this.index = index
+  this.index = null
   this.margin = 400
 
   this.image = null
@@ -59,7 +59,7 @@ var Adventure = function (game, testing, items, index) {
 Adventure.prototype = {
   preload: function () {
     this.game.load.text('level', this.level)
-    if (!this.testing && this.index) {
+    if (!this.testing && this.index !== null) {
       var music = musicList[this.index]
       this.game.load.image('cover_image', 'assets/music/covers/' + music.file + '.png')
       //this.game.load.audio('level_music', 'assets/music/soundtrack/' + music.file + '.ogg')
@@ -151,8 +151,13 @@ Adventure.prototype = {
     this.finishButtons.hide()
 
     if (!this.testing) {
-      console.log('ei mate ' + this.index)
-      if (this.music == null && this.index) this.music = new buzz.sound('assets/music/soundtrack/' + musicList[this.index].file + '.ogg')
+      var music = musicList[this.index]
+      if (this.music == null && this.index !== null) {
+        this.music = new buzz.sound('assets/music/soundtrack/' + music.file + '.ogg')
+        var volume = 50
+        if (music.volume) volume *= music.volume
+        this.music.setVolume(volume)
+      } 
       if (this.music && !muteMusic) {
         if (!this.music.isPlaying) {
           this.music.play()
@@ -181,7 +186,7 @@ Adventure.prototype = {
       if (/*this.music.isPlaying && */this.showAlbum) {
         this.showAlbum = false
         if (!muteMusic) {
-          if (!this.restarting && this.index) this.createAlbumElements()
+          if (!this.restarting && this.index !== null) this.createAlbumElements()
           this.restarting = true
         }
       }

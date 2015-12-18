@@ -164,7 +164,8 @@ levelSelector.prototype = {
 
   playLocalLevel: function (i) {
     var levelPath = 'assets/levels/' + this.items[i]
-    var mode = new Adventure(this.game, false, this.items, i)
+    var mode = new Adventure(this.game, false, this.items)
+    mode.index = i
     mode.setScreen()
     this.game.state.start('PreloadGame', true, false, mode, levelPath)
   },
