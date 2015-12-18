@@ -151,6 +151,7 @@ Adventure.prototype = {
     this.finishButtons.hide()
 
     if (!this.testing) {
+      console.log('ei mate ' + this.index)
       if (this.music == null && this.index) this.music = new buzz.sound('assets/music/soundtrack/' + musicList[this.index].file + '.ogg')
       if (this.music && !muteMusic) {
         if (!this.music.isPlaying) {
@@ -297,22 +298,10 @@ Adventure.prototype = {
     this.restarting = false
     this.level = 'assets/levels/' + this.items[this.index]
     console.log(this.level)
-    this.game.sound.remove(this.music)
     this.music.stop()
-    //this.music.destroy()
     this.music = null
-    this.game.cache.removeSound('level_music')
-    this.game.sound.removeByKey('level_music')
-    this.game.sound.destroy()
-    //this.game.cache.removeImage('cover_image')
     this.game.cache.removeText('level')
     this.game.state.restart()
-  },
-
-  shutdown: function () {
-    this.game.removeSound('level_music')
-    this.game.removeImage('cover_image')
-    this.game.removeText('level')
   },
 
   createAlbumElements: function () {
