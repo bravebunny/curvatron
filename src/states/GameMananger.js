@@ -281,6 +281,7 @@ gameMananger.prototype = {
   },
 
   update: function () {
+    checkGamepads(this.game)
     this.game.forceSingleUpdate = true
     if (!paused) {
       if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !muteMusic) {
