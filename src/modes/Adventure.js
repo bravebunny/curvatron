@@ -18,6 +18,7 @@ var Adventure = function (game, testing, items) {
   this.items = items
   this.index = null
   this.margin = 400
+  this.workshopLevel = false
 
   this.image = null
   this.albumText = null

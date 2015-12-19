@@ -153,6 +153,7 @@ levelSelector.prototype = {
     var file = this.items[level].file
     mode.file = this.items[level].publishedFileId
     mode.title = this.items[level].title
+    mode.workshopLevel = true
     greenworks.ugcDownloadItem(file, 'saves', function () {
       mode.setScreen()
       this.game.state.start('PreloadGame', true, false, mode, 'saves/customLevel')

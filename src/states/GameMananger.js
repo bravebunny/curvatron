@@ -37,7 +37,8 @@ gameMananger.prototype = {
 
   preload: function () {
     if (this.mode.preload) this.mode.preload()
-    if (this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) {
+    if ((this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) || 
+      (this.mode.name === 'adventure' && this.mode.workshopLevel && !this.restarting)) {
       this.unlockedMusics = parseInt(localStorage.getItem('unlocks'), 10)
       var index = this.game.rnd.integerInRange(0, this.unlockedMusics)
       this.game.load.audio('level_music', 'assets/music/soundtrack/' + musicList[index].file + '.ogg')
