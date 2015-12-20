@@ -175,7 +175,8 @@ gameMananger.prototype = {
     ui.overlay.alpha = 0.5
     ui.overlay.fixedToCamera = true
 
-    if (this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) {
+    if ((this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) || 
+      (this.mode.name === 'adventure' && this.mode.workshopLevel && !this.restarting)) {
       this.music = this.game.add.audio('level_music')
     }
 
