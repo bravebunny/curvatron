@@ -369,8 +369,8 @@ editor.prototype = {
 
     this.game.input.onDown.add(function (e) {
       if (this.game.input.activePointer.button === Phaser.Mouse.RIGHT_BUTTON) {
-        var x = this.layer.getTileX(this.game.input.activePointer.worldX)
-        var y = this.layer.getTileY(this.game.input.activePointer.worldY)
+        var x = this.layer.getTileX(this.game.input.activePointer.worldX * this.scale)
+        var y = this.layer.getTileY(this.game.input.activePointer.worldY * this.scale)
         this.selectByTile(x, y)
       }
     }.bind(this))
