@@ -480,12 +480,13 @@ editor.prototype = {
               break
 
             case 'erase':
+              var val = this.levelArray[index]
               this.marker.visible = true
               if (this.map.getTile(lineX, lineY) != null) {
                 this.map.removeTile(lineX, lineY)
               }
 
-              if (this.levelArray[index] === 2) { // point
+              if (val === 2) { // point
                 var pointN = this.pointPositions.indexOf(index)
                 this.points[pointN].destroy()
                 for (var e = pointN; e < this.points.length - 1; e++) {
@@ -497,7 +498,7 @@ editor.prototype = {
                 if (this.selectedPoint >= pointN) {
                   this.pointDec()
                 }
-              } else if (this.levelArray[index] === 31) { // checkpoint
+              } else if (val === 31) { // checkpoint
                 var checkN = this.checkPositions.indexOf(index)
                 this.checkpoints[checkN].destroy()
                 for (var c = checkN; c < this.checkpoints.length - 1; c++) {
@@ -509,7 +510,9 @@ editor.prototype = {
                 if (this.selectedObs >= obsN) {
                   this.obsDec()
                 }
-              } else if (this.levelArray[index] > 31) { // obstacle
+              } else if (val === this.values.start) {
+
+              } else if (val > 31) { // obstacle
                 var obsN = this.obsPositions.indexOf(index)
                 this.obstacles[obsN].destroy()
                 for (var o = obsN; o < this.obstacles.length - 1; o++) {
