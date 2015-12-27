@@ -40,8 +40,6 @@ gameMananger.prototype = {
     if ((this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) || 
       (this.mode.name === 'adventure' && this.mode.workshopLevel && !this.restarting)) {
       this.unlockedMusics = parseInt(localStorage.getItem('unlocks'), 10)
-      var index = this.game.rnd.integerInRange(0, this.unlockedMusics)
-      this.game.load.audio('level_music', 'assets/music/soundtrack/' + musicList[index].file + '.ogg')
     }
   },
 
@@ -177,7 +175,8 @@ gameMananger.prototype = {
 
     if ((this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) || 
       (this.mode.name === 'adventure' && this.mode.workshopLevel && !this.restarting)) {
-      this.music = this.game.add.audio('level_music')
+      var index = this.game.rnd.integerInRange(0, this.unlockedMusics)
+      this.music = new buzz.sound('assets/music/soundtrack/' + musicList[index].file + '.ogg')
     }
 
     if (!muteMusic) {
@@ -584,7 +583,7 @@ gameMananger.prototype = {
       this.ui.musicButton.setText('music: off')
       muteMusic = true
       if (this.mode.music) this.mode.music.stop()
-      else if (this.music && this.music.isPlaying) this.music.stop()
+      else if (this.music) this.music.stop()
       if (menuMusic && menuMusic.isPlaying) {
         menuMusic.stop()
       }
