@@ -767,10 +767,12 @@ editor.prototype = {
   },
 
   showObstacles: function () {
-    this.tb.obsMenu.visible = true
-    this.tb.obs.vertical.visible = true
-    this.tb.obs.horizontal.visible = true
-    this.tb.obs.rotator.visible = true
+    if (!this.menuButtons.visible) {
+      this.tb.obsMenu.visible = true
+      this.tb.obs.vertical.visible = true
+      this.tb.obs.horizontal.visible = true
+      this.tb.obs.rotator.visible = true
+    }
   },
 
   hideObstacles: function () {
