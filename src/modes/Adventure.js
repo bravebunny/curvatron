@@ -299,6 +299,7 @@ Adventure.prototype = {
   },
 
   playNextLevel: function () {
+    achievement('level_progress')
     changeBGColor(this.game)
     this.index++
     this.restarting = false

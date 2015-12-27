@@ -103,3 +103,14 @@ function changeBGColor (game) {
   game.stage.backgroundColor = colorHex
   changeColor = false
 }
+
+function achievement (ach) {
+  var greenworks = require('./greenworks')
+  greenworks.activateAchievement(ach,
+  function () {
+    console.log('achievement ' + ach + ' success')
+  },
+  [function () {
+    console.log('achievement ' + ach + ' error')
+  }])
+}
