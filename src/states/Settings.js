@@ -108,11 +108,11 @@ settings.prototype = {
 
   updateShowMouseButton: function () {
     if (showMouse) {
-      this.showMouse.setText('show cursor in game: on')
       this.showMouse.setIcon('mouse_button')
+      this.showMouse.setText('show cursor in game: on')
     } else {
-      this.showMouse.setText('show cursor in game: off')
       this.showMouse.setIcon('mouseoff_button')
+      this.showMouse.setText('show cursor in game: off')
     }
   },
 

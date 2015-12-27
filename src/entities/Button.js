@@ -123,7 +123,7 @@ Button.prototype = {
   },
 
   initFontSize: function () {
-    if (this.label.width > this.w - 101) {
+    if (this.label.width > this.w - 106) {
       this.label.width = this.w - 100
       this.label.scale.y = this.label.scale.x
     } else {
