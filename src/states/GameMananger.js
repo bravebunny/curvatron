@@ -37,9 +37,10 @@ gameMananger.prototype = {
 
   preload: function () {
     if (this.mode.preload) this.mode.preload()
-    if ((this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) || 
+    if ((this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) ||
       (this.mode.name === 'adventure' && this.mode.workshopLevel && !this.restarting)) {
       this.unlockedMusics = parseInt(localStorage.getItem('unlocks'), 10)
+      if (isNaN(this.unlockedMusics)) this.unlockedMusics = 0
     }
   },
 
