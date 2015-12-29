@@ -1,4 +1,4 @@
-/* global baseArea, Phaser */
+/* global baseArea, Phaser, nonSteam */
 
 function shuffleArray (o) { // v1.0
   for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x) {}
@@ -105,12 +105,14 @@ function changeBGColor (game) {
 }
 
 function achievement (ach) {
-  var greenworks = require('./greenworks')
-  greenworks.activateAchievement(ach,
-  function () {
-    console.log('achievement ' + ach + ' success')
-  },
-  [function () {
-    console.log('achievement ' + ach + ' error')
-  }])
+  if(!nonSteam) {
+    var greenworks = require('./greenworks')
+    greenworks.activateAchievement(ach,
+    function () {
+      console.log('achievement ' + ach + ' success')
+    },
+    [function () {
+      console.log('achievement ' + ach + ' error')
+    }])
+  }
 }
