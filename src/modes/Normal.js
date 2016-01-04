@@ -13,7 +13,7 @@ var Normal = function (game) {
   this.countPoints = true
   this.powerText = null
   this.name = 'normal'
-  this.shrinkUsed = false
+  this.allShrinksAchiev = 0
 }
 
 Normal.prototype = {
@@ -29,7 +29,7 @@ Normal.prototype = {
     this.lastPoint = null
     this.player = players[0]
     this.shrink = null
-    this.shrinkUsed = false
+    this.allShrinksAchiev = 0
 
     this.powerText = this.game.add.text(0, 0, '1', {
       font: '20px dosis',
@@ -116,9 +116,12 @@ Normal.prototype = {
       this.score++
       this.createPower(pointName)
 
-    if (this.score === 30 && !this.shrinkUsed) {
-      achievement('classic_avoid')
-    }
+      if (this.score === 30 && this.allShrinksAchiev === 0) {
+        achievement('classic_avoid')
+      }
+      if (this.score === 30 && this.allShrinksAchiev === 6) {
+        achievement('classic_all_shrinks')
+      }
 
       // if (((this.score % this.shrinkFreq) === this.shrinkFreq-1) && (this.score > 0)) {
       if (((this.score % this.shrinkFreq) === this.shrinkFreq - 1) && (this.score > 0)) {
@@ -139,7 +142,7 @@ Normal.prototype = {
           this.createObstacle()
         }
       }
-      this.shrinkUsed = true
+      this.allShrinksAchiev++
       this.shrink = null
     }
 
