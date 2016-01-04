@@ -212,6 +212,7 @@ Player.prototype = {
       for (i = 0; i < players.length; i++) {
         if (i !== this.id) {
           this.game.physics.arcade.overlap(this.sprite, players[i].sprite, this.kill, null, this)
+          this.game.physics.arcade.overlap(this.sprite, players[i].sprite, this.achievementHead, null, this)
         }
       }
 
@@ -450,6 +451,10 @@ Player.prototype = {
   setInputTimes: function (times) {
     this.autoMode = true
     this.inputTimes = times
+  },
+
+  achievementHead: function () {
+    achievement('mp_head')
   },
 
   render: function () {
