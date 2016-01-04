@@ -1,4 +1,4 @@
-/* global players, adjustScreen, localStorage*/
+/* global players, adjustScreen, localStorage, achievement*/
 
 var Endless = function (game) {
   this.sp = true
@@ -41,6 +41,9 @@ Endless.prototype = {
 
   submitScore: function () {
     var score = this.getScore()
+    if (score >= 4000) {
+      achievement('evergrowing')
+    }
     if (score > this.getHighScore()) {
       this.setHighScore(score)
     }
