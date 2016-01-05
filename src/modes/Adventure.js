@@ -294,9 +294,14 @@ Adventure.prototype = {
         else unlocks = parseInt(unlocks, 10)
         if (unlocks < this.index + 1) localStorage.setItem('unlocks', this.index + 1)
         if (localStorage.getItem('unlocks') > this.index) manager.nextButton.enable()
-        if (localStorage.getItem('unlocks') > 30) achievement('adventure_end')
+        if (localStorage.getItem('unlocks') > 30) this.adventureEnd()
        }
     }
+  },
+
+  adventureEnd: function () {
+    achievement('adventure_end')
+    this.game.state.start('EndCutscene')
   },
 
   playNextLevel: function () {
