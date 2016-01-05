@@ -3,7 +3,7 @@
   w2:true, h2:true, powerText:true, localStorage, PowerUp, nextBallHigh:true,
   scale, gameover:true, ButtonList, musicList, Vertical, Horizontal, Rotator,
   muteMusic, restarting:true, Checkpoint, finishSound, muteSoundEffects, savedCheckpoint
-  changeBGColor
+  changeBGColor, achievement
 */
 /*eslint-enable*/
 var Adventure = function (game, testing, items) {
@@ -294,7 +294,8 @@ Adventure.prototype = {
         else unlocks = parseInt(unlocks, 10)
         if (unlocks < this.index + 1) localStorage.setItem('unlocks', this.index + 1)
         if (localStorage.getItem('unlocks') > this.index) manager.nextButton.enable()
-      }
+        if (localStorage.getItem('unlocks') > 30) achievement('adventure_end')
+       }
     }
   },
 
