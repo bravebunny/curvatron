@@ -28,6 +28,7 @@ var Adventure = function (game, testing, items) {
   this.albumCreated = false
   this.showAlbum = true
   this.site = null
+  this.nowPlaying = null
 
   this.scale = 1
   this.defaults = {
@@ -332,6 +333,14 @@ Adventure.prototype = {
     this.albumBg.height = 1.8 * h2
     this.albumBg.alpha = 0.4
 
+    this.nowPlaying = this.game.add.text(0, 0, 'Now Playing:', {
+      font: '70px dosis',
+      fill: '#ffffff'})
+    this.nowPlaying.scale.set(scale * 0.7)
+    this.nowPlaying.anchor.setTo(0, 0.5)
+    this.nowPlaying.fixedToCamera = true
+    this.nowPlaying.cameraOffset.setTo(100, h2 * 2.5)
+
     var text = title + '\n' + author
     this.image = this.game.add.sprite(0, 0, 'cover_image') // [hard-coded] probably we need to change the coordinates
     this.image.anchor.setTo(0, 0.5)
@@ -362,9 +371,10 @@ Adventure.prototype = {
       this.albumBg.width = this.site.width + this.image.width + 75
     }
 
+    this.game.add.tween(this.nowPlaying.cameraOffset).to({ y: h2 * 1.57 }, 1100, Phaser.Easing.Sinusoidal.In, true)
     this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 1.80 }, 1000, Phaser.Easing.Sinusoidal.In, true)
     this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 1.75 }, 1000, Phaser.Easing.Sinusoidal.In, true)
-    this.game.add.tween(this.albumBg.cameraOffset).to({ y: h2 * 2.48 }, 1100, Phaser.Easing.Sinusoidal.In, true)
+    this.game.add.tween(this.albumBg.cameraOffset).to({ y: h2 * 2.40 }, 1100, Phaser.Easing.Sinusoidal.In, true)
     this.game.add.tween(this.site.cameraOffset).to({ y: h2 * 1.90 }, 1100, Phaser.Easing.Sinusoidal.In, true)
   },
 
@@ -372,6 +382,7 @@ Adventure.prototype = {
     this.albumDeleted = true
     this.game.time.events.add(Phaser.Timer.SECOND * 5, function () {
       this.game.add.tween(this.image.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
+      this.game.add.tween(this.nowPlaying.cameraOffset).to({ y: h2 * 4 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       this.game.add.tween(this.albumBg.cameraOffset).to({ y: h2 * 4 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       this.game.add.tween(this.site.cameraOffset).to({ y: h2 * 4 }, 1000, Phaser.Easing.Sinusoidal.In, true)
       var aux = this.game.add.tween(this.albumText.cameraOffset).to({ y: h2 * 2.5 }, 1000, Phaser.Easing.Sinusoidal.In, true)
