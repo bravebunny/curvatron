@@ -182,7 +182,10 @@ gameMananger.prototype = {
 
     if (!muteMusic) {
       menuMusic.volume = 1
-      if (this.music && !this.restarting) this.music.play()
+      if (this.music && !this.restarting) { 
+        this.music.play()
+        this.music.loop()
+      }
     }
 
     var musicButton, musicText
@@ -577,8 +580,14 @@ gameMananger.prototype = {
       this.ui.musicButton.setIcon('audio_button')
       this.ui.musicButton.setText('music: on ')
       muteMusic = false
-      if (this.mode.music) this.mode.music.play()
-      else if (this.music) this.music.play()
+      if (this.mode.music){ 
+        this.mode.music.play()
+        this.mode.music.loop() 
+      }
+      else if (this.music) {
+        this.music.play()
+        this.music.loop() 
+      } 
     } else {
       this.ui.musicButton.setIcon('audiooff_button')
       this.ui.musicButton.setText('music: off')

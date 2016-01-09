@@ -163,6 +163,7 @@ Adventure.prototype = {
       if (this.music && !muteMusic) {
         if (!this.music.isPlaying) {
           this.music.play()
+          this.music.loop()
         }
       } else if (this.music) this.music.stop()
     }
