@@ -69,6 +69,8 @@ gameMananger.prototype = {
     startSound = this.add.audio('sfx_start')
     collectSound = this.add.audio('sfx_collect0')
 
+    this.music = null
+
     changeColor = true
     if (!muteSoundEffects) startSound.play()
 
@@ -182,7 +184,7 @@ gameMananger.prototype = {
 
     if (!muteMusic) {
       menuMusic.volume = 1
-      if (this.music && !this.restarting) { 
+      if (this.music && !this.restarting) {
         this.music.play()
         this.music.loop()
       }
@@ -580,14 +582,14 @@ gameMananger.prototype = {
       this.ui.musicButton.setIcon('audio_button')
       this.ui.musicButton.setText('music: on ')
       muteMusic = false
-      if (this.mode.music){ 
+      if (this.mode.music) {
         this.mode.music.play()
-        this.mode.music.loop() 
+        this.mode.music.loop()
       }
       else if (this.music) {
         this.music.play()
-        this.music.loop() 
-      } 
+        this.music.loop()
+      }
     } else {
       this.ui.musicButton.setIcon('audiooff_button')
       this.ui.musicButton.setText('music: off')
