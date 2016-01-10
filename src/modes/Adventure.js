@@ -302,8 +302,22 @@ Adventure.prototype = {
   },
 
   adventureEnd: function () {
+    document.body.style.background = '#000'
+    var manager = this.game.state.states['GameMananger']
+    manager.deathButtons.hide()
+    this.fadingOut = true
     achievement('adventure_end')
-    this.game.state.start('EndCutscene')
+    var overlay = this.game.add.sprite(0, 0, 'overlay')
+    overlay.width = w2 * 2
+    overlay.height = h2 * 2
+    overlay.alpha = 0
+    var fadeOut = this.game.add.tween(overlay)
+    fadeOut.to({alpha:1}, 2000, Phaser.Easing.Linear.None).delay(1000)
+    fadeOut.onComplete.add(function () {
+      game.stage.backgroundColor = '#000'
+      this.game.state.start('EndCutscene')
+    }, this)
+    fadeOut.start()
   },
 
   playNextLevel: function () {
