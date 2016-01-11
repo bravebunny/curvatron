@@ -6,7 +6,6 @@ var musicList = [
   {file: 'esplanade', title: 'Esplanade', author: 'James Magnum', site: 'soundcloud.com/jamesmagnum'},
   {file: 'good_news', title: 'Good News', author: 'Inside People', site: 'insidepeoplemusic.com'},
   {file: 'courting_for_puss', title: 'Courting for Puss', author: 'Adeus Senhor F.', site: 'soundcloud.com/adeussenhorf'},
-  {file: 'geometry', title: 'Geometry', author: 'Tim Gerwing', site: 'lascaux21.com'},
   {file: 'tone_town', title: 'Tone Town', author: 'Ishan S', site: 'youtube.com/channel/UCxpjs6EPRocamfPmAQWw4iQ'},
   {file: 'maple', title: 'Maple', author: 'The Amplified Apple', site: 'soundcloud.com/theamplifiedapple'},
   {file: 'looking_for_pluto', title: 'Looking For Pluto', author: 'Benedikt', site: 'soundcloud.com/bendikhjaltason'},
@@ -33,5 +32,6 @@ var musicList = [
   {file: 'orgone_vapors', title: 'orgone vapors', author: 'ephen', site: 'soundcloud.com/ephenager'},
   {file: 'what_the_night_did_to_you', title: 'What The Night Did To You', author: 'Drug Dealer', site: 'soundcloud.com/everbeast'},
   {file: 'inertia_jungle', title: 'Inertia Jungle', author: 'Attik-Attak', site: 'soundcloud.com/attik-attack-1'},
-  {file: 'trauma_and_torment_of_truth', title: 'Trauma and Torment of Truth', author: 'Kode of Bliss', site: 'soundcloud.com/kellybarnard'}
+  {file: 'trauma_and_torment_of_truth', title: 'Trauma and Torment of Truth', author: 'Kode of Bliss', site: 'soundcloud.com/kellybarnard'},
+  {file: 'geometry', title: 'Geometry', author: 'Tim Gerwing', site: 'lascaux21.com'}
 ]

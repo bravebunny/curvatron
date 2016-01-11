@@ -308,8 +308,8 @@ Adventure.prototype = {
     this.fadingOut = true
     achievement('adventure_end')
     var overlay = this.game.add.sprite(0, 0, 'overlay')
-    overlay.width = w2 * 2
-    overlay.height = h2 * 2
+    overlay.width = w2 * 2.1
+    overlay.height = h2 * 2.1
     overlay.alpha = 0
     var fadeOut = this.game.add.tween(overlay)
     fadeOut.to({alpha:1}, 2000, Phaser.Easing.Linear.None).delay(1000)

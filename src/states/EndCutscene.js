@@ -14,7 +14,7 @@ endCutscene.prototype = {
   },
 
   create: function () {
-    this.scale.setResizeCallback(this.resize, this)
+    //this.scale.setResizeCallback(this.resize, this)
 
     this.pics[0] = this.game.add.sprite(0, 0, 'end1')
     this.pics[0].alpha = 0
@@ -30,6 +30,11 @@ endCutscene.prototype = {
         'After collecting all the point pellets, the snake moved to New Zealand.')
     }, this)
     tween.start()
+
+    if (!muteMusic) {
+      this.music = new buzz.sound('assets/music/soundtrack/geometry.ogg')
+      this.music.play().fadeIn()
+    }
 
     this.resize()
   },
@@ -47,7 +52,6 @@ endCutscene.prototype = {
     text.alpha = 0
 
     var move = this.game.add.tween(text.cameraOffset)
-    console.log(text.y)
     move.to({y: y}, this.duration, Phaser.Easing.Quadratic.Out).delay(this.delay)
     move.start()
 
@@ -81,7 +85,7 @@ endCutscene.prototype = {
 
   next4: function () {
     this.addText(100, 200, this.next5,
-      'They had a daughter, and the snake had to put the law degree on hold to care for her.')
+      'They had a daughter, and the snake had to put the law degree on hold.')
   },
 
   next5: function () {
@@ -106,7 +110,7 @@ endCutscene.prototype = {
   },
 
   next8: function () {
-   var overlay = this.game.add.sprite(0, 0, 'overlay')
+    var overlay = this.game.add.sprite(0, 0, 'overlay')
     overlay.width = this.pics[0].width
     overlay.height = this.pics[0].height
     overlay.alpha = 0
@@ -114,13 +118,44 @@ endCutscene.prototype = {
     fadeOut.to({alpha:1}, this.duration, Phaser.Easing.Linear.None).delay(this.delay*3)
     fadeOut.onComplete.add(function () {
       this.addText(100, 100, this.next9,
-        'You have unlocked the Hard Mode levels.')
+        '| You can\'t tackle all your problems straight on.')
     }, this)
     fadeOut.start()
   },
 
   next9: function () {
+    this.addText(100, 150, this.next10,
+      '| Some times, you have to curve your way around them.')
+  },
 
+  next10: function () {
+    this.addText(100, 225, this.next11,
+      '- Albert Einstein')
+  },
+
+  next11: function () {
+    this.addText(100, 400, this.next12,
+      '| You have unlocked the Hard Mode levels')
+  },
+
+  next12: function () {
+    this.addText(100, 475, this.next13,
+      '- Mahatma Gandhi')
+  },
+
+  next13: function () {
+    if (!muteMusic) this.music.fadeOut(this.duration + this.delay*5)
+    var overlay = this.game.add.sprite(0, 0, 'overlay')
+    overlay.width = this.pics[0].width
+    overlay.height = this.pics[0].height
+    overlay.alpha = 0
+    overlay.bringToTop()
+    var fadeOut = this.game.add.tween(overlay)
+    fadeOut.to({alpha:1}, this.duration, Phaser.Easing.Linear.None).delay(this.delay*5)
+    fadeOut.onComplete.add(function () {
+      this.state.start('Menu')
+    }, this)
+    fadeOut.start()
   },
 
   resize: function () {
