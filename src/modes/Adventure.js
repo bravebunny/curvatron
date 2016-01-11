@@ -230,8 +230,16 @@ Adventure.prototype = {
     this.score++
 
     if (this.score >= this.pointPositions.length) {
-      this.player.dead = true
-      this.nextLevel()
+      this.player.finished = true
+      this.game.time.events.add(Phaser.Timer.SECOND * 0.1, function () {
+        //this.player.dead = true
+        this.player.sprite.alpha = 0
+      }, this)
+
+      this.game.time.events.add(Phaser.Timer.SECOND * 0.8, function () {
+        this.nextLevel()
+      }, this)
+      
     } else {
       this.createPower()
     }
@@ -296,7 +304,7 @@ Adventure.prototype = {
         else unlocks = parseInt(unlocks, 10)
         if (unlocks < this.index + 1) localStorage.setItem('unlocks', this.index + 1)
         if (localStorage.getItem('unlocks') > this.index) manager.nextButton.enable()
-        if (localStorage.getItem('unlocks') > 30) this.adventureEnd()
+        if (this.index === 29) this.adventureEnd()
        }
     }
   },

@@ -34,6 +34,7 @@ var Player = function (id, x, y, key, mode, game) {
   this.shrinkAmount = 200
   this.collectSemaphore = 0
   this.eatenPoint = null
+  this.finished = false
 
   this.inputTimes = []
   this.autoMode = false
@@ -122,7 +123,7 @@ Player.prototype = {
 
       var ctx = bmd.ctx
       // erase trail from front
-      if (this.dead && this.frameCount === 0 && this.trailArray[0]) {
+      if (!this.finished && this.dead && this.frameCount === 0 && this.trailArray[0]) {
         var trailEnd = this.trailArray.pop()
         ctx.clearRect(trailEnd.x - 10 * scale, trailEnd.y - 10 * scale, 20 * scale, 20 * scale)
       }
@@ -154,7 +155,7 @@ Player.prototype = {
       var yy = Math.sin(this.sprite.rotation) * 30 * scale + this.sprite.y
 
       // make the last eaten point follow the player
-      if (this.eatenPoint !== null) {
+      if (this.eatenPoint !== null && !this.finished) {
         var point = this.eatenPoint
         var x = lerp(xx, point.x, 0.85)
         var y = lerp(yy, point.y, 0.85)
@@ -175,7 +176,7 @@ Player.prototype = {
 
       if (!this.dead) {
         // Add to trail
-        if (this.frameCount === 0 && !this.dead) {
+        if (this.frameCount === 0 && !this.dead && this.sprite.alpha > 0) {
           var trailPiece = {'x': this.sprite.x, 'y': this.sprite.y, 'n': 1}
           this.trailArray.push(trailPiece)
         // bmd.draw(this.trail, this.sprite.x, this.sprite.y)
@@ -220,7 +221,7 @@ Player.prototype = {
       ctx = bmd.context
 
       // erase trail from behind
-      if (this.trailArray.length >= this.size && this.frameCount === 0 && this.trailArray[0] || this.dead) {
+      if (this.trailArray.length >= this.size && this.frameCount === 0 && this.trailArray[0] || this.dead || this.finished) {
         if (this.mode.erasesTrail() || this.dead) {
           var nRemove = 1
           if (this.shrink) {
@@ -373,12 +374,20 @@ Player.prototype = {
       }
 
       this.eatenPoint = power
+      var scaleTo = 0
+      var duration = 300
+      if (this.finished) {
+        scaleTo = 1.5
+        duration = 100
+      }
 
       // this.game.add.tween(power).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true)
-      var powerTween = this.game.add.tween(power.scale).to({x: 0, y: 0}, 300, Phaser.Easing.Linear.None, true)
+      var powerTween = this.game.add.tween(power.scale).to({x: scaleTo, y: scaleTo}, duration, Phaser.Easing.Linear.None, true)
       powerTween.onComplete.add(function () {
-        power.destroy()
-        this.collectSemaphore = 0
+        if (!this.finished) {
+          power.destroy()
+          this.collectSemaphore = 0
+        }
       }, this)
     }
   },
