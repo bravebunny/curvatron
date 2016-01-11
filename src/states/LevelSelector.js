@@ -92,8 +92,10 @@ levelSelector.prototype = {
     var fs = require('fs')
     this.items = fs.readdirSync('assets/levels')
     for (var i = 0; i < this.items.length; i++) {
+      var title = this.items[i].split('-')[1]
+      if (!title) title = 'level ' + (i+1);
       (function (i) {
-        var button = this.buttons.add('resume_button', 'level ' + i, function () {
+        var button = this.buttons.add('resume_button', title, function () {
           this.playLocalLevel(i)
         })
         if (unlocks < 0) button.disable()
