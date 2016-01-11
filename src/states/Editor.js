@@ -9,8 +9,8 @@ var editor = function (game) {
   this.marker = null
   this.map = null
   this.tb = {}
-  this.prevCursorX = 0
-  this.prevCursorY = 0
+  this.prevCursorX = -1
+  this.prevCursorY = -1
   this.lastStartPosition = null
   this.confirmButtons = null
   this.open = false
@@ -453,17 +453,22 @@ editor.prototype = {
       var tileX = this.layer.getTileX(x)
       var tileY = this.layer.getTileY(y)
 
-      if (!this.mouseWasDown) {
+      var shiftDown = this.game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)
+
+      if (!this.mouseWasDown && !shiftDown) {
         this.prevCursorX = tileX
         this.prevCursorY = tileY
       }
+
 
       if (this.game.input.mousePointer.isDown && this.game.input.activePointer.button === Phaser.Mouse.LEFT_BUTTON) {
         this.mouseWasDown = true
         var line = new Phaser.Line(this.prevCursorX, this.prevCursorY, tileX, tileY)
         var linePoints = line.coordinatesOnLine()
-        this.prevCursorX = tileX
-        this.prevCursorY = tileY
+        if (!shiftDown) {
+          this.prevCursorX = tileX
+          this.prevCursorY = tileY
+        }
 
         for (i = 0; i < linePoints.length; i++) {
           var lineX = linePoints[i][0]
@@ -562,7 +567,14 @@ editor.prototype = {
           }
         }
       } else {
-        this.mouseWasDown = false
+        if (!shiftDown) this.mouseWasDown = false
+        if (shiftDown && this.mouseWasDown) {
+          this.prevCursorX = tileX
+          this.prevCursorY = tileY
+          this.mouseWasDown = false
+        }
+
+
         var curX = this.marker.x + (this.tileSize / 2) / this.scale
         var curY = this.marker.y + (this.tileSize / 2) / this.scale
         switch (this.tool) {
