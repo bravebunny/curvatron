@@ -142,7 +142,6 @@ Adventure.prototype = {
 
     this.map.setCollisionByIndex(0)
 
-    this.point = new PowerUp(this.game, 'point', this, 0, 0)
     this.createPower()
 
     this.finishButtons = new ButtonList(this, this.game)
@@ -167,6 +166,11 @@ Adventure.prototype = {
         }
       } else if (this.music) this.music.stop()
     }
+
+    this.pointer = this.game.add.sprite(0, 0, 'resume_button')
+    this.pointer.scale.set(0.4, 0.2)
+    this.pointer.anchor.set(-5, 0.5)
+    this.pointer.alpha = 0.5
   },
 
   setScreen: function () {
@@ -203,6 +207,20 @@ Adventure.prototype = {
     }
     var obs = this.obstacles
     for (var i = 0; i < obs.length; i++) obs[i].update()
+
+    if (this.point) {
+      var pointX = this.point.sprite.x
+      var pointY = this.point.sprite.y
+      var inBounds = pointX < this.game.camera.width && pointX > 0 && pointY < this.game.camera.height && pointY > 0
+      if (this.point.sprite.inCamera) {
+        this.pointer.visible = false
+      } else {
+        this.pointer.visible = true
+        this.pointer.position = this.player.sprite.position
+        this.pointer.rotation = this.game.physics.arcade.angleBetween(this.pointer, this.point.sprite)
+      }
+
+    }
   },
 
   setCamera: function () {
@@ -263,6 +281,7 @@ Adventure.prototype = {
       if (this.score >= this.pointPositions.length - 1) pointName = 'pointSuper'
       else pointName = 'point'
       var powerup = new PowerUp(this.game, pointName, this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
+      this.point = powerup
       powerup.create()
 
       var number
