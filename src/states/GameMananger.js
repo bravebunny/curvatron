@@ -167,11 +167,7 @@ gameMananger.prototype = {
     bmd.addToWorld()
     bmd.smoothed = false
 
-    ui.overlay = this.add.button(0, 0, 'overlay', function () {
-      if (gameOver && !this.shareButtons.visible) {
-        this.restart()
-      }
-    }, this)
+    ui.overlay = this.add.sprite(0, 0, 'overlay')
     ui.overlay.scale.set(0)
     ui.overlay.alpha = 0.5
     ui.overlay.fixedToCamera = true
@@ -475,68 +471,70 @@ gameMananger.prototype = {
   },
 
   backPressed: function () {
-    if (this.shareButtons.enabled && this.shareButtons.visible) {
-      this.cancelShare()
-      return
-    }
-
-    var ui = this.ui
-    if (!paused && !this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_B)) { // pause
-      if (this.mode.name === 'creative') this.screenshot.snap()
-      this.game.tweens.pauseAll()
-      if (this.mode.pause) {
-        this.mode.pause()
+    if (!players[0].finished) {
+      if (this.shareButtons.enabled && this.shareButtons.visible) {
+        this.cancelShare()
+        return
       }
 
-      if (gameOver) {
-        if (this.mode.testing) {
-          this.state.start('Editor', true, false, true, this.mode.scale)
-        } else {
-          if (this.mode.music) this.mode.music.stop()
-          else if (this.music) this.music.stop()
-          this.state.start('Menu')
+      var ui = this.ui
+      if (!paused && !this.game.input.gamepad.justPressed(Phaser.Gamepad.XBOX360_B)) { // pause
+        if (this.mode.name === 'creative') this.screenshot.snap()
+        this.game.tweens.pauseAll()
+        if (this.mode.pause) {
+          this.mode.pause()
         }
+
+        if (gameOver) {
+          if (this.mode.testing) {
+            this.state.start('Editor', true, false, true, this.mode.scale)
+          } else {
+            if (this.mode.music) this.mode.music.stop()
+            else if (this.music) this.music.stop()
+            this.state.start('Menu')
+          }
+        }
+        ui.overlay.width = w2 * 2
+        ui.overlay.height = h2 * 2
+
+        if (pauseTween) {
+          pauseTween.stop()
+        }
+        paused = true
+        ui.overlay.inputEnabled = false
+
+        if (!this.mode.sp) {
+          this.game.time.events.remove(this.powerTimer)
+        }
+
+        this.pauseButtons.show()
+        if (this.game.canvas.style.cursor !== 'auto') {
+          this.game.canvas.style.cursor = 'auto'
+        }
+        this.pauseButtons.select(0)
+
+        if (this.mode.index != null) {
+          this.shareText.setText('level ' + this.mode.index)
+          this.shareText.visible = true
+        }
+      } else { // unpause
+        this.game.tweens.resumeAll()
+        ui.overlay.scale.set(0)
+
+        if (this.mode.unPause) {
+          this.mode.unPause()
+        }
+
+        if (!this.mode.sp) {
+          this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.mode.createPower, this.mode)
+        }
+
+        ui.overlay.inputEnabled = true
+
+        this.pauseButtons.hide()
+        this.shareText.visible = false
+        paused = false
       }
-      ui.overlay.width = w2 * 2
-      ui.overlay.height = h2 * 2
-
-      if (pauseTween) {
-        pauseTween.stop()
-      }
-      paused = true
-      ui.overlay.inputEnabled = false
-
-      if (!this.mode.sp) {
-        this.game.time.events.remove(this.powerTimer)
-      }
-
-      this.pauseButtons.show()
-      if (this.game.canvas.style.cursor !== 'auto') {
-        this.game.canvas.style.cursor = 'auto'
-      }
-      this.pauseButtons.select(0)
-
-      if (this.mode.index != null) {
-        this.shareText.setText('level ' + this.mode.index)
-        this.shareText.visible = true
-      }
-    } else { // unpause
-      this.game.tweens.resumeAll()
-      ui.overlay.scale.set(0)
-
-      if (this.mode.unPause) {
-        this.mode.unPause()
-      }
-
-      if (!this.mode.sp) {
-        this.powerTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.mode.createPower, this.mode)
-      }
-
-      ui.overlay.inputEnabled = true
-
-      this.pauseButtons.hide()
-      this.shareText.visible = false
-      paused = false
     }
   },
 
