@@ -374,6 +374,11 @@ editor.prototype = {
         this.selectByTile(x, y)
       }
     }.bind(this))
+
+    var startX = this.mapW/2
+    var startY = this.mapH/2 - 4
+    this.levelArray[startX * this.mapH + startY] = this.values.start
+    this.createStart(startX, startY)
   },
 
   update: function () {
