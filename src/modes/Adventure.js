@@ -171,6 +171,7 @@ Adventure.prototype = {
     this.pointer.scale.set(0.4, 0.2)
     this.pointer.anchor.set(-5, 0.5)
     this.pointer.alpha = 0.5
+    this.pointer.visible = false
   },
 
   setScreen: function () {
