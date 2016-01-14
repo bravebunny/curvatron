@@ -353,7 +353,7 @@ Adventure.prototype = {
   },
 
   playNextLevel: function () {
-    achievement('level_progress')
+    savedCheckpoint = {}
     changeBGColor(this.game)
     this.index++
     this.restarting = false
