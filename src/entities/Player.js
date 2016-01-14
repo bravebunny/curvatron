@@ -328,7 +328,7 @@ Player.prototype = {
 
   kill: function (player, other) {
     if (this.keyText) this.keyText.destroy()
-    if (!this.dead) {
+    if (!this.dead && !this.finished) {
       if (this.mode.sp) {
         var deathScore = parseInt(localStorage.getItem('deathScore'), 10)
         if (isNaN(deathScore)) {
