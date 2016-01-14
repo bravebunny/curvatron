@@ -956,6 +956,7 @@ editor.prototype = {
         setScreenFixed(baseW, baseH, this.game)
         this.gridImage.visible = false
         this.marker.visible = false
+        this.tb.bg.visible = false
         this.game.updateRender()
 
         var png = this.game.canvas.toDataURL()
@@ -965,6 +966,7 @@ editor.prototype = {
         this.marker.visible = true
         this.uploadButtons.show()
         this.uploadButtons.disable()
+        this.tb.bg.visible = true
 
         png = png.replace(/^data:image\/png;base64,/, '')
 
