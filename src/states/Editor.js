@@ -28,7 +28,8 @@ var editor = function (game) {
   this.cursorObj = null
   this.defaults = {
     mapW: 60,
-    mapH: 34
+    mapH: 34,
+    length: 60 * 34
   }
 
   // reserved values in the level file
@@ -1061,6 +1062,8 @@ editor.prototype = {
             return retVal
           })
           this.loadFromArray()
+          var scale = Math.sqrt(this.levelArray.length / this.defaults.length)
+          this.state.restart(true, false, true, scale)
         }.bind(this))
       }.bind(this))
     } else if (this.newPage) {
