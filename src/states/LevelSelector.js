@@ -95,9 +95,10 @@ levelSelector.prototype = {
       var title = this.items[i].split('-')[1]
       if (!title) title = 'level ' + (i+1);
       (function (i) {
-        var button = this.buttons.add('resume_button', title, function () {
+        var button = this.buttons.add('circle_button', title, function () {
           this.playLocalLevel(i)
         })
+        button.number = i + 1
         if (unlocks < 0) button.disable()
         unlocks--
       }.bind(this))(i)

@@ -8,6 +8,7 @@ var Button = function (iconName, text, callback, buttonList, context, game) {
   this.game = game
   this.buttonList = buttonList
 
+  this.number = null
   this.x = null
   this.y = null
   this.index = null
@@ -63,6 +64,15 @@ Button.prototype = {
     // this.icon.hitArea = new Phaser.Rectangle(-80, -80, w, h)
     this.icon.anchor.setTo(0.5, 0.5)
 
+    // Icon number
+    if (this.number != null) {
+      this.numberLabel = this.game.add.text(this.icon.x, 0, this.number, {
+        fill: 'white',
+        font: '45px dosis'
+      })
+      this.numberLabel.anchor.setTo(0.5, 0.5)
+    }
+
     // Button group
     this.button = this.game.add.button(x, y)
     // this.icon.hitArea = new Phaser.Rectangle(-80, -80, w, h)
@@ -73,6 +83,7 @@ Button.prototype = {
     this.button.addChild(this.graphics)
     this.button.addChild(this.icon)
     this.button.addChild(this.label)
+    if (this.numberLabel) this.button.addChild(this.numberLabel)
     this.button.anchor.setTo(0.5, 0.5)
 
     var s = this.button.scale
