@@ -66,7 +66,7 @@ levelSelector.prototype = {
         this.items = items
         for (var i = 0; i < items.length; i++) {
           (function (i) {
-            this.buttons.add('accept_button', items[i].title, function () {
+            this.buttons.add('resume_button', items[i].title, function () {
               this.playWorkshopLevel(i)
             })
           }.bind(this))(i)
