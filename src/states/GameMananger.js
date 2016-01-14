@@ -68,6 +68,7 @@ gameMananger.prototype = {
     shrinkSound = this.add.audio('shrink')
     startSound = this.add.audio('sfx_start')
     collectSound = this.add.audio('sfx_collect0')
+    checkpointSound = this.add.audio('sfx_checkpoint')
 
     this.music = null
 

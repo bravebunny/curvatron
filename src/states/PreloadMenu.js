@@ -60,6 +60,7 @@ preloadMenu.prototype = {
     this.game.load.audio('kill', 'assets/sfx/kill.ogg')
     this.game.load.audio('shrink', 'assets/sfx/shrink.ogg')
     this.game.load.audio('sfx_collect0', 'assets/sfx/collect.ogg')
+    this.game.load.audio('sfx_checkpoint', 'assets/sfx/checkpoint.ogg')
 
     this.game.load.image('player', 'assets/sprites/game/singleplayer/player.png')
     this.game.load.image('obstacle', 'assets/sprites/game/singleplayer/obstacle.png')

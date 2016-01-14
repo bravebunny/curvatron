@@ -42,6 +42,7 @@ Checkpoint.prototype = {
     savedCheckpoint.savedSize = players[0].size
     savedCheckpoint.position = {x: this.sprite.x, y: this.sprite.y}
     savedCheckpoint.score = this.mode.score
+    checkpointSound.play()
   },
 
   setPosition: function (x, y) {},
