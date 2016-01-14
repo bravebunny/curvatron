@@ -309,7 +309,11 @@ Adventure.prototype = {
   },
 
   nextLevel: function () {
-    if (this.testing) this.game.state.start('Editor', true, false, true, this.scale)
+    if (this.testing) {
+      this.player.finished = false
+      this.player.kill()
+      this.game.state.start('Editor', true, false, true, this.scale)
+    }
     else {
       if (!muteSoundEffects) finishSound.play()
       this.levelComplete = true
