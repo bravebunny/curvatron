@@ -39,7 +39,9 @@ var editor = function (game) {
     rotator: 34,
     horizontal: 33,
     vertical: 32,
-    checkpoint: 31,
+    horizontalDoor: 31, 
+    verticalDoor: 30,
+    checkpoint: 29,
     wall: 1,
     empty: 0
   }
@@ -206,7 +208,7 @@ editor.prototype = {
 
     this.tb.obsMenu = this.game.add.sprite(this.tb.obstacle.x, baseH, 'overlay')
     this.tb.obsMenu.width = 200
-    this.tb.obsMenu.height = 500
+    this.tb.obsMenu.height = 800
     this.tb.obsMenu.alpha = 0.5
     this.tb.obsMenu.visible = false
     this.tb.obsMenu.anchor.set(0.5, 1)
@@ -228,6 +230,16 @@ editor.prototype = {
     this.tb.obs.rotator.anchor.set(0.5)
     this.tb.obs.rotator.visible = false
     this.tb.obs.rotator.events.onInputOver.add(function (button) { this.showTooltip('rotating block', button) }.bind(this))
+
+    this.tb.obs.verticalDoor = this.game.add.button(1020, baseH - 550, 'vertical_button', this.verticalDoorTool, this)
+    this.tb.obs.verticalDoor.anchor.set(0.5)
+    this.tb.obs.verticalDoor.visible = false
+    this.tb.obs.verticalDoor.events.onInputOver.add(function (button) { this.showTooltip('vertical door', button) }.bind(this))
+
+    this.tb.obs.horizontalDoor = this.game.add.button(1020, baseH - 700, 'horizontal_button', this.horizontalDoorTool, this)
+    this.tb.obs.horizontalDoor.anchor.set(0.5)
+    this.tb.obs.horizontalDoor.visible = false
+    this.tb.obs.horizontalDoor.events.onInputOver.add(function (button) { this.showTooltip('horizontal door', button) }.bind(this))
 
     this.tb.rightObs = this.game.add.button(1110, baseH + 100, 'editorArrow', this.obsInc, this)
     this.tb.rightObs.anchor.set(0.5, 0.5)
@@ -262,15 +274,21 @@ editor.prototype = {
     this.cursorPoint.scale.set(0.7 / this.scale)
     this.cursorPoint.visible = false
 
+    var cursorVertDoor = new Vertical(this.game, 0, 0)
+    cursorVertDoor.isDoor = true
+    var cursorHorDoor = new Horizontal(this.game, 0, 0)
+    cursorHorDoor.isDoor = true
     var cursorVert = new Vertical(this.game, 0, 0)
     var cursorHor = new Horizontal(this.game, 0, 0)
     var cursorRot = new Rotator(this.game, 0, 0)
     this.cursorObs = {
+      30: cursorVertDoor,
+      31: cursorHorDoor,
       32: cursorVert,
       33: cursorHor,
       34: cursorRot
     }
-    for (i = 32; i < 35; i++) {
+    for (i = 30; i < 35; i++) {
       this.cursorObs[i].create()
       this.cursorObs[i].stop()
       this.cursorObs[i].hide()
@@ -444,6 +462,8 @@ editor.prototype = {
     this.cursorObs[this.values.vertical].hide()
     this.cursorObs[this.values.horizontal].hide()
     this.cursorObs[this.values.rotator].hide()
+    this.cursorObs[this.values.horizontalDoor].hide()
+    this.cursorObs[this.values.verticalDoor].hide()
 
     // square around selected tool in toolbar
     var tool = this.tool
@@ -510,7 +530,7 @@ editor.prototype = {
                 if (this.selectedPoint >= pointN) {
                   this.pointDec()
                 }
-              } else if (val === 31) { // checkpoint
+              } else if (val === this.values.checkpoint) { // checkpoint
                 var checkN = this.checkPositions.indexOf(index)
                 this.checkpoints[checkN].destroy()
                 for (var c = checkN; c < this.checkpoints.length - 1; c++) {
@@ -524,7 +544,7 @@ editor.prototype = {
                 }
               } else if (val === this.values.start) {
 
-              } else if (val > 31) { // obstacle
+              } else if (val > 29) { // obstacle
                 var obsN = this.obsPositions.indexOf(index)
                 this.obstacles[obsN].destroy()
                 for (var o = obsN; o < this.obstacles.length - 1; o++) {
@@ -655,9 +675,23 @@ editor.prototype = {
 
   createObstacleObj: function (val, x, y) {
     var obs = null
-    if (val === this.values.vertical) obs = new Vertical(this.game, x, y)
-    else if (val === this.values.horizontal) obs = new Horizontal(this.game, x, y)
-    else if (val === this.values.rotator) obs = new Rotator(this.game, x, y)
+    var isDoor = false
+    switch (val) {
+      case this.values.verticalDoor:
+        isDoor = true
+      case this.values.vertical:
+        obs = new Vertical(this.game, x, y)
+        break
+      case this.values.horizontalDoor:
+        isDoor = true
+      case this.values.horizontal:
+        obs = new Horizontal(this.game, x, y)
+        break
+      case this.values.rotator:
+        obs = new Rotator(this.game, x, y)
+        break
+    }
+    obs.isDoor = isDoor
     obs.create()
     obs.stop()
     obs.setScale(1 / this.scale)
@@ -791,6 +825,8 @@ editor.prototype = {
       this.tb.obs.vertical.visible = true
       this.tb.obs.horizontal.visible = true
       this.tb.obs.rotator.visible = true
+      this.tb.obs.verticalDoor.visible = true
+      this.tb.obs.horizontalDoor.visible = true
     }
   },
 
@@ -799,6 +835,8 @@ editor.prototype = {
     this.tb.obs.vertical.visible = false
     this.tb.obs.horizontal.visible = false
     this.tb.obs.rotator.visible = false
+    this.tb.obs.verticalDoor.visible = false
+    this.tb.obs.horizontalDoor.visible = false
   },
 
   verticalTool: function () {
@@ -810,6 +848,18 @@ editor.prototype = {
   horizontalTool: function () {
     this.obstacleTool()
     this.obsType = this.values.horizontal
+    this.tb.obstacle.loadTexture('horizontal_button')
+  },
+
+  verticalDoorTool: function () {
+    this.obstacleTool()
+    this.obsType = this.values.verticalDoor
+    this.tb.obstacle.loadTexture('vertical_button')
+  },
+
+  horizontalDoorTool: function () {
+    this.obstacleTool()
+    this.obsType = this.values.horizontalDoor
     this.tb.obstacle.loadTexture('horizontal_button')
   },
 
@@ -1103,6 +1153,12 @@ editor.prototype = {
         } else if (val === this.values.horizontal) {
           this.createObstacle(x, y, val, obsCounter++)
           this.obsPositions.push(index)
+        } else if (val === this.values.verticalDoor) {
+          this.createObstacle(x, y, val, obsCounter++)
+          this.obsPositions.push(index)
+        } else if (val === this.values.horizontalDoor) {
+          this.createObstacle(x, y, val, obsCounter++)
+          this.obsPositions.push(index)
         } else if (val === this.values.rotator) {
           this.createObstacle(x, y, val, obsCounter++)
           this.obsPositions.push(index)
@@ -1159,6 +1215,14 @@ editor.prototype = {
     } else if (val === this.values.vertical) {
       this.obstacleTool()
       this.verticalTool()
+      this.selectObs(this.obsPositions.indexOf(index))
+    } else if (val === this.values.horizontalDoor) {
+      this.obstacleTool()
+      this.horizontalDoorTool()
+      this.selectObs(this.obsPositions.indexOf(index))
+    } else if (val === this.values.verticalDoor) {
+      this.obstacleTool()
+      this.verticalDoorTool()
       this.selectObs(this.obsPositions.indexOf(index))
     } else if (val === this.values.rotator) {
       this.obstacleTool()

@@ -13,29 +13,44 @@ var Horizontal = function (game, x, y) {
   this.sprite = null
 
   this.spriteAxis = null
+  this.isDoor = false
 }
 
 Horizontal.prototype = {
   create: function () {
     var bmd = this.game.make.bitmapData(this.w, this.h)
     bmd.fill(0xFF, 0xFF, 0xFF, 1)
-    this.sprite = this.game.add.sprite(this.x - this.dist, this.y, bmd)
-    this.sprite.anchor.set(0.5)
+    var x = this.isDoor ? this.x - this.h/2 : this.x - this.dist
+    this.sprite = this.game.add.sprite(x, this.y, bmd)
+    var anchorX = this.isDoor ? 0 : 0.5
+    this.sprite.anchor.set(anchorX, 0.5)
     this.game.physics.arcade.enable(this.sprite)
 
-    var bmdAxis = this.game.make.bitmapData(this.w + this.dist * 2, this.h * 0.7)
+    var axisW= this.isDoor ? this.w + this.dist * 2 - this.h/2 : this.w + this.dist * 2
+    var bmdAxis = this.game.make.bitmapData(axisW, this.h * 0.7)
     bmdAxis.fill(0xFF, 0xFF, 0xFF, 1)
     this.spriteAxis = this.game.add.sprite(this.x, this.y, bmdAxis)
     this.spriteAxis.alpha = 0.2
-    this.spriteAxis.anchor.set(0.5)
+    this.spriteAxis.anchor.set(anchorX, 0.5)
 
-    this.tween = this.game.add.tween(this.sprite.position).to({ x: this.x + this.dist }, 1500, Phaser.Easing.Sinusoidal.InOut, true)
-    this.tween.yoyo(true)
-    this.tween.repeat(-1)
+    if (!this.isDoor) {
+      this.tween = this.game.add.tween(this.sprite.position).to({ x: this.x + this.dist }, 1500, Phaser.Easing.Sinusoidal.InOut, true)
+      this.tween.yoyo(true)
+      this.tween.repeat(-1)
+    }
+
   },
 
   update: function () {
     this.game.physics.arcade.overlap(this.sprite, players[0].sprite, players[0].kill, null, players[0])
+    if (this.isDoor) {
+      var w = this.sprite.width
+      var dir = players[0].direction
+      var inc = 0
+      if (dir === 1 && w > this.h) inc = -1
+      else if (dir === -1 && w < this.spriteAxis.width) inc = 1
+      this.sprite.width += 5 * inc
+    }
   },
 
   setPosition: function (x, y) {
@@ -47,7 +62,7 @@ Horizontal.prototype = {
   },
 
   stop: function () {
-    this.tween.stop()
+    if (this.tween) this.tween.stop()
     this.setPosition(this.x, this.y)
 
     var graphics = this.game.add.graphics(0, 0)

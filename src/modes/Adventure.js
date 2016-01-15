@@ -52,7 +52,9 @@ var Adventure = function (game, testing, items) {
     rotator: 34,
     horizontal: 33,
     vertical: 32,
-    checkpoint: 31,
+    horizontalDoor: 31, 
+    verticalDoor: 30,
+    checkpoint: 29,
     wall: 1,
     empty: 0
   }
@@ -131,6 +133,16 @@ Adventure.prototype = {
           var check = new Checkpoint(this.game, this, worldX, worldY)
           check.create()
           this.obstacles.push(check)
+        } else if (val === this.values.verticalDoor) {
+          var vert = new Vertical(this.game, worldX, worldY)
+          vert.isDoor = true
+          vert.create()
+          this.obstacles.push(vert)
+        } else if (val === this.values.horizontalDoor) {
+          var hor = new Horizontal(this.game, worldX, worldY)
+          hor.isDoor = true
+          hor.create()
+          this.obstacles.push(hor)
         } else if (val > 1) {
           this.pointPositions[val - 2] = {}
           var point = this.pointPositions[val - 2]
