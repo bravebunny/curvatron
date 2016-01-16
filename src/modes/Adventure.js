@@ -17,7 +17,7 @@ var Adventure = function (game, testing, items) {
   this.name = 'adventure'
   this.items = items
   this.index = null
-  this.margin = 400
+  this.margin = 600
   this.workshopLevel = false
 
   this.image = null
@@ -239,10 +239,12 @@ Adventure.prototype = {
   setCamera: function () {
     this.game.world.setBounds(0, 4, this.mapW * this.tileSize, this.mapH * this.tileSize - 8)
     this.game.camera.follow(players[0].sprite)
-    var m = this.margin
+    var ratio = 9 / 16
+    var mx = this.margin
+    var my = this.margin * ratio
     var w = 2 * w2
     var h = 2 * h2
-    this.game.camera.deadzone = new Phaser.Rectangle(m, m, w - 2 * m, h - 2 * m)
+    this.game.camera.deadzone = new Phaser.Rectangle(mx, my, w - 2 * mx, h - 2 * my)
   },
 
   erasesTrail: function () {
