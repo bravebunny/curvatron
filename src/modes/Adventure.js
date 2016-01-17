@@ -221,18 +221,15 @@ Adventure.prototype = {
     var obs = this.obstacles
     for (var i = 0; i < obs.length; i++) obs[i].update()
 
+    this.pointer.visible = false
     if (this.point) {
-      var pointX = this.point.sprite.x
-      var pointY = this.point.sprite.y
-      var inBounds = pointX < this.game.camera.width && pointX > 0 && pointY < this.game.camera.height && pointY > 0
-      if (this.point.sprite.inCamera) {
-        this.pointer.visible = false
+      if (this.point.spriteTween.inCamera) {
       } else {
+        console.log(this.point)
         this.pointer.visible = true
         this.pointer.position = this.player.sprite.position
         this.pointer.rotation = this.game.physics.arcade.angleBetween(this.pointer, this.point.sprite)
       }
-
     }
   },
 
@@ -296,8 +293,8 @@ Adventure.prototype = {
       if (this.score >= this.pointPositions.length - 1) pointName = 'pointSuper'
       else pointName = 'point'
       var powerup = new PowerUp(this.game, pointName, this, this.pointPositions[this.score].x, this.pointPositions[this.score].y)
-      this.point = powerup
       powerup.create()
+      this.point = powerup
 
       var number
       if (this.testing) number = this.score + 1
