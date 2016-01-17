@@ -491,8 +491,14 @@ editor.prototype = {
       if (this.game.input.mousePointer.isDown && this.game.input.activePointer.button === Phaser.Mouse.LEFT_BUTTON) {
         this.mouseWasDown = true
         var line = new Phaser.Line(this.prevCursorX, this.prevCursorY, tileX, tileY)
+        if (shiftDown && this.prevCursorX === -1) {
+          console.log('is')
+          line = new Phaser.Line(tileX, tileY, tileX, tileY)
+        } 
         var linePoints = line.coordinatesOnLine()
-        if (!shiftDown) {
+
+
+        if (!shiftDown || this.prevCursorX === -1) {
           this.prevCursorX = tileX
           this.prevCursorY = tileY
         }
@@ -594,13 +600,16 @@ editor.prototype = {
           }
         }
       } else {
-        if (!shiftDown) this.mouseWasDown = false
+        if (!shiftDown) {
+          this.prevCursorX = -1
+          this.prevCursorY = -1
+          this.mouseWasDown = false
+        }
         if (shiftDown && this.mouseWasDown) {
           this.prevCursorX = tileX
           this.prevCursorY = tileY
           this.mouseWasDown = false
         }
-
 
         var curX = this.marker.x + (this.tileSize / 2) / this.scale
         var curY = this.marker.y + (this.tileSize / 2) / this.scale
