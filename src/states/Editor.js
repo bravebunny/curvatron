@@ -394,6 +394,11 @@ editor.prototype = {
       }
     }.bind(this))
 
+    // Select last objects in all tools
+    this.pointDec()
+    this.obsDec()
+    this.checkDec()
+
     // bugs out
     /*var startX = this.mapW/2
     var startY = this.mapH/2 - 4
