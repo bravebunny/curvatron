@@ -187,8 +187,11 @@ levelSelector.prototype = {
   },
 
   mouseWheel: function (event) {
-    if (this.game.input.mouse.wheelDelta > 0) this.up()
-    else if (this.game.input.mouse.wheelDelta < 0) this.down()
+    var min = 200, max = 900
+    var c = this.containerScrollBar
+    c.y -= this.game.input.mouse.wheelDelta * 10
+    if (c.y < 200) c.y = 900
+    if (c.y > 900) c.y = 200
   },
 
   up: function () {
