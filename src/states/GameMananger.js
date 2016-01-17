@@ -246,6 +246,7 @@ gameMananger.prototype = {
 
     this.deathButtons = new ButtonList(this, this.game)
     this.deathButtons.add('restart_button', 'restart', this.restart)
+
     if (this.mode.items) {
       this.nextButton = this.deathButtons.add('resume_button', 'next level', this.mode.playNextLevel.bind(this.mode))
       var unlocks = localStorage.getItem('unlocks')

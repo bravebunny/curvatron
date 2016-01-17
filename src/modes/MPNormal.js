@@ -96,7 +96,7 @@ MPNormal.prototype = {
 
   endGame: function (bottomY) {
     if (this.crowned === -1) {
-      var tie = this.game.add.sprite(w2, h2 + 150, 'tie')
+      var tie = this.game.add.sprite(w2, h2 + 250, 'tie')
       tie.anchor.setTo(0.5, 0.5)
     } else {
       var winnerFill = this.game.add.sprite(w2 - 75, bottomY + 157, 'player' + players[this.crowned].id)
