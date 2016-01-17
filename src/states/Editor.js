@@ -245,6 +245,11 @@ editor.prototype = {
     this.tb.rightObs.anchor.set(0.5, 0.5)
     this.tb.rightObs.scale.set(0.4)
 
+    this.tb.test = this.game.add.button(1500, baseH + 100, 'resume_button', this.test, this)
+    this.tb.test.anchor.setTo(0.5, 0.5)
+    this.tb.test.scale.set(0.8)
+    this.tb.test.events.onInputOver.add(function (button) { this.showTooltip('test level', button) }.bind(this))
+
     this.tb.scale = this.game.add.button(1650, baseH + 100, 'fullscreen_button', this.auxChangeScale, this)
     this.tb.scale.anchor.setTo(0.5, 0.5)
     this.tb.scale.scale.set(0.8)
