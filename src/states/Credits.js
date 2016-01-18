@@ -23,12 +23,12 @@ credits.prototype = {
     })
     this.title.anchor.setTo(0.5, 0.5)
 
-    this.containerX = 1.5 * w2
+    this.containerX = 1.7 * w2
     this.containerY = 300
 
     this.buttons = new ButtonList(this, this.game)
     this.buttons.add('back_button', 'back', this.backPressed)
-
+ 
     this.getCreditsText()
 
     this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
@@ -36,12 +36,16 @@ credits.prototype = {
 
   getCreditsText: function () {
     for (var i = 0; i < musicList.length; i++) {
-      var title = musicList[i].title
+      var title = musicList[i].title + " : " + musicList[i].author
       if (!title) title = 'level ' + (i + 1);
       (function (i) {
-        this.buttons.add('circle_button', title, function () {
+        var button = this.buttons.add('circle_button', title, function () {
           // link for the musicians pages
+          var greenworks = require('./greenworks')
+          greenworks.activateGameOverlayToWebPage(musicList[i].site)
         })
+        button.w = 550
+        button.graphics = null
       }.bind(this))(i)
     }
     this.createButtons()
