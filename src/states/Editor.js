@@ -309,7 +309,6 @@ editor.prototype = {
 
     this.menuButtons = new ButtonList(this, this.game)
     this.menuButtons.add('back_button', 'cancel', this.backPressed)
-    this.menuButtons.add('resume_button', 'test level', this.test)
     this.menuButtons.add('editorOpen', 'import level', this.auxOpen)
     this.menuButtons.add('editorsave', 'save to computer', this.save)
     var uploadButton = this.menuButtons.add('upload_button', 'upload to workshop', this.upload)
@@ -1132,7 +1131,6 @@ editor.prototype = {
             }
             return retVal
           })
-          this.loadFromArray()
           var scale = Math.sqrt(this.levelArray.length / this.defaults.length)
           this.state.restart(true, false, true, scale)
         }.bind(this))
@@ -1161,7 +1159,7 @@ editor.prototype = {
       for (var y = 0; y < this.mapH; y++) {
         var index = x * this.mapH + y
         var val = this.levelArray[index]
-        if (val === this.values.wall) this.map.putTile(0, x, y) // load walls
+        if (val === this.values.wall) this.map.putTile(0, x, y)
         else if (val === this.values.start) this.createStart(x, y)
         else if (val === this.values.checkpoint) {
           this.createCheckpoint(x, y, checkCounter++)
@@ -1182,6 +1180,7 @@ editor.prototype = {
           this.createObstacle(x, y, val, obsCounter++)
           this.obsPositions.push(index)
         } else if (val > this.values.wall) { // load points
+          console.log('loaded point')
           this.pointPositions[val - 1] = index
           this.levelArray[index] = 2
           this.createPoint(x, y, val - 1)
