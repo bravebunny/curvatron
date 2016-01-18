@@ -37,7 +37,7 @@ gameMananger.prototype = {
 
   preload: function () {
     if (this.mode.preload) this.mode.preload()
-    if ((this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) ||
+    if ((this.mode.name !== 'adventure' && !this.restarting) ||
       (this.mode.name === 'adventure' && this.mode.workshopLevel && !this.restarting)) {
       this.unlockedMusics = parseInt(localStorage.getItem('unlocks'), 10)
       if (isNaN(this.unlockedMusics)) this.unlockedMusics = 0
@@ -173,7 +173,7 @@ gameMananger.prototype = {
     ui.overlay.alpha = 0.5
     ui.overlay.fixedToCamera = true
 
-    if ((this.mode.sp && this.mode.name !== 'adventure' && !this.restarting) || 
+    if ((this.mode.name !== 'adventure' && !this.restarting) || 
       (this.mode.name === 'adventure' && this.mode.workshopLevel && !this.restarting)) {
       var index = this.game.rnd.integerInRange(0, this.unlockedMusics)
       this.music = new buzz.sound('assets/music/soundtrack/' + musicList[index].file + '.ogg')
