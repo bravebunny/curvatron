@@ -12,6 +12,7 @@ preloadMenu.prototype = {
     this.game.load.image('singleplayer_button', 'assets/sprites/gui/main/singleplayer.png')
     this.game.load.image('settings_button', 'assets/sprites/gui/main/settings.png')
     this.game.load.image('editor_button', 'assets/sprites/gui/main/editor.png')
+    this.game.load.image('credits_button', 'assets/sprites/gui/main/credits.png')
 
     this.game.load.image('endless_button', 'assets/sprites/gui/singleplayer/endless.png')
     this.game.load.image('collecting_button', 'assets/sprites/gui/singleplayer/collecting.png')

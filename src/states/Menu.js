@@ -24,7 +24,7 @@ var menu = function (game) {
 menu.prototype = {
   create: function () {
     pressSound = this.add.audio('sfx_press')
-    setScreenFixed(baseH * 1.5, baseH, this.game)
+    setScreenFixed(baseH * 1.5, baseH * 1.1, this.game)
     savedCheckpoint = {}
 
     this.world.pivot.set(0, 0)
@@ -66,6 +66,7 @@ menu.prototype = {
     this.buttons.add('stats_button', 'statistics', this.stats)
     this.buttons.add('editor_button', 'custom levels', this.customLevels)
     this.buttons.add('settings_button', 'settings', this.settings)
+    this.buttons.add('credits_button', 'credits', this.credits)
     this.buttons.add('exit_button', 'exit', this.backPressed)
 
     this.buttons.create()
@@ -87,6 +88,10 @@ menu.prototype = {
 
   settings: function () {
     this.state.start('Settings', true, false)
+  },
+
+  credits: function () {
+    this.state.start('Credits', true, false)
   },
 
   multiplayer: function () {
