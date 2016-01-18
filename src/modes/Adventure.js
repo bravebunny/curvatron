@@ -225,7 +225,7 @@ Adventure.prototype = {
     if (this.point) {
       if (this.point.spriteTween.inCamera) {
       } else {
-        console.log(this.point)
+        //console.log(this.point)
         this.pointer.visible = true
         this.pointer.position = this.player.sprite.position
         this.pointer.rotation = this.game.physics.arcade.angleBetween(this.pointer, this.point.sprite)

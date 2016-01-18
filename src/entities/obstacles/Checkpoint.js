@@ -1,5 +1,6 @@
 /*eslint-disable*/
-/* global Phaser, players, colorHex, savedCheckpoint: true
+/* global Phaser, players, colorHex, savedCheckpoint: true,
+checkpointSound
 */
 /*eslint-enable*/
 var Checkpoint = function (game, mode, x, y) {
@@ -42,7 +43,7 @@ Checkpoint.prototype = {
     savedCheckpoint.savedSize = players[0].size
     savedCheckpoint.position = {x: this.sprite.x, y: this.sprite.y}
     savedCheckpoint.score = this.mode.score
-    checkpointSound.play()
+    if (!muteSoundEffects) checkpointSound.play()
   },
 
   setPosition: function (x, y) {},
