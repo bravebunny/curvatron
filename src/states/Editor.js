@@ -26,6 +26,7 @@ var editor = function (game) {
   this.fileHandle = null
   this.justUploaded = false
   this.cursorObj = null
+  this.edited = false
   this.defaults = {
     mapW: 60,
     mapH: 34,
@@ -39,7 +40,7 @@ var editor = function (game) {
     rotator: 34,
     horizontal: 33,
     vertical: 32,
-    horizontalDoor: 31, 
+    horizontalDoor: 31,
     verticalDoor: 30,
     checkpoint: 29,
     wall: 1,
@@ -77,6 +78,7 @@ editor.prototype = {
     this.placedPoint = false
     this.placedObs = false
     this.placedCheck = false
+    this.edited = false
 
     // change outer background color
     document.body.style.background = colorHexDark
@@ -519,6 +521,7 @@ editor.prototype = {
 
           switch (this.tool) {
             case 'draw':
+              this.edited = true
               this.marker.visible = true
               if (this.levelArray[index] === this.values.empty) {
                 this.map.putTile(0, lineX, lineY)
@@ -579,6 +582,7 @@ editor.prototype = {
               break
 
             case 'point':
+              this.edited = true
               if (this.levelArray[index] === this.values.empty) {
                 this.createPoint(tileX, tileY, this.selectedPoint)
                 // value is set as 2 temporarily, will be replaced later
@@ -588,6 +592,7 @@ editor.prototype = {
               break
 
             case 'obstacle':
+              this.edited = true
               if (this.levelArray[index] === this.values.empty) {
                 this.createObstacle(tileX, tileY, this.obsType, this.selectedObs)
                 this.levelArray[index] = this.obsType
@@ -596,6 +601,7 @@ editor.prototype = {
               break
 
             case 'checkpoint':
+              this.edited = true
               if (this.levelArray[index] === this.values.empty) {
                 if (this.selectedCheck > 1) {
                   this.createCheckpoint(tileX, tileY, this.selectedCheck)
@@ -945,7 +951,8 @@ editor.prototype = {
     if (this.uploadText.text !== 'uploading...') {
       this.changeScale = true
       this.newPage = true
-      this.showDialog('current level will be deleted. change scale?')
+      if (this.edited) this.showDialog('current level will be deleted. change scale?')
+      else this.confirm()
     }
   },
 

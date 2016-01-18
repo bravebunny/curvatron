@@ -28,7 +28,7 @@ credits.prototype = {
 
     this.buttons = new ButtonList(this, this.game)
     this.buttons.add('back_button', 'back', this.backPressed)
- 
+
     this.getCreditsText()
 
     this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
