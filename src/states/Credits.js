@@ -40,9 +40,8 @@ credits.prototype = {
       if (!title) title = 'level ' + (i + 1);
       (function (i) {
         var button = this.buttons.add('circle_button', title, function () {
-          // link for the musicians pages
           var greenworks = require('./greenworks')
-          greenworks.activateGameOverlayToWebPage(musicList[i].site)
+          greenworks.activateGameOverlayToWebPage(musicList[i].site) // link for the musicians pages
         })
         button.w = 550
         button.graphics = null
