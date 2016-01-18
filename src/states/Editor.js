@@ -552,10 +552,10 @@ editor.prototype = {
                   this.checkPositions[c] = this.checkPositions[c + 1]
                   this.checkpoints[c] = this.checkpoints[c + 1]
                 }
-                this.obstacles = this.obstacles.slice(0, -1)
-                this.obsPositions = this.obsPositions.slice(0, -1)
-                if (this.selectedObs >= obsN) {
-                  this.obsDec()
+                this.checkpoints = this.checkpoints.slice(0, -1)
+                this.checkPositions = this.checkPositions.slice(0, -1)
+                if (this.selectedCheck >= checkN) {
+                  this.checkDec()
                 }
               } else if (val === this.values.start) {
 

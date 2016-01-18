@@ -1,21 +1,67 @@
 {
-    "main": "index.html",
-    "name": "curvatron",
-    "single-instance": true,
+    "app_name": "curvatron", 
+    "nodejs": true, 
+    "additional_trust_anchors": "", 
+    "inject-js-end": "", 
+    "node-remote": "", 
+    "keywords": [], 
+    "user-agent": "", 
     "window": {
-        "title": "Curvatron",
-        "width": 800,
-        "height": 600,
-        "toolbar": true
-    },
-    "version": "0.1.0",
-    "app_name": "curvatron",
-    "chromium-args": "--data-path='./saves/' --in-process-gpu --disable-transparency",
-    "scripts": {
-      "start": "nw"
-    },
+        "fullscreen": false, 
+        "kiosk_emulation": false, 
+        "min_height": 300, 
+        "resizable": true, 
+        "show": true, 
+        "always-on-top": false, 
+        "kiosk": false, 
+        "frame": true, 
+        "title": "Curvatron", 
+        "visible": true, 
+        "height": 600, 
+        "exe_icon": "", 
+        "width": 800, 
+        "as_desktop": false, 
+        "min_width": 400, 
+        "position": "", 
+        "show_in_taskbar": true, 
+        "mac_icon": "", 
+        "transparent": false, 
+        "toolbar": true, 
+        "icon": "huge.png"
+    }, 
+    "version": "0.1.0", 
+    "inject-js-start": "", 
+    "main": "index.html", 
+    "node-main": "", 
+    "webexe_settings": {
+        "linux-x32": false, 
+        "export_dir": "D:\\Desktop\\web2exe\\output", 
+        "windows-x64": true, 
+        "download_dir": "D:\\Desktop\\web2exe\\download", 
+        "nw_compression_level": 0, 
+        "mac-x32": false, 
+        "windows-x32": true, 
+        "mac-x64": false, 
+        "nw_version": "0.12.1", 
+        "force_download": false, 
+        "linux-x64": false
+    }, 
+    "description": "", 
     "dependencies": {
-      "nw": "0.12.3",
-      "node-twitter-api": "1.6.1"
-    }
+        "node-twitter-api": "1.6.1", 
+        "nw": "0.12.3"
+    }, 
+    "scripts": {
+        "start": "nw"
+    }, 
+    "webkit": {
+        "page-cache": false, 
+        "java": false, 
+        "plugin": false
+    }, 
+    "js-flags": "", 
+    "name": "curvatron", 
+    "single-instance": true, 
+    "snapshot": "", 
+    "chromium-args": "--data-path='./saves/' --in-process-gpu --disable-transparency"
 }
