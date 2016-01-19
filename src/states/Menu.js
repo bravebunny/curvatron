@@ -67,7 +67,7 @@ menu.prototype = {
     this.buttons.add('editor_button', 'custom levels', this.customLevels)
     this.buttons.add('settings_button', 'settings', this.settings)
     this.buttons.add('credits_button', 'credits', this.credits)
-    this.buttons.add('exit_button', 'exit', this.backPressed)
+    this.buttons.add('exit_button', 'exit', this.exit)
 
     this.buttons.create()
     this.buttons.select(0)
@@ -122,7 +122,7 @@ menu.prototype = {
     this.buttons.selectRelease()
   },
 
-  backPressed: function () {
+  exit: function () {
     window.close()
   }
 
