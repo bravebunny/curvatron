@@ -41,7 +41,6 @@ levelSelector.prototype = {
         this.getWorkshopLevels('Subscribed')
         break
       case 'adventure':
-        this.getAdventureLevels()
         if (this.hardMode) {
           this.mode = this.buttons.add('deaths-stats', 'hard mode', this.toggleMode)
           this.unlockType = 'unlocksHard'
@@ -49,6 +48,7 @@ levelSelector.prototype = {
           this.mode = this.buttons.add('normal_button', 'normal mode', this.toggleMode)
           this.unlockType = 'unlocks'
         }
+        this.getAdventureLevels()
         break
       case 'my levels':
         this.getWorkshopLevels('Published')
@@ -145,7 +145,9 @@ levelSelector.prototype = {
       this.containerY - 100,
       2 * w2,
       barHeight)
-    this.containerScrollBar.y = h2 * 2 - this.containerScrollBar.height
+    if (this.type === 'adventure') {
+      this.containerScrollBar.y = h2 * 2 - this.containerScrollBar.height
+    }
   },
 
   update: function () {
