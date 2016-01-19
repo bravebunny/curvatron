@@ -8,6 +8,7 @@ var levelSelector = function (game) {
   this.containerY = 0
   this.items = null
   this.type = false
+  this.hardMode = false
 }
 
 levelSelector.prototype = {
@@ -33,6 +34,8 @@ levelSelector.prototype = {
     this.buttons = new ButtonList(this, this.game)
     /* for (var i = 0; i < 200; i++) */
     this.buttons.add('back_button', 'back', this.backPressed)
+    if (this.hardMode) this.mode = this.buttons.add('deaths-stats', 'hard mode', this.toggleMode)
+    else this.mode = this.buttons.add('normal_button', 'normal mode', this.toggleMode)
 
     switch (this.type) {
       case 'workshop levels':
@@ -90,7 +93,8 @@ levelSelector.prototype = {
     if (unlocks === null) unlocks = 0
     else unlocks = parseInt(unlocks, 10)
     var fs = require('fs')
-    this.items = fs.readdirSync('assets/levels')
+    var dir = this.hardMode ? 'assets/levels/hard' : 'assets/levels'
+    this.items = fs.readdirSync(dir)
     for (var i = 0; i < this.items.length; i++) {
       var title = this.items[i].split('-')[1]
       if (!title) title = 'level ' + (i+1);
@@ -191,6 +195,11 @@ levelSelector.prototype = {
     var c = this.containerScrollBar
     c.y -= this.game.input.mouse.wheelDelta * 10
     c.input.checkBoundsRect()
+  },
+
+  toggleMode: function () {
+    this.hardMode = !this.hardMode
+    this.state.restart(true, false, this.type)
   },
 
   up: function () {
