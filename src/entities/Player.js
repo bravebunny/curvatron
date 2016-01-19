@@ -192,7 +192,7 @@ Player.prototype = {
               var curTrail = players[i].trailArray[j]
               if (curTrail && curTrail.x - collSize < xx && curTrail.x + collSize > xx &&
                 curTrail.y - collSize < yy && curTrail.y + collSize > yy) {
-                achievement('cannibal')
+                if (!this.finished) achievement('cannibal')
                 this.kill()
               }
             }
