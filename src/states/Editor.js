@@ -233,12 +233,12 @@ editor.prototype = {
     this.tb.obs.rotator.visible = false
     this.tb.obs.rotator.events.onInputOver.add(function (button) { this.showTooltip('rotating block', button) }.bind(this))
 
-    this.tb.obs.verticalDoor = this.game.add.button(1020, baseH - 550, 'vertical_button', this.verticalDoorTool, this)
+    this.tb.obs.verticalDoor = this.game.add.button(1020, baseH - 550, 'verticalDoor_button', this.verticalDoorTool, this)
     this.tb.obs.verticalDoor.anchor.set(0.5)
     this.tb.obs.verticalDoor.visible = false
     this.tb.obs.verticalDoor.events.onInputOver.add(function (button) { this.showTooltip('vertical door', button) }.bind(this))
 
-    this.tb.obs.horizontalDoor = this.game.add.button(1020, baseH - 700, 'horizontal_button', this.horizontalDoorTool, this)
+    this.tb.obs.horizontalDoor = this.game.add.button(1020, baseH - 700, 'horizontalDoor_button', this.horizontalDoorTool, this)
     this.tb.obs.horizontalDoor.anchor.set(0.5)
     this.tb.obs.horizontalDoor.visible = false
     this.tb.obs.horizontalDoor.events.onInputOver.add(function (button) { this.showTooltip('horizontal door', button) }.bind(this))
