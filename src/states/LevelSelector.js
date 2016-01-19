@@ -35,14 +35,6 @@ levelSelector.prototype = {
     this.buttons = new ButtonList(this, this.game)
     /* for (var i = 0; i < 200; i++) */
     this.buttons.add('back_button', 'back', this.backPressed)
-    if (this.hardMode) {
-      this.mode = this.buttons.add('deaths-stats', 'hard mode', this.toggleMode)
-      this.unlockType = 'unlocksHard'
-    }
-    else {
-      this.mode = this.buttons.add('normal_button', 'normal mode', this.toggleMode)
-      this.unlockType = 'unlocks'
-    }
 
     switch (this.type) {
       case 'workshop levels':
@@ -50,6 +42,13 @@ levelSelector.prototype = {
         break
       case 'adventure':
         this.getAdventureLevels()
+        if (this.hardMode) {
+          this.mode = this.buttons.add('deaths-stats', 'hard mode', this.toggleMode)
+          this.unlockType = 'unlocksHard'
+        } else {
+          this.mode = this.buttons.add('normal_button', 'normal mode', this.toggleMode)
+          this.unlockType = 'unlocks'
+        }
         break
       case 'my levels':
         this.getWorkshopLevels('Published')
@@ -179,7 +178,8 @@ levelSelector.prototype = {
   },
 
   playLocalLevel: function (i) {
-    var levelPath = 'assets/levels/' + this.items[i]
+    var dir = this.hardMode ? 'assets/levels/hard/' : 'assets/levels/'
+    var levelPath = dir + this.items[i]
     var mode = new Adventure(this.game, false, this.items)
     mode.index = i
     mode.unlockType = this.unlockType

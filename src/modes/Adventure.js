@@ -369,7 +369,8 @@ Adventure.prototype = {
     changeBGColor(this.game)
     this.index++
     this.restarting = false
-    this.level = 'assets/levels/' + this.items[this.index]
+    var dir = this.unlockType === 'unlocks' ? 'assets/levels/' : 'assets/levels/hard/'
+    this.level = dir + this.items[this.index]
     console.log(this.level)
     this.music.stop()
     this.music = null
