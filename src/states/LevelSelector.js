@@ -41,12 +41,14 @@ levelSelector.prototype = {
         this.getWorkshopLevels('Subscribed')
         break
       case 'adventure':
-        if (this.hardMode) {
-          this.mode = this.buttons.add('deaths-stats', 'hard mode', this.toggleMode)
-          this.unlockType = 'unlocksHard'
-        } else {
-          this.mode = this.buttons.add('normal_button', 'normal mode', this.toggleMode)
-          this.unlockType = 'unlocks'
+        if (parseInt(localStorage.getItem('unlocks'), 10) >= 29) {
+          if (this.hardMode) {
+            this.mode = this.buttons.add('deaths-stats', 'hard mode', this.toggleMode)
+            this.unlockType = 'unlocksHard'
+          } else {
+            this.mode = this.buttons.add('normal_button', 'normal mode', this.toggleMode)
+            this.unlockType = 'unlocks'
+          }
         }
         this.getAdventureLevels()
         break
@@ -119,7 +121,8 @@ levelSelector.prototype = {
     this.buttons.create()
     this.buttons.setScrolling(true)
     var auxUnlocks = parseInt(localStorage.getItem(this.unlockType), 10)
-    this.buttons.select(auxUnlocks + 2)
+    if (parseInt(localStorage.getItem('unlocks'), 10) >= 29) this.buttons.select(auxUnlocks + 2)
+    else this.buttons.select(auxUnlocks + 1)
 
     var barHeight = 2 * h2 - this.containerY + 100
     var draggyHeight = Math.min(barHeight * (7 / (this.buttons.length() + 1)), barHeight)
