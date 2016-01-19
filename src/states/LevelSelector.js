@@ -119,7 +119,7 @@ levelSelector.prototype = {
     this.buttons.create()
     this.buttons.setScrolling(true)
     var auxUnlocks = parseInt(localStorage.getItem(this.unlockType), 10)
-    this.buttons.select(auxUnlocks)
+    this.buttons.select(auxUnlocks + 2)
 
     var barHeight = 2 * h2 - this.containerY + 100
     var draggyHeight = Math.min(barHeight * (7 / (this.buttons.length() + 1)), barHeight)
