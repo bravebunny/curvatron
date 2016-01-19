@@ -70,7 +70,7 @@ gameMananger.prototype = {
     collectSound = this.add.audio('sfx_collect0')
     checkpointSound = this.add.audio('sfx_checkpoint')
 
-    this.music = null
+    if (!this.restarting) this.music = null
 
     changeColor = true
     if (!muteSoundEffects) startSound.play()
