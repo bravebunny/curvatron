@@ -102,6 +102,8 @@ preloadMenu.prototype = {
     this.game.load.image('horizontal_button', 'assets/sprites/gui/editor/horizontal.png')
     this.game.load.image('vertical_button', 'assets/sprites/gui/editor/vertical.png')
     this.game.load.image('rotator_button', 'assets/sprites/gui/editor/rotator.png')
+    this.game.load.image('horizontalDoor_button', 'assets/sprites/gui/editor/horizontalDoor.png')
+    this.game.load.image('verticalDoor_button', 'assets/sprites/gui/editor/verticalDoor.png')
 
     this.game.add.text(0, 0, 'fix', {font: '1px dosis'}) // hack to remove problems of load css fonts
   },
