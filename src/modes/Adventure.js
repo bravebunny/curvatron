@@ -19,6 +19,7 @@ var Adventure = function (game, testing, items) {
   this.index = null
   this.margin = 600
   this.workshopLevel = false
+  this.unlockType = 'unlocks'
 
   this.image = null
   this.albumText = null
@@ -334,11 +335,11 @@ Adventure.prototype = {
       manager.endGame()
       manager.twitterButton.enable()
       if (!this.file) {
-        var unlocks = localStorage.getItem('unlocks')
+        var unlocks = localStorage.getItem(this.unlockType)
         if (unlocks === null) unlocks = 0
         else unlocks = parseInt(unlocks, 10)
-        if (unlocks < this.index + 1) localStorage.setItem('unlocks', this.index + 1)
-        if (localStorage.getItem('unlocks') > this.index) manager.nextButton.enable()
+        if (unlocks < this.index + 1) localStorage.setItem(this.unlockType, this.index + 1)
+        if (localStorage.getItem(this.unlockType) > this.index) manager.nextButton.enable()
         if (this.index === 29) this.adventureEnd()
        }
     }

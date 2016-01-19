@@ -9,6 +9,7 @@ var levelSelector = function (game) {
   this.items = null
   this.type = false
   this.hardMode = false
+  this.unlockType = 'unlocks'
 }
 
 levelSelector.prototype = {
@@ -34,8 +35,14 @@ levelSelector.prototype = {
     this.buttons = new ButtonList(this, this.game)
     /* for (var i = 0; i < 200; i++) */
     this.buttons.add('back_button', 'back', this.backPressed)
-    if (this.hardMode) this.mode = this.buttons.add('deaths-stats', 'hard mode', this.toggleMode)
-    else this.mode = this.buttons.add('normal_button', 'normal mode', this.toggleMode)
+    if (this.hardMode) {
+      this.mode = this.buttons.add('deaths-stats', 'hard mode', this.toggleMode)
+      this.unlockType = 'unlocksHard'
+    }
+    else {
+      this.mode = this.buttons.add('normal_button', 'normal mode', this.toggleMode)
+      this.unlockType = 'unlocks'
+    }
 
     switch (this.type) {
       case 'workshop levels':
@@ -88,7 +95,7 @@ levelSelector.prototype = {
   },
 
   getAdventureLevels: function () {
-    var unlocks = localStorage.getItem('unlocks')
+    var unlocks = localStorage.getItem(this.unlockType)
     if (unlocks === null) unlocks = 0
     else unlocks = parseInt(unlocks, 10)
     var fs = require('fs')
@@ -112,7 +119,7 @@ levelSelector.prototype = {
   createButtons: function () {
     this.buttons.create()
     this.buttons.setScrolling(true)
-    var auxUnlocks = parseInt(localStorage.getItem('unlocks'), 10)
+    var auxUnlocks = parseInt(localStorage.getItem(this.unlockType), 10)
     this.buttons.select(auxUnlocks)
 
     var barHeight = 2 * h2 - this.containerY + 100
@@ -175,6 +182,7 @@ levelSelector.prototype = {
     var levelPath = 'assets/levels/' + this.items[i]
     var mode = new Adventure(this.game, false, this.items)
     mode.index = i
+    mode.unlockType = this.unlockType
     mode.setScreen()
     this.game.state.start('PreloadGame', true, false, mode, levelPath)
   },
