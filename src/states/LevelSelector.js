@@ -47,7 +47,6 @@ levelSelector.prototype = {
       case 'my levels':
         this.getWorkshopLevels('Published')
     }
-
     this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
   },
 
@@ -113,7 +112,8 @@ levelSelector.prototype = {
   createButtons: function () {
     this.buttons.create()
     this.buttons.setScrolling(true)
-    this.buttons.select(1)
+    var auxUnlocks = parseInt(localStorage.getItem('unlocks'), 10)
+    this.buttons.select(auxUnlocks + 1)
 
     var barHeight = 2 * h2 - this.containerY + 100
     var draggyHeight = Math.min(barHeight * (7 / (this.buttons.length() + 1)), barHeight)
@@ -139,6 +139,7 @@ levelSelector.prototype = {
       this.containerY - 100,
       2 * w2,
       barHeight)
+    this.containerScrollBar.y = h2 * 2 - this.containerScrollBar.height
   },
 
   update: function () {
