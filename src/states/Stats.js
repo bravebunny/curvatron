@@ -25,12 +25,16 @@ stats.prototype = {
     var ds = localStorage.getItem('deathScore')
     if (!ds) ds = 0
 
+    var mc = localStorage.getItem('mouseClicks')
+    if (!mc) mc = 0
+
     this.buttons = new ButtonList(this, this.game)
     this.buttons.add('back_button', 'back', this.backPressed)
     this.buttons.add('collecting_button', 'classic best: ' + hs)
     this.buttons.add('endless_button', 'evergrowing best: ' + ss)
     this.buttons.add('deaths-stats', 'total deaths: ' + ds)
     this.buttons.add('total-stats', 'total points: ' + bs)
+    this.buttons.add('total-clicks', 'total clicks: ' + mc)
 
     this.buttons.create()
     this.buttons.select(0)

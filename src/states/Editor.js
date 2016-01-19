@@ -498,7 +498,6 @@ editor.prototype = {
         this.prevCursorY = tileY
       }
 
-
       if (this.game.input.mousePointer.isDown && this.game.input.activePointer.button === Phaser.Mouse.LEFT_BUTTON) {
         this.mouseWasDown = true
         var line = new Phaser.Line(this.prevCursorX, this.prevCursorY, tileX, tileY)
@@ -507,7 +506,6 @@ editor.prototype = {
           line = new Phaser.Line(tileX, tileY, tileX, tileY)
         } 
         var linePoints = line.coordinatesOnLine()
-
 
         if (!shiftDown || this.prevCursorX === -1) {
           this.prevCursorX = tileX
@@ -966,14 +964,16 @@ editor.prototype = {
   auxExit: function () {
     if (this.uploadText.text !== 'uploading...') {
       this.exit = true
-      this.showDialog('all unsaved progress will be lost. exit?')
+      if (this.edited) this.showDialog('all unsaved progress will be lost. exit?')
+      else this.confirm()
     }
   },
 
   auxOpen: function () {
     if (this.uploadText.text !== 'uploading...') {
       this.open = true
-      this.showDialog('all unsaved progress will be lost. chose another project?')
+      if (this.edited) this.showDialog('all unsaved progress will be lost. chose another project?')
+      else this.confirm()
     }
   },
 
@@ -1006,6 +1006,7 @@ editor.prototype = {
   cancel: function () {
     this.game.input.keyboard.enabled = true
     if (this.uploadText.text !== 'uploading...') {
+      this.open = false
       this.uploadText.visible = false
       this.confirmButtons.hide()
       this.uploadButtons.hide()

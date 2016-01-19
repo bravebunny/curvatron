@@ -40,6 +40,7 @@ var Player = function (id, x, y, key, mode, game) {
   this.autoMode = false
   this.totalTime = 0
   this.keyUpVar = true
+  this.clicks = null
 }
 
 Player.prototype = {
@@ -98,7 +99,8 @@ Player.prototype = {
       }
     }
     this.showKey()
-  // this.moveRandom()
+    this.clicks = localStorage.getItem('mouseClicks')
+    // this.moveRandom()
   },
 
   update: function () {
@@ -299,6 +301,8 @@ Player.prototype = {
           this.showKeyTime = 2 + totalTime
         }
         if (!this.dead && !gameOver && !paused) {
+          this.clicks++
+          localStorage.setItem('mouseClicks', this.clicks)
           if (this.autoMode) console.log(this.totalTime)
           else this.inputTimes.push(this.totalTime)
           if (this.direction === 1) {

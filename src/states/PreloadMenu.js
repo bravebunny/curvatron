@@ -48,6 +48,7 @@ preloadMenu.prototype = {
     this.game.load.image('total-stats', 'assets/sprites/gui/stats/total-stats.png')
     this.game.load.image('aux-stat', 'assets/sprites/gui/stats/aux-stat.png')
     this.game.load.image('survScore-stat', 'assets/sprites/gui/stats/endless-stat.png')
+    this.game.load.image('total-clicks', 'assets/sprites/gui/stats/total-clicks.png')
 
     this.game.load.image('score', 'assets/sprites/gui/stats/score-general.png')
     this.game.load.image('pauseButton', 'assets/sprites/gui/hud/pause.png')
