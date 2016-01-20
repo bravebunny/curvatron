@@ -432,7 +432,8 @@ gameMananger.prototype = {
       if (!this.mode.levelComplete) {
         this.deathButtons.select(0)
         if (this.mode.index != null) {
-          this.shareText.setText('level ' + this.mode.index)
+          var title = this.mode.items[this.mode.index].split('-')[1]
+          this.shareText.setText('level ' + (this.mode.index + 1) + ': ' + title)
           this.shareText.visible = true
         }
       }
@@ -516,7 +517,8 @@ gameMananger.prototype = {
         this.pauseButtons.select(0)
 
         if (this.mode.index != null) {
-          this.shareText.setText('level ' + this.mode.index)
+          var title = this.mode.items[this.mode.index].split('-')[1]
+          this.shareText.setText('level ' + (this.mode.index + 1) + ': ' + title)
           this.shareText.visible = true
         }
       } else { // unpause
