@@ -18,8 +18,7 @@ customLevels.prototype = {
     this.buttons = new ButtonList(this, this.game)
 
     this.buttons.add('back_button', 'back', this.backPressed)
-    var workshop = this.buttons.add('resume_button', 'play community levels', this.workshop)
-    var getLevels = this.buttons.add('steam_button', 'download levels', this.workshopOverlay)
+    var workshop = this.buttons.add('resume_button', 'community levels', this.workshop)
     this.buttons.add('editor_button', 'create new level', this.editor)
     var myLevels = this.buttons.add('singleplayer_button', 'my published levels', this.myLevels)
     this.buttons.create()
@@ -32,14 +31,8 @@ customLevels.prototype = {
     } else this.buttons.select(1)
   },
 
-  workshopOverlay: function () {
-    var greenworks = require('./greenworks')
-    // greenworks.ugcShowOverlay()
-    greenworks.activateGameOverlayToWebPage('http://steamcommunity.com/workshop/browse/?appid=404700&browsesort=trend&section=readytouseitems')
-  },
-
   workshop: function () {
-    this.game.state.start('LevelSelector', true, false, 'workshop levels') // last argument makes the menu show workshop items
+    this.game.state.start('LevelSelector', true, false, 'community levels') // last argument makes the menu show workshop items
   },
 
   myLevels: function () {

@@ -16,7 +16,7 @@ levelSelector.prototype = {
   init: function (type) {
     this.type = type
     // possible type values:
-    // 'workshop levels'
+    // 'community levels'
     // 'adventure'
     // 'my levels'
   },
@@ -37,7 +37,8 @@ levelSelector.prototype = {
     this.buttons.add('back_button', 'back', this.backPressed)
 
     switch (this.type) {
-      case 'workshop levels':
+      case 'community levels':
+        this.buttons.add('steam_button', 'download new levels', this.workshopOverlay)
         this.getWorkshopLevels('Subscribed')
         break
       case 'adventure':
@@ -56,6 +57,17 @@ levelSelector.prototype = {
         this.getWorkshopLevels('Published')
     }
     this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
+
+    var greenworks = require('./greenworks')
+    greenworks.on('game-overlay-activated', function(is_active) {
+        if (!is_active) this.state.restart(true, false, 'community levels')
+    }.bind(this));
+  },
+
+  workshopOverlay: function () {
+    var greenworks = require('./greenworks')
+    // greenworks.ugcShowOverlay()
+    greenworks.activateGameOverlayToWebPage('http://steamcommunity.com/workshop/browse/?appid=404700&browsesort=trend&section=readytouseitems')
   },
 
   getWorkshopLevels: function (listType) {
@@ -197,7 +209,7 @@ levelSelector.prototype = {
 
   backPressed: function () {
     switch (this.type) {
-      case 'workshop levels':
+      case 'community levels':
       case 'my levels':
         this.game.state.start('CustomLevels')
         break
