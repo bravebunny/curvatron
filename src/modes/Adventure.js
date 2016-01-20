@@ -350,7 +350,8 @@ Adventure.prototype = {
     var manager = this.game.state.states['GameMananger']
     manager.deathButtons.hide()
     this.fadingOut = true
-    achievement('adventure_end')
+    if (this.unlockType === 'unlocks') achievement('adventure_end')
+    else achievement('adventure_hard')
     var overlay = this.game.add.sprite(0, 0, 'overlay')
     overlay.width = w2 * 2.1
     overlay.height = h2 * 2.1
