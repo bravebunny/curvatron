@@ -35,6 +35,7 @@ levelSelector.prototype = {
     this.buttons = new ButtonList(this, this.game)
     /* for (var i = 0; i < 200; i++) */
     this.buttons.add('back_button', 'back', this.backPressed)
+    var unlocks = parseInt(localStorage.getItem('unlocks'), 10)
 
     switch (this.type) {
       case 'community levels':
@@ -42,10 +43,11 @@ levelSelector.prototype = {
         this.getWorkshopLevels('Subscribed')
         break
       case 'adventure':
-        if (parseInt(localStorage.getItem('unlocks'), 10) >= 29) {
-          if (this.hardMode) {
+        if (unlocks >= 30) {
+          if (this.hardMode || !this.changingModes) {
             this.mode = this.buttons.add('deaths-stats', 'mode: hard', this.toggleMode)
             this.unlockType = 'unlocksHard'
+            this.hardMode = true
           } else {
             this.mode = this.buttons.add('normal_button', 'mode: normal', this.toggleMode)
             this.unlockType = 'unlocks'
