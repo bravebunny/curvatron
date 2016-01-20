@@ -8,6 +8,7 @@ var credits = function (game) {
   this.containerY = 0
   this.items = null
   this.type = false
+  this.disabledCount = 0
 }
 
 credits.prototype = {
@@ -27,7 +28,9 @@ credits.prototype = {
     this.containerY = 300
 
     this.buttons = new ButtonList(this, this.game)
-    this.buttons.add('back_button', 'back', this.backPressed)
+    this.buttons.distance = 80
+    var backButton = this.buttons.add('back_button', 'back', this.backPressed)
+    backButton.h = 70
 
     this.getCreditsText()
 
@@ -35,19 +38,79 @@ credits.prototype = {
   },
 
   getCreditsText: function () {
+    var creds = []
+
+    this.addDiv('GAME DEVELOPMENT AND DESIGN')
+    this.addCred('Ricardo Lopes', 'https://twitter.com/Raicuparta', creds)
+    this.addCred('Tiago Silva', 'https://twitter.com/JeronimoPie', creds)
+
+    this.addDiv('DEVELOPMENT ADVISING AND WISDOM PROVIDING')
+    this.addCred('Francisco Dias', 'https://twitter.com/xicombd', creds)
+
+    this.addDiv('SOUND EFFECTS')
+    this.addCred('StumpyStrust: snake movement', 'http://opengameart.org/content/ui-sounds', creds)
+    this.addCred('David Lin: everything else', 'http://google.com', creds)
+
+    this.addDiv('MUSIC')
     for (var i = 0; i < musicList.length; i++) {
       var title = musicList[i].title + " : " + musicList[i].author
       if (!title) title = 'level ' + (i + 1);
       (function (i) {
-        var button = this.buttons.add('circle_button', title, function () {
+        var button = this.buttons.add(null, title, function () {
           var greenworks = require('./greenworks')
           greenworks.activateGameOverlayToWebPage(musicList[i].site) // link for the musicians pages
         })
         button.w = 550
-        button.graphics = null
+        button.h = 70
+        button.textOnly = true
       }.bind(this))(i)
     }
+
+    this.addDiv('DANK ANDROID TRAILER')
+    this.addCred('Pedro Mota', 'https://www.youtube.com/user/pnamota/videos', creds)
+
+    this.addDiv('BETA TESTING')
+    this.addCred('B-Man99', 'http://chainreactionmusic.com/', creds)
+    this.addCred('LPChip', 'http://www.lpchip.nl/', creds)
+    this.addCred('Beatriz Santos', null, creds)
+    this.addCred('Francisco Dias', null, creds)
+    this.addCred('Pedro Mota', null, creds)
+    this.addCred('sergiocornaga', 'http://sergiocornaga.tumblr.com/', creds)
+    this.addCred('/r/gamedev', 'https://www.reddit.com/r/gamedev/comments/41ejwm/wanna_help_me_test_my_level_editor_steam_keys_to/', creds)
+    this.addCred('Stabyourself forum', 'http://forum.stabyourself.net/viewtopic.php?f=11&t=4886', creds)
+
+    this.addDiv('SNAKES USED FOR PHYSICS TESTS')
+    this.addCred('Solid', null, creds)
+    this.addCred('Nagini', null, creds)
+    this.addCred('Nokia 3310', null, creds)
+    this.addCred('Ekans', null, creds)
+
+    this.addDiv('No snakes were harmed in the development of this game')
+
+    for (var i = 0; i < creds.length; i++) {
+      creds[i].w = 550
+      creds[i].h = 70
+      creds[i].textOnly = true
+    }
+
     this.createButtons()
+  },
+
+  addDiv: function (name) {
+    var div = this.buttons.add(null, name)
+    div.w = 700
+    div.h = 70
+    div.disable()
+    this.disabledCount++
+  },
+
+  addCred: function (name, url, creds) {
+    creds.push(this.buttons.add(null, name, function () {
+      if (url) {
+        var greenworks = require('./greenworks')
+        greenworks.activateGameOverlayToWebPage(url)
+      }
+    }))
   },
 
   createButtons: function () {
@@ -83,7 +146,8 @@ credits.prototype = {
 
   update: function () {
     if (this.containerScrollBar) {
-      this.buttons.setY(300 + (this.containerY - 100 - this.containerScrollBar.y) / ((2 * h2 - this.containerY + 100) / ((this.buttons.length() + 1) * 125)))
+      var length = this.buttons.length() + 1 + this.disabledCount
+      this.buttons.setY(300 + (this.containerY - 100 - this.containerScrollBar.y) / ((2 * h2 - this.containerY + 100) / ((length) * this.buttons.distance)))
       this.buttons.update()
     }
   },
@@ -104,11 +168,12 @@ credits.prototype = {
     if (this.buttons.length() > 6) {
       if (this.buttons.selection < this.buttons.length() - 1) {
         if (this.containerScrollBar.y > this.containerY - 100) {
-          this.buttons.setY(this.buttons.y + 125)
-          this.containerScrollBar.y = -(this.buttons.y - 300) * ((2 * h2 - this.containerY + 100) / ((this.buttons.length() + 1) * 125)) + this.containerY - 100
+          this.buttons.setY(this.buttons.y + this.buttons.distance)
+          var length = this.buttons.length() + 1 + this.disabledCount
+          this.containerScrollBar.y = -(this.buttons.y - 300) * ((2 * h2 - this.containerY + 100) / ((length) * this.buttons.distance)) + this.containerY - 100
         }
       } else {
-        this.buttons.setY(this.buttons.y + 125 * this.buttons.length)
+        this.buttons.setY(this.buttons.y + this.buttons.distance * this.buttons.length)
         this.containerScrollBar.y = h2 * 2 - this.containerScrollBar.height
       }
     }
@@ -116,13 +181,14 @@ credits.prototype = {
 
   down: function () {
     if (this.buttons.length() > 6) {
-      if (this.buttons.selection < this.buttons.length() - 1) {
+      if (this.buttons.selection < this.buttons.length() - 1  + this.disabledCount) {
         if (this.containerScrollBar.y < h2 * 2 - this.containerScrollBar.height) {
-          this.buttons.setY(this.buttons.y - 125)
-          this.containerScrollBar.y = -(this.buttons.y - 300) * ((2 * h2 - this.containerY + 100) / ((this.buttons.length() + 1) * 125)) + this.containerY - 100
+          this.buttons.setY(this.buttons.y - this.buttons.distance)
+          var length = this.buttons.length() + 1 + this.disabledCount
+          this.containerScrollBar.y = -(this.buttons.y - 300) * ((2 * h2 - this.containerY + 100) / ((length) * this.buttons.distance)) + this.containerY - 100
         }
       } else {
-        this.buttons.setY(this.buttons.y - 125 * this.buttons.length)
+        this.buttons.setY(this.buttons.y - this.buttons.distance * this.buttons.length)
         this.containerScrollBar.y = this.containerY - 100
       }
     }

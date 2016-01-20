@@ -35,11 +35,13 @@ Button.prototype = {
 
     // Button background rectangle
     this.graphics = this.game.add.graphics(-w / 2, -h / 2)
-    this.graphics.lineStyle(0)
-    this.graphics.beginFill(0xFFFFFF, 1)
-    this.graphics.drawRect(0, 0, w, h)
-    this.graphics.drawCircle(0, h / 2, h)
-    this.graphics.drawCircle(w, h / 2, h)
+    if (!this.textOnly) {
+      this.graphics.lineStyle(0)
+      this.graphics.beginFill(0xFFFFFF, 1)
+      this.graphics.drawRect(0, 0, w, h)
+      this.graphics.drawCircle(0, h / 2, h)
+      this.graphics.drawCircle(w, h / 2, h)
+    } 
     this.graphics.endFill()
     // this.graphics.anchor.setTo(0.5,0.5)
     if (!this.enabled) this.disable()
@@ -51,7 +53,7 @@ Button.prototype = {
 
     // Button label
     this.label = this.game.add.text(offset, 0, this.text, {
-      fill: this.textColor,
+      fill: this.textOnly ? 'white' : this.textColor,
       font: '60px dosis'
     })
     this.label.anchor.setTo(0.5, 0.5)
@@ -139,6 +141,13 @@ Button.prototype = {
       this.label.scale.y = this.label.scale.x
     } else {
       this.label.scale.set(1)
+      this.label.height = this.h - 20
+      this.label.scale.x = this.label.scale.y
+    }
+
+    if (this.label.height > this.h - 20) {
+      this.label.height = this.h - 20
+      this.label.scale.x = this.label.scale.y
     }
   },
 
