@@ -101,7 +101,7 @@ levelSelector.prototype = {
     if (unlocks === null) unlocks = 0
     else unlocks = parseInt(unlocks, 10)
     var fs = require('fs')
-    var dir = this.hardMode ? 'assets/levels/hard' : 'assets/levels'
+    var dir = this.hardMode ? 'assets/levels/hard' : 'assets/levels/normal'
     this.items = fs.readdirSync(dir)
     for (var i = 0; i < this.items.length; i++) {
       var title = this.items[i].split('-')[1]
@@ -186,7 +186,7 @@ levelSelector.prototype = {
   },
 
   playLocalLevel: function (i) {
-    var dir = this.hardMode ? 'assets/levels/hard/' : 'assets/levels/'
+    var dir = this.hardMode ? 'assets/levels/hard/' : 'assets/levels/normal/'
     var levelPath = dir + this.items[i]
     var mode = new Adventure(this.game, false, this.items)
     mode.index = i
