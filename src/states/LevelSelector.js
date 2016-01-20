@@ -43,10 +43,10 @@ levelSelector.prototype = {
       case 'adventure':
         if (parseInt(localStorage.getItem('unlocks'), 10) >= 29) {
           if (this.hardMode) {
-            this.mode = this.buttons.add('deaths-stats', 'hard mode', this.toggleMode)
+            this.mode = this.buttons.add('deaths-stats', 'mode: hard', this.toggleMode)
             this.unlockType = 'unlocksHard'
           } else {
-            this.mode = this.buttons.add('normal_button', 'normal mode', this.toggleMode)
+            this.mode = this.buttons.add('normal_button', 'mode: normal', this.toggleMode)
             this.unlockType = 'unlocks'
           }
         }
@@ -148,9 +148,10 @@ levelSelector.prototype = {
       this.containerY - 100,
       2 * w2,
       barHeight)
-    if (this.type === 'adventure') {
+    if (this.type === 'adventure' && !this.changingModes) {
       this.containerScrollBar.y = h2 * 2 - this.containerScrollBar.height
     }
+    this.changingModes = false
   },
 
   update: function () {
@@ -213,6 +214,7 @@ levelSelector.prototype = {
 
   toggleMode: function () {
     this.hardMode = !this.hardMode
+    this.changingModes = true
     this.state.restart(true, false, this.type)
   },
 
