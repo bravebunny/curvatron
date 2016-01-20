@@ -76,9 +76,10 @@ levelSelector.prototype = {
         this.items = items
         for (var i = 0; i < items.length; i++) {
           (function (i) {
-            this.buttons.add('resume_button', items[i].title, function () {
+            var button = this.buttons.add('resume_button', items[i].title, function () {
               this.playWorkshopLevel(i)
             })
+            button.w = 550
           }.bind(this))(i)
         }
         this.loadingText.visible = false
@@ -110,6 +111,7 @@ levelSelector.prototype = {
           this.playLocalLevel(i)
         })
         button.number = i + 1
+        button.w = 550
         if (unlocks < 0) button.disable()
         unlocks--
       }.bind(this))(i)
