@@ -153,7 +153,8 @@ endCutscene.prototype = {
     var fadeOut = this.game.add.tween(overlay)
     fadeOut.to({alpha:1}, this.duration, Phaser.Easing.Linear.None).delay(this.delay*5)
     fadeOut.onComplete.add(function () {
-      this.state.start('Menu')
+      this.music.stop()
+      this.state.start('Credits', true, false, true)
     }, this)
     fadeOut.start()
   },

@@ -63,8 +63,8 @@ menu.prototype = {
 
     this.buttons.add('singleplayer_button', 'single player', this.singlePlayer)
     this.buttons.add('multiplayer_button', 'multiplayer', this.multiplayer)
-    this.buttons.add('stats_button', 'statistics', this.stats)
     this.buttons.add('editor_button', 'custom levels', this.customLevels)
+    this.buttons.add('stats_button', 'statistics', this.stats)
     this.buttons.add('settings_button', 'settings', this.settings)
     this.buttons.add('credits_button', 'credits', this.credits)
     this.buttons.add('exit_button', 'exit', this.exit)

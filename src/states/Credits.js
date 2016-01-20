@@ -4,20 +4,22 @@ var credits = function (game) {
   this.buttons = null
   this.containerScrollBar = null
   this.scrollMask = null
-  this.containerX = 0
-  this.containerY = 0
   this.items = null
-  this.type = false
   this.disabledCount = 0
+  this.autoScroll = true
+  this.scrollStep = 0
 }
 
 credits.prototype = {
-  init: function (type) {
-    this.type = type
+  init: function (autoScroll) {
+    if (autoScroll) this.autoScroll = autoScroll
   },
 
   create: function () {
-    this.title = this.game.add.text(w2, 100, 'credits', {
+    setScreenFixed(baseH * 1.5, baseH * 1.1, this.game)
+
+    var title = this.autoScroll ? 'curvatron' : 'credits'
+    this.title = this.game.add.text(w2, 100, title, {
       font: '150px dosis',
       fill: '#ffffff',
       align: 'center'
@@ -25,16 +27,34 @@ credits.prototype = {
     this.title.anchor.setTo(0.5, 0.5)
 
     this.containerX = 1.7 * w2
-    this.containerY = 300
+    this.containerY = this.autoScroll ? 0 : 200
+    this.listY = 300
 
     this.buttons = new ButtonList(this, this.game)
     this.buttons.distance = 80
-    var backButton = this.buttons.add('back_button', 'back', this.backPressed)
-    backButton.h = 70
+
+    if (!this.autoScroll) {
+      var backButton = this.buttons.add('back_button', 'back', this.backPressed)
+      backButton.h = 70
+    } else {
+      this.buttons.textColor = 'black'
+      this.game.time.events.add(Phaser.Timer.SECOND * 3, function () {
+        this.scrollStep = 0.3
+      }, this)
+    }
 
     this.getCreditsText()
-
     this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
+
+    if (this.autoScroll) {
+      var overlay = this.game.add.sprite(0, 0, 'overlay')
+      overlay.width = this.game.world.width
+      overlay.height = this.game.world.height
+      overlay.alpha = 1
+      var fadeIn = this.game.add.tween(overlay)
+      fadeIn.to({alpha:0}, 3000, Phaser.Easing.Linear.None)
+      fadeIn.start()
+    }
   },
 
   getCreditsText: function () {
@@ -116,7 +136,7 @@ credits.prototype = {
   createButtons: function () {
     this.buttons.create()
     this.buttons.setScrolling(true)
-    this.buttons.select(1)
+    if (!this.autoScroll) this.buttons.select(1)
 
     var barHeight = 2 * h2 - this.containerY + 100
     var draggyHeight = Math.min(barHeight * (7 / (musicList.length + 1)), barHeight)
@@ -124,11 +144,12 @@ credits.prototype = {
     this.containerScrollBar = this.game.add.sprite(this.containerX, this.containerY - 100, 'scroll_button')
     this.containerScrollBar.scale.set(50, draggyHeight)
     this.containerScrollBar.anchor.set(1, 0)
+    if (this.autoScroll) this.containerScrollBar.alpha = 0.5
     if (draggyHeight === barHeight) this.containerScrollBar.visible = false
 
     this.scrollMask = this.game.add.graphics(0, 0)
     this.scrollMask.beginFill(0xffffff)
-    this.scrollMask.drawRect(w2 * 0.5, this.containerY - 100, w2 * 2, h2 * 2)
+    this.scrollMask.drawRect(w2 * 0.5, this.containerY, w2 * 2, h2 * 2)
     this.scrollMask.endFill()
 
     this.buttons.setMask(this.scrollMask)
@@ -147,8 +168,14 @@ credits.prototype = {
   update: function () {
     if (this.containerScrollBar) {
       var length = this.buttons.length() + 1 + this.disabledCount
-      this.buttons.setY(300 + (this.containerY - 100 - this.containerScrollBar.y) / ((2 * h2 - this.containerY + 100) / ((length) * this.buttons.distance)))
+      this.buttons.setY(this.listY + (this.containerY - 100 - this.containerScrollBar.y) / ((2 * h2 - this.containerY + 100) / ((length) * this.buttons.distance)))
       this.buttons.update()
+      this.containerScrollBar.input.checkBoundsRect()
+      if (this.autoScroll) {
+        this.containerScrollBar.y += this.scrollStep
+        this.title.y = this.buttons.y - 150
+      }
+
     }
   },
 
@@ -160,12 +187,12 @@ credits.prototype = {
     var min = 200, max = 900
     var c = this.containerScrollBar
     c.y -= this.game.input.mouse.wheelDelta * 10
-    c.input.checkBoundsRect()
+    this.containerScrollBar.input.checkBoundsRect()
   },
 
   up: function () {
     this.buttons.selectUp()
-    if (this.buttons.length() > 6) {
+    if (this.buttons.length() > 6 && !this.autoScroll) {
       if (this.buttons.selection < this.buttons.length() - 1) {
         if (this.containerScrollBar.y > this.containerY - 100) {
           this.buttons.setY(this.buttons.y + this.buttons.distance)
@@ -180,7 +207,7 @@ credits.prototype = {
   },
 
   down: function () {
-    if (this.buttons.length() > 6) {
+    if (this.buttons.length() > 6 && !this.autoScroll) {
       if (this.buttons.selection < this.buttons.length() - 1  + this.disabledCount) {
         if (this.containerScrollBar.y < h2 * 2 - this.containerScrollBar.height) {
           this.buttons.setY(this.buttons.y - this.buttons.distance)
