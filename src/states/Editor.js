@@ -1007,6 +1007,8 @@ editor.prototype = {
     this.game.input.keyboard.enabled = true
     if (this.uploadText.text !== 'uploading...') {
       this.open = false
+      this.newPage = false
+      this.changeScale = false
       this.uploadText.visible = false
       this.confirmButtons.hide()
       this.uploadButtons.hide()
