@@ -97,7 +97,6 @@ levelSelector.prototype = {
         this.loadingText.visible = false
         if (this.items.length === 0) {
           if (this.type === 'my levels') this.buttons.add('editor_button', 'create new level', function () { this.game.state.start('Editor') })
-          else this.buttons.add('steam_button', 'get new levels', this.workshopOverlay)
         }
         this.createButtons()
       }.bind(this),
