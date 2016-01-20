@@ -288,10 +288,10 @@ gameMananger.prototype = {
   update: function () {
     checkGamepads(this.game)
     this.game.forceSingleUpdate = true
+    if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !muteMusic) {
+      menuMusic.fadeOut(2000)
+    }
     if (!paused) {
-      if (menuMusic && menuMusic.isPlaying && (menuMusic.volume === 1) && !gameOver && !muteMusic) {
-        menuMusic.fadeOut(2000)
-      }
       if (!countdown) {
         totalTime += this.game.time.physicsElapsed
       }

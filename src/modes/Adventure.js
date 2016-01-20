@@ -174,8 +174,10 @@ Adventure.prototype = {
       } 
       if (this.music && !muteMusic) {
         if (!this.music.isPlaying) {
-          this.music.play()
-          this.music.loop()
+          this.game.time.events.add(Phaser.Timer.SECOND* 2, function () {
+            this.music.play()
+            this.music.loop()
+          }, this)
         }
       } else if (this.music) this.music.stop()
     }
@@ -394,7 +396,7 @@ Adventure.prototype = {
     this.albumBg.height = 1.8 * h2
     this.albumBg.alpha = 0.4
 
-    this.nowPlaying = this.game.add.text(0, 0, 'Now Playing:', {
+    this.nowPlaying = this.game.add.text(0, 0, 'now playing:', {
       font: '70px dosis',
       fill: '#ffffff'})
     this.nowPlaying.scale.set(scale * 0.7)
