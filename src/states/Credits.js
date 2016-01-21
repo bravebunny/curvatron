@@ -6,7 +6,7 @@ var credits = function (game) {
   this.scrollMask = null
   this.items = null
   this.disabledCount = 0
-  this.autoScroll = true
+  this.autoScroll = false
   this.scrollStep = 0
 }
 

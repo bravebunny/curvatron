@@ -1,8 +1,6 @@
 /* global Phaser, changingKeys*/
 
-var preloadMenu = function (game) {
-  this.loadingBar = null
-}
+var preloadMenu = function (game) {}
 
 preloadMenu.prototype = {
   preload: function () {
@@ -126,7 +124,13 @@ preloadMenu.prototype = {
     this.game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE).onDown.add(this.keys.backPressed, this)
     this.game.input.resetLocked = true
 
-    this.game.state.start('Menu')
+
+    var bunny = this.game.add.sprite(w2, h2, 'bunny')
+    bunny.anchor.set(0.5)
+    this.game.time.events.add(Phaser.Timer.SECOND * 3, function () {
+      this.game.state.start('Menu')
+    }, this)
+    
   },
 
   keys: {

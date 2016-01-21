@@ -19,7 +19,7 @@ var boot = function (game) {
 
 boot.prototype = {
   preload: function () {
-    this.game.load.image('loading', 'assets/sprites/gui/loading.png')
+    this.game.load.image('bunny', 'assets/sprites/gui/bunny.png')
   },
 
   create: function () {
@@ -50,8 +50,8 @@ boot.prototype = {
     chosenColor = this.game.rnd.integerInRange(0, 3)
     colorHex = bgColors[chosenColor]
     colorHexDark = bgColorsDark[chosenColor]
-    document.body.style.background = colorHex
-    this.stage.backgroundColor = colorHex
+    document.body.style.background = '#45AA43'
+    this.stage.backgroundColor = '#45AA43'
 
     // Player colors
     // [red, blue, pink, green, brown, cyan, purple, yellow]
