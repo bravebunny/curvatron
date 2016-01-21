@@ -98,8 +98,7 @@ Adventure.prototype = {
     this.powerText.anchor.setTo(0.5, 0.5)
 
     var levelArray = this.game.cache.getText('level').split('')
-
-    this.scale = Math.round(Math.sqrt(levelArray.length / this.defaults.length))
+    this.scale = Math.round(Math.sqrt(levelArray.length / this.defaults.length) * 10) / 10
     this.mapW = this.defaults.mapW * this.scale
     this.mapH = this.defaults.mapH * this.scale
 
