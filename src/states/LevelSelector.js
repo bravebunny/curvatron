@@ -61,9 +61,9 @@ levelSelector.prototype = {
     this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
 
     var greenworks = require('./greenworks')
-    greenworks.on('game-overlay-activated', function(is_active) {
-        if (!is_active) this.state.restart(true, false, 'community levels')
-    }.bind(this));
+    greenworks.on('game-overlay-activated', function (is_active) {
+      if (!is_active) this.state.restart(true, false, 'community levels')
+    }.bind(this))
   },
 
   workshopOverlay: function () {
@@ -118,7 +118,7 @@ levelSelector.prototype = {
     this.items = fs.readdirSync(dir)
     for (var i = 0; i < this.items.length; i++) {
       var title = this.items[i].split('-')[1]
-      if (!title) title = 'level ' + (i+1);
+      if (!title) title = 'level ' + (i + 1);
       (function (i) {
         var button = this.buttons.add('circle_button', title, function () {
           this.playLocalLevel(i)
@@ -142,7 +142,7 @@ levelSelector.prototype = {
     var barHeight = 2 * h2 - this.containerY + 100
     var draggyHeight = Math.min(barHeight * (7 / (this.buttons.length() + 1)), barHeight)
 
-    this.containerScrollBar = this.game.add.sprite(this.containerX, this.containerY - 100, 'scroll_button')
+    this.containerScrollBar = this.game.add.sprite(this.containerX + 100, this.containerY - 100, 'scroll_button')
     this.containerScrollBar.scale.set(50, draggyHeight)
     this.containerScrollBar.anchor.set(1, 0)
     if (draggyHeight === barHeight) this.containerScrollBar.visible = false
@@ -223,7 +223,7 @@ levelSelector.prototype = {
   mouseWheel: function (event) {
     var min = 200, max = 900
     var c = this.containerScrollBar
-    c.y -= this.game.input.mouse.wheelDelta * 10
+    c.y -= this.game.input.mouse.wheelDelta * 20
     c.input.checkBoundsRect()
   },
 
