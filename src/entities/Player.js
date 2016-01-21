@@ -41,12 +41,14 @@ var Player = function (id, x, y, key, mode, game) {
   this.totalTime = 0
   this.keyUpVar = true
   this.clicks = null
+
+  this.usedCheckpointSize = false
 }
 
 Player.prototype = {
   create: function () {
     if (savedCheckpoint.savedSize) {
-      this.size = savedCheckpoint.savedSize
+      this.usedCheckpointSize = false
       this.x = savedCheckpoint.position.x
       this.y = savedCheckpoint.position.y
     }
@@ -301,6 +303,10 @@ Player.prototype = {
           this.showKeyTime = 2 + totalTime
         }
         if (!this.dead && !gameOver && !paused) {
+          if (savedCheckpoint.savedSize && !this.usedCheckpointSize) {
+            this.usedCheckpointSize = true
+            this.size = savedCheckpoint.savedSize
+          }
           this.clicks++
           localStorage.setItem('mouseClicks', this.clicks)
           if (this.autoMode) console.log(this.totalTime)

@@ -40,7 +40,9 @@ Checkpoint.prototype = {
     powerTween.onComplete.add(function () {
       power.destroy()
     }, this)
-    savedCheckpoint.savedSize = players[0].size
+    var size = savedCheckpoint.savedSize
+    if (!size) size = 0
+    if (players[0].size > size) savedCheckpoint.savedSize = players[0].size
     savedCheckpoint.position = {x: this.sprite.x, y: this.sprite.y}
     savedCheckpoint.score = this.mode.score
     if (!muteSoundEffects) checkpointSound.play()
