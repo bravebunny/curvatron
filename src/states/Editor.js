@@ -502,7 +502,6 @@ editor.prototype = {
         this.mouseWasDown = true
         var line = new Phaser.Line(this.prevCursorX, this.prevCursorY, tileX, tileY)
         if (shiftDown && this.prevCursorX === -1) {
-          console.log('is')
           line = new Phaser.Line(tileX, tileY, tileX, tileY)
         } 
         var linePoints = line.coordinatesOnLine()
@@ -737,7 +736,6 @@ editor.prototype = {
     var x = (tileX * this.tileSize + this.tileSize / 2) / this.scale
     var y = (tileY * this.tileSize + this.tileSize / 2) / this.scale
     var check = this.checkpoints[i]
-    console.log(check)
     if (check == null) {
       this.placedCheck = true
       check = this.game.add.sprite(x, y, 'editorCheckpoint')
@@ -1191,7 +1189,6 @@ editor.prototype = {
           this.createObstacle(x, y, val, obsCounter++)
           this.obsPositions.push(index)
         } else if (val > this.values.wall) { // load points
-          console.log('loaded point')
           this.pointPositions[val - 1] = index
           this.levelArray[index] = 2
           this.createPoint(x, y, val - 1)

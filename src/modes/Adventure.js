@@ -374,7 +374,6 @@ Adventure.prototype = {
     this.restarting = false
     var dir = this.unlockType === 'unlocks' ? 'assets/levels/normal' : 'assets/levels/hard/'
     this.level = dir + this.items[this.index]
-    console.log(this.level)
     this.music.stop()
     this.music = null
     this.game.cache.removeText('level')
