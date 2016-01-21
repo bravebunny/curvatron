@@ -186,7 +186,7 @@ credits.prototype = {
   mouseWheel: function (event) {
     var min = 200, max = 900
     var c = this.containerScrollBar
-    c.y -= this.game.input.mouse.wheelDelta * 10
+    c.y -= this.game.input.mouse.wheelDelta * 20
     this.containerScrollBar.input.checkBoundsRect()
   },
 
