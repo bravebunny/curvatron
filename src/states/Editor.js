@@ -78,7 +78,7 @@ editor.prototype = {
     this.placedPoint = false
     this.placedObs = false
     this.placedCheck = false
-    this.edited = false
+    if (!this.returning) this.edited = false
 
     // change outer background color
     document.body.style.background = colorHexDark
