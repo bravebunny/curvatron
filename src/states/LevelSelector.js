@@ -90,7 +90,15 @@ levelSelector.prototype = {
         this.items = items
         for (var i = 0; i < items.length; i++) {
           (function (i) {
-            var button = this.buttons.add('resume_button', items[i].title, function () {
+            var buttonType = 'starWhite_button'
+            if (!localStorage.getItem(items[i].publishedFileId) || localStorage.getItem(items[i].publishedFileId) == 'false') {
+              localStorage.setItem(items[i].publishedFileId, false)
+              buttonType = 'starWhite_button'
+            }
+            else if (localStorage.getItem(items[i].publishedFileId)) {
+              buttonType = 'starYellow_button'
+            }
+            var button = this.buttons.add(buttonType, items[i].title, function () {
               this.playWorkshopLevel(i)
             })
             button.w = 550

@@ -53,7 +53,7 @@ var Adventure = function (game, testing, items) {
     rotator: 34,
     horizontal: 33,
     vertical: 32,
-    horizontalDoor: 31, 
+    horizontalDoor: 31,
     verticalDoor: 30,
     checkpoint: 29,
     wall: 1,
@@ -331,6 +331,7 @@ Adventure.prototype = {
     else {
       if (!muteSoundEffects) finishSound.play()
       this.levelComplete = true
+      localStorage.setItem(this.file, true)
       var manager = this.game.state.states['GameMananger']
       manager.shareText.setText('level completed')
       manager.shareText.visible = true

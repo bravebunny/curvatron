@@ -262,7 +262,7 @@ gameMananger.prototype = {
     if (this.mode.testing) {
       this.deathButtons.add('back_button', 'editor', function () { this.state.start('Editor', true, false, true, this.mode.scale) })
     } else if (this.mode.file) {
-      this.deathButtons.add('exit_button', 'more levels', function () { this.state.start('LevelSelector', true, false, 'workshop levels') })
+      this.deathButtons.add('exit_button', 'more levels', function () { this.state.start('LevelSelector', true, false, 'community levels') })
     } else {
       this.deathButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
