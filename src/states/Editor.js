@@ -1140,7 +1140,6 @@ editor.prototype = {
             return retVal
           })
           var scale = Math.round(Math.sqrt(this.levelArray.length / this.defaults.length) * 10) / 10
-          console.log(scale)
           this.state.restart(true, false, true, scale)
         }.bind(this))
       }.bind(this))
