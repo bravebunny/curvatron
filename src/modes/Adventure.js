@@ -20,6 +20,7 @@ var Adventure = function (game, testing, items) {
   this.margin = 600
   this.workshopLevel = false
   this.unlockType = 'unlocks'
+  this.mylevels = false
 
   this.image = null
   this.albumText = null

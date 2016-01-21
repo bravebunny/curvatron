@@ -10,6 +10,7 @@ var levelSelector = function (game) {
   this.type = false
   this.hardMode = false
   this.unlockType = 'unlocks'
+  this.mylevels = false
 }
 
 levelSelector.prototype = {
@@ -39,6 +40,7 @@ levelSelector.prototype = {
 
     switch (this.type) {
       case 'community levels':
+        this.mylevels = false
         this.buttons.add('steam_button', 'download new levels', this.workshopOverlay)
         this.getWorkshopLevels('Subscribed')
         break
@@ -56,6 +58,7 @@ levelSelector.prototype = {
         this.getAdventureLevels()
         break
       case 'my levels':
+        this.mylevels = true
         this.getWorkshopLevels('Published')
     }
     this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this)
@@ -197,6 +200,7 @@ levelSelector.prototype = {
     mode.file = this.items[level].publishedFileId
     mode.title = this.items[level].title
     mode.workshopLevel = true
+    mode.mylevels = this.mylevels
     greenworks.ugcDownloadItem(file, 'saves', function () {
       mode.setScreen()
       this.game.state.start('PreloadGame', true, false, mode, 'saves/customLevel')
