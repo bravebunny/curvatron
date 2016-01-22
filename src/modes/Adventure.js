@@ -100,7 +100,6 @@ Adventure.prototype = {
 
     var levelArray = this.game.cache.getText('level').split('')
     this.scale = Math.round(Math.sqrt(levelArray.length / this.defaults.length) * 10) / 10
-    console.log(this.scale)
     this.mapW = this.defaults.mapW * this.scale
     this.mapH = this.defaults.mapH * this.scale
 
@@ -328,11 +327,9 @@ Adventure.prototype = {
       this.player.finished = false
       this.player.kill()
       this.game.state.start('Editor', true, false, true, this.scale)
-    }
-    else {
+    } else {
       if (!muteSoundEffects) finishSound.play()
       this.levelComplete = true
-      localStorage.setItem(this.file, true)
       var manager = this.game.state.states['GameMananger']
       manager.shareText.setText('level completed')
       manager.shareText.visible = true
@@ -345,6 +342,9 @@ Adventure.prototype = {
         if (unlocks < this.index + 1) localStorage.setItem(this.unlockType, this.index + 1)
         if (localStorage.getItem(this.unlockType) > this.index) manager.nextButton.enable()
         if (this.index === 29) this.adventureEnd()
+       } else {
+        localStorage.setItem(this.file, true)
+        if (!this.mylevels) achievement('community_level')
        }
     }
   },
