@@ -5,16 +5,15 @@ var musicList = [
   {file: 'decembrr', title: 'Decembrr', author: 'VIAES', site: 'soundcloud.com/viaes'},
   {file: 'esplanade', title: 'Esplanade', author: 'James Magnum', site: 'soundcloud.com/jamesmagnum'},
   {file: 'good_news', title: 'Good News', author: 'Inside People', site: 'insidepeoplemusic.com'},
-  {file: 'courting_for_puss', title: 'Courting for Puss', author: 'Adeus Senhor F.', site: 'soundcloud.com/adeussenhorf'},
   {file: 'tone_town', title: 'Tone Town', author: 'Ishan S', site: 'youtube.com/channel/UCxpjs6EPRocamfPmAQWw4iQ'},
   {file: 'maple', title: 'Maple', author: 'The Amplified Apple', site: 'soundcloud.com/theamplifiedapple'},
   {file: 'looking_for_pluto', title: 'Looking For Pluto', author: 'Benedikt', site: 'soundcloud.com/bendikhjaltason'},
   {file: 'afterglow', title: 'Afterglow', author: 'Maximus Quackhandle', site: 'soundcloud.com/maximusquackhandle'},
   {file: 'fever_dream', title: 'Fever Dream', author: 'Eli G and WPH', site: 'youtube.com/channel/UCB4FEwdbXwnwRPvBXY8BO7A'},
-  {file: 'whereknow', title: 'whereknow', author: 'Rick Sparks', site: 'ricksparks.bandcamp.com'},
+  {file: 'what_the_night_did_to_you', title: 'What The Night Did To You', author: 'Drug Dealer', site: 'soundcloud.com/everbeast'},
   {file: 'synthetic_popz', title: 'Synthetic Popz', author: 'O.J.B.', site: 'soundcloud.com/ljohnson91-1'},
   {file: 'preamble', title: 'Preamble (L)', author: 'Walrus Tales', site: 'walrustales.com'},
-  {file: 'suburban_lunacy', title: 'Suburban Lunacy', author: 'Ray AB', site: 'rayab.bandcamp.com'},
+  {file: 'something_to_live_for', title: 'Something To Live For', author: 'Chain Reaction', site: 'chainreactionmusic.com'},
   {file: 'delta', title: 'Delta', author: 'Face Of Bear', site: 'soundcloud.com/face-of-bear'},
   {file: 'pleasantville', title: 'Pleasantville', author: 'Hybrid Junkie', site: 'soundcloud.com/daftmau569'},
   {file: 'julias_song', title: 'Julia\'s Song', author: 'K-o-m-o-d-o', site: 'k-o-m-o-d-o.bandcamp.com'},
@@ -30,8 +29,13 @@ var musicList = [
   {file: 'short_journey_home', title: 'Short Journey Home', author: 'Slowowls', site: 'soundcloud.com/slowowls'},
   {file: 'firebox', title: 'Firebox', author: 'Signal-to-Noise', site: 'findyoursignal.com'},
   {file: 'orgone_vapors', title: 'orgone vapors', author: 'ephen', site: 'soundcloud.com/ephenager'},
-  {file: 'what_the_night_did_to_you', title: 'What The Night Did To You', author: 'Drug Dealer', site: 'soundcloud.com/everbeast'},
+
+  //below this line the songs won't play in the adventure mode but will play in other modes
   {file: 'inertia_jungle', title: 'Inertia Jungle', author: 'Attik-Attak', site: 'soundcloud.com/attik-attack-1'},
-  {file: 'trauma_and_torment_of_truth', title: 'Trauma and Torment of Truth', author: 'Kode of Bliss', site: 'soundcloud.com/kellybarnard'},
-  {file: 'geometry', title: 'Geometry', author: 'Tim Gerwing', site: 'lascaux21.com'}
+  {file: 'suburban_lunacy', title: 'Suburban Lunacy', author: 'Ray AB', site: 'rayab.bandcamp.com'},
+  {file: 'whereknow', title: 'whereknow', author: 'Rick Sparks', site: 'ricksparks.bandcamp.com'},
+  {file: 'courting_for_puss', title: 'Courting for Puss', author: 'Adeus Senhor F.', site: 'soundcloud.com/adeussenhorf'},
+  {file: 'geometry', title: 'Geometry', author: 'Tim Gerwing', site: 'lascaux21.com'},
+  {file: 'trauma_and_torment_of_truth', title: 'Trauma and Torment of Truth', author: 'Kode of Bliss', site: 'soundcloud.com/kellybarnard'}
+
 ]
