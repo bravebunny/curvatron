@@ -19,7 +19,7 @@ customLevels.prototype = {
 
     this.buttons.add('back_button', 'back', this.backPressed)
     var workshop = this.buttons.add('resume_button', 'community levels', this.workshop)
-    this.buttons.add('editor_button', 'create new level', this.editor)
+    this.buttons.add('editor_button', 'level editor', this.editor)
     var myLevels = this.buttons.add('singleplayer_button', 'my published levels', this.myLevels)
     this.buttons.create()
 

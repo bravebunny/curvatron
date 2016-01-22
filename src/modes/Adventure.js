@@ -43,7 +43,7 @@ var Adventure = function (game, testing, items) {
   this.tileSize = 32
 
   this.file = null
-  this.title = 'adventure'
+  this.title = null
 
   this.testing = testing
   this.restarting = false

@@ -125,8 +125,12 @@ gameMananger.prototype = {
     this.screenshot = new Screenshot(this.game)
     if (this.mode.name === 'creative') this.screenshot.tweetMessage = 'I made art with #Curvatron'
     else if (this.mode.name === 'adventure') {
-      var title = this.mode.title.substring(0, 100)
-      this.screenshot.tweetMessage = 'I beat the level \"' + title + '\" in #Curvatron !'
+      if (this.mode.title) {
+        var title = this.mode.title.substring(0, 100)
+        this.screenshot.tweetMessage = 'I beat the level \"' + title + '\" in #Curvatron !' 
+      } else {
+        this.screenshot.tweetMessage = 'I just beat level ' + (this.mode.index + 1) + ' in #Curvatron !'
+      }
     } else {
       this.screenshot.tweetMessage = 'Can you beat my score in the ' + this.mode.name + ' mode of #Curvatron ?'
     }
@@ -255,7 +259,7 @@ gameMananger.prototype = {
       if (unlocks <= this.mode.index) this.nextButton.disable()
     }
     if (this.mode.getScore) {
-      if (this.mode.file) this.twitterButton = this.deathButtons.add('twitter_button', 'share', this.share)
+      if (this.mode.name === 'adventure') this.twitterButton = this.deathButtons.add('twitter_button', 'share', this.share)
       else this.twitterButton = this.deathButtons.add('twitter_button', 'share score', this.share)
       this.deathButtons.add('screenshot_button', 'save picture', this.screenshot.save.bind(this.screenshot))
     }
