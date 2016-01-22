@@ -360,6 +360,7 @@ this.nextLevel()
     overlay.width = w2 * 2.1
     overlay.height = h2 * 2.1
     overlay.alpha = 0
+    overlay.fixedToCamera = true
     var fadeOut = this.game.add.tween(overlay)
     fadeOut.to({alpha:1}, 2000, Phaser.Easing.Linear.None).delay(1000)
     fadeOut.onComplete.add(function () {
