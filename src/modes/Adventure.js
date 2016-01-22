@@ -261,7 +261,6 @@ Adventure.prototype = {
 
   collect: function (player, power) {
     this.score++
-this.nextLevel()
     if (this.score >= this.pointPositions.length) {
       this.player.finished = true
       this.game.time.events.add(Phaser.Timer.SECOND * 0.1, function () {
