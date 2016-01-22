@@ -4,13 +4,25 @@ var endCutscene = function (game) {
   this.text = []
   this.delay = 1000
   this.duration = 3000
+  this.hard = false
+  this.textLines = []
 }
 
 endCutscene.prototype = {
+  init: function (hard) {
+    if (hard) this.hard = true
+  },
+
   preload: function () {
-    this.game.load.image('end1', 'assets/sprites/game/singleplayer/adventure/end1.jpg')
-    this.game.load.image('end2', 'assets/sprites/game/singleplayer/adventure/end2.jpg')
-    this.game.load.image('end3', 'assets/sprites/game/singleplayer/adventure/end3.jpg')
+    if (this.hard) {
+      this.game.load.image('end1', 'assets/sprites/game/singleplayer/adventure/end1-hard.jpg')
+      this.game.load.image('end2', 'assets/sprites/game/singleplayer/adventure/end2-hard.jpg')
+      this.game.load.image('end3', 'assets/sprites/game/singleplayer/adventure/end3-hard.jpg')
+    } else {    
+      this.game.load.image('end1', 'assets/sprites/game/singleplayer/adventure/end1.jpg')
+      this.game.load.image('end2', 'assets/sprites/game/singleplayer/adventure/end2.jpg')
+      this.game.load.image('end3', 'assets/sprites/game/singleplayer/adventure/end3.jpg')
+    }
   },
 
   create: function () {
@@ -23,11 +35,45 @@ endCutscene.prototype = {
     this.pics[2] = this.game.add.sprite(0, 0, 'end3')
     this.pics[2].alpha = 0
 
+    if (this.hard) {
+      this.textLines = [
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA',
+        'AAAAAAAAAAAA'
+      ]
+    } else {
+      this.textLines = [
+        'After collecting all the point pellets, the snake moved to New Zealand.',
+        'It dreamed of getting a law degree there and becoming a lawyer.',
+        'But life doesn\'t always work out the way we want it to...',
+        'The snake met the love of its life, Bob, and they got married.',
+        'They had a daughter, and the snake had to put the law degree on hold.',
+        'But one day Bob left with a curvier snake, and never came back.',
+        'Now, the snake supports her child by working as a cashier at a local grocery store.',
+        'Some times, she still thinks about her old days as a point pellet collector...',
+        '| You can\'t tackle all your problems straight on.',
+        '| Some times, you have to curve your way around them.',
+        '- Albert Einstein',
+        '| You have unlocked the Hard Mode levels',
+        '- Mahatma Gandhi'
+      ]
+    }
+
     var tween = this.game.add.tween(this.pics[0])
     tween.to({alpha:1}, this.duration, Phaser.Easing.Linear.None).delay(this.delay)
     tween.onComplete.add(function () {
       this.addText(100, 100, this.next1,
-        'After collecting all the point pellets, the snake moved to New Zealand.')
+        this.textLines[0])
     }, this)
     tween.start()
 
@@ -66,13 +112,11 @@ endCutscene.prototype = {
   },
 
   next1: function () {
-    this.addText(100, 200, this.next2,
-      'It dreamed of getting a law degree there and becoming a lawyer.')
+    this.addText(100, 200, this.next2, this.textLines[1])
   },
 
   next2: function () {
-    this.addText(100, 300, this.next3,
-      'But life doesn\'t always work out the way we want it to...')
+    this.addText(100, 300, this.next3,this.textLines[2])
   },
 
   next3: function () {
@@ -80,20 +124,17 @@ endCutscene.prototype = {
     var tween = this.game.add.tween(this.pics[1])
     tween.to({alpha:1}, this.duration, Phaser.Easing.Linear.None).delay(this.delay*3)
     tween.onComplete.add(function () {
-      this.addText(100, 100, this.next4,
-        'The snake met the love of its life, Bob, and they got married.')
+      this.addText(100, 100, this.next4, this.textLines[3])
     }, this)
     tween.start()
   },
 
   next4: function () {
-    this.addText(100, 200, this.next5,
-      'They had a daughter, and the snake had to put the law degree on hold.')
+    this.addText(100, 200, this.next5, this.textLines[4])
   },
 
   next5: function () {
-    this.addText(100, 300, this.next6,
-      'But one day Bob left with a curvier snake, and never came back.')
+    this.addText(100, 300, this.next6, this.textLines[5])
   },
 
   next6: function () {
@@ -101,15 +142,13 @@ endCutscene.prototype = {
     var tween = this.game.add.tween(this.pics[2])
     tween.to({alpha:1}, this.duration, Phaser.Easing.Linear.None).delay(this.delay*3)
     tween.onComplete.add(function () {
-      this.addText(100, 100, this.next7,
-        'Now, the snake supports her child by working as a cashier at a local grocery store.')
+      this.addText(100, 100, this.next7, this.textLines[6])
     }, this)
     tween.start()
   },
 
   next7: function () {
-    this.addText(100, 200, this.next8,
-      'Some times, she still thinks about her old days as a point pellet collector...')
+    this.addText(100, 200, this.next8, this.textLines[7])
   },
 
   next8: function () {
@@ -120,30 +159,25 @@ endCutscene.prototype = {
     var fadeOut = this.game.add.tween(overlay)
     fadeOut.to({alpha:1}, this.duration, Phaser.Easing.Linear.None).delay(this.delay*3)
     fadeOut.onComplete.add(function () {
-      this.addText(100, 100, this.next9,
-        '| You can\'t tackle all your problems straight on.')
+      this.addText(100, 100, this.next9, this.textLines[8])
     }, this)
     fadeOut.start()
   },
 
   next9: function () {
-    this.addText(100, 150, this.next10,
-      '| Some times, you have to curve your way around them.')
+    this.addText(100, 150, this.next10, this.textLines[9])
   },
 
   next10: function () {
-    this.addText(100, 225, this.next11,
-      '- Albert Einstein')
+    this.addText(100, 225, this.next11, this.textLines[10])
   },
 
   next11: function () {
-    this.addText(100, 400, this.next12,
-      '| You have unlocked the Hard Mode levels')
+    this.addText(100, 400, this.next12, this.textLines[11])
   },
 
   next12: function () {
-    this.addText(100, 475, this.next13,
-      '- Mahatma Gandhi')
+    this.addText(100, 475, this.next13, this.textLines[12])
   },
 
   next13: function () {
