@@ -25,7 +25,6 @@ customLevels.prototype = {
 
     if (nonSteam) {
       workshop.disable()
-      getLevels.disable()
       myLevels.disable()
       this.buttons.select(2)
     } else this.buttons.select(1)
