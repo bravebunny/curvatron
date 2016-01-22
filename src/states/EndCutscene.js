@@ -45,6 +45,9 @@ endCutscene.prototype = {
       fill: '#ffffff',
       align: 'left',
     })
+    var maxWidth = this.world.width * 0.75
+    if (text.width > maxWidth) text.width = maxWidth
+    text.scale.y = text.scale.x
     text.setShadow(-3, 3, 'rgba(0,0,0,1)', 10)
     text.stroke = '#000000';
     text.strokeThickness = 1;
