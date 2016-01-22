@@ -4,7 +4,7 @@ var Endless = function (game) {
   this.sp = true
   this.game = game
   this.player = null
-  this.name = 'endless'
+  this.name = 'evergrowing'
 }
 
 Endless.prototype = {

@@ -213,8 +213,8 @@ gameMananger.prototype = {
     this.shareButtons.centerVertically()
     this.shareButtons.hide()
 
-    this.shareText = this.add.text(w2, 150, '', {
-      font: '80px dosis',
+    this.shareText = this.add.text(w2, 50, '', {
+      font: '60px dosis',
       fill: '#ffffff',
       align: 'center'
     })
@@ -271,7 +271,7 @@ gameMananger.prototype = {
     }
 
     this.deathButtons.textColor = colorHexDark
-    this.deathButtons.centerVertically()
+    this.deathButtons.setY(200)
     this.deathButtons.create()
     if (this.mode.name === 'adventure') this.twitterButton.disable()
     this.deathButtons.hide()

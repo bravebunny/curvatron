@@ -12,7 +12,7 @@ var Normal = function (game) {
   this.cellSize = 64
   this.countPoints = true
   this.powerText = null
-  this.name = 'normal'
+  this.name = 'classic'
   this.allShrinksAchiev = 0
 }
 
