@@ -160,23 +160,28 @@ Player.prototype = {
 
       // make the last eaten point follow the player
       if (this.eatenPoint !== null) {
-        if (!this.finished) {
-          var point = this.eatenPoint
-          var x = lerp(xx, point.x, 0.85)
-          var y = lerp(yy, point.y, 0.85)
-          this.eatenPoint.position.setTo(x, y) 
-          if (this.game.physics.arcade.distanceBetween(this.eatenPoint, this.sprite) <= 1) {
-            this.eatenPoint = null
-          }
-        } else this.eatenPoint.angle += 2
+        var point = this.eatenPoint
+        var x = lerp(xx, point.x, 0.85)
+        var y = lerp(yy, point.y, 0.85)
+        this.eatenPoint.position.setTo(x, y) 
+        if (this.mode.powerText && this.finished) this.mode.powerText.position.setTo(x, y)
+        if (!this.finished && this.game.physics.arcade.distanceBetween(this.eatenPoint, this.sprite) <= 1) {
+          this.eatenPoint = null
+        }
+        if (this.finished) this.eatenPoint.angle += 2
       }
 
       xx = Math.cos(this.sprite.rotation) * 18 * scale + this.sprite.x
       yy = Math.sin(this.sprite.rotation) * 18 * scale + this.sprite.y
 
       // player movement
-      this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300 * this.speed * scale, this.sprite.body.velocity)
-      this.sprite.body.angularVelocity = this.direction * 200 * this.angularVelocity * this.speed
+      if (!this.finished) {
+        this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300 * this.speed * scale, this.sprite.body.velocity)
+        this.sprite.body.angularVelocity = this.direction * 200 * this.angularVelocity * this.speed
+      } else {
+        this.sprite.body.velocity.set(0)
+        this.sprite.body.angularVelocity = 0
+      }
       this.frameCount = (this.frameCount + 1) % 1 / (this.speed * scale)
 
       if (!this.dead) {
