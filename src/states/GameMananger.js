@@ -276,8 +276,11 @@ gameMananger.prototype = {
 
     this.deathButtons.textColor = colorHexDark
     this.deathButtons.setY(200)
+    if (this.mode.name === 'adventure') {
+      this.twitterButton.disable()
+      this.deathButtons.centerVertically()
+    }
     this.deathButtons.create()
-    if (this.mode.name === 'adventure') this.twitterButton.disable()
     this.deathButtons.hide()
 
     if (!this.mode.sp) {
