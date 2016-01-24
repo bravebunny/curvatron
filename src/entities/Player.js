@@ -159,15 +159,16 @@ Player.prototype = {
       var yy = Math.sin(this.sprite.rotation) * 30 * scale + this.sprite.y
 
       // make the last eaten point follow the player
-      if (this.eatenPoint !== null && !this.finished) {
-        var point = this.eatenPoint
-        var x = lerp(xx, point.x, 0.85)
-        var y = lerp(yy, point.y, 0.85)
-        this.eatenPoint.position.setTo(x, y)
-
-        if (this.game.physics.arcade.distanceBetween(this.eatenPoint, this.sprite) <= 1) {
-          this.eatenPoint = null
-        }
+      if (this.eatenPoint !== null) {
+        if (!this.finished) {
+          var point = this.eatenPoint
+          var x = lerp(xx, point.x, 0.85)
+          var y = lerp(yy, point.y, 0.85)
+          this.eatenPoint.position.setTo(x, y) 
+          if (this.game.physics.arcade.distanceBetween(this.eatenPoint, this.sprite) <= 1) {
+            this.eatenPoint = null
+          }
+        } else this.eatenPoint.angle += 2
       }
 
       xx = Math.cos(this.sprite.rotation) * 18 * scale + this.sprite.x
@@ -228,6 +229,7 @@ Player.prototype = {
       if (this.trailArray.length >= this.size && this.frameCount === 0 && this.trailArray[0] || this.dead || this.finished) {
         if (this.mode.erasesTrail() || this.dead) {
           var nRemove = 1
+          if (this.finished) nRemove = 4
           if (this.shrink) {
             if (this.trailArray.length <= this.size) {
               this.shrink = false
@@ -385,18 +387,23 @@ Player.prototype = {
 
       this.eatenPoint = power
       var scaleTo = 0
-      var duration = 300
+      var duration = 200
+      var tween = Phaser.Easing.Linear.None
       if (this.finished) {
         scaleTo = 1.5
-        duration = 100
+        duration = 1000
+        tween = Phaser.Easing.Elastic.Out
       }
 
       // this.game.add.tween(power).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true)
-      var powerTween = this.game.add.tween(power.scale).to({x: scaleTo, y: scaleTo}, duration, Phaser.Easing.Linear.None, true)
+      var powerTween = this.game.add.tween(power.scale).to({x: scaleTo, y: scaleTo}, duration, tween, true)
       powerTween.onComplete.add(function () {
         if (!this.finished) {
           power.destroy()
           this.collectSemaphore = 0
+        } else {
+          var t = this.game.add.tween(power.scale)
+          t.to({x: 2, y: 2}, 300, Phaser.Easing.Linear.None, true)
         }
       }, this)
     }
