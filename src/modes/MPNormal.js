@@ -90,8 +90,10 @@ MPNormal.prototype = {
   },
 
   createPower: function () {
-    var powerup = new PowerUp(this.game, 'pointMP', this)
-    powerup.create()
+    if (!countdown) {
+      var powerup = new PowerUp(this.game, 'pointMP', this)
+      powerup.create()
+    }
   },
 
   endGame: function (bottomY) {
