@@ -1,6 +1,6 @@
 var musicList = [
   {file: 'je_taime_tu_me_manques', title: 'je t\'aime, tu me manques', author: 'unnq', site: 'soundcloud.com/unnq'},
-  {file: 'lpchip', title: 'LPchip', author: 'LPchip', site: 'lpchip.nl'},
+  {file: 'lpchip', title: 'Curvature', author: 'LPchip', site: 'lpchip.nl'},
   {file: 'maple', title: 'Maple', author: 'The Amplified Apple', site: 'soundcloud.com/theamplifiedapple'},
   {file: 'decembrr', title: 'Decembrr', author: 'VIAES', site: 'soundcloud.com/viaes'},
   {file: 'esplanade', title: 'Esplanade', author: 'James Magnum', site: 'soundcloud.com/jamesmagnum'},
