@@ -68,8 +68,8 @@ credits.prototype = {
     this.addCred('Francisco Dias', 'https://twitter.com/xicombd', creds)
 
     this.addDiv('SOUND EFFECTS')
+    this.addCred('David Lin: almost everything', 'http://www.davidlinaudio.com/', creds)
     this.addCred('StumpyStrust: snake movement', 'http://opengameart.org/content/ui-sounds', creds)
-    this.addCred('David Lin: everything else', 'http://google.com', creds)
 
     this.addDiv('MUSIC')
     for (var i = 0; i < musicList.length; i++) {
@@ -91,19 +91,19 @@ credits.prototype = {
 
     this.addDiv('BETA TESTING')
     this.addCred('B-Man99', 'http://chainreactionmusic.com/', creds)
-    this.addCred('LPChip', 'http://www.lpchip.nl/', creds)
     this.addCred('Beatriz Santos', null, creds)
     this.addCred('Francisco Dias', null, creds)
+    this.addCred('LPChip', 'http://www.lpchip.nl/', creds)
     this.addCred('Pedro Mota', null, creds)
-    this.addCred('sergiocornaga', 'http://sergiocornaga.tumblr.com/', creds)
     this.addCred('/r/gamedev', 'https://www.reddit.com/r/gamedev/comments/41ejwm/wanna_help_me_test_my_level_editor_steam_keys_to/', creds)
+    this.addCred('sergiocornaga', 'http://sergiocornaga.tumblr.com/', creds)
     this.addCred('Stabyourself forum', 'http://forum.stabyourself.net/viewtopic.php?f=11&t=4886', creds)
 
     this.addDiv('SNAKES USED FOR PHYSICS TESTS')
-    this.addCred('Solid', null, creds)
+    this.addCred('Ekans', null, creds)
     this.addCred('Nagini', null, creds)
     this.addCred('Nokia 3310', null, creds)
-    this.addCred('Ekans', null, creds)
+    this.addCred('Solid', null, creds)
 
     this.addDiv('No snakes were harmed in the development of this game')
 
