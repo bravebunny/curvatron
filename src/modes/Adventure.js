@@ -364,7 +364,8 @@ Adventure.prototype = {
     fadeOut.to({alpha:1}, 2000, Phaser.Easing.Linear.None).delay(1000)
     fadeOut.onComplete.add(function () {
       game.stage.backgroundColor = '#000'
-      this.game.state.start('EndCutscene')
+      var hard = this.unlockType === 'unlocksHard'
+      this.game.state.start('EndCutscene', true, false, hard)
     }, this)
     fadeOut.start()
   },

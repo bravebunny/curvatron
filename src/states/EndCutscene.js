@@ -37,24 +37,24 @@ endCutscene.prototype = {
 
     if (this.hard) {
       this.textLines = [
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA',
-        'AAAAAAAAAAAA'
+        'The snake went to a concert to have fun after her adventure.',
+        'A friend offered some point pellets and she couldn\'t resist.',
+        'But these were stronger than what she was used to...',
+        'The snake ended up passing out on a dirty alleyway.',
+        'When she was found, it was already too late.',
+        'She had overdosed on the point pellets.',
+        'Nobody came to the funeral.',
+        'The snake was quickly forgotten.',
+        '| I doubt anyone ever got this far.',
+        '| But congrats if you did.',
+        '- Bob Marley',
+        '| If we evolved from snakes, why do we still have snakes?',
+        '- Charles Darwin'
       ]
     } else {
       this.textLines = [
         'After collecting all the point pellets, the snake moved to New Zealand.',
-        'It dreamed of getting a law degree there and becoming a lawyer.',
+        'She dreamed of getting a law degree there and becoming a lawyer.',
         'But life doesn\'t always work out the way we want it to...',
         'The snake met the love of its life, Bob, and they got married.',
         'They had a daughter, and the snake had to put the law degree on hold.',
@@ -78,7 +78,8 @@ endCutscene.prototype = {
     tween.start()
 
     if (!muteMusic) {
-      this.music = new buzz.sound('assets/music/soundtrack/geometry.ogg')
+      var musicFile = this.hard ? 'inertia_jungle.ogg' : 'geometry.ogg'
+      this.music = new buzz.sound('assets/music/soundtrack/' + musicFile)
       this.music.play().fadeIn()
     }
 

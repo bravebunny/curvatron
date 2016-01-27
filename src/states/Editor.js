@@ -970,7 +970,7 @@ editor.prototype = {
   auxOpen: function () {
     if (this.uploadText.text !== 'uploading...') {
       this.open = true
-      if (this.edited) this.showDialog('all unsaved progress will be lost. chose another project?')
+      if (this.edited) this.showDialog('all unsaved progress will be lost. clear screen?')
       else this.confirm()
     }
   },
