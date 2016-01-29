@@ -256,7 +256,7 @@ gameMananger.prototype = {
       var unlocks = localStorage.getItem('unlocks')
       if (unlocks === null) unlocks = 0
       else unlocks = parseInt(unlocks, 10)
-      if (unlocks <= this.mode.index) this.nextButton.disable()
+      if (unlocks <= this.mode.index || this.mode.index === 29) this.nextButton.disable()
     }
     if (this.mode.getScore) {
       if (this.mode.name === 'adventure') this.twitterButton = this.deathButtons.add('twitter_button', 'share', this.share)
