@@ -253,7 +253,7 @@ gameMananger.prototype = {
 
     if (this.mode.items) {
       this.nextButton = this.deathButtons.add('resume_button', 'next level', this.mode.playNextLevel.bind(this.mode))
-      var unlocks = localStorage.getItem('unlocks')
+      var unlocks = localStorage.getItem(this.mode.unlockType)
       if (unlocks === null) unlocks = 0
       else unlocks = parseInt(unlocks, 10)
       if (unlocks <= this.mode.index || this.mode.index === 29) this.nextButton.disable()
