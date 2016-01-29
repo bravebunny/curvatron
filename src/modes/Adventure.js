@@ -161,7 +161,7 @@ Adventure.prototype = {
     this.finishButtons.add('restart_button', 'restart', this.backPressed)
     this.finishButtons.add('steam_button', 'workshop page', this.showWorkshop)
     this.finishButtons.create()
-    this.finishButtons.centerVertically()
+    this.finishButtons.setY(200)
     this.finishButtons.hide()
 
     if (!this.testing) {
