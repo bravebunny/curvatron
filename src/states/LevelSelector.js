@@ -147,6 +147,7 @@ levelSelector.prototype = {
     this.buttons.create()
     this.buttons.setScrolling(true)
     var auxUnlocks = parseInt(localStorage.getItem(this.unlockType), 10)
+    if (isNaN(auxUnlocks)) auxUnlocks = 0
     if (parseInt(localStorage.getItem('unlocks'), 10) > 29) this.buttons.select(auxUnlocks + 2)
     else this.buttons.select(auxUnlocks + 1)
 
