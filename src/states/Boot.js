@@ -15,6 +15,7 @@ var boot = function (game) {
   firstTime = true
   scale = 1
   changingKeys = false
+  controllersSet = false
 }
 
 boot.prototype = {

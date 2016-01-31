@@ -54,20 +54,31 @@ function setScreenFixed (w, h, game) {
 }
 
 function checkGamepads (game) {
-  if (game.input.gamepad.supported && game.input.gamepad.active) {
+  if (game.input.gamepad.supported && game.input.gamepad.active && !controllersSet) {
     var preload = game.state.states['PreloadMenu']
     var keys = preload.keys
     for (var i = 1; i < 5; i++) {
       var pad = game.input.gamepad['pad' + i]
       if (pad.connected) {
-        pad.getButton(Phaser.Gamepad.XBOX360_DPAD_UP).onDown.add(keys.up, preload)
-        pad.getButton(Phaser.Gamepad.XBOX360_DPAD_DOWN).onDown.add(keys.down, preload)
-        pad.getButton(Phaser.Gamepad.XBOX360_DPAD_LEFT).onDown.add(keys.left, preload)
-        pad.getButton(Phaser.Gamepad.XBOX360_DPAD_RIGHT).onDown.add(keys.right, preload)
-        pad.getButton(Phaser.Gamepad.XBOX360_A).onDown.add(keys.selectPress, preload)
-        pad.getButton(Phaser.Gamepad.XBOX360_A).onUp.add(keys.selectRelease, preload)
-        pad.getButton(Phaser.Gamepad.XBOX360_B).onDown.add(keys.backPressed, preload)
-        pad.getButton(Phaser.Gamepad.XBOX360_START).onDown.add(keys.backPressed, preload)
+        controllersSet = true
+        var b = [
+          pad.getButton(Phaser.Gamepad.XBOX360_DPAD_UP),
+          pad.getButton(Phaser.Gamepad.XBOX360_DPAD_DOWN),
+          pad.getButton(Phaser.Gamepad.XBOX360_DPAD_LEFT),
+          pad.getButton(Phaser.Gamepad.XBOX360_DPAD_RIGHT),
+          pad.getButton(Phaser.Gamepad.XBOX360_A),
+          pad.getButton(Phaser.Gamepad.XBOX360_A),
+          pad.getButton(Phaser.Gamepad.XBOX360_B),
+          pad.getButton(Phaser.Gamepad.XBOX360_START)]
+
+        if (b[0]) b[0].onDown.add(keys.up, preload)
+        if (b[1]) b[1].onDown.add(keys.down, preload)
+        if (b[2]) b[2].onDown.add(keys.left, preload)
+        if (b[3]) b[3].onDown.add(keys.right, preload)
+        if (b[4]) b[4].onDown.add(keys.selectPress, preload)
+        if (b[5]) b[5].onUp.add(keys.selectRelease, preload)
+        if (b[6]) b[6].onDown.add(keys.backPressed, preload)
+        if (b[7]) b[7].onDown.add(keys.backPressed, preload)
       }
     }
   }
