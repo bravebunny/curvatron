@@ -65,7 +65,7 @@ levelSelector.prototype = {
 
     var greenworks = require('./greenworks')
     greenworks.on('game-overlay-activated', function (is_active) {
-      if (!is_active) this.state.restart(true, false, 'community levels')
+      if (!is_active && this.state.getCurrentState() === this.game.state.states['LevelSelector']) this.state.restart(true, false, 'community levels')
     }.bind(this))
   },
 
