@@ -58,10 +58,17 @@
 
 (function() {
 
-    var greenworks = require('./greenworks')
-    greenworks.initAPI()
-    if (greenworks.initAPI()) nonSteam = false
-    else nonSteam = true
+    noGreenworks = false
+    try {
+        var greenworks = require('./greenworks') 
+    } catch (err) {
+        noGreenworks = true
+    }
+    nonSteam = true
+    if (greenworks) {
+        greenworks.initAPI()
+        if (greenworks.initAPI()) nonSteam = false
+    }
 
     var gui = require('nw.gui')
     var win = gui.Window.get()

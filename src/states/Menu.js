@@ -52,9 +52,25 @@ menu.prototype = {
     }
     var ui = this.ui
 
+    var titleSize = 175
+    var titleH = 100
+
+    //warning when greenworks doesn't work, like when it is blocked by antivirus software
+    if (noGreenworks) {
+      var warning = this.add.text(w2, 150, 'Warning: could not load Steam integration (Greenworks), it may have been blocked by your antivirus software.\nSome features, like community levels, uploading to Workshop, and achievements, will not work.', {
+        font: '35px dosis',
+        fill: '#ffffff',
+        align: 'center'
+      })
+      warning.alpha = 0.8
+      warning.anchor.setTo(0.5, 0.5)
+      titleSize = 100
+      titleH = 50
+    }
+
     // Game Title
-    ui.title = this.add.text(w2, 100, 'curvatron', {
-      font: '175px dosis',
+    ui.title = this.add.text(w2, titleH, 'curvatron', {
+      font: titleSize + 'px dosis',
       fill: '#ffffff',
       align: 'center'
     })
@@ -71,6 +87,7 @@ menu.prototype = {
 
     this.buttons.create()
     this.buttons.select(0)
+
   },
 
   update: function () {
