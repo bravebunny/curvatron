@@ -38,6 +38,8 @@ levelSelector.prototype = {
     this.buttons.add('back_button', 'back', this.backPressed)
     var unlocks = parseInt(localStorage.getItem('unlocks'), 10)
 
+    savedCheckpoint = {}
+
     switch (this.type) {
       case 'community levels':
         this.mylevels = false
