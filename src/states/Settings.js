@@ -25,6 +25,7 @@ settings.prototype = {
     this.soundEffects = this.buttons.add('audio_button', 'sound effects: on ', this.toggleSoundEffects)
     this.fullscreen = this.buttons.add('fullscreen_button', 'fullscreen', this.toggleFullscreen)
     this.showMouse = this.buttons.add('mouse_button', 'show cursor in game: on', this.toggleShowMouse)
+    this.timeScale = this.buttons.add('time_button', 'time scale: 0.5', this.toggleTimeScale)
     this.buttons.add('setkeys_button', 'controls', this.controls)
 
     this.buttons.create()
@@ -34,10 +35,21 @@ settings.prototype = {
     this.updateSoundEffectsButton()
     this.updateScreenButton()
     this.updateShowMouseButton()
+    this.updateTimeScaleButton()
   },
 
   controls: function () {
     this.state.start('SetKeys', true, false, 'Settings')
+  },
+
+  toggleTimeScale: function () {
+    this.game.time.slowMotion = this.game.time.slowMotion == 1 ? 2 : 1
+    localStorage.setItem('timeScale', this.game.time.slowMotion)
+    this.updateTimeScaleButton()
+  },
+
+  updateTimeScaleButton: function () {
+    this.timeScale.setText('time scale: ' + 1 / this.game.time.slowMotion)
   },
 
   toggleMusic: function () {

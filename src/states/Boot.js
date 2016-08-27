@@ -41,6 +41,9 @@ boot.prototype = {
       showMouse = true
     }
 
+    var timeScale = localStorage.getItem('timeScale')
+    if (timeScale != null) this.game.time.slowMotion = timeScale;
+
     // Background colors
     // [green, red, purple, blue]
     bgColors = ['#76b83d', '#cf5e4f', '#805296', '#4c99b9']

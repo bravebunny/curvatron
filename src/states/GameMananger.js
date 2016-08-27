@@ -45,6 +45,7 @@ gameMananger.prototype = {
   },
 
   create: function () {
+    this.game.time.slowMotion = 2;
     scale = 1
     if (!this.mode.sp) {
       scale = (-1 / 24) * this.mode.nPlayers + 7 / 12
@@ -237,6 +238,8 @@ gameMananger.prototype = {
     this.pauseButtons.add('restart_button', 'restart', this.restart)
     this.ui.musicButton = this.pauseButtons.add(musicButton, musicText, this.muteMusic)
     this.ui.soundEffectsButton = this.pauseButtons.add(soundEffectsButton, soundEffectsText, this.muteSoundEffects)
+    this.ui.timeScale = this.pauseButtons.add('time_button', 'time scale: ', this.toggleTimeScale)
+
     if (this.mode.file) {
       this.pauseButtons.add('steam_button', 'workshop page', this.showWorkshop)
     }
@@ -245,10 +248,12 @@ gameMananger.prototype = {
     } else {
       this.pauseButtons.add('exit_button', 'exit', function () { this.state.start('Menu') })
     }
+    
     this.pauseButtons.textColor = colorHexDark
 
     this.pauseButtons.create()
     this.pauseButtons.hide()
+    this.updateTimeScaleButton()
 
     this.deathButtons = new ButtonList(this, this.game)
     this.deathButtons.add('restart_button', 'restart', this.restart)
@@ -295,6 +300,16 @@ gameMananger.prototype = {
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCountdown, this)
     }
     this.restarting = false
+  },
+
+  toggleTimeScale: function () {
+    this.game.time.slowMotion = this.game.time.slowMotion == 1 ? 2 : 1
+    localStorage.setItem('timeScale', this.game.time.slowMotion)
+    this.updateTimeScaleButton()
+  },
+
+  updateTimeScaleButton: function () {
+    this.ui.timeScale.setText('time scale: ' + 1 / this.game.time.slowMotion)
   },
 
   update: function () {
@@ -631,6 +646,7 @@ gameMananger.prototype = {
   },
 
   shutdown: function () {
+    this.game.time.slowMotion = 1;
     for (var i = 0; i < players.length; i++) {
       players[i].clearInput()
     }

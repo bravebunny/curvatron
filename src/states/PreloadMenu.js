@@ -19,6 +19,7 @@ preloadMenu.prototype = {
     this.game.load.image('normal_button', 'assets/sprites/gui/singleplayer/normal.png')
 
     this.game.load.image('audio_button', 'assets/sprites/gui/settings/audio.png')
+    this.game.load.image('time_button', 'assets/sprites/gui/settings/time.png')
     this.game.load.image('audiooff_button', 'assets/sprites/gui/settings/audiooff.png')
     this.game.load.image('music_button', 'assets/sprites/gui/settings/music.png')
     this.game.load.image('musicoff_button', 'assets/sprites/gui/settings/musicoff.png')

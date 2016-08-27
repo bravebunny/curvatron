@@ -89,7 +89,7 @@ Button.prototype = {
     this.button.anchor.setTo(0.5, 0.5)
 
     var s = this.button.scale
-    var tweenTime = 30
+    var tweenTime = 30 / this.game.time.slowMotion;
 
     this.tween = {
       press: this.game.add.tween(s).to({x: s.x * 0.9, y: s.y * 0.9}, tweenTime, Phaser.Easing.Linear.None, false),
