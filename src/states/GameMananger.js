@@ -45,7 +45,6 @@ gameMananger.prototype = {
   },
 
   create: function () {
-    this.game.time.slowMotion = 2;
     scale = 1
     if (!this.mode.sp) {
       scale = (-1 / 24) * this.mode.nPlayers + 7 / 12
@@ -646,7 +645,6 @@ gameMananger.prototype = {
   },
 
   shutdown: function () {
-    this.game.time.slowMotion = 1;
     for (var i = 0; i < players.length; i++) {
       players[i].clearInput()
     }
