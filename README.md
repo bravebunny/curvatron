@@ -4,7 +4,7 @@ Single button snake, for up to 8 players. Trickier than it looks.
 
 ## Play the game
 
-[Play on browser](https://bravebunny.co/curvatron/)
+[Play on browser](https://bravebunny.github.io/curvatron/)
 
 [Get on Steam](https://store.steampowered.com/app/404700/Curvatron/)
 
